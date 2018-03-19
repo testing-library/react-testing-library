@@ -1,0 +1,56 @@
+{
+  "name": "react-testing-library",
+  "version": "0.0.0-semantically-released",
+  "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
+  "main": "dist/index.js",
+  "engines": {
+    "node": ">=8",
+    "npm": ">=5"
+  },
+  "scripts": {
+    "add-contributor": "kcd-scripts contributors add",
+    "build": "kcd-scripts build",
+    "lint": "kcd-scripts lint",
+    "test": "kcd-scripts test",
+    "test:update": "npm test -- --updateSnapshot --coverage",
+    "validate": "kcd-scripts validate",
+    "setup": "npm install && npm run validate -s",
+    "precommit": "kcd-scripts precommit"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "axios": "^0.18.0",
+    "kcd-scripts": "^0.36.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-transition-group": "^2.2.1"
+  },
+  "peerDependencies": {
+    "react-dom": "*"
+  },
+  "eslintConfig": {
+    "extends": "./node_modules/kcd-scripts/eslint.js",
+    "rules": {
+      "react/prop-types": "off"
+    }
+  },
+  "eslintIgnore": [
+    "node_modules",
+    "coverage",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kentcdodds/react-testing-library.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kentcdodds/react-testing-library/issues"
+  },
+  "homepage": "https://github.com/kentcdodds/react-testing-library#readme"
+}
