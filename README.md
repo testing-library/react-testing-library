@@ -45,6 +45,7 @@ components. It provides light utility functions on top of `react-dom` and
   * [`flushPromises`](#flushpromises)
   * [`render`](#render)
 * [More on `data-testid`s](#more-on-data-testids)
+* [Examples](#examples)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
@@ -143,6 +144,17 @@ one of the practices this library is intended to encourage.
 
 Learn more about this practice in the blog post:
 ["Making your UI tests resilient to change"](https://blog.kentcdodds.com/making-your-ui-tests-resilient-to-change-d37a6ee37269)
+
+## Examples
+
+You'll find examples of testing with different libraries in
+[the test directory](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__).
+Some included are:
+
+* [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-redux.js)
+* [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-router.js)
+
+Feel free to contribute more!
 
 ## FAQ
 
