@@ -1,6 +1,7 @@
 {
   "projectName": "react-testing-library",
   "projectOwner": "kentcdodds",
+  "repoType": "github",
   "files": [
     "README.md"
   ],
@@ -28,6 +29,5 @@
         "doc"
       ]
     }
-  ],
-  "repoType": "github"
+  ]
 }
