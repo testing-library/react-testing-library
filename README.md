@@ -255,7 +255,7 @@ const rootElement = container.firstChild
 
 **What if I’m iterating over a list of items that I want to put the data-testid="item" attribute on. How do I distinguish them from each other?**
 
-You can make your selector just choose the one you want by including :nth-child(4) in the selector.
+You can make your selector just choose the one you want by including :nth-child in the selector.
 
 ```javascript
 const thirdLiInUl = container.querySelector('ul > li:nth-child(3)')
