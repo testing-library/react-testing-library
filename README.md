@@ -241,6 +241,29 @@ const allLisInDiv = container.querySelectorAll('div li')
 const rootElement = container.firstChild
 ```
 
+**What about enzyme is "bloated with complexity and features" and "encourage poor testing
+practices"**
+
+Most of the damaging features have to do with encouraging testing implementation
+details. Primarily, these are
+[shallow rendering](http://airbnb.io/enzyme/docs/api/shallow.html), APIs which
+allow selecting rendered elements by component constructors, and APIs which
+allow you to get and interact with component instances (and their
+state/properties) (most of enzyme's wrapper APIs allow this).
+
+The guiding principle for this library is:
+
+> The less your tests resemble the way your software is used, the less confidence they can give you. - [17 Feb 2018](https://twitter.com/kentcdodds/status/965052178267176960)
+
+Because users can't directly interact with your app's component instances,
+assert on their internal state or what components they render, or call their
+internal methods, doing those things in your tests reduce the confidence they're
+able to give you.
+
+That's not to say that there's never a use case for doing those things, so they
+should be possible to accomplish, just not the default and natural way to test
+react components.
+
 ## Other Solutions
 
 In preparing this project,
