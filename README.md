@@ -12,7 +12,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -253,6 +253,28 @@ const allLisInDiv = container.querySelectorAll('div li')
 const rootElement = container.firstChild
 ```
 
+**What if I’m iterating over a list of items that I want to put the data-testid="item" attribute on. How do I distinguish them from each other?**
+
+You can make your selector just choose the one you want by including :nth-child in the selector.
+
+```javascript
+const thirdLiInUl = container.querySelector('ul > li:nth-child(3)')
+```
+
+Or you could include the index or an ID in your attribute:
+
+```javascript
+<li data-testid={`item-${item.id}`}>{item.text}</li>
+```
+
+And then you could use the `queryByTestId`:
+
+```javascript
+const items = [/* your items */]
+const {queryByTestId} = render(/* your component with the items */)
+const thirdItem = queryByTestId(`item-${items[2].id}`)
+```
+
 **What about enzyme is "bloated with complexity and features" and "encourage poor testing
 practices"**
 
@@ -315,8 +337,8 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
-| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") |
-| :---: |
+| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") |
+| :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

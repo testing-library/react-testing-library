@@ -1,6 +1,7 @@
 {
   "projectName": "react-testing-library",
   "projectOwner": "kentcdodds",
+  "repoType": "github",
   "files": [
     "README.md"
   ],
@@ -17,6 +18,15 @@
         "doc",
         "infra",
         "test"
+      ]
+    },
+    {
+      "login": "audiolion",
+      "name": "Ryan Castner",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2430381?v=4",
+      "profile": "http://audiolion.github.io",
+      "contributions": [
+        "doc"
       ]
     }
   ]
