@@ -86,6 +86,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Act
   Simulate.click(queryByTestId('load-greeting'))
 
+  // let's wait for our mocked `get` request promise to resolve
   await flushPromises()
 
   // Assert
