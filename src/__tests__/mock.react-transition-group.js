@@ -18,11 +18,11 @@ class HiddenMessage extends React.Component {
   render() {
     return (
       <div>
-        <button data-test="toggle-message" onClick={this.toggle}>
+        <button data-testid="toggle-message" onClick={this.toggle}>
           Toggle
         </button>
         <Fade in={this.state.show}>
-          <div data-test="hidden-message">Hello world</div>
+          <div data-testid="hidden-message">Hello world</div>
         </Fade>
       </div>
     )

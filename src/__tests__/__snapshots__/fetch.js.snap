@@ -3,12 +3,12 @@
 exports[`Fetch makes an API call and displays the greeting when load-greeting is clicked 1`] = `
 <div>
   <button
-    data-test="load-greeting"
+    data-testid="load-greeting"
   >
     Fetch
   </button>
   <span
-    data-test="greeting-text"
+    data-testid="greeting-text"
   >
     hello there
   </span>

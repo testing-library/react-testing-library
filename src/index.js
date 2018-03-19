@@ -3,7 +3,7 @@ import {Simulate} from 'react-dom/test-utils'
 
 // we may expose this eventually
 function sel(id) {
-  return `[data-test="${id}"]`
+  return `[data-testid="${id}"]`
 }
 
 // we may expose this eventually

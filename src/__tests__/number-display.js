@@ -8,8 +8,8 @@ class NumberDisplay extends React.Component {
   render() {
     return (
       <div>
-        <span data-test="number-display">{this.props.number}</span>
-        <span data-test="instance-id">{this.id}</span>
+        <span data-testid="number-display">{this.props.number}</span>
+        <span data-testid="instance-id">{this.id}</span>
       </div>
     )
   }

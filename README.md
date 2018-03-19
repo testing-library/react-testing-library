@@ -44,7 +44,7 @@ components. It provides light utility functions on top of `react-dom` and
   * [`Simulate`](#simulate)
   * [`flushPromises`](#flushpromises)
   * [`render`](#render)
-* [More on `data-test` ids](#more-on-data-test-ids)
+* [More on `data-testid`s](#more-on-data-testids)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
@@ -128,16 +128,16 @@ The containing DOM node of your rendered React Element (rendered using
 
 #### `queryByTestId`
 
-A shortcut to `` container.querySelector(`[data-test="${yourId}"]`) ``. Read
-more about data-test ids below.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. Read
+more about `data-testid`s below.
 
 ```javascript
 const usernameInputElement = queryByTestId('username-input')
 ```
 
-## More on `data-test` ids
+## More on `data-testid`s
 
-The `queryByTestId` utility is referring to the practice of using `data-test`
+The `queryByTestId` utility is referring to the practice of using `data-testid`
 attributes to identify individual elements in your rendered component. This is
 one of the practices this library is intended to encourage.
 
@@ -216,18 +216,18 @@ something more
 Learn more about how Jest mocks work from my blog post:
 ["But really, what is a JavaScript mock?"](https://blog.kentcdodds.com/but-really-what-is-a-javascript-mock-10d060966f7d)
 
-**I don't want to use `data-test` attributes for everything. Do I have to?**
+**I don't want to use `data-testid` attributes for everything. Do I have to?**
 
-Definitely not. That said, a common reason people don't like the `data-test`
+Definitely not. That said, a common reason people don't like the `data-testid`
 attribute is they're concerned about shipping that to production. I'd suggest
 that you probably want some simple E2E tests that run in production on occasion
-to make certain that things are working smoothly. In that case the `data-test`
+to make certain that things are working smoothly. In that case the `data-testid`
 attributes will be very useful. Even if you don't run these in production, you
 may want to run some E2E tests that run on the same code you're about to ship to
-production. In that case, the `data-test` attributes will be valuable there as
+production. In that case, the `data-testid` attributes will be valuable there as
 well.
 
-All that said, if you really don't want to ship `data-test` attributes, then you
+All that said, if you really don't want to ship `data-testid` attributes, then you
 can use
 [this simple babel plugin](https://www.npmjs.com/package/babel-plugin-react-remove-properties)
 to remove them.

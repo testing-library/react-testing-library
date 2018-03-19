@@ -20,10 +20,10 @@ class Fetch extends React.Component {
     const {data} = this.state
     return (
       <div>
-        <button onClick={this.fetch} data-test="load-greeting">
+        <button onClick={this.fetch} data-testid="load-greeting">
           Fetch
         </button>
-        {data ? <span data-test="greeting-text">{data.greeting}</span> : null}
+        {data ? <span data-testid="greeting-text">{data.greeting}</span> : null}
       </div>
     )
   }
