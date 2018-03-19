@@ -121,30 +121,9 @@ properties:
 
 The containing DOM node of your rendered React Element (rendered using
 `ReactDOM.render`). It's a `div`. This is a regular DOM node, so you can call
-`container.querySelector` etc. to inspect the children. Tip: To get the root
-element of your rendered element, use `container.firstChild`.
+`container.querySelector` etc. to inspect the children.
 
-<!--
-someday maybe we'll expose these, but for now they don't encourage the kinds of
-testing practices we want to encourage so we'll leave them off.
-
-#### query
-
-A pre-bound version of `container.querySelector(yourQuery)`
-
-```javascript
-const firstLiInDiv = query('div li')
-```
-
-#### `queryAll`
-
-A pre-bound version of `container.querySelectorAll(yourQuery)`
-
-```javascript
-const allLisInDiv = query('div li')
-```
-
--->
+> Tip: To get the root element of your rendered element, use `container.firstChild`.
 
 #### `queryByTestId`
 
@@ -166,7 +145,7 @@ Learn more about this practice in the blog post:
 
 ## FAQ
 
-**How do I update the props of a render component?**
+**How do I update the props of a rendered component?**
 
 It'd probably be better if you test the component that's doing the prop updating
 to ensure that the props are being updated correctly (see
@@ -185,7 +164,7 @@ render(<NumberDisplay number={2} />, {container})
 expect(queryByTestId('number-display').textContent).toBe('2')
 ```
 
-[Open the tests](https://github.com/kentcdodds/testing-workshop/blob/master/src/__tests__/number-display.js)
+[Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/number-display.js)
 for a full example of this.
 
 **If I can't use shallow rendering, how do I mock out components in tests?**
@@ -222,7 +201,7 @@ test('you can mock things with jest.mock', () => {
 Note that because they're Jest mock functions (`jest.fn()`), you could also make
 assertions on those as well if you wanted.
 
-[Open full test](https://github.com/kentcdodds/testing-workshop/blob/master/src/__tests__/mock.react-transition-group.js)
+[Open full test](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/mock.react-transition-group.js)
 for the full example.
 
 This looks like more work that shallow rendering (and it is), but it gives you
@@ -231,7 +210,7 @@ enough.
 
 If you want to make things more like shallow rendering, then you could do
 something more
-[like this](https://github.com/kentcdodds/testing-workshop/blob/master/src/__tests__/shallow.react-transition-group.js).
+[like this](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/shallow.react-transition-group.js).
 
 Learn more about how Jest mocks work from my blog post:
 ["But really, what is a JavaScript mock?"](https://blog.kentcdodds.com/but-really-what-is-a-javascript-mock-10d060966f7d)
