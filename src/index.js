@@ -15,6 +15,7 @@ function render(ui, {container = document.createElement('div')} = {}) {
   ReactDOM.render(ui, container)
   return {
     container,
+    unmount: () => ReactDOM.unmountComponentAtNode(container),
     queryByTestId: queryDivByTestId.bind(null, container),
   }
 }

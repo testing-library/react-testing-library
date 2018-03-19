@@ -127,6 +127,21 @@ The containing DOM node of your rendered React Element (rendered using
 
 > Tip: To get the root element of your rendered element, use `container.firstChild`.
 
+#### `unmount`
+
+This will cause the rendered component to be unmounted. This is useful for
+testing what happens when your component is removed from the page (like testing
+that you don't leave event handlers hanging around causing memory leaks).
+
+> This method is a pretty small abstraction over
+> `ReactDOM.unmountComponentAtNode`
+
+```javascript
+const {container, unmount} = render(<Login />)
+unmount()
+// your component has been unmounted and now: container.innerHTML === ''
+```
+
 #### `queryByTestId`
 
 A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. Read
@@ -270,7 +285,9 @@ Or you could include the index or an ID in your attribute:
 And then you could use the `queryByTestId`:
 
 ```javascript
-const items = [/* your items */]
+const items = [
+  /* your items */
+]
 const {queryByTestId} = render(/* your component with the items */)
 const thirdItem = queryByTestId(`item-${items[2].id}`)
 ```
