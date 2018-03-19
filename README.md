@@ -267,6 +267,14 @@ Or you could include the index or an ID in your attribute:
 <li data-testid={`item-${item.id}`}>{item.text}</li>
 ```
 
+And then you could use the `queryByTestId`:
+
+```javascript
+const items = [/* your items */]
+const {queryByTestId} = render(/* your component with the items */)
+const thirdItem = queryByTestId(`item-${items[2].id}`)
+```
+
 **What about enzyme is "bloated with complexity and features" and "encourage poor testing
 practices"**
 
