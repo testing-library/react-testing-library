@@ -382,7 +382,7 @@ MIT
 [prs]: http://makeapullrequest.com
 [donate-badge]: https://img.shields.io/badge/$-support-green.svg?style=flat-square
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]: https://github.com/kentcdodds/react-testing-library/blob/master/other/CODE_OF_CONDUCT.md
+[coc]: https://github.com/kentcdodds/react-testing-library/blob/master/CODE_OF_CONDUCT.md
 [github-watch-badge]: https://img.shields.io/github/watchers/kentcdodds/react-testing-library.svg?style=social
 [github-watch]: https://github.com/kentcdodds/react-testing-library/watchers
 [github-star-badge]: https://img.shields.io/github/stars/kentcdodds/react-testing-library.svg?style=social
