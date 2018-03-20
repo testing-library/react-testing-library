@@ -3,6 +3,7 @@
   "version": "0.0.0-semantically-released",
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
+  "typings": "typings/index.d.ts",
   "engines": {
     "node": ">=8",
     "npm": ">=5"
@@ -18,13 +19,15 @@
     "precommit": "kcd-scripts precommit"
   },
   "files": [
-    "dist"
+    "dist",
+    "typings"
   ],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "@types/react-dom": "^16.0.4",
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "kcd-scripts": "^0.36.1",
