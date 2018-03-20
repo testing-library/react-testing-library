@@ -19,7 +19,8 @@
     "precommit": "kcd-scripts precommit"
   },
   "files": [
-    "dist"
+    "dist",
+    "typings"
   ],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
