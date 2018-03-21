@@ -1,6 +1,8 @@
 <div align="center">
 <h1>react-testing-library</h1>
 
+<img alt="goat" src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/goat.png" />
+
 <p>Simple and complete React DOM testing utilities that encourage good testing practices.</p>
 </div>
 
