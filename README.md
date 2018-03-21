@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -86,10 +86,10 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {queryByTestId, container} = render(<Fetch url={url} />)
+  const {getByTestId, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(queryByTestId('load-greeting'))
+  Simulate.click(getByTestId('load-greeting'))
 
   // let's wait for our mocked `get` request promise to resolve
   await flushPromises()
@@ -97,7 +97,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(queryByTestId('greeting-text').textContent).toBe('hello there')
+  expect(getByTestId('greeting-text').textContent).toBe('hello there')
   expect(container.firstChild).toMatchSnapshot()
 })
 ```
@@ -146,18 +146,34 @@ unmount()
 // your component has been unmounted and now: container.innerHTML === ''
 ```
 
-#### `queryByTestId`
+#### `getByTestId`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. Read
-more about `data-testid`s below.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except
+that it will throw an Error if no matching element is found. Read more about
+`data-testid`s below.
 
 ```javascript
-const usernameInputElement = queryByTestId('username-input')
+const usernameInputElement = getByTestId('username-input')
+usernameInputElement.value = 'new value'
+Simulate.change(usernameInputElement)
+```
+
+#### `queryByTestId`
+
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``
+(Note: just like `querySelector`, this could return null if no matching element
+is found, which may lead to harder-to-understand error messages). Read more about
+`data-testid`s below.
+
+```javascript
+// assert something doesn't exist
+// (you couldn't do this with `getByTestId`)
+expect(queryByTestId('username-input')).toBeNull()
 ```
 
 ## More on `data-testid`s
 
-The `queryByTestId` utility is referring to the practice of using `data-testid`
+The `getByTestId` and `queryByTestId` utilities refer to the practice of using `data-testid`
 attributes to identify individual elements in your rendered component. This is
 one of the practices this library is intended to encourage.
 
@@ -186,14 +202,14 @@ prefer to update the props of a rendered component in your test, the easiest
 way to do that is:
 
 ```javascript
-const {container, queryByTestId} = render(<NumberDisplay number={1} />)
-expect(queryByTestId('number-display').textContent).toBe('1')
+const {container, getByTestId} = render(<NumberDisplay number={1} />)
+expect(getByTestId('number-display').textContent).toBe('1')
 
 // re-render the same component with different props
 // but pass the same container in the options argument.
 // which will cause a re-render of the same instance (normal React behavior).
 render(<NumberDisplay number={2} />, {container})
-expect(queryByTestId('number-display').textContent).toBe('2')
+expect(getByTestId('number-display').textContent).toBe('2')
 ```
 
 [Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/number-display.js)
@@ -219,14 +235,16 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {queryByTestId} = render(<HiddenMessage initialShow={true} />)
+  const {getByTestId, queryByTestId} = render(
+    <HiddenMessage initialShow={true} />,
+  )
   expect(queryByTestId('hidden-message')).toBeTruthy() // we just care it exists
   // hide the message
-  Simulate.click(queryByTestId('toggle-message'))
+  Simulate.click(getByTestId('toggle-message'))
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly
-  expect(queryByTestId('hidden-message')).toBeFalsy() // we just care it doesn't exist
+  expect(queryByTestId('hidden-message')).toBeNull() // we just care it doesn't exist
 })
 ```
 
@@ -246,6 +264,14 @@ something more
 
 Learn more about how Jest mocks work from my blog post:
 ["But really, what is a JavaScript mock?"](https://blog.kentcdodds.com/but-really-what-is-a-javascript-mock-10d060966f7d)
+
+**What if I want to verify that an element does NOT exist?**
+
+You typically will get access to rendered elements using the `getByTestId` utility. However, that function will throw an error if the element isn't found. If you want to specifically test for the absence of an element, then you should use the `queryByTestId` utility which will return the element if found or `null` if not.
+
+```javascript
+expect(queryByTestId('thing-that-does-not-exist')).toBeNull()
+```
 
 **I don't want to use `data-testid` attributes for everything. Do I have to?**
 
@@ -286,18 +312,18 @@ Or you could include the index or an ID in your attribute:
 <li data-testid={`item-${item.id}`}>{item.text}</li>
 ```
 
-And then you could use the `queryByTestId`:
+And then you could use the `getByTestId` utility:
 
 ```javascript
 const items = [
   /* your items */
 ]
-const {queryByTestId} = render(/* your component with the items */)
-const thirdItem = queryByTestId(`item-${items[2].id}`)
+const {getByTestId} = render(/* your component with the items */)
+const thirdItem = getByTestId(`item-${items[2].id}`)
 ```
 
 **What about enzyme is "bloated with complexity and features" and "encourage poor testing
-practices"**
+practices"?**
 
 Most of the damaging features have to do with encouraging testing implementation
 details. Primarily, these are
@@ -358,8 +384,8 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
-| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") |
-| :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

@@ -39,10 +39,12 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {queryByTestId} = render(<HiddenMessage initialShow={true} />)
+  const {getByTestId, queryByTestId} = render(
+    <HiddenMessage initialShow={true} />,
+  )
   expect(queryByTestId('hidden-message')).toBeTruthy() // we just care it exists
   // hide the message
-  Simulate.click(queryByTestId('toggle-message'))
+  Simulate.click(getByTestId('toggle-message'))
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly

@@ -35,7 +35,7 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {queryByTestId} = render(<HiddenMessage initialShow={true} />)
+  const {getByTestId} = render(<HiddenMessage initialShow={true} />)
   const context = expect.any(Object)
   const children = expect.any(Object)
   const defaultProps = {children, timeout: 1000, className: 'fade'}
@@ -43,7 +43,7 @@ test('you can mock things with jest.mock', () => {
     {in: true, ...defaultProps},
     context,
   )
-  Simulate.click(queryByTestId('toggle-message'))
+  Simulate.click(getByTestId('toggle-message'))
   expect(CSSTransition).toHaveBeenCalledWith(
     {in: true, ...defaultProps},
     expect.any(Object),

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getByTestId finds matching element 1`] = `
+<span
+  data-testid="test-component"
+/>
+`;
+
+exports[`getByTestId throws error when no matching element exists 1`] = `"Unable to find element by [data-testid=\\"unknown-data-testid\\"]"`;
+
+exports[`queryByTestId finds matching element 1`] = `
+<span
+  data-testid="test-component"
+/>
+`;

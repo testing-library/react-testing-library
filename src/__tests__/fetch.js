@@ -37,16 +37,16 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {queryByTestId, container} = render(<Fetch url={url} />)
+  const {getByTestId, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(queryByTestId('load-greeting'))
+  Simulate.click(getByTestId('load-greeting'))
 
   await flushPromises()
 
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(queryByTestId('greeting-text').textContent).toBe('hello there')
+  expect(getByTestId('greeting-text').textContent).toBe('hello there')
   expect(container.firstChild).toMatchSnapshot()
 })
