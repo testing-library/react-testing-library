@@ -148,7 +148,9 @@ unmount()
 
 #### `getByTestId`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except that it will throw an Error if no matching element is found. Use this instead of `queryByTestId` if you don't want to handle whether the return value could be null. Read more about `data-testid`s below.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except
+that it will throw an Error if no matching element is found. Read more about
+`data-testid`s below.
 
 ```javascript
 const usernameInputElement = getByTestId('username-input')
@@ -158,12 +160,15 @@ Simulate.change(usernameInputElement)
 
 #### `queryByTestId`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. This could return null if no matching element is found. Read
-more about `data-testid`s below.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``
+(Note: just like `querySelector`, this could return null if no matching element
+is found, which may lead to harder-to-understand error messages). Read more about
+`data-testid`s below.
 
 ```javascript
-const hiddenItemElement = queryByTestId('item-hidden')
-expect(hiddenItemElement).toBeFalsy() // we just care it doesn't exist
+// assert something doesn't exist
+// (you couldn't do this with `getByTestId`)
+expect(queryByTestId('username-input')).toBeNull()
 ```
 
 ## More on `data-testid`s
@@ -239,7 +244,7 @@ test('you can mock things with jest.mock', () => {
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly
-  expect(queryByTestId('hidden-message')).toBeFalsy() // we just care it doesn't exist
+  expect(queryByTestId('hidden-message')).toBeNull() // we just care it doesn't exist
 })
 ```
 
@@ -263,6 +268,10 @@ Learn more about how Jest mocks work from my blog post:
 **What if I want to verify that an element does NOT exist?**
 
 You typically will get access to rendered elements using the `getByTestId` utility. However, that function will throw an error if the element isn't found. If you want to specifically test for the absence of an element, then you should use the `queryByTestId` utility which will return the element if found or `null` if not.
+
+```javascript
+expect(queryByTestId('thing-that-does-not-exist')).toBeNull()
+```
 
 **I don't want to use `data-testid` attributes for everything. Do I have to?**
 
