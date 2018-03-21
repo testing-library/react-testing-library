@@ -4,6 +4,7 @@ interface RenderResult {
   container: HTMLDivElement
   unmount: VoidFunction
   queryByTestId: (id: string) => HTMLElement | null
+  getByTestId: (id: string) => HTMLElement
 }
 
 export function render(

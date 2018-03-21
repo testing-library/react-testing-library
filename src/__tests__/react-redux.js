@@ -82,27 +82,27 @@ function renderWithRedux(
 }
 
 test('can render with redux with defaults', () => {
-  const {queryByTestId} = renderWithRedux(<ConnectedCounter />)
-  Simulate.click(queryByTestId('incrementer'))
-  expect(queryByTestId('count-value').textContent).toBe('1')
+  const {getByTestId} = renderWithRedux(<ConnectedCounter />)
+  Simulate.click(getByTestId('incrementer'))
+  expect(getByTestId('count-value').textContent).toBe('1')
 })
 
 test('can render with redux with custom initial state', () => {
-  const {queryByTestId} = renderWithRedux(<ConnectedCounter />, {
+  const {getByTestId} = renderWithRedux(<ConnectedCounter />, {
     initialState: {count: 3},
   })
-  Simulate.click(queryByTestId('decrementer'))
-  expect(queryByTestId('count-value').textContent).toBe('2')
+  Simulate.click(getByTestId('decrementer'))
+  expect(getByTestId('count-value').textContent).toBe('2')
 })
 
 test('can render with redux with custom store', () => {
   // this is a silly store that can never be changed
   const store = createStore(() => ({count: 1000}))
-  const {queryByTestId} = renderWithRedux(<ConnectedCounter />, {
+  const {getByTestId} = renderWithRedux(<ConnectedCounter />, {
     store,
   })
-  Simulate.click(queryByTestId('incrementer'))
-  expect(queryByTestId('count-value').textContent).toBe('1000')
-  Simulate.click(queryByTestId('decrementer'))
-  expect(queryByTestId('count-value').textContent).toBe('1000')
+  Simulate.click(getByTestId('incrementer'))
+  expect(getByTestId('count-value').textContent).toBe('1000')
+  Simulate.click(getByTestId('decrementer'))
+  expect(getByTestId('count-value').textContent).toBe('1000')
 })

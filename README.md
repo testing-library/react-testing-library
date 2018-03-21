@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -86,10 +86,10 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {queryByTestId, container} = render(<Fetch url={url} />)
+  const {getByTestId, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(queryByTestId('load-greeting'))
+  Simulate.click(getByTestId('load-greeting'))
 
   // let's wait for our mocked `get` request promise to resolve
   await flushPromises()
@@ -97,7 +97,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(queryByTestId('greeting-text').textContent).toBe('hello there')
+  expect(getByTestId('greeting-text').textContent).toBe('hello there')
   expect(container.firstChild).toMatchSnapshot()
 })
 ```
@@ -148,16 +148,27 @@ unmount()
 
 #### `queryByTestId`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. Read
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. This could return null if no matching element is found. Read
 more about `data-testid`s below.
 
 ```javascript
-const usernameInputElement = queryByTestId('username-input')
+const hiddenItemElement = queryByTestId('item-hidden')
+expect(hiddenItemElement).toBeFalsy() // we just care it doesn't exist
+```
+
+#### `getByTestId`
+
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except that it will throw an Error if no matching element is found. Use this instead of `queryByTestId` if you don't want to handle whether the return value could be null. Read more about `data-testid`s below.
+
+```javascript
+const usernameInputElement = getByTestId('username-input')
+usernameInputElement.value = 'new value'
+Simulate.change(usernameInputElement)
 ```
 
 ## More on `data-testid`s
 
-The `queryByTestId` utility is referring to the practice of using `data-testid`
+The `queryByTestId` and `getByTestId` utilities refer to the practice of using `data-testid`
 attributes to identify individual elements in your rendered component. This is
 one of the practices this library is intended to encourage.
 
@@ -186,14 +197,14 @@ prefer to update the props of a rendered component in your test, the easiest
 way to do that is:
 
 ```javascript
-const {container, queryByTestId} = render(<NumberDisplay number={1} />)
-expect(queryByTestId('number-display').textContent).toBe('1')
+const {container, getByTestId} = render(<NumberDisplay number={1} />)
+expect(getByTestId('number-display').textContent).toBe('1')
 
 // re-render the same component with different props
 // but pass the same container in the options argument.
 // which will cause a re-render of the same instance (normal React behavior).
 render(<NumberDisplay number={2} />, {container})
-expect(queryByTestId('number-display').textContent).toBe('2')
+expect(getByTestId('number-display').textContent).toBe('2')
 ```
 
 [Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/number-display.js)
@@ -219,10 +230,12 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {queryByTestId} = render(<HiddenMessage initialShow={true} />)
+  const {getByTestId, queryByTestId} = render(
+    <HiddenMessage initialShow={true} />,
+  )
   expect(queryByTestId('hidden-message')).toBeTruthy() // we just care it exists
   // hide the message
-  Simulate.click(queryByTestId('toggle-message'))
+  Simulate.click(getByTestId('toggle-message'))
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly
@@ -286,7 +299,7 @@ Or you could include the index or an ID in your attribute:
 <li data-testid={`item-${item.id}`}>{item.text}</li>
 ```
 
-And then you could use the `queryByTestId`:
+And then you could use the `queryByTestId` utility:
 
 ```javascript
 const items = [
@@ -358,8 +371,8 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 
 <!-- prettier-ignore -->
-| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") |
-| :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") |
+| :---: | :---: | :---: | :---: | :---: | :---: |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

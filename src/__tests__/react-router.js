@@ -49,11 +49,11 @@ function renderWithRouter(
 }
 
 test('full app rendering/navigating', () => {
-  const {container, queryByTestId} = renderWithRouter(<App />)
+  const {container, getByTestId} = renderWithRouter(<App />)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are home')
   const leftClick = {button: 0}
-  Simulate.click(queryByTestId('about-link'), leftClick)
+  Simulate.click(getByTestId('about-link'), leftClick)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are on the about page')
 })
@@ -68,6 +68,6 @@ test('landing on a bad page', () => {
 
 test('rendering a component that uses withRouter', () => {
   const route = '/some-route'
-  const {queryByTestId} = renderWithRouter(<LocationDisplay />, {route})
-  expect(queryByTestId('location-display').textContent).toBe(route)
+  const {getByTestId} = renderWithRouter(<LocationDisplay />, {route})
+  expect(getByTestId('location-display').textContent).toBe(route)
 })

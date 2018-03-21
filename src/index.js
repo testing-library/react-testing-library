@@ -7,8 +7,17 @@ function select(id) {
 }
 
 // we may expose this eventually
-function queryDivByTestId(div, id) {
+function queryByTestId(div, id) {
   return div.querySelector(select(id))
+}
+
+// we may expose this eventually
+function getByTestId(div, id) {
+  const el = queryByTestId(div, id)
+  if (!el) {
+    throw new Error(`Unable to find element by ${select(id)}`)
+  }
+  return el
 }
 
 function render(ui, {container = document.createElement('div')} = {}) {
@@ -16,7 +25,8 @@ function render(ui, {container = document.createElement('div')} = {}) {
   return {
     container,
     unmount: () => ReactDOM.unmountComponentAtNode(container),
-    queryByTestId: queryDivByTestId.bind(null, container),
+    queryByTestId: queryByTestId.bind(null, container),
+    getByTestId: getByTestId.bind(null, container),
   }
 }
 

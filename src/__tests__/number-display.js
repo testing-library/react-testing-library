@@ -16,14 +16,14 @@ class NumberDisplay extends React.Component {
 }
 
 test('calling render with the same component on the same container does not remount', () => {
-  const {container, queryByTestId} = render(<NumberDisplay number={1} />)
-  expect(queryByTestId('number-display').textContent).toBe('1')
+  const {container, getByTestId} = render(<NumberDisplay number={1} />)
+  expect(getByTestId('number-display').textContent).toBe('1')
 
   // re-render the same component with different props
   // but pass the same container in the options argument.
   // which will cause a re-render of the same instance (normal React behavior).
   render(<NumberDisplay number={2} />, {container})
-  expect(queryByTestId('number-display').textContent).toBe('2')
+  expect(getByTestId('number-display').textContent).toBe('2')
 
-  expect(queryByTestId('instance-id').textContent).toBe('1')
+  expect(getByTestId('instance-id').textContent).toBe('1')
 })
