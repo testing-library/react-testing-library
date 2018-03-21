@@ -1,7 +1,9 @@
 <div align="center">
 <h1>react-testing-library</h1>
 
-<img alt="goat" src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/goat.png" />
+<a href="https://www.emojione.com/emoji/1f410">
+<img height="80" width="80" alt="goat" src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/goat.png" />
+</a>
 
 <p>Simple and complete React DOM testing utilities that encourage good testing practices.</p>
 </div>
