@@ -146,16 +146,6 @@ unmount()
 // your component has been unmounted and now: container.innerHTML === ''
 ```
 
-#### `queryByTestId`
-
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. This could return null if no matching element is found. Read
-more about `data-testid`s below.
-
-```javascript
-const hiddenItemElement = queryByTestId('item-hidden')
-expect(hiddenItemElement).toBeFalsy() // we just care it doesn't exist
-```
-
 #### `getByTestId`
 
 A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except that it will throw an Error if no matching element is found. Use this instead of `queryByTestId` if you don't want to handle whether the return value could be null. Read more about `data-testid`s below.
@@ -166,9 +156,19 @@ usernameInputElement.value = 'new value'
 Simulate.change(usernameInputElement)
 ```
 
+#### `queryByTestId`
+
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``. This could return null if no matching element is found. Read
+more about `data-testid`s below.
+
+```javascript
+const hiddenItemElement = queryByTestId('item-hidden')
+expect(hiddenItemElement).toBeFalsy() // we just care it doesn't exist
+```
+
 ## More on `data-testid`s
 
-The `queryByTestId` and `getByTestId` utilities refer to the practice of using `data-testid`
+The `getByTestId` and `queryByTestId` utilities refer to the practice of using `data-testid`
 attributes to identify individual elements in your rendered component. This is
 one of the practices this library is intended to encourage.
 
@@ -260,6 +260,10 @@ something more
 Learn more about how Jest mocks work from my blog post:
 ["But really, what is a JavaScript mock?"](https://blog.kentcdodds.com/but-really-what-is-a-javascript-mock-10d060966f7d)
 
+**What if I want to verify that an element does NOT exist?**
+
+You typically will get access to rendered elements using the `getByTestId` utility. However, that function will throw an error if the element isn't found. If you want to specifically test for the absence of an element, then you should use the `queryByTestId` utility which will return the element if found or `null` if not.
+
 **I don't want to use `data-testid` attributes for everything. Do I have to?**
 
 Definitely not. That said, a common reason people don't like the `data-testid`
@@ -299,18 +303,18 @@ Or you could include the index or an ID in your attribute:
 <li data-testid={`item-${item.id}`}>{item.text}</li>
 ```
 
-And then you could use the `queryByTestId` utility:
+And then you could use the `getByTestId` utility:
 
 ```javascript
 const items = [
   /* your items */
 ]
-const {queryByTestId} = render(/* your component with the items */)
-const thirdItem = queryByTestId(`item-${items[2].id}`)
+const {getByTestId} = render(/* your component with the items */)
+const thirdItem = getByTestId(`item-${items[2].id}`)
 ```
 
 **What about enzyme is "bloated with complexity and features" and "encourage poor testing
-practices"**
+practices"?**
 
 Most of the damaging features have to do with encouraging testing implementation
 details. Primarily, these are
