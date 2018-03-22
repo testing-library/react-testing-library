@@ -5,8 +5,7 @@
   "main": "dist/index.js",
   "typings": "typings/index.d.ts",
   "engines": {
-    "node": ">=8",
-    "npm": ">=5"
+    "node": ">=6"
   },
   "scripts": {
     "add-contributor": "kcd-scripts contributors add",
