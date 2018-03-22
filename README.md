@@ -347,11 +347,24 @@ react components.
 
 **How does `flushPromises` work and why would I need it?**
 
-As mentioned [before](#flushpromises), `flushPromises` uses [`setImmediate`][set-immediate] to schedule resolving a promise after any pending tasks in the message queue are processed. This includes any promises fired before in your test.
+As mentioned [before](#flushpromises), `flushPromises` uses
+[`setImmediate`][set-immediate] to schedule resolving a promise after any pending
+tasks in
+[the message queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
+are processed. This includes any promises fired before in your test.
 
-If there are promise callbacks already in javascript's message queue pending to be processed at the time `flushPromises` is called, then these will be processed before the promise returned by `flushPromises` is resolved. So when you `await flushPromises()` the code immediately after it is guaranteed to occur after all the side effects of your async requests have ocurred. This includes any data your test components might have requested.
+If there are promise callbacks already in JavaScript's message queue pending to be
+processed at the time `flushPromises` is called, then these will be processed before
+the promise returned by `flushPromises` is resolved. So when you
+`await flushPromises()` the code immediately after it is guaranteed to occur after
+all the side effects of your async requests have ocurred. This includes any data
+your test components might have requested.
 
-This is useful for instance, if your components perform any data requests and update their state with the results when the request is resolved. It's important to note that this is only effective if you've mocked out your async requests to resolve immediately (like the axios mock we have in the examples). It will not `await` for promises that are not already resolved by the time you attempt to flush them.
+This is useful for instance, if your components perform any data requests and update
+their state with the results when the request is resolved. It's important to note
+that this is only effective if you've mocked out your async requests to resolve
+immediately (like the `axios` mock we have in the examples). It will not `await`
+for promises that are not already resolved by the time you attempt to flush them.
 
 ## Other Solutions
 
