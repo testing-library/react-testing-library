@@ -20,7 +20,8 @@
   },
   "files": [
     "dist",
-    "typings"
+    "typings",
+    "extend-expect.js"
   ],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",

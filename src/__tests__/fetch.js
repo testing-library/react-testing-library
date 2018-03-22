@@ -1,6 +1,7 @@
 import React from 'react'
 import axiosMock from 'axios'
 import {render, Simulate, flushPromises} from '../'
+import '../../extend-expect' //eslint-disable-line import/no-unassigned-import
 
 // instead of importing it, we'll define it inline here
 // import Fetch from '../fetch'
@@ -37,7 +38,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {getByTestId, container} = render(<Fetch url={url} />)
+  const {getByTestId, container, queryByTestId} = render(<Fetch url={url} />)
 
   // Act
   Simulate.click(getByTestId('load-greeting'))
@@ -45,6 +46,15 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   await flushPromises()
 
   // Assert
+  expect(queryByTestId('foo')).not.toBeInTheDOM()
+  expect(queryByTestId('greeting-text')).toBeInTheDOM()
+  expect(queryByTestId('greeting-text')).toHaveTextContent('hello there')
+  expect(getByTestId('greeting-text')).toSatisfyDOM(
+    el => el.textContent === 'hello there',
+  )
+  expect(queryByTestId('greeting-text')).not.toHaveTextContent(
+    'you are not there',
+  )
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
   expect(getByTestId('greeting-text').textContent).toBe('hello there')
