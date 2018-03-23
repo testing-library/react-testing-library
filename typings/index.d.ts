@@ -5,6 +5,12 @@ interface RenderResult {
   unmount: VoidFunction
   queryByTestId: (id: string) => HTMLElement | null
   getByTestId: (id: string) => HTMLElement
+  queryByText: (id: string) => HTMLElement | null
+  getByText: (id: string) => HTMLElement
+  queryByPlaceholderText: (id: string) => HTMLElement | null
+  getByPlaceholderText: (id: string) => HTMLElement
+  queryByLabelText: (id: string) => HTMLElement | null
+  getByLabelText: (id: string) => HTMLElement
 }
 
 export function render(

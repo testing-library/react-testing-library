@@ -1,32 +1,20 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-
-// we may expose this eventually
-function select(id) {
-  return `[data-testid="${id}"]`
-}
-
-// we may expose this eventually
-function queryByTestId(div, id) {
-  return div.querySelector(select(id))
-}
-
-// we may expose this eventually
-function getByTestId(div, id) {
-  const el = queryByTestId(div, id)
-  if (!el) {
-    throw new Error(`Unable to find element by ${select(id)}`)
-  }
-  return el
-}
+import * as queries from './queries'
 
 function render(ui, {container = document.createElement('div')} = {}) {
   ReactDOM.render(ui, container)
+  const containerHelpers = Object.entries(queries).reduce(
+    (helpers, [key, fn]) => {
+      helpers[key] = fn.bind(null, container)
+      return helpers
+    },
+    {},
+  )
   return {
     container,
     unmount: () => ReactDOM.unmountComponentAtNode(container),
-    queryByTestId: queryByTestId.bind(null, container),
-    getByTestId: getByTestId.bind(null, container),
+    ...containerHelpers,
   }
 }
 

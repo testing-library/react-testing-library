@@ -18,11 +18,9 @@ class HiddenMessage extends React.Component {
   render() {
     return (
       <div>
-        <button data-testid="toggle-message" onClick={this.toggle}>
-          Toggle
-        </button>
+        <button onClick={this.toggle}>Toggle</button>
         <Fade in={this.state.show}>
-          <div data-testid="hidden-message">Hello world</div>
+          <div>Hello world</div>
         </Fade>
       </div>
     )
@@ -39,14 +37,12 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {getByTestId, queryByTestId} = render(
-    <HiddenMessage initialShow={true} />,
-  )
-  expect(queryByTestId('hidden-message')).toBeTruthy() // we just care it exists
+  const {getByText, queryByText} = render(<HiddenMessage initialShow={true} />)
+  expect(getByText('Hello World')).toBeTruthy() // we just care it exists
   // hide the message
-  Simulate.click(getByTestId('toggle-message'))
+  Simulate.click(getByText('Toggle'))
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly
-  expect(queryByTestId('hidden-message')).toBeFalsy() // we just care it doesn't exist
+  expect(queryByText('Hello World')).toBeNull() // we just care it doesn't exist
 })

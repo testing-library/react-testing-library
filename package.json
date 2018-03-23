@@ -29,6 +29,7 @@
     "@types/react-dom": "^16.0.4",
     "axios": "^0.18.0",
     "history": "^4.7.2",
+    "jest-in-case": "^1.0.2",
     "kcd-scripts": "^0.36.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

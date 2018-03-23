@@ -1,15 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`getByTestId finds matching element 1`] = `
-<span
-  data-testid="test-component"
-/>
-`;
+exports[`get throws a useful error message 1`] = `"Unable to find a label with the text of: LucyRicardo"`;
 
-exports[`getByTestId throws error when no matching element exists 1`] = `"Unable to find element by [data-testid=\\"unknown-data-testid\\"]"`;
+exports[`get throws a useful error message 2`] = `"Unable to find an element with the placeholder text of: LucyRicardo"`;
 
-exports[`queryByTestId finds matching element 1`] = `
-<span
-  data-testid="test-component"
-/>
-`;
+exports[`get throws a useful error message 3`] = `"Unable to find an element with the text: LucyRicardo. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."`;
+
+exports[`get throws a useful error message 4`] = `"Unable to find an element by: [data-testid=\\"LucyRicardo\\"]"`;
+
+exports[`label with no form control 1`] = `"Found a label with the text of: alone, however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly."`;
+
+exports[`totally empty label 1`] = `"Found a label with the text of: , however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly."`;

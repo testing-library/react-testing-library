@@ -48,7 +48,8 @@ components. It provides light utility functions on top of `react-dom` and
   * [`Simulate`](#simulate)
   * [`flushPromises`](#flushpromises)
   * [`render`](#render)
-* [More on `data-testid`s](#more-on-data-testids)
+* [`TextMatch`](#textmatch)
+* [`query` APIs](#query-apis)
 * [Examples](#examples)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
@@ -76,7 +77,7 @@ This library has a `peerDependencies` listing for `react-dom`.
 import React from 'react'
 import {render, Simulate, flushPromises} from 'react-testing-library'
 import axiosMock from 'axios'
-import Fetch from '../fetch'
+import Fetch from '../fetch' // see the tests for a full implementation
 
 test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
   // Arrange
@@ -86,10 +87,10 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {getByTestId, container} = render(<Fetch url={url} />)
+  const {getByText, getByTestId, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(getByTestId('load-greeting'))
+  Simulate.click(getByText('Load Greeting'))
 
   // let's wait for our mocked `get` request promise to resolve
   await flushPromises()
@@ -146,39 +147,115 @@ unmount()
 // your component has been unmounted and now: container.innerHTML === ''
 ```
 
+#### `getByLabelText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
+
+This will search for the label that matches the given [`TextMatch`](#textmatch),
+then find the element associated with that label.
+
+```javascript
+const inputNode = getByLabelText('Username')
+
+// this would find the input node for the following DOM structures:
+// The "for" attribute (NOTE: in JSX with React you'll write "htmlFor" rather than "for")
+// <label for="username-input">Username</label>
+// <input id="username-input" />
+//
+// The aria-labelledby attribute
+// <label id="username-label">Username</label>
+// <input aria-labelledby="username-label" />
+//
+// Wrapper labels
+// <label>Username <input /></label>
+//
+// It will NOT find the input node for this:
+// <label><span>Username</span> <input /></label>
+//
+// For this case, you can provide a `selector` in the options:
+const inputNode = getByLabelText('username-input', {selector: 'input'})
+// and that would work
+```
+
+> Note: This method will throw an error if it cannot find the node. If you don't
+> want this behavior (for example you wish to assert that it doesn't exist),
+> then use `queryByLabelText` instead.
+
+#### `getByPlaceholderText(text: TextMatch): HTMLElement`
+
+This will search for all elements with a placeholder attribute and find one
+that matches the given [`TextMatch`](#textmatch).
+
+```javascript
+// <input placeholder="Username" />
+const inputNode = getByPlaceholderText('Username')
+```
+
+> NOTE: a placeholder is not a good substitute for a label so you should
+> generally use `getByLabelText` instead.
+
+#### `getByText(text: TextMatch): HTMLElement`
+
+This will search for all elements that have a text node with `textContent`
+matching the given [`TextMatch`](#textmatch).
+
+```javascript
+// <a href="/about">About ℹ️</a>
+const aboutAnchorNode = getByText('about')
+```
+
 #### `getByTestId`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` except
-that it will throw an Error if no matching element is found. Read more about
-`data-testid`s below.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``.
 
 ```javascript
+// <input data-testid="username-input" />
 const usernameInputElement = getByTestId('username-input')
-usernameInputElement.value = 'new value'
-Simulate.change(usernameInputElement)
 ```
 
-#### `queryByTestId`
+> In the spirit of [the guiding principles](#guiding-principles), it is
+> recommended to use this only after `getByLabel`, `getByPlaceholderText` or
+> `getByText` don't work for your use case. Using data-testid attributes do
+> not resemble how your software is used and should be avoided if possible.
+> That said, they are _way_ better than querying based on DOM structure.
+> Learn more about `data-testid`s from the blog post
+> ["Making your UI tests resilient to change"][data-testid-blog-post]
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``
-(Note: just like `querySelector`, this could return null if no matching element
-is found, which may lead to harder-to-understand error messages). Read more about
-`data-testid`s below.
+## `TextMatch`
+
+Several APIs accept a `TextMatch` which can be a `string`, `regex` or a
+`function` which returns `true` for a match and `false` for a mismatch.
+
+Here's an example
 
 ```javascript
-// assert something doesn't exist
-// (you couldn't do this with `getByTestId`)
-expect(queryByTestId('username-input')).toBeNull()
+// <div>Hello World</div>
+// all of the following will find the div
+getByText('Hello World') // full match
+getByText('llo worl') // substring match
+getByText('hello world') // strings ignore case
+getByText(/Hello W?oRlD/i) // regex
+getByText((content, element) => content.startsWith('Hello')) // function
+
+// all of the following will NOT find the div
+getByText('Goodbye World') // non-string match
+getByText(/hello world/) // case-sensitive regex with different case
+// function looking for a span when it's actually a div
+getByText((content, element) => {
+  return element.tagName.toLowerCase() === 'span' && content.startsWith('Hello')
+})
 ```
 
-## More on `data-testid`s
+## `query` APIs
 
-The `getByTestId` and `queryByTestId` utilities refer to the practice of using `data-testid`
-attributes to identify individual elements in your rendered component. This is
-one of the practices this library is intended to encourage.
+Each of the `get` APIs listed in [the `render`](#render) section above have a
+complimentary `query` API. The `get` APIs will throw errors if a proper node
+cannot be found. This is normally the desired effect. However, if you want to
+make an assertion that an element is _not_ present in the DOM, then you can use
+the `query` API instead:
 
-Learn more about this practice in the blog post:
-["Making your UI tests resilient to change"](https://blog.kentcdodds.com/making-your-ui-tests-resilient-to-change-d37a6ee37269)
+```javascript
+const submitButton = queryByText('submit')
+expect(submitButton).toBeNull() // it doesn't exist
+```
 
 ## Examples
 
@@ -193,7 +270,61 @@ Feel free to contribute more!
 
 ## FAQ
 
-**How do I update the props of a rendered component?**
+<details>
+
+<summary>Which get method should I use?</summary>
+
+Based on [the Guiding Principles](#guiding-principles), your test should
+resemble how your code (component, page, etc.) as much as possible. With this
+in mind, we recommend this order of priority:
+
+1.  `getByLabelText`: Only really good for form fields, but this is the number 1
+    method a user finds those elements, so it should be your top preference.
+2.  `getByPlaceholderText`: [A placeholder is not a substitute for a label](https://www.nngroup.com/articles/form-design-placeholders/).
+    But if that's all you have, then it's better than alternatives.
+3.  `getByText`: Not useful for forms, but this is the number 1 method a user
+    finds other elements (like buttons to click), so it should be your top
+    preference for non-form elements.
+4.  `getByTestId`: The user cannot see (or hear) these, so this is only
+    recommended for cases where you can't match by text or it doesn't make sense
+    (the text is dynamic).
+
+Other than that, you can also use the `container` to query the rendered
+component as well (using the regular
+[`querySelector` API](https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector)).
+
+</details>
+
+<details>
+
+<summary>Can I write unit tests with this library?</summary>
+
+Definitely yes! You can write unit and integration tests with this library.
+See below for more on how to mock dependencies (because this library
+intentionally does NOT support shallow rendering) if you want to unit test a
+high level component. The tests in this project show several examples of
+unit testing with this library.
+
+As you write your tests, keep in mind:
+
+> The more your tests resemble the way your software is used, the more confidence they can give you. - [17 Feb 2018][guiding-principle]
+
+</details>
+
+<details>
+
+<summary>What if my app is localized and I don't have access to the text in test?</summary>
+
+This is fairly common. Our first bit of advice is to try to get the default
+text used in your tests. That will make everything much easier (more than just
+using this utility). If that's not possible, then you're probably best
+to just stick with `data-testid`s (which is not bad anyway).
+
+</details>
+
+<details>
+
+<summary>How do I update the props of a rendered component?</summary>
 
 It'd probably be better if you test the component that's doing the prop updating
 to ensure that the props are being updated correctly (see
@@ -215,7 +346,11 @@ expect(getByTestId('number-display').textContent).toBe('2')
 [Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/number-display.js)
 for a full example of this.
 
-**If I can't use shallow rendering, how do I mock out components in tests?**
+</details>
+
+<details>
+
+<summary>If I can't use shallow rendering, how do I mock out components in tests?</summary>
 
 In general, you should avoid mocking out components (see
 [the Guiding Principles section](#guiding-principles)). However if you need to,
@@ -265,7 +400,11 @@ something more
 Learn more about how Jest mocks work from my blog post:
 ["But really, what is a JavaScript mock?"](https://blog.kentcdodds.com/but-really-what-is-a-javascript-mock-10d060966f7d)
 
-**What if I want to verify that an element does NOT exist?**
+</details>
+
+<details>
+
+<summary>What if I want to verify that an element does NOT exist?</summary>
 
 You typically will get access to rendered elements using the `getByTestId` utility. However, that function will throw an error if the element isn't found. If you want to specifically test for the absence of an element, then you should use the `queryByTestId` utility which will return the element if found or `null` if not.
 
@@ -273,7 +412,11 @@ You typically will get access to rendered elements using the `getByTestId` utili
 expect(queryByTestId('thing-that-does-not-exist')).toBeNull()
 ```
 
-**I don't want to use `data-testid` attributes for everything. Do I have to?**
+</details>
+
+<details>
+
+<summary>I really don't like data-testids, but none of the other queries make sense. Do I have to use a data-testid?</summary>
 
 Definitely not. That said, a common reason people don't like the `data-testid`
 attribute is they're concerned about shipping that to production. I'd suggest
@@ -298,7 +441,11 @@ const allLisInDiv = container.querySelectorAll('div li')
 const rootElement = container.firstChild
 ```
 
-**What if I’m iterating over a list of items that I want to put the data-testid="item" attribute on. How do I distinguish them from each other?**
+</details>
+
+<details>
+
+<summary>What if I’m iterating over a list of items that I want to put the data-testid="item" attribute on. How do I distinguish them from each other?</summary>
 
 You can make your selector just choose the one you want by including :nth-child in the selector.
 
@@ -322,8 +469,12 @@ const {getByTestId} = render(/* your component with the items */)
 const thirdItem = getByTestId(`item-${items[2].id}`)
 ```
 
-**What about enzyme is "bloated with complexity and features" and "encourage poor testing
-practices"?**
+</details>
+
+<details>
+
+<summary>What about enzyme is "bloated with complexity and features" and "encourage
+poor testing practices"?</summary>
 
 Most of the damaging features have to do with encouraging testing implementation
 details. Primarily, these are
@@ -334,7 +485,7 @@ state/properties) (most of enzyme's wrapper APIs allow this).
 
 The guiding principle for this library is:
 
-> The less your tests resemble the way your software is used, the less confidence they can give you. - [17 Feb 2018](https://twitter.com/kentcdodds/status/965052178267176960)
+> The more your tests resemble the way your software is used, the more confidence they can give you. - [17 Feb 2018][guiding-principle]
 
 Because users can't directly interact with your app's component instances,
 assert on their internal state or what components they render, or call their
@@ -345,7 +496,11 @@ That's not to say that there's never a use case for doing those things, so they
 should be possible to accomplish, just not the default and natural way to test
 react components.
 
-**How does `flushPromises` work and why would I need it?**
+</details>
+
+<details>
+
+<summary>How does flushPromises work and why would I need it?</summary>
 
 As mentioned [before](#flushpromises), `flushPromises` uses
 [`setImmediate`][set-immediate] to schedule resolving a promise after any pending
@@ -366,6 +521,8 @@ that this is only effective if you've mocked out your async requests to resolve
 immediately (like the `axios` mock we have in the examples). It will not `await`
 for promises that are not already resolved by the time you attempt to flush them.
 
+</details>
+
 ## Other Solutions
 
 In preparing this project,
@@ -378,7 +535,7 @@ this one instead.
 
 ## Guiding Principles
 
-> [The less your tests resemble the way your software is used, the less confidence they can give you.](https://twitter.com/kentcdodds/status/965052178267176960)
+> [The more your tests resemble the way your software is used, the more confidence they can give you.][guiding-principle]
 
 We try to only expose methods and utilities that encourage you to write tests
 that closely resemble how your react components are used.
@@ -443,3 +600,5 @@ MIT
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 [set-immediate]: https://developer.mozilla.org/en-US/docs/Web/API/Window/setImmediate
+[guiding-principle]: https://twitter.com/kentcdodds/status/977018512689455106
+[data-testid-blog-post]: https://blog.kentcdodds.com/making-your-ui-tests-resilient-to-change-d37a6ee37269
