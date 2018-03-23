@@ -18,11 +18,9 @@ class HiddenMessage extends React.Component {
   render() {
     return (
       <div>
-        <button data-testid="toggle-message" onClick={this.toggle}>
-          Toggle
-        </button>
+        <button onClick={this.toggle}>Toggle</button>
         <Fade in={this.state.show}>
-          <div data-testid="hidden-message">Hello world</div>
+          <div>Hello world</div>
         </Fade>
       </div>
     )
@@ -35,7 +33,7 @@ jest.mock('react-transition-group', () => {
 })
 
 test('you can mock things with jest.mock', () => {
-  const {getByTestId} = render(<HiddenMessage initialShow={true} />)
+  const {getByText} = render(<HiddenMessage initialShow={true} />)
   const context = expect.any(Object)
   const children = expect.any(Object)
   const defaultProps = {children, timeout: 1000, className: 'fade'}
@@ -43,7 +41,7 @@ test('you can mock things with jest.mock', () => {
     {in: true, ...defaultProps},
     context,
   )
-  Simulate.click(getByTestId('toggle-message'))
+  Simulate.click(getByText('toggle'))
   expect(CSSTransition).toHaveBeenCalledWith(
     {in: true, ...defaultProps},
     expect.any(Object),

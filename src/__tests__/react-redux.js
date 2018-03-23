@@ -18,13 +18,9 @@ class Counter extends React.Component {
       <div>
         <h2>Counter</h2>
         <div>
-          <button onClick={this.decrement} data-testid="decrementer">
-            -
-          </button>
+          <button onClick={this.decrement}>-</button>
           <span data-testid="count-value">{this.props.count}</span>
-          <button onClick={this.increment} data-testid="incrementer">
-            +
-          </button>
+          <button onClick={this.increment}>+</button>
         </div>
       </div>
     )
@@ -82,27 +78,27 @@ function renderWithRedux(
 }
 
 test('can render with redux with defaults', () => {
-  const {getByTestId} = renderWithRedux(<ConnectedCounter />)
-  Simulate.click(getByTestId('incrementer'))
+  const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />)
+  Simulate.click(getByText('+'))
   expect(getByTestId('count-value').textContent).toBe('1')
 })
 
 test('can render with redux with custom initial state', () => {
-  const {getByTestId} = renderWithRedux(<ConnectedCounter />, {
+  const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />, {
     initialState: {count: 3},
   })
-  Simulate.click(getByTestId('decrementer'))
+  Simulate.click(getByText('-'))
   expect(getByTestId('count-value').textContent).toBe('2')
 })
 
 test('can render with redux with custom store', () => {
   // this is a silly store that can never be changed
   const store = createStore(() => ({count: 1000}))
-  const {getByTestId} = renderWithRedux(<ConnectedCounter />, {
+  const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />, {
     store,
   })
-  Simulate.click(getByTestId('incrementer'))
+  Simulate.click(getByText('+'))
   expect(getByTestId('count-value').textContent).toBe('1000')
-  Simulate.click(getByTestId('decrementer'))
+  Simulate.click(getByText('-'))
   expect(getByTestId('count-value').textContent).toBe('1000')
 })

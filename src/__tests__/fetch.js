@@ -20,10 +20,8 @@ class Fetch extends React.Component {
     const {data} = this.state
     return (
       <div>
-        <button onClick={this.fetch} data-testid="load-greeting">
-          Fetch
-        </button>
-        {data ? <span data-testid="greeting-text">{data.greeting}</span> : null}
+        <button onClick={this.fetch}>Fetch</button>
+        {data ? <span>{data.greeting}</span> : null}
       </div>
     )
   }
@@ -37,16 +35,18 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {getByTestId, container} = render(<Fetch url={url} />)
+  const {getByText, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(getByTestId('load-greeting'))
+  Simulate.click(getByText('Fetch'))
 
   await flushPromises()
 
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(getByTestId('greeting-text').textContent).toBe('hello there')
+  // this assertion is funny because if the textContent were not "hello there"
+  // then the `getByText` would throw anyway... 🤔
+  expect(getByText('hello there').textContent).toBe('hello there')
   expect(container.firstChild).toMatchSnapshot()
 })
