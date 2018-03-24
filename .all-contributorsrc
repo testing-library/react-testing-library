@@ -76,6 +76,16 @@
       "contributions": [
         "platform"
       ]
+    },
+    {
+      "login": "bahdcoder",
+      "name": "Kati Frantz",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/19477966?v=4",
+      "profile": "https://github.com/bahdcoder",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ]
 }

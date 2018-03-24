@@ -56,6 +56,10 @@ function queryByTestId(container, id) {
   return container.querySelector(getDataTestIdSelector(id))
 }
 
+function queryAllByTestId(container, id) {
+  return container.querySelectorAll(getDataTestIdSelector(id))
+}
+
 function getDataTestIdSelector(id) {
   return `[data-testid="${id}"]`
 }
@@ -92,6 +96,18 @@ function getByTestId(container, id, ...rest) {
     )
   }
   return el
+}
+
+function getAllByTestId(container, id, ...rest) {
+  const elements = queryAllByTestId(container, id, ...rest)
+
+  if (elements.length === 0) {
+    throw new Error(
+      `Unable to find any elements by: ${getDataTestIdSelector(id)}`,
+    )
+  }
+
+  return elements
 }
 
 function getByPlaceholderText(container, text, ...rest) {
@@ -138,6 +154,8 @@ export {
   getByLabelText,
   queryByTestId,
   getByTestId,
+  queryAllByTestId,
+  getAllByTestId,
 }
 
 /* eslint complexity:["error", 14] */

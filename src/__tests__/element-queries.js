@@ -14,6 +14,33 @@ test('query can return null', () => {
   expect(queryByText('LucyRicardo')).toBeNull()
 })
 
+test('queryAllByTestId returns an empty node list', () => {
+  const {queryAllByTestId} = render(<div />)
+  const results = queryAllByTestId('LucyRicardo')
+  expect(results).toBeInstanceOf(NodeList)
+  expect(results.length).toBe(0)
+})
+
+test('getAllByTestId throws a useful error message if no matching elements are found', () => {
+  const {getAllByTestId} = render(<div />)
+  expect(() => getAllByTestId('LucyRicardo')).toThrowErrorMatchingSnapshot()
+})
+
+test('getAllByTestId returns a node list of elements if they are found', () => {
+  const {getAllByTestId} = render(
+    <div>
+      <ul>
+        <li data-testid="LucyRicardo" />
+        <li data-testid="LucyRicardo" />
+      </ul>
+    </div>,
+  )
+
+  const results = getAllByTestId('LucyRicardo')
+  expect(results).toBeInstanceOf(NodeList)
+  expect(results.length).toBe(2)
+})
+
 test('get throws a useful error message', () => {
   const {getByLabelText, getByPlaceholderText, getByText, getByTestId} = render(
     <div />,
