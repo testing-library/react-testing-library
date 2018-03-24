@@ -1,7 +1,7 @@
 import React from 'react'
 import axiosMock from 'axios'
 import {render, Simulate, flushPromises} from '../'
-import '../../extend-expect' //eslint-disable-line import/no-unassigned-import
+import '../../extend-expect'
 
 // instead of importing it, we'll define it inline here
 // import Fetch from '../fetch'
@@ -46,7 +46,13 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   await flushPromises()
 
   // Assert
-  expect(queryByTestId('foo')).not.toBeInTheDOM()
+  expect(axiosMock.get).toHaveBeenCalledTimes(1)
+  expect(axiosMock.get).toHaveBeenCalledWith(url)
+  expect(getByTestId('greeting-text').textContent).toBe('hello there')
+  expect(container.firstChild).toMatchSnapshot()
+
+  //other ways to assert your test cases, but you don't need all of them.
+  expect(queryByTestId('greeting-text')).toBeInTheDOM()
   expect(queryByTestId('greeting-text')).toBeInTheDOM()
   expect(queryByTestId('greeting-text')).toHaveTextContent('hello there')
   expect(getByTestId('greeting-text')).toSatisfyDOM(
@@ -55,8 +61,4 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   expect(queryByTestId('greeting-text')).not.toHaveTextContent(
     'you are not there',
   )
-  expect(axiosMock.get).toHaveBeenCalledTimes(1)
-  expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(getByTestId('greeting-text').textContent).toBe('hello there')
-  expect(container.firstChild).toMatchSnapshot()
 })
