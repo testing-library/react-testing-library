@@ -2,8 +2,17 @@ import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
 import * as queries from './queries'
 
-function render(ui, {container = document.createElement('div')} = {}) {
-  ReactDOM.render(ui, container)
+function render(
+  ui,
+  {container = document.createElement('div'), throwRenderError = true} = {},
+) {
+  try {
+    ReactDOM.render(ui, container)
+  } catch (error) {
+    if (throwRenderError) {
+      throw new Error(error)
+    }
+  }
   const containerHelpers = Object.entries(queries).reduce(
     (helpers, [key, fn]) => {
       helpers[key] = fn.bind(null, container)
