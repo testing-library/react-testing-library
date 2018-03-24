@@ -1,7 +1,5 @@
 import React from 'react'
-/* eslint-disable */
 import cases from 'jest-in-case'
-/* eslint-disable */
 import {render} from '../'
 
 cases(
