@@ -15,12 +15,8 @@ const LocationDisplay = withRouter(({location}) => (
 function App() {
   return (
     <div>
-      <Link to="/" data-testid="home-link">
-        Home
-      </Link>
-      <Link to="/about" data-testid="about-link">
-        About
-      </Link>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
@@ -49,11 +45,11 @@ function renderWithRouter(
 }
 
 test('full app rendering/navigating', () => {
-  const {container, getByTestId} = renderWithRouter(<App />)
+  const {container, getByText} = renderWithRouter(<App />)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are home')
   const leftClick = {button: 0}
-  Simulate.click(getByTestId('about-link'), leftClick)
+  Simulate.click(getByText('about'), leftClick)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are on the about page')
 })

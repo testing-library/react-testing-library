@@ -1,26 +1,84 @@
 import React from 'react'
 import {render} from '../'
+import '../../extend-expect'
 
-const TestComponent = () => <span data-testid="test-component" />
-
-test('queryByTestId finds matching element', () => {
-  const {queryByTestId} = render(<TestComponent />)
-  expect(queryByTestId('test-component')).toMatchSnapshot()
+test('query can return null', () => {
+  const {
+    queryByLabelText,
+    queryByPlaceholderText,
+    queryByText,
+    queryByTestId,
+  } = render(<div />)
+  expect(queryByTestId('LucyRicardo')).toBeNull()
+  expect(queryByLabelText('LucyRicardo')).toBeNull()
+  expect(queryByPlaceholderText('LucyRicardo')).toBeNull()
+  expect(queryByText('LucyRicardo')).toBeNull()
 })
 
-test('queryByTestId returns null when no matching element exists', () => {
-  const {queryByTestId} = render(<TestComponent />)
-  expect(queryByTestId('unknown-data-testid')).toBeNull()
-})
-
-test('getByTestId finds matching element', () => {
-  const {getByTestId} = render(<TestComponent />)
-  expect(getByTestId('test-component')).toMatchSnapshot()
-})
-
-test('getByTestId throws error when no matching element exists', () => {
-  const {getByTestId} = render(<TestComponent />)
+test('get throws a useful error message', () => {
+  const {getByLabelText, getByPlaceholderText, getByText, getByTestId} = render(
+    <div />,
+  )
+  expect(() => getByLabelText('LucyRicardo')).toThrowErrorMatchingSnapshot()
   expect(() =>
-    getByTestId('unknown-data-testid'),
+    getByPlaceholderText('LucyRicardo'),
   ).toThrowErrorMatchingSnapshot()
+  expect(() => getByText('LucyRicardo')).toThrowErrorMatchingSnapshot()
+  expect(() => getByTestId('LucyRicardo')).toThrowErrorMatchingSnapshot()
 })
+
+test('get can get form controls by label text', () => {
+  const {getByLabelText} = render(
+    <div>
+      <label>
+        1st<input id="first-id" />
+      </label>
+      <div>
+        <label htmlFor="second-id">2nd</label>
+        <input id="second-id" />
+      </div>
+      <div>
+        <label id="third-label">3rd</label>
+        <input aria-labelledby="third-label" id="third-id" />
+      </div>
+    </div>,
+  )
+  expect(getByLabelText('1st').id).toBe('first-id')
+  expect(getByLabelText('2nd').id).toBe('second-id')
+  expect(getByLabelText('3rd').id).toBe('third-id')
+})
+
+test('get can get form controls by placeholder', () => {
+  const {getByPlaceholderText} = render(
+    <input id="username-id" placeholder="username" />,
+  )
+  expect(getByPlaceholderText('username').id).toBe('username-id')
+})
+
+test('label with no form control', () => {
+  const {getByLabelText, queryByLabelText} = render(<label>All alone</label>)
+  expect(queryByLabelText('alone')).toBeNull()
+  expect(() => getByLabelText('alone')).toThrowErrorMatchingSnapshot()
+})
+
+test('totally empty label', () => {
+  const {getByLabelText, queryByLabelText} = render(<label />)
+  expect(queryByLabelText('')).toBeNull()
+  expect(() => getByLabelText('')).toThrowErrorMatchingSnapshot()
+})
+
+test('using jest helpers to assert element states', () => {
+  const {queryByTestId, getByTestId} = render(
+    <span data-testid="count-value">2</span>,
+  )
+
+  //other ways to assert your test cases, but you don't need all of them.
+  expect(queryByTestId('count-value')).toBeInTheDOM()
+  expect(queryByTestId('count-value')).toHaveTextContent('2')
+  expect(getByTestId('count-value')).toSatisfyDOM(el => el.textContent === '2')
+  expect(queryByTestId('count-value')).not.toHaveTextContent(
+    'you are not there',
+  )
+})
+
+/* eslint jsx-a11y/label-has-for:0 */

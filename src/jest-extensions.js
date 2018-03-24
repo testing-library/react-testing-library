@@ -81,7 +81,7 @@ const extensions = {
           '.not.toSatisfyDOM()',
           'Expected predicate not equals to true',
           actual,
-          '',
+          predicate,
         ),
         pass: true,
       }
@@ -91,7 +91,7 @@ const extensions = {
           '.not.toSatisfyDOM()',
           'Expected predicate equals to true',
           actual,
-          '',
+          predicate,
         ),
         pass: false,
       }
