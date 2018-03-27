@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '../'
-import '../../extend-expect'
+import '../extend-expect'
 
 test('query can return null', () => {
   const {
@@ -68,17 +68,11 @@ test('totally empty label', () => {
 })
 
 test('using jest helpers to assert element states', () => {
-  const {queryByTestId, getByTestId} = render(
-    <span data-testid="count-value">2</span>,
-  )
+  const {queryByTestId} = render(<span data-testid="count-value">2</span>)
 
-  //other ways to assert your test cases, but you don't need all of them.
+  // other ways to assert your test cases, but you don't need all of them.
   expect(queryByTestId('count-value')).toBeInTheDOM()
   expect(queryByTestId('count-value')).toHaveTextContent('2')
-  expect(getByTestId('count-value')).toSatisfyDOM(el => el.textContent === '2')
-  expect(queryByTestId('count-value')).not.toHaveTextContent(
-    'you are not there',
-  )
 })
 
 /* eslint jsx-a11y/label-has-for:0 */

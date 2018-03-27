@@ -1,4 +1,5 @@
 import {matcherHint, printReceived, printExpected} from 'jest-matcher-utils' //eslint-disable-line import/no-extraneous-dependencies
+import matches from './utils'
 
 function getDisplayName(subject) {
   if (subject && subject.constructor) {
@@ -49,7 +50,7 @@ const extensions = {
       )
 
     const textContent = htmlElement.textContent
-    const pass = textContent === checkWith
+    const pass = matches(textContent, htmlElement, checkWith)
     if (pass) {
       return {
         message: assertMessage(
@@ -67,31 +68,6 @@ const extensions = {
           'Expected value equals to',
           htmlElement,
           checkWith,
-        ),
-        pass: false,
-      }
-    }
-  },
-
-  toSatisfyDOM(actual, predicate) {
-    const pass = predicate(actual)
-    if (pass) {
-      return {
-        message: assertMessage(
-          '.not.toSatisfyDOM()',
-          'Expected predicate not equals to true',
-          actual,
-          predicate,
-        ),
-        pass: true,
-      }
-    } else {
-      return {
-        message: assertMessage(
-          '.not.toSatisfyDOM()',
-          'Expected predicate equals to true',
-          actual,
-          predicate,
         ),
         pass: false,
       }
