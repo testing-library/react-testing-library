@@ -71,16 +71,6 @@ function getText(node) {
     .join(' ')
 }
 
-// function matches(textToMatch, node, matcher) {
-//   if (typeof matcher === 'string') {
-//     return textToMatch.toLowerCase().includes(matcher.toLowerCase())
-//   } else if (typeof matcher === 'function') {
-//     return matcher(textToMatch, node)
-//   } else {
-//     return matcher.test(textToMatch)
-//   }
-// }
-
 // getters
 // the reason we're not dynamically generating these functions that look so similar:
 // 1. The error messages are specific to each one and depend on arguments
