@@ -1,4 +1,4 @@
-import matches from './utils'
+import {matches} from './utils'
 
 // Here are the queries for the library.
 // The queries here should only be things that are accessible to both users who are using a screen reader

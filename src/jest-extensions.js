@@ -1,5 +1,5 @@
 import {matcherHint, printReceived, printExpected} from 'jest-matcher-utils' //eslint-disable-line import/no-extraneous-dependencies
-import matches from './utils'
+import {matches} from './utils'
 
 function getDisplayName(subject) {
   if (subject && subject.constructor) {
@@ -9,7 +9,7 @@ function getDisplayName(subject) {
   }
 }
 
-const assertMessage = (assertionName, message, received, expected) => () =>
+const assertMessage = (assertionName, message, received, expected) =>
   `${matcherHint(`${assertionName}`, 'received', '')} \n${message}: ` +
   `${printExpected(expected)} \nReceived: ${printReceived(received)}`
 
@@ -18,7 +18,7 @@ const extensions = {
     getDisplayName(received)
     if (received) {
       return {
-        message: () =>
+        message:
           `${matcherHint(
             '.not.toBeInTheDOM',
             'received',
@@ -29,7 +29,7 @@ const extensions = {
       }
     } else {
       return {
-        message: () =>
+        message:
           `${matcherHint(
             '.toBeInTheDOM',
             'received',

@@ -1,4 +1,5 @@
-export default function matches(textToMatch, node, matcher) {
+//eslint-disable-next-line import/prefer-default-export
+export function matches(textToMatch, node, matcher) {
   if (typeof matcher === 'string') {
     return textToMatch.toLowerCase().includes(matcher.toLowerCase())
   } else if (typeof matcher === 'function') {
