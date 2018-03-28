@@ -224,31 +224,39 @@ const usernameInputElement = getByTestId('username-input')
 
 There are two simple API which extend the `expect` API of jest for making assertions easier.
 
-#### `toBeInTheDOM`
+### `toBeInTheDOM`
 
 This allows you to assert whether an element present in the DOM or not.
 
 ```javascript
-import 'react-testing-library/extend-expect' // adds few API to jest's extend
+// add the custom expect matchers
+import 'react-testing-library/extend-expect'
 
-render(<span data-testid="count-value">2</span>)
+// ...
+const {queryByTestId} = render(<span data-testid="count-value">2</span>)
 expect(queryByTestId('count-value')).toBeInTheDOM()
 expect(queryByTestId('count-value1')).not.toBeInTheDOM()
+// ...
 ```
 
-#### `toHaveTextContent`
+> Note: when using `toBeInTheDOM`, make sure you use a query function
+> (like `queryByTestId`) rather than a get function (like `getByTestId`).
+> Otherwise the `get*` function could throw an error before your assertion.
+
+### `toHaveTextContent`
 
 This API allows you to check whether the given element has a text content or not.
 
 ```javascript
-import 'react-testing-library/extend-expect' // adds few API to jest's extend
+// add the custom expect matchers
+import 'react-testing-library/extend-expect'
 
-render(<span data-testid="count-value">2</span>)
+// ...
+const {getByTestId} = render(<span data-testid="count-value">2</span>)
 expect(getByTestId('count-value')).toHaveTextContent('2')
 expect(getByTestId('count-value')).not.toHaveTextContent('21')
+// ...
 ```
-
-Note: for the above assertions, make sure you use a query function (like `queryByTestId`) rather than a get function (like `getByTestId`). Otherwise the `get*` function could throw an error.
 
 ## `TextMatch`
 
