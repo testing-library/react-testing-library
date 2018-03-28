@@ -26,16 +26,47 @@
 
 ## The problem
 
-You want to write maintainable tests for your React components. However, the
-de facto standard for testing ([enzyme](https://github.com/airbnb/enzyme)) is
-bloated with complexity and features, most of which encourage poor testing
-practices (mostly relating to testing implementation details).
+You want to write maintainable tests for your React components. As a part of
+this goal, you want your tests to avoid including implementation details of
+your components and rather focus on making your tests give you the confidence
+for which they are intended. As part of this, you want your testbase to be
+maintainable in the long run so refactors of you components (changes to
+implementation but not functionality) don't break your tests and slow you and
+your team down.
 
 ## This solution
 
 The `react-testing-library` is a very light-weight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
 `react-dom/test-utils`, in a way that encourages better testing practices.
+It's primary guiding principle is:
+
+> [The more your tests resemble the way your software is used, the more confidence they can give you.][guiding-principle]
+
+So rather than dealing with instances of rendered react components, your tests
+will work with actual DOM nodes. The utilities this library provides facilitate
+querying the DOM in the same way the user would. Finding for elements by their
+label text (just like a user would), finding links and buttons from their text
+(like a user would). It also exposes a recommended way to find elements by a
+`data-testid` as an "escape hatch" for elements where the text content and label
+do not make sense or is not practical.
+
+This library encourages your applications to be more accessible and allows you
+to get your tests closer to using your components the way a user will, which
+allows your tests to give you more confidence that your application will work
+when a real user uses it.
+
+This library is a replacement for [enzyme](http://airbnb.io/enzyme/). While you
+_can_ follow these guidlines using enzyme itself, enforcing this is harder
+because of all the extra utilities that enzyme provides (utilities which
+facilitate testing implementation details). Read more about this in
+[the FAQ](#faq) below.
+
+**What this library is not**:
+
+1.  A test runner or framework
+2.  Specific to a testing framework (though we recommend Jest as our
+    preference, the library works with any framework)
 
 ## Table of Contents
 
