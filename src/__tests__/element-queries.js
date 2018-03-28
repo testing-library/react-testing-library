@@ -78,8 +78,6 @@ test('using jest helpers to assert element states', () => {
   expect(() =>
     expect(queryByTestId('count-value2')).toHaveTextContent('2'),
   ).toThrowError()
-  // expect(() => queryByTestId('count-value1'))
-  // expect(queryByTestId('count-value1')).not.toHaveTextContent('21')
 })
 
 /* eslint jsx-a11y/label-has-for:0 */
