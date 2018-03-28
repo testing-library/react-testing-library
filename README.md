@@ -248,8 +248,7 @@ expect(getByTestId('count-value')).toHaveTextContent('2')
 expect(getByTestId('count-value')).not.toHaveTextContent('21')
 ```
 
-Note: for the above assertions, make sure you use a query function (like `queryByTestId`) rather than a get function (like `getByTestId`).
-Otherwise the `get*` function could throw an error.
+Note: for the above assertions, make sure you use a query function (like `queryByTestId`) rather than a get function (like `getByTestId`). Otherwise the `get*` function could throw an error.
 
 ## `TextMatch`
 
