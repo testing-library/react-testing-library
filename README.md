@@ -165,6 +165,7 @@ waitForExpect(expectation: () => void, timeout?: number, interval?: number) => P
 When in need to wait for non-deterministic periods of time you can use waitForExpect,
 to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExpect) part of the FAQ,
 or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
+or just take a look at this simple example:
 
 ```javascript
 ...
@@ -175,7 +176,7 @@ getByLabelText('username').value = 'chucknorris'
 
 Another advantage of waitForExpect in comparison to flushPromises, is that
 flushPromises will not flush promises that have not been queued up already,
-for example, if they will queue up as a consequence of the initial promises.
+for example, if they will queue up as a result of the initial promises.
 In consequence of that, you might have to call flushPromises multiple times to get your components
 to your desired state.
 
