@@ -78,11 +78,11 @@ facilitate testing implementation details). Read more about this in
 * [Usage](#usage)
   * [`Simulate`](#simulate)
   * [`flushPromises`](#flushpromises)
+  * [`waitForExpect`](#waitforexpect)
   * [`render`](#render)
 * [Custom Jest Matchers](#custom-jest-matchers)
   * [`toBeInTheDOM`](#tobeinthedom)
   * [`toHaveTextContent`](#tohavetextcontent)
-* [Other](#other)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -153,6 +153,32 @@ you make your test function an `async` function and use
 `await flushPromises()`.
 
 See an example in the section about `render` below.
+
+### `waitForExpect`
+
+Defined as: ```javascript
+waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;
+
+````
+When in need to wait for non-deterministic periods of time you can use waitForExpect,
+to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExpect) part of the FAQ,
+or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
+
+```javascript
+...
+await waitForExpect(() => expect(queryByLabelText('username')).not.toBeNull())
+getByLabelText('username').value = 'chucknorris'
+...
+````
+
+Another advantage of waitForExpect in comparison to flushPromises, is that
+flushPromises will not flush promises that have not been queued up already,
+for example, if they will queue up as a consequence of the initial promises.
+In consequence of that, you might have to call flushPromises multiple times to get your components
+to your desired state.
+
+This can happen for example, when you integration test your apollo-connected react components
+that go a couple level deep, with queries fired up in consequent components.
 
 ### `render`
 
@@ -291,14 +317,6 @@ expect(getByTestId('count-value')).toHaveTextContent('2')
 expect(getByTestId('count-value')).not.toHaveTextContent('21')
 // ...
 ```
-
-## Other
-
-#### `waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;`
-
-When in need to wait for non-deterministic periods of time you can use waitForExpect,
-to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExcept) part of the FAQ,
-or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
 
 ## `TextMatch`
 
@@ -602,11 +620,14 @@ that this is only effective if you've mocked out your async requests to resolve
 immediately (like the `axios` mock we have in the examples). It will not `await`
 for promises that are not already resolved by the time you attempt to flush them.
 
+In case this doesn't work for you the way you would expect, take a look at the
+waitForExpect function that should be much more intuitive to use.
+
 </details>
 
 <details>
 
-<summary><a name="waitForExcept"></a>Is there a different way to wait for things to happen? For example for end to end or contract tests?</summary>
+<summary><a name="waitForExpectFAQ"></a>Is there a different way to wait for things to happen? For example for end to end or contract tests?</summary>
 Definitely! There is an abstraction called `waitForExpect` that will keep
 calling your expectations until a timeout or the expectation passes - whatever happens first.
 
@@ -622,10 +643,8 @@ test('it waits for the data to be loaded', async () => {
 
   // This will pass when the state of the component changes once the data is available
   // the loader will disappear, and the data will be shown
-  await waitForExpect(() => {
-    expect(queryByText('Loading...')).toBeNull()
-    expect(queryByTestId('message').textContent).toMatch(/Hello World/)
-  })
+  await waitForExpect(() => expect(queryByText('Loading...')).toBeNull())
+  expect(queryByTestId('message').textContent).toMatch(/Hello World/)
 })
 ```
 
