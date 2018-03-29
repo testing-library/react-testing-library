@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitForExpect} from '../'
+import {render, wait} from '../'
 
 const fetchAMessage = () =>
   new Promise(resolve => {
@@ -35,6 +35,6 @@ test('it waits for the data to be loaded', async () => {
 
   expect(queryByText('Loading...')).toBeTruthy()
 
-  await waitForExpect(() => expect(queryByText('Loading...')).toBeNull())
+  await wait(() => expect(queryByText('Loading...')).toBeNull())
   expect(queryByTestId('message').textContent).toMatch(/Hello World/)
 })

@@ -24,3 +24,11 @@ export function flushPromises(): Promise<void>
 export const Simulate: typeof ReactSimulate
 
 export function waitForExpect(): typeof waitForExpect
+
+export default function wait(
+  callback?: () => void,
+  options?: {
+    timeout?: number
+    interval?: number
+  },
+): Promise<void>

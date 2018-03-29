@@ -76,10 +76,9 @@ facilitate testing implementation details). Read more about this in
 
 * [Installation](#installation)
 * [Usage](#usage)
-  * [`Simulate`](#simulate)
-  * [`flushPromises`](#flushpromises)
-  * [`waitForExpect`](#waitforexpect)
   * [`render`](#render)
+  * [`Simulate`](#simulate)
+  * [`wait`](#wait)
 * [Custom Jest Matchers](#custom-jest-matchers)
   * [`toBeInTheDOM`](#tobeinthedom)
   * [`toHaveTextContent`](#tohavetextcontent)
@@ -87,6 +86,8 @@ facilitate testing implementation details). Read more about this in
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
 * [FAQ](#faq)
+* [Deprecated APIs](#deprecated-apis)
+  * [`flushPromises`](#flushpromises)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
 * [Contributors](#contributors)
@@ -110,8 +111,9 @@ This library has a `peerDependencies` listing for `react-dom`.
 ```javascript
 // __tests__/fetch.js
 import React from 'react'
-import {render, Simulate, flushPromises} from 'react-testing-library'
-import axiosMock from 'axios'
+import {render, Simulate, wait} from 'react-testing-library'
+import 'react-testing-library/extend-expect' // this adds custom expect matchers
+import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
 
 test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
@@ -128,60 +130,17 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   Simulate.click(getByText('Load Greeting'))
 
   // let's wait for our mocked `get` request promise to resolve
-  await flushPromises()
+  // wait will wait until the callback doesn't throw an error
+  await wait(() => getByTestId('greeting-text'))
 
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
   expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(getByTestId('greeting-text').textContent).toBe('hello there')
+  expect(getByTestId('greeting-text')).toHaveTextContent('hello there')
+  // snapshots work great with regular DOM nodes!
   expect(container.firstChild).toMatchSnapshot()
 })
 ```
-
-### `Simulate`
-
-This is simply a re-export from the `Simulate` utility from
-`react-dom/test-utils`. See [the docs](https://reactjs.org/docs/test-utils.html#simulate).
-
-### `flushPromises`
-
-This is a simple utility that's useful for when your component is doing some
-async work that you've mocked out, but you still need to wait until the next
-tick of the event loop before you can continue your assertions. It simply
-returns a promise that resolves in a `setImmediate`. Especially useful when
-you make your test function an `async` function and use
-`await flushPromises()`.
-
-See an example in the section about `render` below.
-
-### `waitForExpect`
-
-Defined as:
-
-```javascript
-waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;
-```
-
-When in need to wait for non-deterministic periods of time you can use waitForExpect,
-to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExpect) part of the FAQ,
-or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
-or just take a look at this simple example:
-
-```javascript
-...
-await waitForExpect(() => expect(queryByLabelText('username')).not.toBeNull())
-getByLabelText('username').value = 'chucknorris'
-...
-```
-
-Another advantage of waitForExpect in comparison to flushPromises, is that
-flushPromises will not flush promises that have not been queued up already,
-for example, if they will queue up as a result of the initial promises.
-In consequence of that, you might have to call flushPromises multiple times to get your components
-to your desired state.
-
-This can happen for example, when you integration test your apollo-connected react components
-that go a couple level deep, with queries fired up in consequent components.
 
 ### `render`
 
@@ -282,6 +241,44 @@ const usernameInputElement = getByTestId('username-input')
 > That said, they are _way_ better than querying based on DOM structure.
 > Learn more about `data-testid`s from the blog post
 > ["Making your UI tests resilient to change"][data-testid-blog-post]
+
+### `Simulate`
+
+This is simply a re-export from the `Simulate` utility from
+`react-dom/test-utils`. See [the docs](https://reactjs.org/docs/test-utils.html#simulate).
+
+### `wait`
+
+Defined as:
+
+```typescript
+function wait(
+  callback?: () => void,
+  options?: {
+    timeout?: number
+    interval?: number
+  },
+): Promise<void>
+```
+
+When in need to wait for non-deterministic periods of time you can use `wait`,
+to wait for your expectations to pass. The `wait` function is a small wrapper
+around the
+[`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect) module.
+Here's a simple example:
+
+```javascript
+// ...
+// wait until the callback does not throw an error. In this case, that means
+// it'll wait until we can get a form control with a label that matches "username"
+await wait(() => getByLabelText('username'))
+getByLabelText('username').value = 'chucknorris'
+// ...
+```
+
+This can be useful when (for example) you integration test your apollo-connected
+react components that go a couple level deep, with queries fired up in
+consequent components.
 
 ## Custom Jest Matchers
 
@@ -600,60 +597,26 @@ react components.
 
 </details>
 
-<details>
+## Deprecated APIs
 
-<summary>How does flushPromises work and why would I need it?</summary>
+### `flushPromises`
 
-As mentioned [before](#flushpromises), `flushPromises` uses
-[`setImmediate`][set-immediate] to schedule resolving a promise after any pending
-tasks in
-[the message queue](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop)
-are processed. This includes any promises fired before in your test.
+> This API was deprecated in favor of [`wait`](#wait). We try to avoid having
+> two ways to do the same thing and you can accomplish everything with `wait`
+> that you could with `flushPromises`. A big advantage of `wait`, is that
+> `flushPromises` will not flush promises that have not been queued up already,
+> for example, if they will queue up as a result of the initial promises. In
+> consequence of that, you might have to call `flushPromises` multiple times to
+> get your components to your desired state. You can accomplish the exact same
+> behavior with `wait` as you had with `flushPromises` by calling `wait` with
+> no arguments: `await wait()`
 
-If there are promise callbacks already in JavaScript's message queue pending to be
-processed at the time `flushPromises` is called, then these will be processed before
-the promise returned by `flushPromises` is resolved. So when you
-`await flushPromises()` the code immediately after it is guaranteed to occur after
-all the side effects of your async requests have ocurred. This includes any data
-your test components might have requested.
-
-This is useful for instance, if your components perform any data requests and update
-their state with the results when the request is resolved. It's important to note
-that this is only effective if you've mocked out your async requests to resolve
-immediately (like the `axios` mock we have in the examples). It will not `await`
-for promises that are not already resolved by the time you attempt to flush them.
-
-In case this doesn't work for you the way you would expect, take a look at the
-waitForExpect function that should be much more intuitive to use.
-
-</details>
-
-<details>
-
-<summary><a name="waitForExpectFAQ"></a>Is there a different way to wait for things to happen? For example for end to end or contract tests?</summary>
-Definitely! There is an abstraction called `waitForExpect` that will keep
-calling your expectations until a timeout or the expectation passes - whatever happens first.
-
-Please take a look at this example (taken from [`here`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/end-to-end.js)):
-
-```javascript
-import {render, waitForExpect} from 'react-testing-library'
-test('it waits for the data to be loaded', async () => {
-  const {queryByText, queryByTestId} = render(<ComponentWithLoader />)
-
-  // Initially the loader shows
-  expect(queryByText('Loading...')).toBeTruthy()
-
-  // This will pass when the state of the component changes once the data is available
-  // the loader will disappear, and the data will be shown
-  await waitForExpect(() => expect(queryByText('Loading...')).toBeNull())
-  expect(queryByTestId('message').textContent).toMatch(/Hello World/)
-})
-```
-
-For consistency and making your tests easier to understand, you can use it instead of flushPromises.
-
-</details>
+This is a simple utility that's useful for when your component is doing some
+async work that you've mocked out, but you still need to wait until the next
+tick of the event loop before you can continue your assertions. It simply
+returns a promise that resolves in a `setImmediate`. Especially useful when
+you make your test function an `async` function and use
+`await flushPromises()`.
 
 ## Other Solutions
 

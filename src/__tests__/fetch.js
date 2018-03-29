@@ -1,6 +1,6 @@
 import React from 'react'
 import axiosMock from 'axios'
-import {render, Simulate, flushPromises} from '../'
+import {render, Simulate, wait} from '../'
 
 // instead of importing it, we'll define it inline here
 // import Fetch from '../fetch'
@@ -40,7 +40,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Act
   Simulate.click(getByText('Fetch'))
 
-  await flushPromises()
+  await wait()
 
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
