@@ -104,7 +104,18 @@
       "profile": "http://team.thebrain.pro",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "doc"
+      ]
+    },
+    {
+      "login": "sompylasar",
+      "name": "Ivan Babak",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/498274?v=4",
+      "profile": "https://sompylasar.github.io",
+      "contributions": [
+        "bug",
+        "ideas"
       ]
     }
   ]
