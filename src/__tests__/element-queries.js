@@ -76,7 +76,10 @@ test('totally empty label', () => {
 
 test('get element by its alt text', () => {
   const {getByAltText} = render(
-    <img alt="finding nemo poster" src="/finding-nemo.png" />,
+    <div>
+      <input data-info="no alt here" />
+      <img alt="finding nemo poster" src="/finding-nemo.png" />
+    </div>,
   )
   expect(getByAltText(/fin.*nem.*poster$/i).src).toBe('/finding-nemo.png')
 })
