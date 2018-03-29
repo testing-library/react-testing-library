@@ -1,3 +1,5 @@
+import {matches} from './utils'
+
 // Here are the queries for the library.
 // The queries here should only be things that are accessible to both users who are using a screen reader
 // and those who are not using a screen reader (with the exception of the data-testid attribute query).
@@ -67,16 +69,6 @@ function getText(node) {
     )
     .map(c => c.textContent)
     .join(' ')
-}
-
-function matches(textToMatch, node, matcher) {
-  if (typeof matcher === 'string') {
-    return textToMatch.toLowerCase().includes(matcher.toLowerCase())
-  } else if (typeof matcher === 'function') {
-    return matcher(textToMatch, node)
-  } else {
-    return matcher.test(textToMatch)
-  }
 }
 
 // getters

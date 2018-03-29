@@ -35,7 +35,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
     }),
   )
   const url = '/greeting'
-  const {getByText, container} = render(<Fetch url={url} />)
+  const {container, getByText} = render(<Fetch url={url} />)
 
   // Act
   Simulate.click(getByText('Fetch'))

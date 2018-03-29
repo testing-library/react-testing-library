@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -26,16 +26,47 @@
 
 ## The problem
 
-You want to write maintainable tests for your React components. However, the
-de facto standard for testing ([enzyme](https://github.com/airbnb/enzyme)) is
-bloated with complexity and features, most of which encourage poor testing
-practices (mostly relating to testing implementation details).
+You want to write maintainable tests for your React components. As a part of
+this goal, you want your tests to avoid including implementation details of
+your components and rather focus on making your tests give you the confidence
+for which they are intended. As part of this, you want your testbase to be
+maintainable in the long run so refactors of your components (changes to
+implementation but not functionality) don't break your tests and slow you and
+your team down.
 
 ## This solution
 
 The `react-testing-library` is a very light-weight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
 `react-dom/test-utils`, in a way that encourages better testing practices.
+It's primary guiding principle is:
+
+> [The more your tests resemble the way your software is used, the more confidence they can give you.][guiding-principle]
+
+So rather than dealing with instances of rendered react components, your tests
+will work with actual DOM nodes. The utilities this library provides facilitate
+querying the DOM in the same way the user would. Finding for elements by their
+label text (just like a user would), finding links and buttons from their text
+(like a user would). It also exposes a recommended way to find elements by a
+`data-testid` as an "escape hatch" for elements where the text content and label
+do not make sense or is not practical.
+
+This library encourages your applications to be more accessible and allows you
+to get your tests closer to using your components the way a user will, which
+allows your tests to give you more confidence that your application will work
+when a real user uses it.
+
+This library is a replacement for [enzyme](http://airbnb.io/enzyme/). While you
+_can_ follow these guidlines using enzyme itself, enforcing this is harder
+because of all the extra utilities that enzyme provides (utilities which
+facilitate testing implementation details). Read more about this in
+[the FAQ](#faq) below.
+
+**What this library is not**:
+
+1.  A test runner or framework
+2.  Specific to a testing framework (though we recommend Jest as our
+    preference, the library works with any framework)
 
 ## Table of Contents
 
@@ -48,6 +79,9 @@ components. It provides light utility functions on top of `react-dom` and
   * [`Simulate`](#simulate)
   * [`flushPromises`](#flushpromises)
   * [`render`](#render)
+* [Custom Jest Matchers](#custom-jest-matchers)
+  * [`toBeInTheDOM`](#tobeinthedom)
+  * [`toHaveTextContent`](#tohavetextcontent)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -218,6 +252,44 @@ const usernameInputElement = getByTestId('username-input')
 > That said, they are _way_ better than querying based on DOM structure.
 > Learn more about `data-testid`s from the blog post
 > ["Making your UI tests resilient to change"][data-testid-blog-post]
+
+## Custom Jest Matchers
+
+There are two simple API which extend the `expect` API of jest for making assertions easier.
+
+### `toBeInTheDOM`
+
+This allows you to assert whether an element present in the DOM or not.
+
+```javascript
+// add the custom expect matchers
+import 'react-testing-library/extend-expect'
+
+// ...
+const {queryByTestId} = render(<span data-testid="count-value">2</span>)
+expect(queryByTestId('count-value')).toBeInTheDOM()
+expect(queryByTestId('count-value1')).not.toBeInTheDOM()
+// ...
+```
+
+> Note: when using `toBeInTheDOM`, make sure you use a query function
+> (like `queryByTestId`) rather than a get function (like `getByTestId`).
+> Otherwise the `get*` function could throw an error before your assertion.
+
+### `toHaveTextContent`
+
+This API allows you to check whether the given element has a text content or not.
+
+```javascript
+// add the custom expect matchers
+import 'react-testing-library/extend-expect'
+
+// ...
+const {getByTestId} = render(<span data-testid="count-value">2</span>)
+expect(getByTestId('count-value')).toHaveTextContent('2')
+expect(getByTestId('count-value')).not.toHaveTextContent('21')
+// ...
+```
 
 ## `TextMatch`
 
@@ -564,7 +636,7 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") |
+| [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
