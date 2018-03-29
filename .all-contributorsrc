@@ -104,7 +104,8 @@
       "profile": "http://team.thebrain.pro",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "doc"
       ]
     },
     {
