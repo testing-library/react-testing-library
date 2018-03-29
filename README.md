@@ -156,10 +156,12 @@ See an example in the section about `render` below.
 
 ### `waitForExpect`
 
-Defined as: ```javascript
-waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;
+Defined as:
 
-````
+```javascript
+waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;
+```
+
 When in need to wait for non-deterministic periods of time you can use waitForExpect,
 to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExpect) part of the FAQ,
 or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
@@ -169,7 +171,7 @@ or the function documentation here: [`wait-for-expect`](https://github.com/TheBr
 await waitForExpect(() => expect(queryByLabelText('username')).not.toBeNull())
 getByLabelText('username').value = 'chucknorris'
 ...
-````
+```
 
 Another advantage of waitForExpect in comparison to flushPromises, is that
 flushPromises will not flush promises that have not been queued up already,
