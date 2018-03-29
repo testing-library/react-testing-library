@@ -297,7 +297,7 @@ expect(getByTestId('count-value')).not.toHaveTextContent('21')
 #### `waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;`
 
 When in need to wait for non-deterministic periods of time you can use waitForExpect,
-to wait for your expectations to pass. Take a look at [`Is there a different way for waiting for things to happen?`](#waitForExcept) part of the FAQ,
+to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExcept) part of the FAQ,
 or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
 
 ## `TextMatch`
@@ -606,11 +606,11 @@ for promises that are not already resolved by the time you attempt to flush them
 
 <details>
 
-<summary><a name="waitForExcept"></a>Is there a different way for waiting for things to happen? For example for end to end or contract tests?</summary>
+<summary><a name="waitForExcept"></a>Is there a different way to wait for things to happen? For example for end to end or contract tests?</summary>
 Definitely! There is an abstraction called `waitForExpect` that will keep
 calling your expectations until a timeout or the expectation passes - whatever happens first.
 
-Please take a look at this example (taken from [`here`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/end-to-end.js):
+Please take a look at this example (taken from [`here`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/end-to-end.js)):
 
 ```javascript
 import {render, waitForExpect} from 'react-testing-library'
