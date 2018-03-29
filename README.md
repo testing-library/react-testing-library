@@ -82,6 +82,7 @@ facilitate testing implementation details). Read more about this in
 * [Custom Jest Matchers](#custom-jest-matchers)
   * [`toBeInTheDOM`](#tobeinthedom)
   * [`toHaveTextContent`](#tohavetextcontent)
+* [Other](#other)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -291,12 +292,12 @@ expect(getByTestId('count-value')).not.toHaveTextContent('21')
 // ...
 ```
 
-### Other
+## Other
 
-## `waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;`
+#### `waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;`
 
 When in need to wait for non-deterministic periods of time you can use waitForExpect,
-to wait for your expectations to pass. Take a look at [`Is there a different way for waiting for things to happen?`](#waitForExceptMine) part of the FAQ,
+to wait for your expectations to pass. Take a look at [`Is there a different way for waiting for things to happen?`](#waitForExcept) part of the FAQ,
 or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
 
 ## `TextMatch`
@@ -605,11 +606,12 @@ for promises that are not already resolved by the time you attempt to flush them
 
 <details>
 
-<summary><a name="waitForExceptMine"></a>Is there a different way for waiting for things to happen? For example for end to end or contract tests?</summary>
+<summary><a name="waitForExcept"></a>Is there a different way for waiting for things to happen? For example for end to end or contract tests?</summary>
 Definitely! There is an abstraction called `waitForExpect` that will keep
 calling your expectations until a timeout or the expectation passes - whatever happens first.
 
 Please take a look at this example (taken from [`here`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/end-to-end.js):
+
 ```javascript
 import {render, waitForExpect} from 'react-testing-library'
 test('it waits for the data to be loaded', async () => {
@@ -627,10 +629,9 @@ test('it waits for the data to be loaded', async () => {
 })
 ```
 
-  For consistency and making your tests easier to understand, you can use it instead of flushPromises.
+For consistency and making your tests easier to understand, you can use it instead of flushPromises.
 
 </details>
-
 
 ## Other Solutions
 
@@ -669,10 +670,12 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Documentation") |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
