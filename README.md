@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 
@@ -78,8 +78,11 @@ facilitate testing implementation details). Read more about this in
 * [Usage](#usage)
   * [`Simulate`](#simulate)
   * [`flushPromises`](#flushpromises)
+  * [`waitForExpect`](#waitforexpect)
   * [`render`](#render)
 * [Custom Jest Matchers](#custom-jest-matchers)
+  * [`toBeInTheDOM`](#tobeinthedom)
+  * [`toHaveTextContent`](#tohavetextcontent)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -150,6 +153,35 @@ you make your test function an `async` function and use
 `await flushPromises()`.
 
 See an example in the section about `render` below.
+
+### `waitForExpect`
+
+Defined as:
+
+```javascript
+waitForExpect(expectation: () => void, timeout?: number, interval?: number) => Promise<{}>;
+```
+
+When in need to wait for non-deterministic periods of time you can use waitForExpect,
+to wait for your expectations to pass. Take a look at [`Is there a different way to wait for things to happen?`](#waitForExpect) part of the FAQ,
+or the function documentation here: [`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect)
+or just take a look at this simple example:
+
+```javascript
+...
+await waitForExpect(() => expect(queryByLabelText('username')).not.toBeNull())
+getByLabelText('username').value = 'chucknorris'
+...
+```
+
+Another advantage of waitForExpect in comparison to flushPromises, is that
+flushPromises will not flush promises that have not been queued up already,
+for example, if they will queue up as a result of the initial promises.
+In consequence of that, you might have to call flushPromises multiple times to get your components
+to your desired state.
+
+This can happen for example, when you integration test your apollo-connected react components
+that go a couple level deep, with queries fired up in consequent components.
 
 ### `render`
 
@@ -591,6 +623,36 @@ that this is only effective if you've mocked out your async requests to resolve
 immediately (like the `axios` mock we have in the examples). It will not `await`
 for promises that are not already resolved by the time you attempt to flush them.
 
+In case this doesn't work for you the way you would expect, take a look at the
+waitForExpect function that should be much more intuitive to use.
+
+</details>
+
+<details>
+
+<summary><a name="waitForExpectFAQ"></a>Is there a different way to wait for things to happen? For example for end to end or contract tests?</summary>
+Definitely! There is an abstraction called `waitForExpect` that will keep
+calling your expectations until a timeout or the expectation passes - whatever happens first.
+
+Please take a look at this example (taken from [`here`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/end-to-end.js)):
+
+```javascript
+import {render, waitForExpect} from 'react-testing-library'
+test('it waits for the data to be loaded', async () => {
+  const {queryByText, queryByTestId} = render(<ComponentWithLoader />)
+
+  // Initially the loader shows
+  expect(queryByText('Loading...')).toBeTruthy()
+
+  // This will pass when the state of the component changes once the data is available
+  // the loader will disappear, and the data will be shown
+  await waitForExpect(() => expect(queryByText('Loading...')).toBeNull())
+  expect(queryByTestId('message').textContent).toMatch(/Hello World/)
+})
+```
+
+For consistency and making your tests easier to understand, you can use it instead of flushPromises.
+
 </details>
 
 ## Other Solutions
@@ -634,7 +696,7 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") |
+| [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Documentation") |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 

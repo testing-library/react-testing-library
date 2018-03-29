@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
+import waitForExpect from 'wait-for-expect'
 import * as queries from './queries'
 
 function render(ui, {container = document.createElement('div')} = {}) {
@@ -24,4 +25,4 @@ function flushPromises() {
   return new Promise(resolve => setImmediate(resolve))
 }
 
-export {render, flushPromises, Simulate}
+export {render, flushPromises, Simulate, waitForExpect}

@@ -25,7 +25,9 @@
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "wait-for-expect": "0.4.0"
+  },
   "devDependencies": {
     "@types/react-dom": "^16.0.4",
     "axios": "^0.18.0",
