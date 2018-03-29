@@ -25,7 +25,7 @@ function flushPromises() {
   return new Promise(resolve => setImmediate(resolve))
 }
 
-function wait(callback = () => {}, {timeout, interval} = {}) {
+function wait(callback = () => {}, {timeout = 4500, interval = 50} = {}) {
   return waitForExpect(callback, timeout, interval)
 }
 

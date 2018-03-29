@@ -276,9 +276,20 @@ getByLabelText('username').value = 'chucknorris'
 // ...
 ```
 
-This can be useful when (for example) you integration test your apollo-connected
-react components that go a couple level deep, with queries fired up in
-consequent components.
+This can be useful if you have a unit test that mocks API calls and you need
+to wait for your mock promises to all resolve. This can also be useful when
+(for example) you integration test your apollo-connected react components that
+go a couple level deep, with queries fired up in consequent components.
+
+The default `callback` is a no-op function (used like `await wait()`). This can
+be helpful if you only need to wait for one tick of the event loop.
+
+The default `timeout` is `4500ms` which will keep you under
+[Jest's default timeout of `5000ms`](https://facebook.github.io/jest/docs/en/jest-object.html#jestsettimeouttimeout).
+
+The default `interval` is `50ms`. However it will run your callback immediately
+on the next tick of the event loop (in a `setTimeout`) before starting the
+intervals.
 
 ## Custom Jest Matchers
 
