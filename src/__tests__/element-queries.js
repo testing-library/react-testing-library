@@ -8,23 +8,30 @@ test('query can return null', () => {
     queryByPlaceholderText,
     queryByText,
     queryByTestId,
+    queryByAltText,
   } = render(<div />)
   expect(queryByTestId('LucyRicardo')).toBeNull()
   expect(queryByLabelText('LucyRicardo')).toBeNull()
   expect(queryByPlaceholderText('LucyRicardo')).toBeNull()
   expect(queryByText('LucyRicardo')).toBeNull()
+  expect(queryByAltText('LucyRicardo')).toBeNull()
 })
 
 test('get throws a useful error message', () => {
-  const {getByLabelText, getByPlaceholderText, getByText, getByTestId} = render(
-    <div />,
-  )
+  const {
+    getByLabelText,
+    getByPlaceholderText,
+    getByText,
+    getByTestId,
+    getByAltText,
+  } = render(<div />)
   expect(() => getByLabelText('LucyRicardo')).toThrowErrorMatchingSnapshot()
   expect(() =>
     getByPlaceholderText('LucyRicardo'),
   ).toThrowErrorMatchingSnapshot()
   expect(() => getByText('LucyRicardo')).toThrowErrorMatchingSnapshot()
   expect(() => getByTestId('LucyRicardo')).toThrowErrorMatchingSnapshot()
+  expect(() => getByAltText('LucyRicardo')).toThrowErrorMatchingSnapshot()
 })
 
 test('get can get form controls by label text', () => {
@@ -65,6 +72,13 @@ test('totally empty label', () => {
   const {getByLabelText, queryByLabelText} = render(<label />)
   expect(queryByLabelText('')).toBeNull()
   expect(() => getByLabelText('')).toThrowErrorMatchingSnapshot()
+})
+
+test('get element by its alt text', () => {
+  const {getByAltText} = render(
+    <img alt="finding nemo poster" src="/finding-nemo.png" />,
+  )
+  expect(getByAltText(/fin.*nem.*poster$/i).src).toBe('/finding-nemo.png')
 })
 
 test('using jest helpers to assert element states', () => {

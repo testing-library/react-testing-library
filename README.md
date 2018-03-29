@@ -215,6 +215,20 @@ const inputNode = getByPlaceholderText('Username')
 > NOTE: a placeholder is not a good substitute for a label so you should
 > generally use `getByLabelText` instead.
 
+#### `getByAltText(text: TextMatch): HTMLElement`
+
+This will return the element (normally an `<img>`) that has the given `alt`
+text. Note that it only supports elements which accept an `alt` attribute:
+[`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img),
+[`<input>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input),
+and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
+(intentionally excluding [`<applet>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/applet) as it's deprecated).
+
+```javascript
+// <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />
+const incrediblesPosterImg = getByText(/incredibles.*poster/)
+```
+
 #### `getByText(text: TextMatch): HTMLElement`
 
 This will search for all elements that have a text node with `textContent`
@@ -225,9 +239,10 @@ matching the given [`TextMatch`](#textmatch).
 const aboutAnchorNode = getByText('about')
 ```
 
-#### `getByTestId`
+#### `getByTestId(text: TextMatch): HTMLElement`
 
-A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) ``.
+A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
+also accepts a [`TextMatch`](#textmatch)).
 
 ```javascript
 // <input data-testid="username-input" />
@@ -392,10 +407,12 @@ in mind, we recommend this order of priority:
     method a user finds those elements, so it should be your top preference.
 2.  `getByPlaceholderText`: [A placeholder is not a substitute for a label](https://www.nngroup.com/articles/form-design-placeholders/).
     But if that's all you have, then it's better than alternatives.
-3.  `getByText`: Not useful for forms, but this is the number 1 method a user
+3.  `getByAltText`: If your element is one which supports `alt` text
+    (`img`, `area`, and `input`), then you can use this to find that element.
+4.  `getByText`: Not useful for forms, but this is the number 1 method a user
     finds other elements (like buttons to click), so it should be your top
     preference for non-form elements.
-4.  `getByTestId`: The user cannot see (or hear) these, so this is only
+5.  `getByTestId`: The user cannot see (or hear) these, so this is only
     recommended for cases where you can't match by text or it doesn't make sense
     (the text is dynamic).
 

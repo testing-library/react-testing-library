@@ -12,6 +12,8 @@ interface RenderResult {
   getByPlaceholderText: (id: string) => HTMLElement
   queryByLabelText: (id: string) => HTMLElement | null
   getByLabelText: (id: string) => HTMLElement
+  queryByAltText: (text: string) => HTMLElement | null
+  getByAltText: (text: string) => HTMLElement
 }
 
 export function render(

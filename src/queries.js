@@ -121,6 +121,22 @@ function getByText(container, text, ...rest) {
   return el
 }
 
+function queryByAltText(container, alt) {
+  return (
+    Array.from(container.querySelectorAll('img,input,area')).find(node =>
+      matches(node.getAttribute('alt'), node, alt),
+    ) || null
+  )
+}
+
+function getByAltText(container, alt) {
+  const el = queryByAltText(container, alt)
+  if (!el) {
+    throw new Error(`Unable to find an element with the alt text: ${alt}`)
+  }
+  return el
+}
+
 export {
   queryByPlaceholderText,
   getByPlaceholderText,
@@ -128,6 +144,8 @@ export {
   getByText,
   queryByLabelText,
   getByLabelText,
+  queryByAltText,
+  getByAltText,
   queryByTestId,
   getByTestId,
 }
