@@ -215,6 +215,16 @@ const inputNode = getByPlaceholderText('Username')
 > NOTE: a placeholder is not a good substitute for a label so you should
 > generally use `getByLabelText` instead.
 
+#### `getByText(text: TextMatch): HTMLElement`
+
+This will search for all elements that have a text node with `textContent`
+matching the given [`TextMatch`](#textmatch).
+
+```javascript
+// <a href="/about">About ℹ️</a>
+const aboutAnchorNode = getByText('about')
+```
+
 #### `getByAltText(text: TextMatch): HTMLElement`
 
 This will return the element (normally an `<img>`) that has the given `alt`
@@ -226,17 +236,7 @@ and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
 
 ```javascript
 // <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />
-const incrediblesPosterImg = getByText(/incredibles.*poster/)
-```
-
-#### `getByText(text: TextMatch): HTMLElement`
-
-This will search for all elements that have a text node with `textContent`
-matching the given [`TextMatch`](#textmatch).
-
-```javascript
-// <a href="/about">About ℹ️</a>
-const aboutAnchorNode = getByText('about')
+const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
 #### `getByTestId(text: TextMatch): HTMLElement`
@@ -407,11 +407,11 @@ in mind, we recommend this order of priority:
     method a user finds those elements, so it should be your top preference.
 2.  `getByPlaceholderText`: [A placeholder is not a substitute for a label](https://www.nngroup.com/articles/form-design-placeholders/).
     But if that's all you have, then it's better than alternatives.
-3.  `getByAltText`: If your element is one which supports `alt` text
-    (`img`, `area`, and `input`), then you can use this to find that element.
-4.  `getByText`: Not useful for forms, but this is the number 1 method a user
+3.  `getByText`: Not useful for forms, but this is the number 1 method a user
     finds other elements (like buttons to click), so it should be your top
     preference for non-form elements.
+4.  `getByAltText`: If your element is one which supports `alt` text
+    (`img`, `area`, and `input`), then you can use this to find that element.
 5.  `getByTestId`: The user cannot see (or hear) these, so this is only
     recommended for cases where you can't match by text or it doesn't make sense
     (the text is dynamic).
