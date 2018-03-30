@@ -95,6 +95,20 @@ test('using jest helpers to assert element states', () => {
   expect(() =>
     expect(queryByTestId('count-value2')).toHaveTextContent('2'),
   ).toThrowError()
+
+  // negative test cases wrapped in throwError assertions for coverage.
+  expect(() =>
+    expect(queryByTestId('count-value')).not.toBeInTheDOM(),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('count-value1')).toBeInTheDOM(),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('count-value')).toHaveTextContent('3'),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('count-value')).not.toHaveTextContent('2'),
+  ).toThrowError()
 })
 
 /* eslint jsx-a11y/label-has-for:0 */
