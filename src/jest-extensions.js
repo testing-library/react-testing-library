@@ -18,7 +18,7 @@ const extensions = {
     getDisplayName(received)
     if (received) {
       return {
-        message:
+        message: () =>
           `${matcherHint(
             '.not.toBeInTheDOM',
             'received',
@@ -29,7 +29,7 @@ const extensions = {
       }
     } else {
       return {
-        message:
+        message: () =>
           `${matcherHint(
             '.toBeInTheDOM',
             'received',
@@ -53,22 +53,24 @@ const extensions = {
     const pass = matches(textContent, htmlElement, checkWith)
     if (pass) {
       return {
-        message: assertMessage(
-          '.not.toHaveTextContent',
-          'Expected value not equals to',
-          htmlElement,
-          checkWith,
-        ),
+        message: () =>
+          assertMessage(
+            '.not.toHaveTextContent',
+            'Expected value not equals to',
+            htmlElement,
+            checkWith,
+          ),
         pass: true,
       }
     } else {
       return {
-        message: assertMessage(
-          '.toHaveTextContent',
-          'Expected value equals to',
-          htmlElement,
-          checkWith,
-        ),
+        message: () =>
+          assertMessage(
+            '.toHaveTextContent',
+            'Expected value equals to',
+            htmlElement,
+            checkWith,
+          ),
         pass: false,
       }
     }
