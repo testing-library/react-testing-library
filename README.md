@@ -82,6 +82,7 @@ facilitate testing implementation details). Read more about this in
 * [Custom Jest Matchers](#custom-jest-matchers)
   * [`toBeInTheDOM`](#tobeinthedom)
   * [`toHaveTextContent`](#tohavetextcontent)
+  * [Custom Jest Matchers - Typescript](#custom-jest-matchers-typescript)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -342,6 +343,34 @@ const {getByTestId} = render(<span data-testid="count-value">2</span>)
 expect(getByTestId('count-value')).toHaveTextContent('2')
 expect(getByTestId('count-value')).not.toHaveTextContent('21')
 // ...
+```
+### Custom Jest Matchers - Typescript
+
+When you use custom Jest Matchers with Typescript,  you will need to extend the type signature of `jest.Matchers<void>`, then cast the result of `expect` accordingly. Here's a handy usage example:
+
+```typescript
+// this adds custom expect matchers
+import 'react-testing-library/extend-expect';
+interface ExtendedMatchers extends jest.Matchers<void> {
+  toHaveTextContent: (htmlElement: string) => object;
+  toBeInTheDOM: () => void;
+}
+test('renders the tooltip as expected', async () => {
+  const {
+    // getByLabelText,
+    getByText,
+    //  getByTestId,
+    container
+  } = render(<Tooltip label="hello world">Child</Tooltip>);
+  // tests rendering of the child
+  getByText('Child');
+  // tests rendering of tooltip label
+  (expect(getByText('hello world')) as ExtendedMatchers).toHaveTextContent(
+    'hello world'
+  );
+  // snapshots work great with regular DOM nodes!
+  expect(container.firstChild).toMatchSnapshot();
+});
 ```
 
 ## `TextMatch`
