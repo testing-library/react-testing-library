@@ -1,5 +1,5 @@
 import {Simulate as ReactSimulate} from 'react-dom/test-utils'
-import waitForExpect from 'wait-for-expect'
+export {default as waitForExpect} from 'wait-for-expect'
 
 interface RenderResult {
   container: HTMLDivElement
@@ -25,9 +25,7 @@ export function flushPromises(): Promise<void>
 
 export const Simulate: typeof ReactSimulate
 
-export function waitForExpect(): typeof waitForExpect
-
-export default function wait(
+export function wait(
   callback?: () => void,
   options?: {
     timeout?: number
