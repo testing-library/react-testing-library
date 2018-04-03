@@ -111,4 +111,15 @@ test('using jest helpers to assert element states', () => {
   ).toThrowError()
 })
 
+
+test('test the debug helper prints the dom state here', () => {
+
+  const Hello = () => {
+      return <div data-testid="debugging" data-otherid="debugging">Hello World!</div>;
+  }
+
+  const {getByText} = render(<Hello />)
+  expect(getByText('Test value.')).toBeInTheDOM()
+})
+
 /* eslint jsx-a11y/label-has-for:0 */

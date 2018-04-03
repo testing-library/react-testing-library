@@ -1,4 +1,8 @@
 import {matches} from './utils'
+import prettyFormat from 'pretty-format'; // eslint-disable-line
+const {DOMElement} = prettyFormat.plugins;
+
+
 
 // Here are the queries for the library.
 // The queries here should only be things that are accessible to both users who are using a screen reader
@@ -114,8 +118,14 @@ function getByLabelText(container, text, ...rest) {
 function getByText(container, text, ...rest) {
   const el = queryByText(container, text, ...rest)
   if (!el) {
+    const htmlElement = prettyFormat(container, {
+      plugins: [DOMElement],
+      printFunctionName: false,
+      highlight: true
+    });
     throw new Error(
-      `Unable to find an element with the text: ${text}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.`,
+      `Unable to find an element with the text: ${text}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.`
+       + `\nHere is the state of your container: \n${htmlElement}`,
     )
   }
   return el
