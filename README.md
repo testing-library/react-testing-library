@@ -57,7 +57,7 @@ allows your tests to give you more confidence that your application will work
 when a real user uses it.
 
 This library is a replacement for [enzyme](http://airbnb.io/enzyme/). While you
-_can_ follow these guidlines using enzyme itself, enforcing this is harder
+_can_ follow these guidelines using enzyme itself, enforcing this is harder
 because of all the extra utilities that enzyme provides (utilities which
 facilitate testing implementation details). Read more about this in
 [the FAQ](#faq) below.
