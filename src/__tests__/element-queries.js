@@ -74,6 +74,12 @@ test('totally empty label', () => {
   expect(() => getByLabelText('')).toThrowErrorMatchingSnapshot()
 })
 
+test('getByLabelText with aria-label', () => {
+  // not recommended normally, but supported for completeness
+  const {queryByLabelText} = render(<input aria-label="batman" />)
+  expect(queryByLabelText('bat')).toBeInTheDOM()
+})
+
 test('get element by its alt text', () => {
   const {getByAltText} = render(
     <div>
