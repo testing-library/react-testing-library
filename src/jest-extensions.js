@@ -35,6 +35,12 @@ function printAttribute(name, value) {
   return value === undefined ? name : `${name}=${stringify(value)}`
 }
 
+function getAttributeComment(name, value) {
+  return value === undefined
+    ? `element.hasAttribute(${stringify(name)})`
+    : `element.getAttribute(${stringify(name)}) === ${stringify(value)}`
+}
+
 const extensions = {
   toBeInTheDOM(received) {
     getDisplayName(received)
@@ -102,9 +108,6 @@ const extensions = {
         ? hasAttribute && receivedValue === expectedValue
         : hasAttribute,
       message: () => {
-        const secondArgument = isExpectedValuePresent
-          ? printExpected(expectedValue)
-          : undefined
         const to = this.isNot ? 'not to' : 'to'
         const receivedAttribute = receivedColor(
           hasAttribute
@@ -119,7 +122,10 @@ const extensions = {
           'element',
           printExpected(name),
           {
-            secondArgument,
+            secondArgument: isExpectedValuePresent
+              ? printExpected(expectedValue)
+              : undefined,
+            comment: getAttributeComment(name, expectedValue),
           },
         )
         return `${matcher}\n\n${expectedMsg}\nReceived:\n  ${receivedAttribute}`
