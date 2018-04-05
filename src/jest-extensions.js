@@ -31,13 +31,8 @@ const assertMessage = (assertionName, message, received, expected) =>
   `${matcherHint(`${assertionName}`, 'received', '')} \n${message}: ` +
   `${printExpected(expected)} \nReceived: ${printReceived(received)}`
 
-function getAttrReceivedMsg(hasAttribute, expectedValue, receivedValue) {
-  if (!hasAttribute) {
-    return receivedColor('the attribute was not found')
-  }
-  return expectedValue === undefined
-    ? receivedColor('the attribute was present')
-    : `got ${receivedColor(`${name}=${stringify(receivedValue)}`)}`
+function printAttribute(name, value) {
+  return value === undefined ? name : `${name}=${stringify(value)}`
 }
 
 const extensions = {
@@ -99,7 +94,7 @@ const extensions = {
 
   toHaveAttribute(htmlElement, name, expectedValue) {
     checkHtmlElement(htmlElement)
-    const isExpectedValuePresent = expectedValue === undefined
+    const isExpectedValuePresent = expectedValue !== undefined
     const hasAttribute = htmlElement.hasAttribute(name)
     const receivedValue = htmlElement.getAttribute(name)
     return {
@@ -111,15 +106,14 @@ const extensions = {
           ? printExpected(expectedValue)
           : undefined
         const to = this.isNot ? 'not to' : 'to'
-        const expectedAttribute = isExpectedValuePresent
-          ? expectedColor(`${name}=${stringify(expectedValue)}`)
-          : expectedColor(name)
-        const expectedMsg = `Expected the element ${to} have attribute ${expectedAttribute}`
-        const receivedMsg = getAttrReceivedMsg(
-          hasAttribute,
-          expectedValue,
-          receivedValue,
+        const receivedAttribute = receivedColor(
+          hasAttribute
+            ? printAttribute(name, receivedValue)
+            : 'attribute was not found',
         )
+        const expectedMsg = `Expected the element ${to} have attribute:\n  ${expectedColor(
+          printAttribute(name, expectedValue),
+        )}`
         const matcher = matcherHint(
           `${this.isNot ? '.not' : ''}.toHaveAttribute`,
           'element',
@@ -128,7 +122,7 @@ const extensions = {
             secondArgument,
           },
         )
-        return `${matcher}\n\n${expectedMsg}\nInstead ${receivedMsg}`
+        return `${matcher}\n\n${expectedMsg}\nReceived:\n  ${receivedAttribute}`
       },
     }
   },
