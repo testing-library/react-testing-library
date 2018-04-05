@@ -1,4 +1,12 @@
-import {matcherHint, printReceived, printExpected} from 'jest-matcher-utils' //eslint-disable-line import/no-extraneous-dependencies
+//eslint-disable-next-line import/no-extraneous-dependencies
+import {
+  matcherHint,
+  printReceived,
+  printExpected,
+  stringify,
+  RECEIVED_COLOR as receivedColor,
+  EXPECTED_COLOR as expectedColor,
+} from 'jest-matcher-utils'
 import {matches} from './utils'
 
 function getDisplayName(subject) {
@@ -9,9 +17,28 @@ function getDisplayName(subject) {
   }
 }
 
+function checkHtmlElement(htmlElement) {
+  if (!(htmlElement instanceof HTMLElement)) {
+    throw new Error(
+      `The given subject is a ${getDisplayName(
+        htmlElement,
+      )}, not an HTMLElement`,
+    )
+  }
+}
+
 const assertMessage = (assertionName, message, received, expected) =>
   `${matcherHint(`${assertionName}`, 'received', '')} \n${message}: ` +
   `${printExpected(expected)} \nReceived: ${printReceived(received)}`
+
+function getAttrReceivedMsg(hasAttribute, expectedValue, receivedValue) {
+  if (!hasAttribute) {
+    return receivedColor('the attribute was not found')
+  }
+  return expectedValue === undefined
+    ? receivedColor('the attribute was present')
+    : `got ${receivedColor(`${name}=${stringify(receivedValue)}`)}`
+}
 
 const extensions = {
   toBeInTheDOM(received) {
@@ -42,13 +69,7 @@ const extensions = {
   },
 
   toHaveTextContent(htmlElement, checkWith) {
-    if (!(htmlElement instanceof HTMLElement))
-      throw new Error(
-        `The given subject is a ${getDisplayName(
-          htmlElement,
-        )}, not an HTMLElement`,
-      )
-
+    checkHtmlElement(htmlElement)
     const textContent = htmlElement.textContent
     const pass = matches(textContent, htmlElement, checkWith)
     if (pass) {
@@ -73,6 +94,42 @@ const extensions = {
           ),
         pass: false,
       }
+    }
+  },
+
+  toHaveAttribute(htmlElement, name, expectedValue) {
+    checkHtmlElement(htmlElement)
+    const isExpectedValuePresent = expectedValue === undefined
+    const hasAttribute = htmlElement.hasAttribute(name)
+    const receivedValue = htmlElement.getAttribute(name)
+    return {
+      pass: isExpectedValuePresent
+        ? hasAttribute && receivedValue === expectedValue
+        : hasAttribute,
+      message: () => {
+        const secondArgument = isExpectedValuePresent
+          ? printExpected(expectedValue)
+          : undefined
+        const to = this.isNot ? 'not to' : 'to'
+        const expectedAttribute = isExpectedValuePresent
+          ? expectedColor(`${name}=${stringify(expectedValue)}`)
+          : expectedColor(name)
+        const expectedMsg = `Expected the element ${to} have attribute ${expectedAttribute}`
+        const receivedMsg = getAttrReceivedMsg(
+          hasAttribute,
+          expectedValue,
+          receivedValue,
+        )
+        const matcher = matcherHint(
+          `${this.isNot ? '.not' : ''}.toHaveAttribute`,
+          'element',
+          printExpected(name),
+          {
+            secondArgument,
+          },
+        )
+        return `${matcher}\n\n${expectedMsg}\nInstead ${receivedMsg}`
+      },
     }
   },
 }
