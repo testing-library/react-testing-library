@@ -1,5 +1,4 @@
 import {Simulate as ReactSimulate} from 'react-dom/test-utils'
-export {default as waitForExpect} from 'wait-for-expect'
 
 interface RenderResult {
   container: HTMLDivElement
@@ -20,8 +19,6 @@ export function render(
   ui: React.ReactElement<any>,
   options?: {container: HTMLElement},
 ): RenderResult
-
-export function flushPromises(): Promise<void>
 
 export const Simulate: typeof ReactSimulate
 

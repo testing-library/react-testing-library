@@ -68,6 +68,10 @@ facilitate testing implementation details). Read more about this in
 2.  Specific to a testing framework (though we recommend Jest as our
     preference, the library works with any framework)
 
+> NOTE: This library is built on top of
+> [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
+> which is where most of the logic behind the queries is.
+
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -79,17 +83,10 @@ facilitate testing implementation details). Read more about this in
   * [`render`](#render)
   * [`Simulate`](#simulate)
   * [`wait`](#wait)
-* [Custom Jest Matchers](#custom-jest-matchers)
-  * [`toBeInTheDOM`](#tobeinthedom)
-  * [`toHaveTextContent`](#tohavetextcontent)
-  * [`toHaveAttribute`](#tohaveattribute)
-  * [Custom Jest Matchers - Typescript](#custom-jest-matchers---typescript)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
 * [FAQ](#faq)
-* [Deprecated APIs](#deprecated-apis)
-  * [`flushPromises`](#flushpromises)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
 * [Contributors](#contributors)
@@ -108,13 +105,17 @@ npm install --save-dev react-testing-library
 
 This library has a `peerDependencies` listing for `react-dom`.
 
+You may also be interested in installing `dom-testing-library` so you can use
+[the custom jest matchers](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#custom-jest-matchers)
+
 ## Usage
 
 ```javascript
 // __tests__/fetch.js
 import React from 'react'
 import {render, Simulate, wait} from 'react-testing-library'
-import 'react-testing-library/extend-expect' // this adds custom expect matchers
+// this add custom expect matchers from dom-testing-library
+import 'dom-testing-library/extend-expect'
 import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
 
@@ -311,94 +312,6 @@ The default `timeout` is `4500ms` which will keep you under
 The default `interval` is `50ms`. However it will run your callback immediately
 on the next tick of the event loop (in a `setTimeout`) before starting the
 intervals.
-
-## Custom Jest Matchers
-
-There are two simple API which extend the `expect` API of jest for making assertions easier.
-
-### `toBeInTheDOM`
-
-This allows you to assert whether an element present in the DOM or not.
-
-```javascript
-// add the custom expect matchers
-import 'react-testing-library/extend-expect'
-
-// ...
-const {queryByTestId} = render(<span data-testid="count-value">2</span>)
-expect(queryByTestId('count-value')).toBeInTheDOM()
-expect(queryByTestId('count-value1')).not.toBeInTheDOM()
-// ...
-```
-
-> Note: when using `toBeInTheDOM`, make sure you use a query function
-> (like `queryByTestId`) rather than a get function (like `getByTestId`).
-> Otherwise the `get*` function could throw an error before your assertion.
-
-### `toHaveTextContent`
-
-This API allows you to check whether the given element has a text content or not.
-
-```javascript
-// add the custom expect matchers
-import 'react-testing-library/extend-expect'
-
-// ...
-const {getByTestId} = render(<span data-testid="count-value">2</span>)
-expect(getByTestId('count-value')).toHaveTextContent('2')
-expect(getByTestId('count-value')).not.toHaveTextContent('21')
-// ...
-```
-
-### `toHaveAttribute`
-
-This allows you to check wether the given element has an attribute or not. You
-can also optionally check that the attribute has a specific expected value.
-
-```javascript
-// add the custom expect matchers
-import 'react-testing-library/extend-expect'
-
-// ...
-const {getByTestId} = render(
-  <button data-testid="ok-button" type="submit" disabled>
-    OK
-  </button>,
-)
-expect(getByTestId('ok-button')).toHaveAttribute('disabled')
-expect(getByTestId('ok-button')).toHaveAttribute('type', 'submit')
-expect(getByTestId('ok-button')).not.toHaveAttribute('type', 'button')
-// ...
-```
-
-### Custom Jest Matchers - Typescript
-
-When you use custom Jest Matchers with Typescript, you will need to extend the type signature of `jest.Matchers<void>`, then cast the result of `expect` accordingly. Here's a handy usage example:
-
-```typescript
-// this adds custom expect matchers
-import 'react-testing-library/extend-expect'
-interface ExtendedMatchers extends jest.Matchers<void> {
-  toHaveTextContent: (htmlElement: string) => object
-  toBeInTheDOM: () => void
-}
-test('renders the tooltip as expected', async () => {
-  const {
-    // getByLabelText,
-    getByText,
-    //  getByTestId,
-    container,
-  } = render(<Tooltip label="hello world">Child</Tooltip>)
-  // tests rendering of the child
-  getByText('Child')
-  // tests rendering of tooltip label
-  ;(expect(getByText('hello world')) as ExtendedMatchers).toHaveTextContent(
-    'hello world',
-  )
-  // snapshots work great with regular DOM nodes!
-  expect(container.firstChild).toMatchSnapshot()
-})
-```
 
 ## `TextMatch`
 
@@ -680,27 +593,6 @@ should be possible to accomplish, just not the default and natural way to test
 react components.
 
 </details>
-
-## Deprecated APIs
-
-### `flushPromises`
-
-> This API was deprecated in favor of [`wait`](#wait). We try to avoid having
-> two ways to do the same thing and you can accomplish everything with `wait`
-> that you could with `flushPromises`. A big advantage of `wait`, is that
-> `flushPromises` will not flush promises that have not been queued up already,
-> for example, if they will queue up as a result of the initial promises. In
-> consequence of that, you might have to call `flushPromises` multiple times to
-> get your components to your desired state. You can accomplish the exact same
-> behavior with `wait` as you had with `flushPromises` by calling `wait` with
-> no arguments: `await wait()`
-
-This is a simple utility that's useful for when your component is doing some
-async work that you've mocked out, but you still need to wait until the next
-tick of the event loop before you can continue your assertions. It simply
-returns a promise that resolves in a `setImmediate`. Especially useful when
-you make your test function an `async` function and use
-`await flushPromises()`.
 
 ## Other Solutions
 

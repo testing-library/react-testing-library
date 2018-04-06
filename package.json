@@ -19,13 +19,24 @@
   },
   "files": [
     "dist",
-    "typings",
-    "extend-expect.js"
+    "typings"
   ],
-  "keywords": [],
+  "keywords": [
+    "testing",
+    "react",
+    "ui",
+    "dom",
+    "jsdom",
+    "unit",
+    "integration",
+    "functional",
+    "end-to-end",
+    "e2e"
+  ],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
+    "dom-testing-library": "^1.0.0",
     "wait-for-expect": "0.4.0"
   },
   "devDependencies": {

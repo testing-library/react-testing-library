@@ -1,4 +1,9 @@
 <!--
+HI! PLEASE STOP TO READ THIS!! If you're issue is regarding one of the query
+APIs (`getByText`, `getByLabelText`, etc), then please file it on the
+`dom-testing-library` repository instead. If you file it here it will be closed.
+Thanks :)
+
 Thanks for your interest in the project. I appreciate bugs filed and PRs submitted!
 Please make sure that you are familiar with and follow the Code of Conduct for
 this project (found in the CODE_OF_CONDUCT.md file).
