@@ -52,6 +52,9 @@ function getAttributeComment(name, value) {
 
 const extensions = {
   toBeInTheDOM(received) {
+    if (received) {
+      checkHtmlElement(received)
+    }
     return {
       pass: !!received,
       message: () => {
