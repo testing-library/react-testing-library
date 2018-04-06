@@ -1,7 +1,6 @@
 //eslint-disable-next-line import/no-extraneous-dependencies
 import {
   matcherHint,
-  printReceived,
   printExpected,
   stringify,
   RECEIVED_COLOR as receivedColor,
@@ -27,9 +26,19 @@ function checkHtmlElement(htmlElement) {
   }
 }
 
-const assertMessage = (assertionName, message, received, expected) =>
-  `${matcherHint(`${assertionName}`, 'received', '')} \n${message}: ` +
-  `${printExpected(expected)} \nReceived: ${printReceived(received)}`
+function getMessage(
+  matcher,
+  expectedLabel,
+  expectedValue,
+  receivedLabel,
+  receivedValue,
+) {
+  return [
+    `${matcher}\n`,
+    `${expectedLabel}:\n  ${expectedColor(expectedValue)}`,
+    `${receivedLabel}:\n  ${receivedColor(receivedValue)}`,
+  ].join('\n')
+}
 
 function printAttribute(name, value) {
   return value === undefined ? name : `${name}=${stringify(value)}`
@@ -43,58 +52,47 @@ function getAttributeComment(name, value) {
 
 const extensions = {
   toBeInTheDOM(received) {
-    getDisplayName(received)
     if (received) {
-      return {
-        message: () =>
-          `${matcherHint(
-            '.not.toBeInTheDOM',
-            'received',
+      checkHtmlElement(received)
+    }
+    return {
+      pass: !!received,
+      message: () => {
+        const to = this.isNot ? 'not to' : 'to'
+        return getMessage(
+          matcherHint(
+            `${this.isNot ? '.not' : ''}.toBeInTheDOM`,
+            'element',
             '',
-          )} Expected the element not to be present` +
-          `\nReceived : ${printReceived(received)}`,
-        pass: true,
-      }
-    } else {
-      return {
-        message: () =>
-          `${matcherHint(
-            '.toBeInTheDOM',
-            'received',
-            '',
-          )} Expected the element to be present` +
-          `\nReceived : ${printReceived(received)}`,
-        pass: false,
-      }
+          ),
+          'Expected',
+          `element ${to} be present`,
+          'Received',
+          received,
+        )
+      },
     }
   },
 
   toHaveTextContent(htmlElement, checkWith) {
     checkHtmlElement(htmlElement)
     const textContent = htmlElement.textContent
-    const pass = matches(textContent, htmlElement, checkWith)
-    if (pass) {
-      return {
-        message: () =>
-          assertMessage(
-            '.not.toHaveTextContent',
-            'Expected value not equals to',
-            htmlElement,
-            checkWith,
+    return {
+      pass: matches(textContent, htmlElement, checkWith),
+      message: () => {
+        const to = this.isNot ? 'not to' : 'to'
+        return getMessage(
+          matcherHint(
+            `${this.isNot ? '.not' : ''}.toHaveTextContent`,
+            'element',
+            '',
           ),
-        pass: true,
-      }
-    } else {
-      return {
-        message: () =>
-          assertMessage(
-            '.toHaveTextContent',
-            'Expected value equals to',
-            htmlElement,
-            checkWith,
-          ),
-        pass: false,
-      }
+          `Expected element ${to} have text content`,
+          checkWith,
+          'Received',
+          textContent,
+        )
+      },
     }
   },
 
@@ -109,14 +107,9 @@ const extensions = {
         : hasAttribute,
       message: () => {
         const to = this.isNot ? 'not to' : 'to'
-        const receivedAttribute = receivedColor(
-          hasAttribute
-            ? printAttribute(name, receivedValue)
-            : 'attribute was not found',
-        )
-        const expectedMsg = `Expected the element ${to} have attribute:\n  ${expectedColor(
-          printAttribute(name, expectedValue),
-        )}`
+        const receivedAttribute = hasAttribute
+          ? printAttribute(name, receivedValue)
+          : null
         const matcher = matcherHint(
           `${this.isNot ? '.not' : ''}.toHaveAttribute`,
           'element',
@@ -128,7 +121,13 @@ const extensions = {
             comment: getAttributeComment(name, expectedValue),
           },
         )
-        return `${matcher}\n\n${expectedMsg}\nReceived:\n  ${receivedAttribute}`
+        return getMessage(
+          matcher,
+          `Expected the element ${to} have attribute`,
+          printAttribute(name, expectedValue),
+          'Received',
+          receivedAttribute,
+        )
       },
     }
   },

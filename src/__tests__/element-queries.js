@@ -115,6 +115,10 @@ test('using jest helpers to assert element states', () => {
   expect(() =>
     expect(queryByTestId('count-value')).not.toHaveTextContent('2'),
   ).toThrowError()
+
+  expect(() =>
+    expect({thisIsNot: 'an html element'}).toBeInTheDOM(),
+  ).toThrowError()
 })
 
 test('using jest helpers to check element attributes', () => {
