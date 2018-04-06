@@ -71,29 +71,30 @@ facilitate testing implementation details). Read more about this in
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [Installation](#installation)
-- [Usage](#usage)
-  - [`render`](#render)
-  - [`Simulate`](#simulate)
-  - [`wait`](#wait)
-- [Custom Jest Matchers](#custom-jest-matchers)
-  - [`toBeInTheDOM`](#tobeinthedom)
-  - [`toHaveTextContent`](#tohavetextcontent)
-  - [`toHaveAttribute`](#tohaveattribute)
-  - [Custom Jest Matchers - Typescript](#custom-jest-matchers---typescript)
-- [`TextMatch`](#textmatch)
-- [`query` APIs](#query-apis)
-- [Examples](#examples)
-- [FAQ](#faq)
-- [Deprecated APIs](#deprecated-apis)
-  - [`flushPromises`](#flushpromises)
-- [Other Solutions](#other-solutions)
-- [Guiding Principles](#guiding-principles)
-- [Contributors](#contributors)
-- [LICENSE](#license)
+* [Installation](#installation)
+* [Usage](#usage)
+  * [`render`](#render)
+  * [`Simulate`](#simulate)
+  * [`wait`](#wait)
+* [Custom Jest Matchers](#custom-jest-matchers)
+  * [`toBeInTheDOM`](#tobeinthedom)
+  * [`toHaveTextContent`](#tohavetextcontent)
+  * [`toHaveAttribute`](#tohaveattribute)
+  * [Custom Jest Matchers - Typescript](#custom-jest-matchers---typescript)
+* [`TextMatch`](#textmatch)
+* [`query` APIs](#query-apis)
+* [Examples](#examples)
+* [Debugging](#debugging)
+* [FAQ](#faq)
+* [Deprecated APIs](#deprecated-apis)
+  * [`flushPromises`](#flushpromises)
+* [Other Solutions](#other-solutions)
+* [Guiding Principles](#guiding-principles)
+* [Contributors](#contributors)
+* [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -449,6 +450,41 @@ Some included are:
 
 Feel free to contribute more!
 
+## Debugging
+
+When you use any `get` calls in your test cases, the current state of the `container` (DOM) gets printed on the console.
+For example:
+
+```javascript
+const Hello = () => {
+  return (
+    <div data-testid="debugging" data-otherid="debugging">
+      Hello World!
+    </div>
+  )
+}
+
+expect(getByText('Test value.')).toBeInTheDOM() // will fail by throwing error
+```
+
+The above test case will fail, however it prints the state of your DOM under test, so you will get to see:
+
+```
+Unable to find an element with the text: Test value.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+Here is the state of your container:
+<div>
+	<div
+		data-otherid="debugging"
+		data-testid="debugging"
+	>
+		Hello World!
+	</div>
+</div>
+```
+
+Note: Since the DOM size can go really large, you can set the limit of DOM content to be printed via environment variable `DEBUG_PRINT_LIMIT`.
+The default value is `7000`. You will see `. . .` in the console, when the DOM content is stripped off, because of the length you have set.
+
 ## FAQ
 
 <details>
@@ -739,10 +775,12 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/498274?v=4" width="100px;"/><br /><sub><b>Ivan Babak</b></sub>](https://sompylasar.github.io)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Asompylasar "Bug reports") [🤔](#ideas-sompylasar "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/4439618?v=4" width="100px;"/><br /><sub><b>Jesse Day</b></sub>](https://github.com/jday3)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jday3 "Code") | [<img src="https://avatars0.githubusercontent.com/u/15199?v=4" width="100px;"/><br /><sub><b>Ernesto García</b></sub>](http://gnapse.github.io)<br />[💬](#question-gnapse "Answering Questions") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Documentation") |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.

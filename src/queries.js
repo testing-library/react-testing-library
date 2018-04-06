@@ -1,8 +1,6 @@
 import {matches} from './utils'
-import prettyFormat from 'pretty-format'; // eslint-disable-line
-const {DOMElement} = prettyFormat.plugins;
-
-
+import prettyFormat from 'pretty-format' // eslint-disable-line
+const {DOMElement} = prettyFormat.plugins
 
 // Here are the queries for the library.
 // The queries here should only be things that are accessible to both users who are using a screen reader
@@ -82,7 +80,16 @@ function getText(node) {
 function getByTestId(container, id, ...rest) {
   const el = queryByTestId(container, id, ...rest)
   if (!el) {
-    throw new Error(`Unable to find an element by: [data-testid="${id}"]`)
+    const htmlElement = checkDebugLimit(
+      prettyFormat(container, {
+        plugins: [DOMElement],
+        printFunctionName: false,
+        highlight: true,
+      }),
+    )
+    throw new Error(
+      `Unable to find an element by: [data-testid="${id}"] \nHere is the state of your container: \n${htmlElement}`,
+    )
   }
   return el
 }
@@ -90,8 +97,15 @@ function getByTestId(container, id, ...rest) {
 function getByPlaceholderText(container, text, ...rest) {
   const el = queryByPlaceholderText(container, text, ...rest)
   if (!el) {
+    const htmlElement = checkDebugLimit(
+      prettyFormat(container, {
+        plugins: [DOMElement],
+        printFunctionName: false,
+        highlight: true,
+      }),
+    )
     throw new Error(
-      `Unable to find an element with the placeholder text of: ${text}`,
+      `Unable to find an element with the placeholder text of: ${text} \nHere is the state of your container: \n${htmlElement}`,
     )
   }
   return el
@@ -101,12 +115,22 @@ function getByLabelText(container, text, ...rest) {
   const el = queryByLabelText(container, text, ...rest)
   if (!el) {
     const label = queryLabelByText(container, text)
+    const htmlElement = checkDebugLimit(
+      prettyFormat(container, {
+        plugins: [DOMElement],
+        printFunctionName: false,
+        highlight: true,
+      }),
+    )
     if (label) {
       throw new Error(
-        `Found a label with the text of: ${text}, however no form control was found associated to that label. Make sure you're using the "for" attribute or "aria-labelledby" attribute correctly.`,
+        `Found a label with the text of: ${text}, however no form control was found associated to that label. Make sure you're using the "for" attribute or "aria-labelledby" attribute correctly.` +
+          `\nHere is the state of your container:\n${htmlElement}`,
       )
     } else {
-      throw new Error(`Unable to find a label with the text of: ${text}`)
+      throw new Error(
+        `Unable to find a label with the text of: ${text}\nHere is the state of your container:\n${htmlElement}`,
+      )
     }
   }
   return el
@@ -115,14 +139,16 @@ function getByLabelText(container, text, ...rest) {
 function getByText(container, text, ...rest) {
   const el = queryByText(container, text, ...rest)
   if (!el) {
-    const htmlElement = prettyFormat(container, {
-      plugins: [DOMElement],
-      printFunctionName: false,
-      highlight: true
-    });
+    const htmlElement = checkDebugLimit(
+      prettyFormat(container, {
+        plugins: [DOMElement],
+        printFunctionName: false,
+        highlight: true,
+      }),
+    )
     throw new Error(
-      `Unable to find an element with the text: ${text}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.`
-       + `\nHere is the state of your container: \n${htmlElement}`,
+      `Unable to find an element with the text: ${text}. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.` +
+        `\nHere is the state of your container: \n${htmlElement}`,
     )
   }
   return el
@@ -139,9 +165,38 @@ function queryByAltText(container, alt) {
 function getByAltText(container, alt) {
   const el = queryByAltText(container, alt)
   if (!el) {
-    throw new Error(`Unable to find an element with the alt text: ${alt}`)
+    const htmlElement = checkDebugLimit(
+      prettyFormat(container, {
+        plugins: [DOMElement],
+        printFunctionName: false,
+        highlight: true,
+      }),
+    )
+    throw new Error(
+      `Unable to find an element with the alt text: ${alt} \nHere is the state of your container: \n${htmlElement}`,
+    )
   }
   return el
+}
+
+function checkDebugLimit(debugContent) {
+  const limit = process.env.DEBUG_PRINT_LIMIT
+  if (limit) {
+    const contentLength = debugContent.length
+    debugContent = debugContent.slice(0, limit)
+    if (limit <= contentLength)
+      // there are more chars we have stripped, just show to the user
+      debugContent += '\n . . .'
+  } else {
+    // default limit is 7000
+    const contentLength = debugContent.length
+    debugContent = debugContent.slice(0, 7000)
+    if (contentLength >= 7000)
+      // there are more chars we have stripped, just show to the user
+      debugContent += '\n . . .'
+  }
+
+  return debugContent
 }
 
 export {

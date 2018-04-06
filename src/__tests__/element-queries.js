@@ -147,15 +147,41 @@ test('using jest helpers to check element attributes', () => {
   ).toThrowError()
 })
 
-
 test('test the debug helper prints the dom state here', () => {
-
-  const Hello = () => {
-      return <div data-testid="debugging" data-otherid="debugging">Hello World!</div>;
+  const Large = () => {
+    return (
+      <div>
+        {Array.from({length: 7000}, (v, key) => key).map(key => {
+          return (
+            <div key={key} data-testid="debugging" data-otherid="debugging">
+              Hello World!
+            </div>
+          )
+        })}
+      </div>
+    )
   }
 
-  const {getByText} = render(<Hello />)
-  expect(getByText('Test value.')).toBeInTheDOM()
+  const {getByText} = render(<Large />) // render large DOM which exceeds 7000 limit
+  expect(() => expect(getByText('not present')).toBeInTheDOM()).toThrowError()
+
+  const Hello = () => {
+    return (
+      <div data-testid="debugging" data-otherid="debugging">
+        Hello World!
+      </div>
+    )
+  }
+
+  const {getByTestId} = render(<Hello />)
+  process.env.DEBUG_PRINT_LIMIT = 10 // user should see `. . .`
+  expect(() => expect(getByTestId('not present')).toBeInTheDOM()).toThrowError()
+
+  const {getByLabelText} = render(<Hello />)
+  process.env.DEBUG_PRINT_LIMIT = 10000 // user shouldn't see `. . .`
+  expect(() =>
+    expect(getByLabelText('not present')).toBeInTheDOM(),
+  ).toThrowError()
 })
 
 /* eslint jsx-a11y/label-has-for:0 */
