@@ -1,15 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`get throws a useful error message 1`] = `"Unable to find a label with the text of: LucyRicardo"`;
+exports[`get throws a useful error message 1`] = `
+"Unable to find a label with the text of: LucyRicardo
+Here is the state of your container:
+[36m<div>[39m
+  [36m<div />[39m
+[36m</div>[39m"
+`;
 
-exports[`get throws a useful error message 2`] = `"Unable to find an element with the placeholder text of: LucyRicardo"`;
+exports[`get throws a useful error message 2`] = `
+"Unable to find an element with the placeholder text of: LucyRicardo 
+Here is the state of your container: 
+[36m<div>[39m
+  [36m<div />[39m
+[36m</div>[39m"
+`;
 
-exports[`get throws a useful error message 3`] = `"Unable to find an element with the text: LucyRicardo. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible."`;
+exports[`get throws a useful error message 3`] = `
+"Unable to find an element with the text: LucyRicardo. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+Here is the state of your container: 
+[36m<div>[39m
+  [36m<div />[39m
+[36m</div>[39m"
+`;
 
-exports[`get throws a useful error message 4`] = `"Unable to find an element by: [data-testid=\\"LucyRicardo\\"]"`;
+exports[`get throws a useful error message 4`] = `
+"Unable to find an element by: [data-testid=\\"LucyRicardo\\"] 
+Here is the state of your container: 
+[36m<div>[39m
+  [36m<div />[39m
+[36m</div>[39m"
+`;
 
-exports[`get throws a useful error message 5`] = `"Unable to find an element with the alt text: LucyRicardo"`;
+exports[`get throws a useful error message 5`] = `
+"Unable to find an element with the alt text: LucyRicardo 
+Here is the state of your container: 
+[36m<div>[39m
+  [36m<div />[39m
+[36m</div>[39m"
+`;
 
-exports[`label with no form control 1`] = `"Found a label with the text of: alone, however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly."`;
+exports[`label with no form control 1`] = `
+"Found a label with the text of: alone, however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly.
+Here is the state of your container:
+[36m<div>[39m
+  [36m<label>[39m
+    [0mAll alone[0m
+  [36m</label>[39m
+[36m</div>[39m"
+`;
 
-exports[`totally empty label 1`] = `"Found a label with the text of: , however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly."`;
+exports[`totally empty label 1`] = `
+"Found a label with the text of: , however no form control was found associated to that label. Make sure you're using the \\"for\\" attribute or \\"aria-labelledby\\" attribute correctly.
+Here is the state of your container:
+[36m<div>[39m
+  [36m<label />[39m
+[36m</div>[39m"
+`;

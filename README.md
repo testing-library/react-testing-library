@@ -87,6 +87,7 @@ facilitate testing implementation details). Read more about this in
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
+* [Debugging](#debugging)
 * [FAQ](#faq)
 * [Deprecated APIs](#deprecated-apis)
   * [`flushPromises`](#flushpromises)
@@ -448,6 +449,41 @@ Some included are:
 * [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-router.js)
 
 Feel free to contribute more!
+
+## Debugging
+
+When you use any `get` calls in your test cases, the current state of the `container` (DOM) gets printed on the console.
+For example:
+
+```javascript
+const Hello = () => {
+  return (
+    <div data-testid="debugging" data-otherid="debugging">
+      Hello World!
+    </div>
+  )
+}
+
+expect(getByText('Test value.')).toBeInTheDOM() // will fail by throwing error
+```
+
+The above test case will fail, however it prints the state of your DOM under test, so you will get to see:
+
+```
+Unable to find an element with the text: Test value.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+Here is the state of your container:
+<div>
+	<div
+		data-otherid="debugging"
+		data-testid="debugging"
+	>
+		Hello World!
+	</div>
+</div>
+```
+
+Note: Since the DOM size can go really large, you can set the limit of DOM content to be printed via environment variable `DEBUG_PRINT_LIMIT`.
+The default value is `7000`. You will see `. . .` in the console, when the DOM content is stripped off, because of the length you have set.
 
 ## FAQ
 
