@@ -19,7 +19,7 @@ function queryLabelByText(container, text) {
 function queryByLabelText(container, text, {selector = '*'} = {}) {
   const label = queryLabelByText(container, text)
   if (!label) {
-    return null
+    return queryByAttribute('aria-label', container, text)
   }
   /* istanbul ignore if */
   if (label.control) {
@@ -50,22 +50,21 @@ function queryByText(container, text, {selector = '*'} = {}) {
   )
 }
 
-function queryByPlaceholderText(container, text) {
+// this is just a utility and not an exposed query.
+// There are no plans to expose this.
+function queryByAttribute(attribute, container, text) {
   return (
-    Array.from(container.querySelectorAll('[placeholder]')).find(node =>
-      matches(node.getAttribute('placeholder'), node, text),
+    Array.from(container.querySelectorAll(`[${attribute}]`)).find(node =>
+      matches(node.getAttribute(attribute), node, text),
     ) || null
   )
 }
 
-function queryByTestId(container, id) {
-  return container.querySelector(getDataTestIdSelector(id))
-}
+const queryByPlaceholderText = queryByAttribute.bind(null, 'placeholder')
+const queryByTestId = queryByAttribute.bind(null, 'data-testid')
 
-function getDataTestIdSelector(id) {
-  return `[data-testid="${id}"]`
-}
-
+// this is just a utility and not an exposed query.
+// There are no plans to expose this.
 function getText(node) {
   return Array.from(node.childNodes)
     .filter(
@@ -83,9 +82,7 @@ function getText(node) {
 function getByTestId(container, id, ...rest) {
   const el = queryByTestId(container, id, ...rest)
   if (!el) {
-    throw new Error(
-      `Unable to find an element by: ${getDataTestIdSelector(id)}`,
-    )
+    throw new Error(`Unable to find an element by: [data-testid="${id}"]`)
   }
   return el
 }

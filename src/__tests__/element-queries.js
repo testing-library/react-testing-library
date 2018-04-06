@@ -74,6 +74,12 @@ test('totally empty label', () => {
   expect(() => getByLabelText('')).toThrowErrorMatchingSnapshot()
 })
 
+test('getByLabelText with aria-label', () => {
+  // not recommended normally, but supported for completeness
+  const {queryByLabelText} = render(<input aria-label="batman" />)
+  expect(queryByLabelText('bat')).toBeInTheDOM()
+})
+
 test('get element by its alt text', () => {
   const {getByAltText} = render(
     <div>
@@ -108,6 +114,36 @@ test('using jest helpers to assert element states', () => {
   ).toThrowError()
   expect(() =>
     expect(queryByTestId('count-value')).not.toHaveTextContent('2'),
+  ).toThrowError()
+})
+
+test('using jest helpers to check element attributes', () => {
+  const {queryByTestId} = render(
+    <button data-testid="ok-button" type="submit" disabled>
+      OK
+    </button>,
+  )
+
+  expect(queryByTestId('ok-button')).toHaveAttribute('disabled')
+  expect(queryByTestId('ok-button')).toHaveAttribute('type')
+  expect(queryByTestId('ok-button')).not.toHaveAttribute('class')
+  expect(queryByTestId('ok-button')).toHaveAttribute('type', 'submit')
+  expect(queryByTestId('ok-button')).not.toHaveAttribute('type', 'button')
+
+  expect(() =>
+    expect(queryByTestId('ok-button')).not.toHaveAttribute('disabled'),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('ok-button')).not.toHaveAttribute('type'),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('ok-button')).toHaveAttribute('class'),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('ok-button')).not.toHaveAttribute('type', 'submit'),
+  ).toThrowError()
+  expect(() =>
+    expect(queryByTestId('ok-button')).toHaveAttribute('type', 'button'),
   ).toThrowError()
 })
 
