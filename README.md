@@ -347,7 +347,7 @@ React attaches an event handler on the `document` and handles some DOM events vi
 import { renderIntoDocument, clearDocument, render, fireEvent }
 
 // don't forget to clean up the document.body
-afterEach(clearDocument)
+beforeEach(clearDocument)
 
 test('clicks submit button', () => {
   const spy = jest.fn();
@@ -378,7 +378,7 @@ for a full list as well as default `eventProperties`.
 import { renderIntoDocument, clearDocument, render, fireEvent }
 
 // don't forget to clean up the document.body
-afterEach(clearDocument)
+beforeEach(clearDocument)
 
 test('right clicks submit button', () => {
   const spy = jest.fn();
