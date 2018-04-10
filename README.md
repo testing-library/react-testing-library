@@ -82,7 +82,7 @@ facilitate testing implementation details). Read more about this in
 * [Usage](#usage)
   * [`render`](#render)
   * [`renderIntoDocument`](#renderintodocument)
-  * [`clearDocument`](#cleardocument)
+  * [`cleanup`](#cleanup)
   * [`Simulate`](#simulate)
   * [`wait`](#wait)
   * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
@@ -269,18 +269,18 @@ const usernameInputElement = getByTestId('username-input')
 
 ### `renderIntoDocument`
 
-Render into `document.body`. Should be used with [clearDocument](#cleardocument)
+Render into `document.body`. Should be used with [cleanup](#cleanup)
 
 ```javascript
 renderIntoDocument(<div>)
 ```
 
-### `clearDocument`
+### `cleanup`
 
-Clears the `document.body`. Good for preventing memory leaks. Should be used with [renderIntoDocument](#renderintodocument)
+Unmounts React trees that were mounted with [renderIntoDocument](#renderintodocument).
 
 ```javascript
-afterEach(clearDocument)
+beforeEach(cleanup)
 
 test('renders into document', () => {
   renderIntoDocument(<div>)
@@ -344,10 +344,10 @@ Fire DOM events.
 React attaches an event handler on the `document` and handles some DOM events via event delegation (events bubbling up from a `target` to an ancestor). Because of this, your `node` must be in the `document.body` for `fireEvent` to work with React. You can render into the document using the [renderIntoDocument](#renderintodocument) utility. This is an alternative to simulating Synthetic React Events via [Simulate](#simulate). The benefit of using `fireEvent` over `Simulate` is that you are testing real DOM events instead of Synthetic Events. This aligns better with [the Guiding Principles](#guiding-principles).
 
 ```javascript
-import { renderIntoDocument, clearDocument, render, fireEvent }
+import { renderIntoDocument, cleanup, render, fireEvent }
 
 // don't forget to clean up the document.body
-beforeEach(clearDocument)
+beforeEach(cleanup)
 
 test('clicks submit button', () => {
   const spy = jest.fn();
@@ -361,9 +361,6 @@ test('clicks submit button', () => {
     })
   )
 
-  // don't forget to unmount component so componentWillUnmount can clean up subscriptions
-  unmount();
-
   expect(spy).toHaveBeenCalledTimes(1);
 });
 ```
@@ -375,10 +372,10 @@ Convenience methods for firing DOM events. Check out
 for a full list as well as default `eventProperties`.
 
 ```javascript
-import { renderIntoDocument, clearDocument, render, fireEvent }
+import { renderIntoDocument, cleanup, render, fireEvent }
 
 // don't forget to clean up the document.body
-beforeEach(clearDocument)
+beforeEach(cleanup)
 
 test('right clicks submit button', () => {
   const spy = jest.fn();
@@ -389,9 +386,6 @@ test('right clicks submit button', () => {
   const rightClick = {button: 2}
   fireEvent.click(getElementByText('Submit'), rightClick)
   // default `button` property for click events is set to `0` which is a left click.
-
-  // don't forget to unmount component so componentWillUnmount can clean up subscriptions
-  unmount();
 
   expect(spy).toHaveBeenCalledTimes(1);
 });

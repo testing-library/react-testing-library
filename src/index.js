@@ -18,14 +18,20 @@ function render(ui, {container = document.createElement('div')} = {}) {
   }
 }
 
+const mountedContainers = new Set()
+
 function renderIntoDocument(ui) {
-  return render(ui, {
-    container: document.body.appendChild(document.createElement('div')),
-  })
+  const container = document.body.appendChild(document.createElement('div'))
+  mountedContainers.add(container)
+  return render(ui, {container})
 }
 
-function clearDocument() {
-  document.body.innerHTML = ''
+function cleanup() {
+  mountedContainers.forEach(container => {
+    document.body.removeChild(container)
+    ReactDOM.unmountComponentAtNode(container)
+    mountedContainers.delete(container)
+  })
 }
 
 // fallback to synthetic events for React events that the DOM doesn't support
@@ -36,4 +42,4 @@ syntheticEvents.forEach(eventName => {
   })
 })
 
-export {render, Simulate, wait, fireEvent, renderIntoDocument, clearDocument}
+export {render, Simulate, wait, fireEvent, renderIntoDocument, cleanup}

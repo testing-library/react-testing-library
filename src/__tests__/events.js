@@ -1,5 +1,5 @@
 import React from 'react'
-import {renderIntoDocument, clearDocument, fireEvent} from '../'
+import {renderIntoDocument, cleanup, fireEvent} from '../'
 
 const eventTypes = [
   {
@@ -128,7 +128,7 @@ const eventTypes = [
   },
 ]
 
-afterEach(clearDocument)
+beforeEach(cleanup)
 
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {
