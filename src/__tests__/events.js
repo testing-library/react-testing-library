@@ -128,7 +128,7 @@ const eventTypes = [
   },
 ]
 
-beforeEach(cleanup)
+afterEach(cleanup)
 
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {

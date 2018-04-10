@@ -1,7 +1,7 @@
 import React from 'react'
 import {renderIntoDocument, cleanup} from '../'
 
-beforeEach(cleanup)
+afterEach(cleanup)
 
 it('renders button into document', () => {
   const ref = React.createRef()
