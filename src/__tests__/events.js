@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '../'
+import {renderIntoDocument, clearDocument, fireEvent} from '../'
 
 const eventTypes = [
   {
@@ -128,9 +128,7 @@ const eventTypes = [
   },
 ]
 
-afterEach(() => {
-  document.body.innerHTML = ''
-})
+afterEach(clearDocument)
 
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {
@@ -140,19 +138,17 @@ eventTypes.forEach(({type, events, elementType, init}) => {
       )}`
 
       it(`triggers ${propName}`, () => {
-        let node
+        const ref = React.createRef()
         const spy = jest.fn()
 
-        render(
+        renderIntoDocument(
           React.createElement(elementType, {
             [propName]: spy,
-            ref: el => (node = el),
+            ref,
           }),
-          {
-            container: document.body.appendChild(document.createElement('div')),
-          },
         )
-        fireEvent[eventName](node, init)
+
+        fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
       })
     })

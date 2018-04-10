@@ -18,6 +18,16 @@ function render(ui, {container = document.createElement('div')} = {}) {
   }
 }
 
+function renderIntoDocument(ui) {
+  return render(ui, {
+    container: document.body.appendChild(document.createElement('div')),
+  })
+}
+
+function clearDocument() {
+  document.body.innerHTML = ''
+}
+
 // fallback to synthetic events for DOM events that React doesn't handle
 const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
 syntheticEvents.forEach(eventName => {
@@ -26,4 +36,4 @@ syntheticEvents.forEach(eventName => {
   })
 })
 
-export {render, Simulate, wait, fireEvent}
+export {render, Simulate, wait, fireEvent, renderIntoDocument, clearDocument}
