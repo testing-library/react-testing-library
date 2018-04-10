@@ -137,6 +137,17 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "jomaxx",
+      "name": "Josef Maxx Blake",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2747424?v=4",
+      "profile": "http://jomaxx.com",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ]
 }
