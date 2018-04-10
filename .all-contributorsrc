@@ -158,6 +158,15 @@
         "blog",
         "tutorial"
       ]
+    },
+    {
+      "login": "aputhin",
+      "name": "Arthur Puthin",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/13985684?v=4",
+      "profile": "https://github.com/aputhin",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
