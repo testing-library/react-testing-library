@@ -362,21 +362,28 @@ instead of Synthetic Events. This aligns better with
 > [facebook/react#2043](https://github.com/facebook/react/issues/2043)
 
 ```javascript
-import { renderIntoDocument, cleanup, render, fireEvent }
+import {
+  renderIntoDocument,
+  cleanup,
+  render,
+  fireEvent,
+} from 'react-testing-library'
 
 // don't forget to clean up the document.body
 afterEach(cleanup)
 
 test('clicks submit button', () => {
   const spy = jest.fn()
-  const { unmount, getByText } = renderIntoDocument(<button onClick={spy}>Submit</button>)
+  const {unmount, getByText} = renderIntoDocument(
+    <button onClick={spy}>Submit</button>,
+  )
 
   fireEvent(
     getByText('Submit'),
     new MouseEvent('click', {
       bubbles: true, // click events must bubble for React to see it
       cancelable: true,
-    })
+    }),
   )
 
   expect(spy).toHaveBeenCalledTimes(1)
