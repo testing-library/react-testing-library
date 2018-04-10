@@ -2,10 +2,7 @@ import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
 import {queries, wait, fireEvent} from 'dom-testing-library'
 
-function render(
-  ui,
-  {container = document.body.appendChild(document.createElement('div'))} = {},
-) {
+function render(ui, {container = document.createElement('div')} = {}) {
   ReactDOM.render(ui, container)
   const containerHelpers = Object.entries(queries).reduce(
     (helpers, [key, fn]) => {
@@ -22,8 +19,9 @@ function render(
 }
 
 // fallback to synthetic events for DOM events that React doesn't handle
-;['change', 'select', 'mouseEnter', 'mouseLeave'].forEach(eventName => {
-  window.addEventListener(eventName.toLowerCase(), e => {
+const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
+syntheticEvents.forEach(eventName => {
+  document.addEventListener(eventName.toLowerCase(), e => {
     Simulate[eventName](e.target, e)
   })
 })

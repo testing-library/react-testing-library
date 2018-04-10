@@ -128,6 +128,10 @@ const eventTypes = [
   },
 ]
 
+afterEach(() => {
+  document.body.innerHTML = ''
+})
+
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {
     events.forEach(eventName => {
@@ -144,6 +148,9 @@ eventTypes.forEach(({type, events, elementType, init}) => {
             [propName]: spy,
             ref: el => (node = el),
           }),
+          {
+            container: document.body.appendChild(document.createElement('div')),
+          },
         )
         fireEvent[eventName](node, init)
         expect(spy).toHaveBeenCalledTimes(1)
