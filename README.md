@@ -368,7 +368,7 @@ test('clicks submit button', () => {
 });
 ```
 
-#### `fireEvent[eventName](node: HTMLElement, eventInit)`
+#### `fireEvent[eventName](node: HTMLElement, eventProperties: Object)`
 
 Convenience methods for firing DOM events. Check out
 [dom-testing-library/src/events.js](https://github.com/kentcdodds/dom-testing-library/blob/master/src/events.js)
