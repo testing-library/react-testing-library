@@ -288,6 +288,10 @@ test('renders into document', () => {
 })
 ```
 
+Failing to call `cleanup` when you've called `renderIntoDocument` could
+result in a memory leak and tests which are not `idempotent` (which can
+lead to difficult to debug errors in your tests).
+
 ### `Simulate`
 
 This is simply a re-export from the `Simulate` utility from
@@ -341,7 +345,21 @@ intervals.
 
 Fire DOM events.
 
-React attaches an event handler on the `document` and handles some DOM events via event delegation (events bubbling up from a `target` to an ancestor). Because of this, your `node` must be in the `document.body` for `fireEvent` to work with React. You can render into the document using the [renderIntoDocument](#renderintodocument) utility. This is an alternative to simulating Synthetic React Events via [Simulate](#simulate). The benefit of using `fireEvent` over `Simulate` is that you are testing real DOM events instead of Synthetic Events. This aligns better with [the Guiding Principles](#guiding-principles).
+React attaches an event handler on the `document` and handles some DOM events
+via event delegation (events bubbling up from a `target` to an ancestor). Because
+of this, your `node` must be in the `document.body` for `fireEvent` to work with
+React. You can render into the document using the
+[renderIntoDocument](#renderintodocument) utility. This is an alternative to
+simulating Synthetic React Events via [Simulate](#simulate). The benefit of
+using `fireEvent` over `Simulate` is that you are testing real DOM events
+instead of Synthetic Events. This aligns better with
+[the Guiding Principles](#guiding-principles).
+
+> NOTE: If you don't like having to render into the document to get `fireEvent`
+> working, then feel free to try to chip into making it possible for React
+> to attach event handlers to the rendered node rather than the `document`.
+> Learn more here:
+> [facebook/react#2043](https://github.com/facebook/react/issues/2043)
 
 ```javascript
 import { renderIntoDocument, cleanup, render, fireEvent }
@@ -361,8 +379,8 @@ test('clicks submit button', () => {
     })
   )
 
-  expect(spy).toHaveBeenCalledTimes(1);
-});
+  expect(spy).toHaveBeenCalledTimes(1)
+})
 ```
 
 #### `fireEvent[eventName](node: HTMLElement, eventProperties: Object)`
@@ -372,23 +390,11 @@ Convenience methods for firing DOM events. Check out
 for a full list as well as default `eventProperties`.
 
 ```javascript
-import { renderIntoDocument, cleanup, render, fireEvent }
-
-// don't forget to clean up the document.body
-afterEach(cleanup)
-
-test('right clicks submit button', () => {
-  const spy = jest.fn();
-  const onClick = e => e.button === 2 && spy();
-  const { unmount, getByText } = renderIntoDocument(<button onClick={onClick}>Submit</button>)
-
-  // click will bubble for React to see it
-  const rightClick = {button: 2}
-  fireEvent.click(getElementByText('Submit'), rightClick)
-  // default `button` property for click events is set to `0` which is a left click.
-
-  expect(spy).toHaveBeenCalledTimes(1);
-});
+// similar to the above example
+// click will bubble for React to see it
+const rightClick = {button: 2}
+fireEvent.click(getElementByText('Submit'), rightClick)
+// default `button` property for click events is set to `0` which is a left click.
 ```
 
 ## `TextMatch`
