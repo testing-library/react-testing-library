@@ -81,6 +81,8 @@ facilitate testing implementation details). Read more about this in
 * [Installation](#installation)
 * [Usage](#usage)
   * [`render`](#render)
+  * [`renderIntoDocument`](#renderintodocument)
+  * [`clearDocument`](#cleardocument)
   * [`Simulate`](#simulate)
   * [`wait`](#wait)
   * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
@@ -265,6 +267,27 @@ const usernameInputElement = getByTestId('username-input')
 > Learn more about `data-testid`s from the blog post
 > ["Making your UI tests resilient to change"][data-testid-blog-post]
 
+### `renderIntoDocument`
+
+Render into `document.body`. Should be used with [clearDocument](#cleardocument)
+
+```javascript
+renderIntoDocument(<div>)
+```
+
+### `clearDocument`
+
+Clears the `document.body`. Good for preventing memory leaks. Should be used with [renderIntoDocument](#renderintodocument)
+
+```javascript
+afterEach(clearDocument)
+
+test('renders into document', () => {
+  renderIntoDocument(<div>)
+  // ...
+})
+```
+
 ### `Simulate`
 
 This is simply a re-export from the `Simulate` utility from
@@ -318,15 +341,31 @@ intervals.
 
 Fire DOM events.
 
+React attaches an event handler on the `document` and handles some DOM events via event delegation (events bubbling up from a `target` to an ancestor). Because of this, your `node` must be in the `document.body` for `fireEvent` to work with React. You can render into the document using the [renderIntoDocument](#renderintodocument) utility. This is an alternative to simulating Synthetic React Events via [Simulate](#simulate). The benefit of using `fireEvent` over `Simulate` is that you are testing real DOM events instead of Synthetic Events. This aligns better with [the Guiding Principles](#guiding-principles).
+
 ```javascript
-// <button>Submit</button>
-fireEvent(
-  getElementByText('Submit'),
-  new MouseEvent('click', {
-    bubbles: true,
-    cancelable: true,
-  }),
-)
+import { renderIntoDocument, clearDocument, render, fireEvent }
+
+// don't forget to clean up the document.body
+afterEach(clearDocument)
+
+test('clicks submit button', () => {
+  const spy = jest.fn();
+  const { unmount, getByText } render(<button onClick={spy}>Submit</button>)
+
+  fireEvent(
+    getByText('Submit'),
+    new MouseEvent('click', {
+      bubbles: true, // click events must bubble for React to see it
+      cancelable: true,
+    })
+  )
+
+  // don't forget to unmount component so componentWillUnmount can clean up subscriptions
+  unmount();
+
+  expect(spy).toHaveBeenCalledTimes(1);
+});
 ```
 
 #### `fireEvent[eventName](node: HTMLElement, eventInit)`
@@ -334,8 +373,23 @@ fireEvent(
 Convenience methods for firing DOM events. Look [here](./src/events.js) for full list.
 
 ```javascript
-// <button>Submit</button>
-fireEvent.click(getElementByText('Submit'))
+import { renderIntoDocument, clearDocument, render, fireEvent }
+
+// don't forget to clean up the document.body
+afterEach(clearDocument)
+
+test('clicks submit button', () => {
+  const spy = jest.fn();
+  const { unmount, getByText } render(<button onClick={spy}>Submit</button>)
+
+  // click will bubble for React to see it
+  fireEvent.click(getByText('Submit'))
+
+  // don't forget to unmount component so componentWillUnmount can clean up subscriptions
+  unmount();
+
+  expect(spy).toHaveBeenCalledTimes(1);
+});
 ```
 
 ## `TextMatch`
