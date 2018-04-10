@@ -83,6 +83,7 @@ facilitate testing implementation details). Read more about this in
   * [`render`](#render)
   * [`Simulate`](#simulate)
   * [`wait`](#wait)
+  * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
 * [Examples](#examples)
@@ -312,6 +313,30 @@ The default `timeout` is `4500ms` which will keep you under
 The default `interval` is `50ms`. However it will run your callback immediately
 on the next tick of the event loop (in a `setTimeout`) before starting the
 intervals.
+
+### `fireEvent(node: HTMLElement, event: Event)`
+
+Fire DOM events.
+
+```javascript
+// <button>Submit</button>
+fireEvent(
+  getElementByText('Submit'),
+  new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+  }),
+)
+```
+
+#### `fireEvent[eventName](node: HTMLElement, eventInit)`
+
+Convenience methods for firing DOM events. Look [here](./src/events.js) for full list.
+
+```javascript
+// <button>Submit</button>
+fireEvent.click(getElementByText('Submit'))
+```
 
 ## `TextMatch`
 
