@@ -351,7 +351,7 @@ afterEach(clearDocument)
 
 test('clicks submit button', () => {
   const spy = jest.fn();
-  const { unmount, getByText } = render(<button onClick={spy}>Submit</button>)
+  const { unmount, getByText } = renderIntoDocument(<button onClick={spy}>Submit</button>)
 
   fireEvent(
     getByText('Submit'),
@@ -383,7 +383,7 @@ afterEach(clearDocument)
 test('right clicks submit button', () => {
   const spy = jest.fn();
   const onClick = e => e.button === 2 && spy();
-  const { unmount, getByText } = render(<button onClick={onClick}>Submit</button>)
+  const { unmount, getByText } = renderIntoDocument(<button onClick={onClick}>Submit</button>)
 
   // click will bubble for React to see it
   const rightClick = {button: 2}
