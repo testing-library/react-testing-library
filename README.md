@@ -380,7 +380,7 @@ import { renderIntoDocument, clearDocument, render, fireEvent }
 // don't forget to clean up the document.body
 afterEach(clearDocument)
 
-test('clicks submit button', () => {
+test('right clicks submit button', () => {
   const spy = jest.fn();
   const onClick = e => e.button === 2 && spy();
   const { unmount, getByText } = render(<button onClick={onClick}>Submit</button>)
