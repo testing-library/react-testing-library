@@ -5,12 +5,12 @@ afterEach(clearDocument)
 
 it('renders button into document', () => {
   const ref = React.createRef()
-  renderIntoDocument(<div id="test" ref={ref} />)
-  expect(document.body.querySelector('#test')).toBe(ref.current)
+  const {container} = renderIntoDocument(<div ref={ref} />)
+  expect(container.firstChild).toBe(ref.current)
 })
 
 it('clears document body', () => {
-  renderIntoDocument(<div id="test" />)
+  renderIntoDocument(<div />)
   clearDocument()
   expect(document.body.innerHTML).toBe('')
 })

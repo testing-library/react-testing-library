@@ -28,7 +28,7 @@ function clearDocument() {
   document.body.innerHTML = ''
 }
 
-// fallback to synthetic events for DOM events that React doesn't handle
+// fallback to synthetic events for React events that the DOM doesn't support
 const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
 syntheticEvents.forEach(eventName => {
   document.addEventListener(eventName.toLowerCase(), e => {

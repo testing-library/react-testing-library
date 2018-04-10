@@ -370,7 +370,9 @@ test('clicks submit button', () => {
 
 #### `fireEvent[eventName](node: HTMLElement, eventInit)`
 
-Convenience methods for firing DOM events. Look [here](./src/events.js) for full list.
+Convenience methods for firing DOM events. Check out
+[dom-testing-library/src/events.js](https://github.com/kentcdodds/dom-testing-library/blob/master/src/events.js)
+for a full list as well as default `eventProperties`.
 
 ```javascript
 import { renderIntoDocument, clearDocument, render, fireEvent }
@@ -380,10 +382,12 @@ afterEach(clearDocument)
 
 test('clicks submit button', () => {
   const spy = jest.fn();
-  const { unmount, getByText } render(<button onClick={spy}>Submit</button>)
+  const { unmount, getByText } render(<button onClick={e => e.button === 2 && spy()}>Submit</button>)
 
   // click will bubble for React to see it
-  fireEvent.click(getByText('Submit'))
+  const rightClick = {button: 2}
+  fireEvent.click(getElementByText('Submit'), rightClick)
+  // default `button` property for click events is set to `0` which is a left click.
 
   // don't forget to unmount component so componentWillUnmount can clean up subscriptions
   unmount();
