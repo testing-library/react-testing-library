@@ -687,6 +687,27 @@ react components.
 
 </details>
 
+<details>
+
+<summary>Why isn't snapshot diffing working?</summary>
+
+If you use the
+[snapshot-diff](https://github.com/jest-community/snapshot-diff)
+library to save snapshot diffs, it won't work out of the box because
+this library uses the DOM which is mutable. Changes don't return new
+objects so snapshot-diff will think it's the same object and avoid diffing it.
+
+Luckily there's an easy to way to make it work: clone the DOM when
+passing it into snapshot-diff. It looks like this:
+
+```js
+const firstVersion = container.cloneNode(true);
+// Do some changes
+snapshotDiff(firstVersion, container.cloneNode(true));
+```
+
+</details>
+
 ## Other Solutions
 
 In preparing this project,
