@@ -697,7 +697,7 @@ library to save snapshot diffs, it won't work out of the box because
 this library uses the DOM which is mutable. Changes don't return new
 objects so snapshot-diff will think it's the same object and avoid diffing it.
 
-Luckily there's an easy to way to make it work: clone the DOM when
+Luckily there's an easy way to make it work: clone the DOM when
 passing it into snapshot-diff. It looks like this:
 
 ```js
