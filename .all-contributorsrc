@@ -186,6 +186,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ChrisWcs",
+      "name": "Christian",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/19828824?v=4",
+      "profile": "http://Chriswcs.github.io",
+      "contributions": [
+        "test"
+      ]
     }
   ]
 }
