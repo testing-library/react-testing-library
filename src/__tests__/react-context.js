@@ -6,7 +6,7 @@ const StateContext = React.createContext()
 const MyButton = () => (
   <StateContext.Consumer>
     {({handleToggle}) => (
-      <button data-testid="button" onClick={handleToggle}>
+      <button onClick={handleToggle}>
         Push Me
       </button>
     )}
@@ -16,7 +16,7 @@ const MyButton = () => (
 const SecretMessage = () => (
   <StateContext.Consumer>
     {({toggleStatus}) => (
-      <h1 data-testid="message">
+      <h1>
         {toggleStatus ? 'Secret Message' : 'Hidden'}
       </h1>
     )}
@@ -52,8 +52,8 @@ class Container extends React.Component {
 }
 
 test('Component renders with the correct message, correctly changes message after clicking butotn', () => {
-  const {getByTestId} = render(<Container />)
-  expect(getByTestId('message').textContent).toBe('Hidden')
-  Simulate.click(getByTestId('button'))
-  expect(getByTestId('message').textContent).toBe('Secret Message')
+  const {getByText} = render(<Container />)
+  expect(getByText('Hidden').textContent).toBe('Hidden');
+  Simulate.click(getByText('Push Me'))
+  expect(getByText('Secret Message').textContent).toBe('Secret Message');
 })
