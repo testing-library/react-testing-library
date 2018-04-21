@@ -456,6 +456,7 @@ Some included are:
 
 * [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-redux.js)
 * [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-router.js)
+* [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/src/__tests__/react-context.js)
 
 Examples of TDD with react-testing-library:
 
