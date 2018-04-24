@@ -36,22 +36,22 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "dom-testing-library": "^1.0.0",
-    "wait-for-expect": "0.4.0"
+    "dom-testing-library": "^1.10.0",
+    "wait-for-expect": "^0.5.0"
   },
   "devDependencies": {
-    "@types/react-dom": "^16.0.4",
+    "@types/react-dom": "^16.0.5",
     "axios": "^0.18.0",
     "history": "^4.7.2",
     "jest-in-case": "^1.0.2",
-    "kcd-scripts": "^0.36.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "kcd-scripts": "^0.37.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-transition-group": "^2.2.1",
-    "redux": "^3.7.2"
+    "react-transition-group": "^2.3.1",
+    "redux": "^4.0.0"
   },
   "peerDependencies": {
     "react-dom": "*"
