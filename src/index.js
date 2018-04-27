@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {bindElementToQueries, wait, fireEvent} from 'dom-testing-library'
+import {bindElementToQueries, wait, fireEvent, waitForElement} from 'dom-testing-library'
 
 function render(ui, {container = document.createElement('div')} = {}) {
   ReactDOM.render(ui, container)
@@ -35,4 +35,12 @@ syntheticEvents.forEach(eventName => {
   })
 })
 
-export {render, Simulate, wait, fireEvent, renderIntoDocument, cleanup}
+export {
+  render,
+  Simulate,
+  wait,
+  waitForElement,
+  fireEvent,
+  renderIntoDocument,
+  cleanup,
+}
