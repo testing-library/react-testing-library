@@ -783,13 +783,15 @@ Please file an issue for bugs, missing documentation, or unexpected behavior.
 
 ### 💡 Feature Requests
 
-Please file an issue to suggest new features. Vote on feature requests by adding a 👍. This helps maintainers prioritize what to work on.
+Please file an issue to suggest new features. Vote on feature requests by adding
+a 👍. This helps maintainers prioritize what to work on.
 
 [**See Feature Requests**][requests]
 
 ### ❓ Questions
 
-For questions related to using the library, please visit a support community instead of filing an issue on GitHub.
+For questions related to using the library, please visit a support community
+instead of filing an issue on GitHub.
 
 * [Spectrum][spectrum]
 * [Reactiflux on Discord][reactiflux]
@@ -814,6 +816,7 @@ Links:
 [downloads-badge]: https://img.shields.io/npm/dm/react-testing-library.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/react-testing-library
 [spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
+[spectrum]: https://spectrum.chat/react-testing-lib
 [license-badge]: https://img.shields.io/npm/l/react-testing-library.svg?style=flat-square
 [license]: https://github.com/kentcdodds/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
@@ -835,6 +838,5 @@ Links:
 [bugs]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/kentcdodds/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
-[spectrum]: https://spectrum.chat/react-testing-lib
 [reactiflux]: https://www.reactiflux.com/
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
