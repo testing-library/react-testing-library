@@ -19,6 +19,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
+[![Join the community on Spectrum][spectrum-badge]][spectrum]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
@@ -94,9 +95,9 @@ facilitate testing implementation details). Read more about this in
 * [Guiding Principles](#guiding-principles)
 * [Contributors](#contributors)
 * [Issues](#issues)
-  * [Bugs](#bugs)
-  * [Feature Requests](#feature-requests)
-  * [Questions](#questions)
+  * [🐛 Bugs](#-bugs)
+  * [💡 Feature Requests](#-feature-requests)
+  * [❓ Questions](#-questions)
 * [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -774,23 +775,23 @@ Contributions of any kind welcome!
 
 _Looking to contribute? Look for the [Good First Issue][good-first-issue] label._
 
-### Bugs
+### 🐛 Bugs
 
 Please file an issue for bugs, missing documentation, or unexpected behavior.
 
 [**See Bugs**][bugs]
 
-### Feature Requests
+### 💡 Feature Requests
 
 Please file an issue to suggest new features. Vote on feature requests by adding a 👍. This helps maintainers prioritize what to work on.
 
 [**See Feature Requests**][requests]
 
-### Questions
+### ❓ Questions
 
 For questions related to using the library, please visit a support community instead of filing an issue on GitHub.
 
-* [React Spectrum][react-spectrum]
+* [Spectrum][spectrum]
 * [Reactiflux on Discord][reactiflux]
 * [Stack Overflow][stackoverflow]
 
@@ -812,6 +813,7 @@ Links:
 [package]: https://www.npmjs.com/package/react-testing-library
 [downloads-badge]: https://img.shields.io/npm/dm/react-testing-library.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/react-testing-library
+[spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
 [license-badge]: https://img.shields.io/npm/l/react-testing-library.svg?style=flat-square
 [license]: https://github.com/kentcdodds/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
@@ -833,6 +835,6 @@ Links:
 [bugs]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/kentcdodds/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
-[react-spectrum]: https://spectrum.chat/react
+[spectrum]: https://spectrum.chat/react-testing-lib
 [reactiflux]: https://www.reactiflux.com/
-[stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-libary
+[stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library

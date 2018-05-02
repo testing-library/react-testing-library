@@ -7,8 +7,25 @@ Thanks for your interest in the project. I appreciate bugs filed and PRs submitt
 - Please make sure that you are familiar with and follow the Code of Conduct for
 this project (found in the CODE_OF_CONDUCT.md file).
 
-- Please read the Issues policies in the README before filing an issue:
-  https://github.com/kentcdodds/react-testing-library/blob/master/README.md#issues
+- Please review the Issues policies before filing an issue:
+
+  🐛 Bugs:
+  File an issue for bugs, missing documentation, or unexpected behavior.
+
+  💡 Feature Requests:
+  File an issue to suggest new features.
+  Vote on feature requests by adding a 👍. This helps maintainers prioritize
+  what to work on.
+
+  ❓ Questions:
+  For questions related to using the library, please visit a support community
+  instead of filing an issue on GitHub.
+  * React Spectrum
+    https://spectrum.chat/react-testing-lib
+  * Reactiflux on Discord
+    https://www.reactiflux.com
+  * Stack Overflow
+    https://stackoverflow.com/questions/tagged/react-testing-library
 
 - Please fill out this template with all the relevant information so we can
 understand what's going on and fix the issue.
