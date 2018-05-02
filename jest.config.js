@@ -1,6 +1,6 @@
 const jestConfig = require('kcd-scripts/jest')
 
 module.exports = Object.assign(jestConfig, {
-  testEnvironment: 'jest-environment-jsdom',
-  projects: ['./examples', './src'],
+  displayName: 'library',
+  setupTestFrameworkScriptFile: require.resolve('./other/setup-test-env'),
 })

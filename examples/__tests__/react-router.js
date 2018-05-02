@@ -2,7 +2,7 @@ import React from 'react'
 import {withRouter} from 'react-router'
 import {Link, Route, Router, Switch} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
-import {render, Simulate} from '../'
+import {render, Simulate} from 'react-testing-library'
 
 const About = () => <div>You are on the about page</div>
 const Home = () => <div>You are home</div>

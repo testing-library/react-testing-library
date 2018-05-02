@@ -11,9 +11,8 @@
     "add-contributor": "kcd-scripts contributors add",
     "build": "kcd-scripts build",
     "lint": "kcd-scripts lint",
-    "test": "kcd-scripts test --projects=src",
+    "test": "kcd-scripts test --config=other/jest.config.js",
     "test:update": "npm test -- --updateSnapshot --coverage --projects=src",
-    "test:examples": "kcd-scripts test --projects=examples",
     "validate": "kcd-scripts validate",
     "setup": "npm install && npm run validate -s",
     "precommit": "kcd-scripts precommit"
@@ -43,7 +42,9 @@
   "devDependencies": {
     "@types/react-dom": "^16.0.5",
     "axios": "^0.18.0",
+    "eslint-import-resolver-jest": "^2.1.1",
     "history": "^4.7.2",
+    "jest-dom": "^1.0.0",
     "jest-in-case": "^1.0.2",
     "kcd-scripts": "^0.37.0",
     "react": "^16.3.2",
