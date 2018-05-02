@@ -11,11 +11,6 @@ The examples have a unique jest/eslint set up so the test files will resemble
 how they might appear in your project. (You'll see in the tests that we can
 `import {render} from 'react-testing-library'`).
 
-Another thing that we do for the tests is we have a `setup-test-env.js` file in
-the `other` directory of this repo which includes
-`import 'jest-dom/extend-expect'` which gives us a few handy assertions. It's
-recommended to use [`jest-dom`][jest-dom] with `react-testing-library`.
-
 ## Contribute
 
 We're always happy to accept contributions to the examples. Can't have too many

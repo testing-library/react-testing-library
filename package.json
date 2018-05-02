@@ -12,7 +12,7 @@
     "build": "kcd-scripts build",
     "lint": "kcd-scripts lint",
     "test": "kcd-scripts test --config=other/jest.config.js",
-    "test:update": "npm test -- --updateSnapshot --coverage --projects=src",
+    "test:update": "npm test -- --updateSnapshot --coverage",
     "validate": "kcd-scripts validate",
     "setup": "npm install && npm run validate -s",
     "precommit": "kcd-scripts precommit"
