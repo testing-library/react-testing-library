@@ -22,7 +22,7 @@ Thanks for your interest in the project. We appreciate bugs filed and PRs submit
   For questions related to using the library, please visit a support community
   instead of filing an issue on GitHub.
   * React Spectrum
-    https://spectrum.chat/react-testing-lib
+    https://spectrum.chat/react-testing-library
   * Reactiflux on Discord
     https://www.reactiflux.com
   * Stack Overflow
