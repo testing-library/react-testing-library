@@ -11,8 +11,9 @@
     "add-contributor": "kcd-scripts contributors add",
     "build": "kcd-scripts build",
     "lint": "kcd-scripts lint",
-    "test": "kcd-scripts test",
-    "test:update": "npm test -- --updateSnapshot --coverage",
+    "test": "kcd-scripts test --projects=src",
+    "test:update": "npm test -- --updateSnapshot --coverage --projects=src",
+    "test:examples": "kcd-scripts test --projects=examples",
     "validate": "kcd-scripts validate",
     "setup": "npm install && npm run validate -s",
     "precommit": "kcd-scripts precommit"
