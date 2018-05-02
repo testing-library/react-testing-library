@@ -1,6 +1,6 @@
 import React from 'react'
 import {CSSTransition} from 'react-transition-group'
-import {render, Simulate} from '../'
+import {render, Simulate} from 'react-testing-library'
 
 function Fade({children, ...props}) {
   return (

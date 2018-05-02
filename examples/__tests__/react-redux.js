@@ -1,7 +1,7 @@
 import React from 'react'
 import {createStore} from 'redux'
 import {Provider, connect} from 'react-redux'
-import {render, Simulate} from '../'
+import {render, Simulate} from 'react-testing-library'
 
 // counter.js
 class Counter extends React.Component {
