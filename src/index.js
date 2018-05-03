@@ -7,6 +7,11 @@ function render(ui, {container = document.createElement('div')} = {}) {
   return {
     container,
     unmount: () => ReactDOM.unmountComponentAtNode(container),
+    rerender: rerenderUi => {
+      render(rerenderUi, {container})
+      // Intentionally do not return anything to avoid unnecessarily complicating the API.
+      // folks can use all the same utilities we return in the first place that are bound to the container
+    },
     ...bindElementToQueries(container),
   }
 }

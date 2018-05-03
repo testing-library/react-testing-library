@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-20-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
@@ -167,6 +167,24 @@ The containing DOM node of your rendered React Element (rendered using
 
 > Tip: To get the root element of your rendered element, use `container.firstChild`.
 
+#### `rerender`
+
+It'd probably be better if you test the component that's doing the prop updating
+to ensure that the props are being updated correctly (see
+[the Guiding Principles section](#guiding-principles)). That said, if you'd 
+prefer to update the props of a rendered component in your test, this function 
+can be used to update props of the rendered component. 
+
+```javascript
+const {rerender} = render(<NumberDisplay number={1} />)
+
+// re-render the same component with different props
+rerender(<NumberDisplay number={2} />)
+```
+
+[Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/update-props.js)
+for a full example of this.
+
 #### `unmount`
 
 This will cause the rendered component to be unmounted. This is useful for
@@ -274,7 +292,8 @@ const usernameInputElement = getByTestId('username-input')
 
 ### `renderIntoDocument`
 
-Render into `document.body`. Should be used with [cleanup](#cleanup)
+Render into `document.body`. Should be used with [cleanup](#cleanup).
+`renderIntoDocument` will return the same object as [render](#render)
 
 ```javascript
 renderIntoDocument(<div>)
@@ -527,32 +546,6 @@ to just stick with `data-testid`s (which is not bad anyway).
 
 <details>
 
-<summary>How do I update the props of a rendered component?</summary>
-
-It'd probably be better if you test the component that's doing the prop updating
-to ensure that the props are being updated correctly (see
-[the Guiding Principles section](#guiding-principles)). That said, if you'd
-prefer to update the props of a rendered component in your test, the easiest
-way to do that is:
-
-```javascript
-const {container, getByTestId} = render(<NumberDisplay number={1} />)
-expect(getByTestId('number-display').textContent).toBe('1')
-
-// re-render the same component with different props
-// but pass the same container in the options argument.
-// which will cause a re-render of the same instance (normal React behavior).
-render(<NumberDisplay number={2} />, {container})
-expect(getByTestId('number-display').textContent).toBe('2')
-```
-
-[Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/update-props.js)
-for a full example of this.
-
-</details>
-
-<details>
-
 <summary>If I can't use shallow rendering, how do I mock out components in tests?</summary>
 
 In general, you should avoid mocking out components (see
@@ -759,13 +752,11 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/498274?v=4" width="100px;"/><br /><sub><b>Ivan Babak</b></sub>](https://sompylasar.github.io)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Asompylasar "Bug reports") [🤔](#ideas-sompylasar "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/4439618?v=4" width="100px;"/><br /><sub><b>Jesse Day</b></sub>](https://github.com/jday3)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jday3 "Code") | [<img src="https://avatars0.githubusercontent.com/u/15199?v=4" width="100px;"/><br /><sub><b>Ernesto García</b></sub>](http://gnapse.github.io)<br />[💬](#question-gnapse "Answering Questions") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/2747424?v=4" width="100px;"/><br /><sub><b>Josef Maxx Blake</b></sub>](http://jomaxx.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Tests") |
-| [<img src="https://avatars1.githubusercontent.com/u/29602306?v=4" width="100px;"/><br /><sub><b>Michal Baranowski</b></sub>](https://twitter.com/baranovskim)<br />[📝](#blog-mbaranovski "Blogposts") [✅](#tutorial-mbaranovski "Tutorials") | [<img src="https://avatars3.githubusercontent.com/u/13985684?v=4" width="100px;"/><br /><sub><b>Arthur Puthin</b></sub>](https://github.com/aputhin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=aputhin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/21194045?v=4" width="100px;"/><br /><sub><b>Thomas Chia</b></sub>](https://github.com/thchia)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/20430611?v=4" width="100px;"/><br /><sub><b>Thiago Galvani</b></sub>](http://ilegra.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=thiagopaiva99 "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/19828824?v=4" width="100px;"/><br /><sub><b>Christian</b></sub>](http://Chriswcs.github.io)<br />[⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=ChrisWcs "Tests") | [<img src="https://avatars3.githubusercontent.com/u/1571667?v=4" width="100px;"/><br /><sub><b>Alex Krolick</b></sub>](https://alexkrolick.com)<br />[💬](#question-alexkrolick "Answering Questions") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=alexkrolick "Documentation") [💡](#example-alexkrolick "Examples") [🤔](#ideas-alexkrolick "Ideas, Planning, & Feedback") |
-
+| [<img src="https://avatars1.githubusercontent.com/u/29602306?v=4" width="100px;"/><br /><sub><b>Michal Baranowski</b></sub>](https://twitter.com/baranovskim)<br />[📝](#blog-mbaranovski "Blogposts") [✅](#tutorial-mbaranovski "Tutorials") | [<img src="https://avatars3.githubusercontent.com/u/13985684?v=4" width="100px;"/><br /><sub><b>Arthur Puthin</b></sub>](https://github.com/aputhin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=aputhin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/21194045?v=4" width="100px;"/><br /><sub><b>Thomas Chia</b></sub>](https://github.com/thchia)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/20430611?v=4" width="100px;"/><br /><sub><b>Thiago Galvani</b></sub>](http://ilegra.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=thiagopaiva99 "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/19828824?v=4" width="100px;"/><br /><sub><b>Christian</b></sub>](http://Chriswcs.github.io)<br />[⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=ChrisWcs "Tests") | [<img src="https://avatars3.githubusercontent.com/u/1571667?v=4" width="100px;"/><br /><sub><b>Alex Krolick</b></sub>](https://alexkrolick.com)<br />[💬](#question-alexkrolick "Answering Questions") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=alexkrolick "Documentation") [💡](#example-alexkrolick "Examples") [🤔](#ideas-alexkrolick "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/1239401?v=4" width="100px;"/><br /><sub><b>Johann Hubert Sonntagbauer</b></sub>](https://github.com/johann-sonntagbauer)<br />[🎨](#design-johann-sonntagbauer "Design") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
