@@ -168,17 +168,20 @@ The containing DOM node of your rendered React Element (rendered using
 > Tip: To get the root element of your rendered element, use `container.firstChild`.
 
 #### `rerender`
+
 It'd probably be better if you test the component that's doing the prop updating
 to ensure that the props are being updated correctly (see
 [the Guiding Principles section](#guiding-principles)). That said, if you'd 
 prefer to update the props of a rendered component in your test, this function 
 can be used to update props of the rendered component. 
+
 ```javascript
 const {rerender} = render(<NumberDisplay number={1} />)
 
 // re-render the same component with different props
 rerender(<NumberDisplay number={2} />)
 ```
+
 [Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/update-props.js)
 for a full example of this.
 
