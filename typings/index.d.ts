@@ -5,6 +5,7 @@ type TextMatch = string | RegExp | TextMatchFunction
 
 interface RenderResult {
   container: HTMLDivElement
+  rerender: (ui: React.ReactElement<any>) => void
   unmount: VoidFunction
   queryByTestId: (id: TextMatch) => HTMLElement | null
   getByTestId: (id: TextMatch) => HTMLElement

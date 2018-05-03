@@ -7,6 +7,7 @@ function render(ui, {container = document.createElement('div')} = {}) {
   return {
     container,
     unmount: () => ReactDOM.unmountComponentAtNode(container),
+    rerender: rerenderUi => render(rerenderUi, {container}),
     ...bindElementToQueries(container),
   }
 }
