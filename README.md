@@ -376,7 +376,7 @@ intervals.
 
 ### `waitForElement`
 
-Defined as:
+See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
 
 ```typescript
 function waitForElement<T>(
@@ -388,53 +388,6 @@ function waitForElement<T>(
   },
 ): Promise<T>
 ```
-
-When in need to wait for DOM elements to appear, disappear, or change you can use `waitForElement`.
-The `waitForElement` function is a small wrapper
-around the
-[`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver).
-Here's a simple example:
-
-```javascript
-// ...
-// Wait until the callback does not throw an error and returns a truthy value. In this case, that means
-// it'll wait until we can get a form control with a label that matches "username".
-// The difference from `wait` is that rather than running your callback on
-// an interval, it's run as soon as there are DOM changes in the container
-// and returns the value returned by the callback.
-const usernameElement = await waitForElement(
-  () => getByLabelText(container, 'username'),
-  {container},
-)
-usernameElement.value = 'chucknorris'
-// ...
-```
-
-You can also wait for multiple elements at once:
-
-```javascript
-const [usernameElement, passwordElement] = waitForElement(
-  () => [
-    getByLabelText(container, 'username'),
-    getByLabelText(container, 'password'),
-  ],
-  {container},
-)
-```
-
-Using [`MutationObserver`](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) is more efficient than polling the DOM at regular intervals with `wait`. This library sets up a [`'mutationobserver-shim'`](https://github.com/megawac/MutationObserver.js) on the global `window` object for cross-platform compatibility with older browsers and the [`jsdom`](https://github.com/jsdom/jsdom/issues/639) thatis usually used in Node-based tests.
-
-The default `callback` is a no-op function (used like `await waitForElement()`). This can
-be helpful if you only need to wait for the next DOM change (see [`mutationObserverOptions`](#mutationobserveroptions) to learn which changes are detected).
-
-The default `container` is the global `document`. Make sure the elements you wait for will be attached to it, or set a different `container`.
-
-The default `timeout` is `4500ms` which will keep you under
-[Jest's default timeout of `5000ms`](https://facebook.github.io/jest/docs/en/jest-object.html#jestsettimeouttimeout).
-
-<a name="mutationobserveroptions"></a>The default `mutationObserverOptions` is `{subtree: true, childList: true}` which will detect
-additions and removals of child elements (including text nodes) in the `container`and any of its descendants.
-It won't detect attribute changes unless you add `attributes: true` to the options.
 
 ### `fireEvent(node: HTMLElement, event: Event)`
 
