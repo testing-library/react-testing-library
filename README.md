@@ -86,6 +86,7 @@ facilitate testing implementation details). Read more about this in
   * [`cleanup`](#cleanup)
   * [`Simulate`](#simulate)
   * [`wait`](#wait)
+  * [`waitForElement`](#waitforelement)
   * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
@@ -372,6 +373,39 @@ The default `timeout` is `4500ms` which will keep you under
 The default `interval` is `50ms`. However it will run your callback immediately
 on the next tick of the event loop (in a `setTimeout`) before starting the
 intervals.
+
+### `waitForElement`
+
+See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
+
+```js
+await waitForElement(() => getByText('Search'))
+```
+
+<details>
+  <summary>
+    Example
+  </summary>
+
+```diff
+test('should submit form when valid', async () => {
+  const mockSubmit = jest.fn()
+  const {
+    container,
+    getByLabelText,
+    getByText
+   } = render(<Form onSubmit={mockSubmit} />)
+  const nameInput = getByLabelText('Name')
+  nameInput.value = 'Chewbacca'
+  Simulate.change(nameInput)
++ // wait for button to appear and click it
++ const submitButton = await waitForElement(() => getByText('Search'))
++ Simulate.click(submitButton)
++ expect(mockSubmit).toBeCalled()
+})
+```
+
+</details>
 
 ### `fireEvent(node: HTMLElement, event: Event)`
 
