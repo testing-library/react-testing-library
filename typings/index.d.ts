@@ -2,13 +2,14 @@ import {Simulate as ReactSimulate} from 'react-dom/test-utils'
 
 type TextMatchFunction = (content: string, element: HTMLElement) => boolean
 type TextMatch = string | RegExp | TextMatchFunction
+type ExactTextMatch = string | RegExp | TextMatchFunction
 
 interface RenderResult {
   container: HTMLDivElement
   rerender: (ui: React.ReactElement<any>) => void
   unmount: VoidFunction
-  queryByTestId: (id: TextMatch) => HTMLElement | null
-  getByTestId: (id: TextMatch) => HTMLElement
+  queryByTestId: (id: ExactTextMatch) => HTMLElement | null
+  getByTestId: (id: ExactTextMatch) => HTMLElement
   queryByText: (id: TextMatch) => HTMLElement | null
   getByText: (text: TextMatch) => HTMLElement
   queryByPlaceholderText: (id: TextMatch) => HTMLElement | null
