@@ -378,16 +378,34 @@ intervals.
 
 See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
 
-```typescript
-function waitForElement<T>(
-  callback?: () => T | null | undefined,
-  options?: {
-    container?: HTMLElement
-    timeout?: number
-    mutationObserverOptions?: MutationObserverInit
-  },
-): Promise<T>
+```js
+await waitForElement(() => getByText('Search'))
 ```
+
+<details>
+  <summary>
+    Example
+  </summary>
+
+```diff
+test('should submit form when valid', async () => {
+  const mockSubmit = jest.fn()
+  const {
+    container,
+    getByLabelText,
+    getByText
+   } = render(<Form onSubmit={mockSubmit} />)
+  const nameInput = getByLabelText('Name')
+  nameInput.value = 'Chewbacca'
+  Simulate.change(nameInput)
++ // wait for button to appear and click it
++ const submitButton = await waitForElement(() => getByText('Search'))
++ Simulate.click(submitButton)
++ expect(mockSubmit).toBeCalled()
+})
+```
+
+</details>
 
 ### `fireEvent(node: HTMLElement, event: Event)`
 
