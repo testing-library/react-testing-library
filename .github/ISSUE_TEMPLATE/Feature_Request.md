@@ -27,15 +27,21 @@ tutorial to learn how: http://kcd.im/pull-request
 
 ### Describe the feature you'd like:
 
+<!--
 A clear and concise description of what you want to happen. Add any considered
 drawbacks.
+-->
 
 ### Describe alternatives you've considered:
 
+<!--
 A clear and concise description of any alternative solutions or features you've
 considered.
+-->
 
 ### Teachability, Documentation, Adoption, Migration Strategy:
 
+<!--
 If you can, explain how users will be able to use this and possibly write out a
 version of the docs.
+-->
