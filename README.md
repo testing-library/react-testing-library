@@ -89,9 +89,8 @@ facilitate testing implementation details). Read more about this in
   * [`waitForElement`](#waitforelement)
   * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
 * [`TextMatch`](#textmatch)
-  * [Examples](#examples)
 * [`query` APIs](#query-apis)
-* [Examples](#examples-1)
+* [Examples](#examples)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
@@ -476,7 +475,7 @@ Several APIs accept a `TextMatch` which can be a `string`, `regex` or a
 
 See [dom-testing-library#textmatch][dom-testing-lib-textmatch] for options.
 
-### Examples
+Examples:
 
 ```javascript
 // <div>
