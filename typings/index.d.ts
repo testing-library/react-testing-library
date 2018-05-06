@@ -33,7 +33,7 @@ interface RenderResult {
   ) => HTMLElement | null
   getByLabelText: (
     id: TextMatch,
-    options?: {selector: string; TextMatchOptions},
+    options?: {selector?: string} & TextMatchOptions,
   ) => HTMLElement
   queryByAltText: (
     text: TextMatch,
