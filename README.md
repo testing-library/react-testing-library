@@ -82,6 +82,13 @@ facilitate testing implementation details). Read more about this in
 * [Installation](#installation)
 * [Usage](#usage)
   * [`render`](#render)
+  * [`container`](#container)
+  * [`rerender`](#rerender)
+  * [`unmount`](#unmount)
+  * [`getByLabelText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`](#getbylabeltexttext-textmatch-options-selector-string---htmlelement)
+  * [`getByPlaceholderText(text: TextMatch): HTMLElement`](#getbyplaceholdertexttext-textmatch-htmlelement)
+  * [`getByText(text: TextMatch): HTMLElement`](#getbytexttext-textmatch-htmlelement)
+  * [`getByTestId(text: TextMatch): HTMLElement`](#getbytestidtext-textmatch-htmlelement)
   * [`renderIntoDocument`](#renderintodocument)
   * [`cleanup`](#cleanup)
   * [`Simulate`](#simulate)
@@ -160,7 +167,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 In the example above, the `render` method returns an object that has a few
 properties:
 
-#### `container`
+### `container`
 
 The containing DOM node of your rendered React Element (rendered using
 `ReactDOM.render`). It's a `div`. This is a regular DOM node, so you can call
@@ -168,7 +175,7 @@ The containing DOM node of your rendered React Element (rendered using
 
 > Tip: To get the root element of your rendered element, use `container.firstChild`.
 
-#### `rerender`
+### `rerender`
 
 It'd probably be better if you test the component that's doing the prop updating
 to ensure that the props are being updated correctly (see
@@ -186,7 +193,7 @@ rerender(<NumberDisplay number={2} />)
 [Open the tests](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/update-props.js)
 for a full example of this.
 
-#### `unmount`
+### `unmount`
 
 This will cause the rendered component to be unmounted. This is useful for
 testing what happens when your component is removed from the page (like testing
@@ -201,7 +208,7 @@ unmount()
 // your component has been unmounted and now: container.innerHTML === ''
 ```
 
-#### `getByLabelText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
+### `getByLabelText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
 
 This will search for the label that matches the given [`TextMatch`](#textmatch),
 then find the element associated with that label.
@@ -236,7 +243,7 @@ const inputNode = getByLabelText('username', {selector: 'input'})
 > want this behavior (for example you wish to assert that it doesn't exist),
 > then use `queryByLabelText` instead.
 
-#### `getByPlaceholderText(text: TextMatch): HTMLElement`
+### `getByPlaceholderText(text: TextMatch): HTMLElement`
 
 This will search for all elements with a placeholder attribute and find one
 that matches the given [`TextMatch`](#textmatch).
@@ -249,7 +256,7 @@ const inputNode = getByPlaceholderText('Username')
 > NOTE: a placeholder is not a good substitute for a label so you should
 > generally use `getByLabelText` instead.
 
-#### `getByText(text: TextMatch): HTMLElement`
+### `getByText(text: TextMatch): HTMLElement`
 
 This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
@@ -273,7 +280,7 @@ and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
 const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
-#### `getByTestId(text: TextMatch): HTMLElement`
+### `getByTestId(text: TextMatch): HTMLElement`
 
 A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
 also accepts a [`TextMatch`](#textmatch)).
