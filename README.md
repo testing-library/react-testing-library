@@ -89,8 +89,9 @@ facilitate testing implementation details). Read more about this in
   * [`waitForElement`](#waitforelement)
   * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
 * [`TextMatch`](#textmatch)
+  * [Examples](#examples)
 * [`query` APIs](#query-apis)
-* [Examples](#examples)
+* [Examples](#examples-1)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
@@ -473,22 +474,37 @@ fireEvent.click(getElementByText('Submit'), rightClick)
 Several APIs accept a `TextMatch` which can be a `string`, `regex` or a
 `function` which returns `true` for a match and `false` for a mismatch.
 
-Here's an example
+See [dom-testing-library#textmatch][dom-testing-lib-textmatch] for options.
+
+### Examples
 
 ```javascript
-// <div>Hello World</div>
-// all of the following will find the div
-getByText('Hello World') // full match
-getByText('llo worl') // substring match
-getByText('hello world') // strings ignore case
-getByText(/Hello W?oRlD/i) // regex
-getByText((content, element) => content.startsWith('Hello')) // function
+// <div>
+//  Hello World
+// </div>
 
-// all of the following will NOT find the div
-getByText('Goodbye World') // non-string match
-getByText(/hello world/) // case-sensitive regex with different case
-// function looking for a span when it's actually a div
-getByText((content, element) => {
+// WILL find the div:
+
+// Matching a string:
+getByText(container, 'Hello World') // full string match
+getByText(container, 'llo Worl'), {exact: false} // substring match
+getByText(container, 'hello world', {exact: false}) // ignore case
+
+// Matching a regex:
+getByText(container, /World/) // substring match
+getByText(container, /world/i) // substring match, ignore case
+getByText(container, /^hello world$/i) // full string match, ignore case
+getByText(container, /Hello W?oRlD/i) // advanced regex
+
+// Matching with a custom function:
+getByText(container, (content, element) => content.startsWith('Hello'))
+
+// WILL NOT find the div:
+
+getByText(container, 'Goodbye World') // full string does not match
+getByText(container, /hello world/) // case-sensitive regex with different case
+// function looking for a span when it's actually a div:
+getByText(container, (content, element) => {
   return element.tagName.toLowerCase() === 'span' && content.startsWith('Hello')
 })
 ```
@@ -863,6 +879,7 @@ Links:
 [set-immediate]: https://developer.mozilla.org/en-US/docs/Web/API/Window/setImmediate
 [guiding-principle]: https://twitter.com/kentcdodds/status/977018512689455106
 [data-testid-blog-post]: https://blog.kentcdodds.com/making-your-ui-tests-resilient-to-change-d37a6ee37269
+[dom-testing-lib-textmatch]: https://github.com/kentcdodds/dom-testing-library#textmatch
 [bugs]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/kentcdodds/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/kentcdodds/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
