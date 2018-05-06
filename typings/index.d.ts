@@ -2,22 +2,44 @@ import {Simulate as ReactSimulate} from 'react-dom/test-utils'
 
 type TextMatchFunction = (content: string, element: HTMLElement) => boolean
 type TextMatch = string | RegExp | TextMatchFunction
-type ExactTextMatch = string | RegExp | TextMatchFunction
+type TextMatchOptions = {
+  exact?: boolean = false
+  trim?: boolean = true
+  collapseWhitespace?: boolean = true
+}
 
 interface RenderResult {
   container: HTMLDivElement
   rerender: (ui: React.ReactElement<any>) => void
   unmount: VoidFunction
-  queryByTestId: (id: ExactTextMatch) => HTMLElement | null
-  getByTestId: (id: ExactTextMatch) => HTMLElement
-  queryByText: (id: TextMatch) => HTMLElement | null
-  getByText: (text: TextMatch) => HTMLElement
-  queryByPlaceholderText: (id: TextMatch) => HTMLElement | null
-  getByPlaceholderText: (text: TextMatch) => HTMLElement
-  queryByLabelText: (text: TextMatch) => HTMLElement | null
-  getByLabelText: (id: TextMatch, options?: {selector: string}) => HTMLElement
-  queryByAltText: (text: TextMatch) => HTMLElement | null
-  getByAltText: (text: TextMatch) => HTMLElement
+  queryByTestId: (
+    id: TextMatch,
+    options?: TextMatchOptions,
+  ) => HTMLElement | null
+  getByTestId: (id: TextMatch, options?: TextMatchOptions) => HTMLElement
+  queryByText: (id: TextMatch, options?: TextMatchOptions) => HTMLElement | null
+  getByText: (text: TextMatch, options?: TextMatchOptions) => HTMLElement
+  queryByPlaceholderText: (
+    id: TextMatch,
+    options?: TextMatchOptions,
+  ) => HTMLElement | null
+  getByPlaceholderText: (
+    text: TextMatch,
+    options?: TextMatchOptions,
+  ) => HTMLElement
+  queryByLabelText: (
+    text: TextMatch,
+    options?: TextMatchOptions,
+  ) => HTMLElement | null
+  getByLabelText: (
+    id: TextMatch,
+    options?: {selector: string; TextMatchOptions},
+  ) => HTMLElement
+  queryByAltText: (
+    text: TextMatch,
+    options?: TextMatchOptions,
+  ) => HTMLElement | null
+  getByAltText: (text: TextMatch, options?: TextMatchOptions) => HTMLElement
 }
 
 export function render(
