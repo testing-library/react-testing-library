@@ -49,7 +49,7 @@ test('full app rendering/navigating', () => {
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are home')
   const leftClick = {button: 0}
-  Simulate.click(getByText('about'), leftClick)
+  Simulate.click(getByText(/about/i), leftClick)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are on the about page')
 })

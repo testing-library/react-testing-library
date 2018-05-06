@@ -36,10 +36,10 @@ test('login form submits', () => {
     <Login onSubmit={handleSubmit} />,
   )
 
-  const usernameNode = getByLabelText('username')
-  const passwordNode = getByLabelText('password')
+  const usernameNode = getByLabelText(/username/i)
+  const passwordNode = getByLabelText(/password/i)
   const formNode = container.querySelector('form')
-  const submitButtonNode = getByText('submit')
+  const submitButtonNode = getByText(/submit/i)
 
   // Act
   usernameNode.value = fakeUser.username

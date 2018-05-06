@@ -42,7 +42,7 @@ const wait = time => new Promise(resolve => setTimeout(resolve, time))
 test('unmounts a component', async () => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
   const {unmount, getByText, container} = render(<StopWatch />)
-  Simulate.click(getByText('start'))
+  Simulate.click(getByText('Start'))
   unmount()
   // hey there reader! You don't need to have an assertion like this one
   // this is just me making sure that the unmount function works.
