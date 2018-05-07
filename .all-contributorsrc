@@ -227,6 +227,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "RyanAtViceSoftware",
+      "name": "Ryan Vice",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10080111?v=4",
+      "profile": "http://www.vicesoftware.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
