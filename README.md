@@ -326,6 +326,8 @@ Note: `Simulate` does not simulate _browser_ events, meaning if you have an elem
 
 calling `Simulate.click` will not cause the submit event to be invoked. In order to get around this and for more info, see [`fireEvent`](#fireeventnode-htmlelement-event-event).
 
+In general, it is better to use `fireEvent` whenever possible because it mimics more closely what happens in the browser when an event happens.
+
 ### `wait`
 
 Defined as:
