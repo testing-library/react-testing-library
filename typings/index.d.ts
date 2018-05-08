@@ -3,9 +3,9 @@ import {Simulate as ReactSimulate} from 'react-dom/test-utils'
 type TextMatchFunction = (content: string, element: HTMLElement) => boolean
 type TextMatch = string | RegExp | TextMatchFunction
 type TextMatchOptions = {
-  exact?: boolean = false
-  trim?: boolean = true
-  collapseWhitespace?: boolean = true
+  exact?: boolean
+  trim?: boolean
+  collapseWhitespace?: boolean
 }
 
 interface RenderResult {
