@@ -29,11 +29,7 @@ class Fetch extends React.Component {
 
 test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
   // Arrange
-  axiosMock.get.mockImplementationOnce(() =>
-    Promise.resolve({
-      data: {greeting: 'hello there'},
-    }),
-  )
+  axiosMock.get.mockResolvedValueOnce({data: {greeting: 'hello there'}})
   const url = '/greeting'
   const {container, getByText} = render(<Fetch url={url} />)
 
