@@ -1,11 +1,13 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {bindElementToQueries, wait, fireEvent, waitForElement} from 'dom-testing-library'
+import {bindElementToQueries, prettyDOM} from 'dom-testing-library'
 
 function render(ui, {container = document.createElement('div')} = {}) {
   ReactDOM.render(ui, container)
   return {
     container,
+    // eslint-disable-next-line no-console
+    debug: () => console.log(prettyDOM(container)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
       render(rerenderUi, {container})
@@ -40,12 +42,6 @@ syntheticEvents.forEach(eventName => {
   })
 })
 
-export {
-  render,
-  Simulate,
-  wait,
-  waitForElement,
-  fireEvent,
-  renderIntoDocument,
-  cleanup,
-}
+// just re-export everything from dom-testing-library
+export * from 'dom-testing-library'
+export {render, Simulate, renderIntoDocument, cleanup}

@@ -62,7 +62,8 @@
     "extends": "./node_modules/kcd-scripts/eslint.js",
     "rules": {
       "react/prop-types": "off",
-      "import/no-unassigned-import": "off"
+      "import/no-unassigned-import": "off",
+      "import/named": "off"
     }
   },
   "eslintIgnore": [
