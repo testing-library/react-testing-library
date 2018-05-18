@@ -91,6 +91,7 @@ facilitate testing implementation details). Read more about this in
   * [`prettyDOM`](#prettydom)
 * [`TextMatch`](#textmatch)
 * [`query` APIs](#query-apis)
+* [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
 * [Examples](#examples)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
@@ -561,6 +562,16 @@ the `query` API instead:
 ```javascript
 const submitButton = queryByText('submit')
 expect(submitButton).toBeNull() // it doesn't exist
+```
+
+## `queryAll` and `getAll` APIs
+
+Each of the `query` APIs have a corresponsing `queryAll` version that always returns an Array of matching nodes. `getAll` is the same but throws when the array has a length of 0.
+
+```javascript
+const submitButtons = queryAllByText('submit')
+expect(submitButtons).toHaveLength(3) // expect 3 elements
+expect(submitButtons[0]).toBeInTheDOM()
 ```
 
 ## Examples
