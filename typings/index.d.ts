@@ -1,4 +1,14 @@
 import {Simulate as ReactSimulate} from 'react-dom/test-utils'
+import {
+  AllByAttribute,
+  AllByText,
+  BoundFunction,
+  GetByAttribute,
+  GetByText,
+  getQueriesForElement,
+  QueryByAttribute,
+  QueryByText,
+} from 'dom-testing-library'
 
 type TextMatchFunction = (content: string, element: HTMLElement) => boolean
 type TextMatch = string | RegExp | TextMatchFunction
@@ -8,38 +18,33 @@ type TextMatchOptions = {
   collapseWhitespace?: boolean
 }
 
-interface RenderResult {
+interface GetsAndQueries {
+  queryByTestId: BoundFunction<QueryByAttribute>
+  queryAllByTestId: BoundFunction<AllByAttribute>
+  getByTestId: BoundFunction<GetByAttribute>
+  getAllByTestId: BoundFunction<AllByAttribute>
+  queryByText: BoundFunction<QueryByText>
+  queryAllByText: BoundFunction<AllByText>
+  getByText: BoundFunction<GetByText>
+  getAllByText: BoundFunction<AllByText>
+  queryByPlaceholderText: BoundFunction<QueryByAttribute>
+  queryAllByPlaceholderText: BoundFunction<AllByAttribute>
+  getByPlaceholderText: BoundFunction<GetByAttribute>
+  getAllByPlaceholderText: BoundFunction<AllByAttribute>
+  queryByLabelText: BoundFunction<QueryByAttribute>
+  queryAllByLabelText: BoundFunction<AllByAttribute>
+  getByLabelText: BoundFunction<GetByAttribute>
+  getAllByLabelText: BoundFunction<AllByAttribute>
+  queryByAltText: BoundFunction<QueryByAttribute>
+  queryAllByAltText: BoundFunction<AllByAttribute>
+  getByAltText: BoundFunction<GetByAttribute>
+  getAllByAltText: BoundFunction<AllByAttribute>
+}
+
+interface RenderResult extends GetsAndQueries {
   container: HTMLDivElement
   rerender: (ui: React.ReactElement<any>) => void
   unmount: VoidFunction
-  queryByTestId: (
-    id: TextMatch,
-    options?: TextMatchOptions,
-  ) => HTMLElement | null
-  getByTestId: (id: TextMatch, options?: TextMatchOptions) => HTMLElement
-  queryByText: (id: TextMatch, options?: TextMatchOptions) => HTMLElement | null
-  getByText: (text: TextMatch, options?: TextMatchOptions) => HTMLElement
-  queryByPlaceholderText: (
-    id: TextMatch,
-    options?: TextMatchOptions,
-  ) => HTMLElement | null
-  getByPlaceholderText: (
-    text: TextMatch,
-    options?: TextMatchOptions,
-  ) => HTMLElement
-  queryByLabelText: (
-    text: TextMatch,
-    options?: TextMatchOptions,
-  ) => HTMLElement | null
-  getByLabelText: (
-    id: TextMatch,
-    options?: {selector?: string} & TextMatchOptions,
-  ) => HTMLElement
-  queryByAltText: (
-    text: TextMatch,
-    options?: TextMatchOptions,
-  ) => HTMLElement | null
-  getByAltText: (text: TextMatch, options?: TextMatchOptions) => HTMLElement
 }
 
 export function render(
@@ -147,3 +152,5 @@ export const fireEvent: FireFunction & FireObject
 export function renderIntoDocument(ui: React.ReactElement<any>): RenderResult
 
 export function cleanup(): void
+
+export function getQueriesForElement(element: HTMLElement): GetsAndQueries
