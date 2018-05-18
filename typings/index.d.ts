@@ -5,7 +5,6 @@ import {
   BoundFunction,
   GetByAttribute,
   GetByText,
-  getQueriesForElement,
   QueryByAttribute,
   QueryByText,
 } from 'dom-testing-library'
