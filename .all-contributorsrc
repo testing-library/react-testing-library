@@ -275,6 +275,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "SavePointSam",
+      "name": "Sam Horton",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/8203211?v=4",
+      "profile": "https://twitter.com/SavePointSam",
+      "contributions": [
+        "doc",
+        "example",
+        "ideas"
+      ]
     }
   ]
 }

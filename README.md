@@ -16,7 +16,7 @@
 [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-27-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-28-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
@@ -171,6 +171,8 @@ The containing DOM node of your rendered React Element (rendered using
 This method is a shortcut for `console.log(prettyDOM(container))`.
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const HelloWorld = () => <h1>Hello World</h1>
 const {debug} = render(<HelloWorld />)
 debug()
@@ -190,6 +192,8 @@ prefer to update the props of a rendered component in your test, this function
 can be used to update props of the rendered component.
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const {rerender} = render(<NumberDisplay number={1} />)
 
 // re-render the same component with different props
@@ -209,6 +213,8 @@ that you don't leave event handlers hanging around causing memory leaks).
 > `ReactDOM.unmountComponentAtNode`
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const {container, unmount} = render(<Login />)
 unmount()
 // your component has been unmounted and now: container.innerHTML === ''
@@ -220,6 +226,9 @@ This will search for the label that matches the given [`TextMatch`](#textmatch),
 then find the element associated with that label.
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {getByLabelText} = render(<Login />)
 const inputNode = getByLabelText('Username')
 
 // this would find the input node for the following DOM structures:
@@ -255,7 +264,9 @@ This will search for all elements with a placeholder attribute and find one
 that matches the given [`TextMatch`](#textmatch).
 
 ```javascript
-// <input placeholder="Username" />
+import {render} from 'react-testing-library'
+
+const {getByPlaceholderText} = render(<input placeholder="Username" />)
 const inputNode = getByPlaceholderText('Username')
 ```
 
@@ -268,7 +279,9 @@ This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
 
 ```javascript
-// <a href="/about">About ℹ️</a>
+import {render} from 'react-testing-library'
+
+const {getByText} = render(<a href="/about">About ℹ️</a>)
 const aboutAnchorNode = getByText('about')
 ```
 
@@ -282,7 +295,11 @@ and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
 (intentionally excluding [`<applet>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/applet) as it's deprecated).
 
 ```javascript
-// <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />
+import {render} from 'react-testing-library'
+
+const {getByAltText} = render(
+  <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />,
+)
 const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
@@ -292,7 +309,9 @@ A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
 also accepts a [`TextMatch`](#textmatch)).
 
 ```javascript
-// <input data-testid="username-input" />
+import {render} from 'react-testing-library'
+
+const {getByTestId} = render(<input data-testid="username-input" />)
 const usernameInputElement = getByTestId('username-input')
 ```
 
@@ -310,7 +329,9 @@ Render into `document.body`. Should be used with [cleanup](#cleanup).
 `renderIntoDocument` will return the same object as [render](#render)
 
 ```javascript
-renderIntoDocument(<div>)
+import {renderIntoDocument} from 'react-testing-library'
+
+renderIntoDocument(<div />)
 ```
 
 ### `cleanup`
@@ -318,10 +339,12 @@ renderIntoDocument(<div>)
 Unmounts React trees that were mounted with [renderIntoDocument](#renderintodocument).
 
 ```javascript
+import {cleanup, renderIntoDocument} from 'react-testing-library'
+
 afterEach(cleanup)
 
 test('renders into document', () => {
-  renderIntoDocument(<div>)
+  renderIntoDocument(<div />)
   // ...
 })
 ```
@@ -366,12 +389,16 @@ around the
 Here's a simple example:
 
 ```javascript
-// ...
-// wait until the callback does not throw an error. In this case, that means
-// it'll wait until we can get a form control with a label that matches "username"
-await wait(() => getByLabelText('username'))
-getByLabelText('username').value = 'chucknorris'
-// ...
+import {render, wait} from 'react-testing-library'
+
+test('waiting for an expectation to pass before proceeding', async () => {
+  const {getByLabelText} = render(<Login />)
+
+  // wait until the callback does not throw an error. In this case, that means
+  // it'll wait until we can get a form control with a label that matches "username"
+  await wait(() => getByLabelText('username'))
+  getByLabelText('username').value = 'chucknorris'
+})
 ```
 
 This can be useful if you have a unit test that mocks API calls and you need
@@ -396,7 +423,13 @@ intervals.
 See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
 
 ```js
-await waitForElement(() => getByText('Search'))
+import {render, waitForElement} from 'react-testing-library'
+
+test('waiting for an element', async () => {
+  const {getByText} = render(<SearchForm />)
+
+  await waitForElement(() => getByText('Search'))
+})
 ```
 
 <details>
@@ -405,6 +438,8 @@ await waitForElement(() => getByText('Search'))
   </summary>
 
 ```diff
+import {render, Simulate, waitForElement} from 'react-testing-library'
+
 test('should submit form when valid', async () => {
   const mockSubmit = jest.fn()
   const {
@@ -445,12 +480,7 @@ instead of Synthetic Events. This aligns better with
 > [facebook/react#2043](https://github.com/facebook/react/issues/2043)
 
 ```javascript
-import {
-  renderIntoDocument,
-  cleanup,
-  render,
-  fireEvent,
-} from 'react-testing-library'
+import {renderIntoDocument, cleanup, fireEvent} from 'react-testing-library'
 
 // don't forget to clean up the document.body
 afterEach(cleanup)
@@ -478,6 +508,10 @@ Convenience methods for firing DOM events. Check out
 for a full list as well as default `eventProperties`.
 
 ```javascript
+import {renderIntoDocument, fireEvent} from 'react-testing-library'
+
+const {getElementByText} = renderIntoDocument(<Form />)
+
 // similar to the above example
 // click will bubble for React to see it
 const rightClick = {button: 2}
@@ -503,6 +537,8 @@ This function is usually used alongside `console.log` to temporarily print out
 DOM trees during tests for debugging purposes:
 
 ```javascript
+import {render, prettyDOM} from 'react-testing-library'
+
 const HelloWorld = () => <h1>Hello World</h1>
 const {container} = render(<HelloWorld />)
 console.log(prettyDOM(container))
@@ -521,9 +557,9 @@ See [dom-testing-library#textmatch][dom-testing-lib-textmatch] for options.
 Examples:
 
 ```javascript
-// <div>
-//  Hello World
-// </div>
+import {container, getByText} from 'react-testing-library'
+
+const {container} = render(<div>Hello World</div>)
 
 // WILL find the div:
 
@@ -560,6 +596,9 @@ make an assertion that an element is _not_ present in the DOM, then you can use
 the `query` API instead:
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {queryByText} = render(<Form />)
 const submitButton = queryByText('submit')
 expect(submitButton).toBeNull() // it doesn't exist
 ```
@@ -569,6 +608,9 @@ expect(submitButton).toBeNull() // it doesn't exist
 Each of the `query` APIs have a corresponsing `queryAll` version that always returns an Array of matching nodes. `getAll` is the same but throws when the array has a length of 0.
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {queryByText} = render(<Forms />)
 const submitButtons = queryAllByText('submit')
 expect(submitButtons).toHaveLength(3) // expect 3 elements
 expect(submitButtons[0]).toBeInTheDOM()
@@ -855,14 +897,12 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars1.githubusercontent.com/u/1241511?s=460&v=4" width="100px;"/><br /><sub><b>Anto Aravinth</b></sub>](https://github.com/antoaravinth)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=antoaravinth "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/3462296?v=4" width="100px;"/><br /><sub><b>Jonah Moses</b></sub>](https://github.com/JonahMoses)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=JonahMoses "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/4002543?v=4" width="100px;"/><br /><sub><b>Łukasz Gandecki</b></sub>](http://team.thebrain.pro)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Code") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Tests") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=lgandecki "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/498274?v=4" width="100px;"/><br /><sub><b>Ivan Babak</b></sub>](https://sompylasar.github.io)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Asompylasar "Bug reports") [🤔](#ideas-sompylasar "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/4439618?v=4" width="100px;"/><br /><sub><b>Jesse Day</b></sub>](https://github.com/jday3)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jday3 "Code") | [<img src="https://avatars0.githubusercontent.com/u/15199?v=4" width="100px;"/><br /><sub><b>Ernesto García</b></sub>](http://gnapse.github.io)<br />[💬](#question-gnapse "Answering Questions") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=gnapse "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/2747424?v=4" width="100px;"/><br /><sub><b>Josef Maxx Blake</b></sub>](http://jomaxx.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=jomaxx "Tests") |
 | [<img src="https://avatars1.githubusercontent.com/u/29602306?v=4" width="100px;"/><br /><sub><b>Michal Baranowski</b></sub>](https://twitter.com/baranovskim)<br />[📝](#blog-mbaranovski "Blogposts") [✅](#tutorial-mbaranovski "Tutorials") | [<img src="https://avatars3.githubusercontent.com/u/13985684?v=4" width="100px;"/><br /><sub><b>Arthur Puthin</b></sub>](https://github.com/aputhin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=aputhin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/21194045?v=4" width="100px;"/><br /><sub><b>Thomas Chia</b></sub>](https://github.com/thchia)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=thchia "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/20430611?v=4" width="100px;"/><br /><sub><b>Thiago Galvani</b></sub>](http://ilegra.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=thiagopaiva99 "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/19828824?v=4" width="100px;"/><br /><sub><b>Christian</b></sub>](http://Chriswcs.github.io)<br />[⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=ChrisWcs "Tests") | [<img src="https://avatars3.githubusercontent.com/u/1571667?v=4" width="100px;"/><br /><sub><b>Alex Krolick</b></sub>](https://alexkrolick.com)<br />[💬](#question-alexkrolick "Answering Questions") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=alexkrolick "Documentation") [💡](#example-alexkrolick "Examples") [🤔](#ideas-alexkrolick "Ideas, Planning, & Feedback") | [<img src="https://avatars3.githubusercontent.com/u/1239401?v=4" width="100px;"/><br /><sub><b>Johann Hubert Sonntagbauer</b></sub>](https://github.com/johann-sonntagbauer)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=johann-sonntagbauer "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=johann-sonntagbauer "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=johann-sonntagbauer "Tests") |
-| [<img src="https://avatars2.githubusercontent.com/u/2224291?v=4" width="100px;"/><br /><sub><b>Maddi Joyce</b></sub>](http://www.maddijoyce.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=maddijoyce "Code") | [<img src="https://avatars2.githubusercontent.com/u/10080111?v=4" width="100px;"/><br /><sub><b>Ryan Vice</b></sub>](http://www.vicesoftware.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=RyanAtViceSoftware "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/7942604?v=4" width="100px;"/><br /><sub><b>Ian Wilson</b></sub>](https://ianwilson.io)<br />[📝](#blog-iwilsonq "Blogposts") [✅](#tutorial-iwilsonq "Tutorials") | [<img src="https://avatars2.githubusercontent.com/u/1635491?v=4" width="100px;"/><br /><sub><b>Daniel</b></sub>](https://github.com/InExtremaRes)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3AInExtremaRes "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=InExtremaRes "Code") | [<img src="https://avatars0.githubusercontent.com/u/767959?v=4" width="100px;"/><br /><sub><b>Giorgio Polvara</b></sub>](https://twitter.com/Gpx)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3AGpx "Bug reports") [🤔](#ideas-Gpx "Ideas, Planning, & Feedback") | [<img src="https://avatars2.githubusercontent.com/u/132233?v=4" width="100px;"/><br /><sub><b>John Gozde</b></sub>](https://github.com/jgoz)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jgoz "Code") |
-
+| [<img src="https://avatars2.githubusercontent.com/u/2224291?v=4" width="100px;"/><br /><sub><b>Maddi Joyce</b></sub>](http://www.maddijoyce.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=maddijoyce "Code") | [<img src="https://avatars2.githubusercontent.com/u/10080111?v=4" width="100px;"/><br /><sub><b>Ryan Vice</b></sub>](http://www.vicesoftware.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=RyanAtViceSoftware "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/7942604?v=4" width="100px;"/><br /><sub><b>Ian Wilson</b></sub>](https://ianwilson.io)<br />[📝](#blog-iwilsonq "Blogposts") [✅](#tutorial-iwilsonq "Tutorials") | [<img src="https://avatars2.githubusercontent.com/u/1635491?v=4" width="100px;"/><br /><sub><b>Daniel</b></sub>](https://github.com/InExtremaRes)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3AInExtremaRes "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=InExtremaRes "Code") | [<img src="https://avatars0.githubusercontent.com/u/767959?v=4" width="100px;"/><br /><sub><b>Giorgio Polvara</b></sub>](https://twitter.com/Gpx)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3AGpx "Bug reports") [🤔](#ideas-Gpx "Ideas, Planning, & Feedback") | [<img src="https://avatars2.githubusercontent.com/u/132233?v=4" width="100px;"/><br /><sub><b>John Gozde</b></sub>](https://github.com/jgoz)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jgoz "Code") | [<img src="https://avatars0.githubusercontent.com/u/8203211?v=4" width="100px;"/><br /><sub><b>Sam Horton</b></sub>](https://twitter.com/SavePointSam)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=SavePointSam "Documentation") [💡](#example-SavePointSam "Examples") [🤔](#ideas-SavePointSam "Ideas, Planning, & Feedback") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
