@@ -171,6 +171,8 @@ The containing DOM node of your rendered React Element (rendered using
 This method is a shortcut for `console.log(prettyDOM(container))`.
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const HelloWorld = () => <h1>Hello World</h1>
 const {debug} = render(<HelloWorld />)
 debug()
@@ -190,6 +192,8 @@ prefer to update the props of a rendered component in your test, this function
 can be used to update props of the rendered component.
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const {rerender} = render(<NumberDisplay number={1} />)
 
 // re-render the same component with different props
@@ -209,6 +213,8 @@ that you don't leave event handlers hanging around causing memory leaks).
 > `ReactDOM.unmountComponentAtNode`
 
 ```javascript
+import {render} from 'react-testing-library'
+
 const {container, unmount} = render(<Login />)
 unmount()
 // your component has been unmounted and now: container.innerHTML === ''
@@ -220,6 +226,9 @@ This will search for the label that matches the given [`TextMatch`](#textmatch),
 then find the element associated with that label.
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {getByLabelText} = render(<Login />)
 const inputNode = getByLabelText('Username')
 
 // this would find the input node for the following DOM structures:
@@ -255,7 +264,9 @@ This will search for all elements with a placeholder attribute and find one
 that matches the given [`TextMatch`](#textmatch).
 
 ```javascript
-// <input placeholder="Username" />
+import {render} from 'react-testing-library'
+
+const {getByPlaceholderText} = render(<input placeholder="Username" />)
 const inputNode = getByPlaceholderText('Username')
 ```
 
@@ -268,7 +279,9 @@ This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
 
 ```javascript
-// <a href="/about">About ℹ️</a>
+import {render} from 'react-testing-library'
+
+const {getByText} = render(<a href="/about">About ℹ️</a>)
 const aboutAnchorNode = getByText('about')
 ```
 
@@ -282,7 +295,11 @@ and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
 (intentionally excluding [`<applet>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/applet) as it's deprecated).
 
 ```javascript
-// <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />
+import {render} from 'react-testing-library'
+
+const {getByAltText} = render(
+  <img alt="Incredibles 2 Poster" src="/incredibles-2.png" />,
+)
 const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
@@ -292,7 +309,9 @@ A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
 also accepts a [`TextMatch`](#textmatch)).
 
 ```javascript
-// <input data-testid="username-input" />
+import {render} from 'react-testing-library'
+
+const {getByTestId} = render(<input data-testid="username-input" />)
 const usernameInputElement = getByTestId('username-input')
 ```
 
@@ -310,7 +329,9 @@ Render into `document.body`. Should be used with [cleanup](#cleanup).
 `renderIntoDocument` will return the same object as [render](#render)
 
 ```javascript
-renderIntoDocument(<div>)
+import {renderIntoDocument} from 'react-testing-library'
+
+renderIntoDocument(<div />)
 ```
 
 ### `cleanup`
@@ -318,10 +339,12 @@ renderIntoDocument(<div>)
 Unmounts React trees that were mounted with [renderIntoDocument](#renderintodocument).
 
 ```javascript
+import {cleanup, renderIntoDocument} from 'react-testing-library'
+
 afterEach(cleanup)
 
 test('renders into document', () => {
-  renderIntoDocument(<div>)
+  renderIntoDocument(<div />)
   // ...
 })
 ```
@@ -366,12 +389,16 @@ around the
 Here's a simple example:
 
 ```javascript
-// ...
-// wait until the callback does not throw an error. In this case, that means
-// it'll wait until we can get a form control with a label that matches "username"
-await wait(() => getByLabelText('username'))
-getByLabelText('username').value = 'chucknorris'
-// ...
+import {render, wait} from 'react-testing-library'
+
+test('waiting for an expectation to pass before proceeding', async () => {
+  const {getByLabelText} = render(<Login />)
+
+  // wait until the callback does not throw an error. In this case, that means
+  // it'll wait until we can get a form control with a label that matches "username"
+  await wait(() => getByLabelText('username'))
+  getByLabelText('username').value = 'chucknorris'
+})
 ```
 
 This can be useful if you have a unit test that mocks API calls and you need
@@ -396,7 +423,13 @@ intervals.
 See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
 
 ```js
-await waitForElement(() => getByText('Search'))
+import {render, waitForElement} from 'react-testing-library'
+
+test('waiting for an element', async () => {
+  const {getByText} = render(<SearchForm />)
+
+  await waitForElement(() => getByText('Search'))
+})
 ```
 
 <details>
@@ -405,6 +438,8 @@ await waitForElement(() => getByText('Search'))
   </summary>
 
 ```diff
+import {render, Simulate, waitForElement} from 'react-testing-library'
+
 test('should submit form when valid', async () => {
   const mockSubmit = jest.fn()
   const {
@@ -445,12 +480,7 @@ instead of Synthetic Events. This aligns better with
 > [facebook/react#2043](https://github.com/facebook/react/issues/2043)
 
 ```javascript
-import {
-  renderIntoDocument,
-  cleanup,
-  render,
-  fireEvent,
-} from 'react-testing-library'
+import {renderIntoDocument, cleanup, fireEvent} from 'react-testing-library'
 
 // don't forget to clean up the document.body
 afterEach(cleanup)
@@ -478,6 +508,10 @@ Convenience methods for firing DOM events. Check out
 for a full list as well as default `eventProperties`.
 
 ```javascript
+import {renderIntoDocument, fireEvent} from 'react-testing-library'
+
+const {getElementByText} = renderIntoDocument(<Form />)
+
 // similar to the above example
 // click will bubble for React to see it
 const rightClick = {button: 2}
@@ -503,6 +537,8 @@ This function is usually used alongside `console.log` to temporarily print out
 DOM trees during tests for debugging purposes:
 
 ```javascript
+import {render, prettyDOM} from 'react-testing-library'
+
 const HelloWorld = () => <h1>Hello World</h1>
 const {container} = render(<HelloWorld />)
 console.log(prettyDOM(container))
@@ -521,9 +557,9 @@ See [dom-testing-library#textmatch][dom-testing-lib-textmatch] for options.
 Examples:
 
 ```javascript
-// <div>
-//  Hello World
-// </div>
+import {container, getByText} from 'react-testing-library'
+
+const {container} = render(<div>Hello World</div>)
 
 // WILL find the div:
 
@@ -560,6 +596,9 @@ make an assertion that an element is _not_ present in the DOM, then you can use
 the `query` API instead:
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {queryByText} = render(<Form />)
 const submitButton = queryByText('submit')
 expect(submitButton).toBeNull() // it doesn't exist
 ```
@@ -569,6 +608,9 @@ expect(submitButton).toBeNull() // it doesn't exist
 Each of the `query` APIs have a corresponsing `queryAll` version that always returns an Array of matching nodes. `getAll` is the same but throws when the array has a length of 0.
 
 ```javascript
+import {render} from 'react-testing-library'
+
+const {queryByText} = render(<Forms />)
 const submitButtons = queryAllByText('submit')
 expect(submitButtons).toHaveLength(3) // expect 3 elements
 expect(submitButtons[0]).toBeInTheDOM()
