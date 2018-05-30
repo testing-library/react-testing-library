@@ -165,6 +165,10 @@ The containing DOM node of your rendered React Element (rendered using
 `container.querySelector` etc. to inspect the children.
 
 > Tip: To get the root element of your rendered element, use `container.firstChild`.
+>
+> NOTE: When that root element is a
+> [React Fragment](https://reactjs.org/docs/fragments.html), `container.firstChild`
+> will only get the first child of that Fragment, not the Fragment itself.
 
 #### `debug`
 
