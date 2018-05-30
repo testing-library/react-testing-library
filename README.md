@@ -93,6 +93,7 @@ facilitate testing implementation details). Read more about this in
 * [`query` APIs](#query-apis)
 * [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
 * [Examples](#examples)
+* [Learning Material](#learning-material)
 * [FAQ](#faq)
 * [Other Solutions](#other-solutions)
 * [Guiding Principles](#guiding-principles)
@@ -630,10 +631,12 @@ Some included are:
 * [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
 * [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
 
-Examples of TDD with react-testing-library:
+## Learning Material
 
-* [`Build a joke app with TDD`](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64) by [@mbaranovski](https://github.com/mbaranovski)
-* [`Build a comment feed with TDD`](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47) by [@iwilsonq](https://github.com/iwilsonq)
+* [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
+* [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
+* [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64) by [@mbaranovski](https://github.com/mbaranovski)
+* [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47) by [@iwilsonq](https://github.com/iwilsonq)
 
 Feel free to contribute more!
 
