@@ -117,8 +117,8 @@ npm install --save-dev react-testing-library
 
 This library has a `peerDependencies` listing for `react-dom`.
 
-You may also be interested in installing `dom-testing-library` so you can use
-[the custom jest matchers](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#custom-jest-matchers)
+You may also be interested in installing `jest-dom` so you can use
+[the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
 
 ## Usage
 
@@ -126,8 +126,8 @@ You may also be interested in installing `dom-testing-library` so you can use
 // __tests__/fetch.js
 import React from 'react'
 import {render, Simulate, wait} from 'react-testing-library'
-// this add custom expect matchers from dom-testing-library
-import 'dom-testing-library/extend-expect'
+// this add custom jest matchers from jest-dom
+import 'jest-dom/extend-expect'
 import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
 
