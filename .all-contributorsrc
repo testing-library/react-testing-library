@@ -286,6 +286,15 @@
         "example",
         "ideas"
       ]
+    },
+    {
+      "login": "rkotze",
+      "name": "Richard Kotze (mobile)",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10452163?v=4",
+      "profile": "http://www.richardkotze.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
