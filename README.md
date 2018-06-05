@@ -562,7 +562,7 @@ See [dom-testing-library#textmatch][dom-testing-lib-textmatch] for options.
 Examples:
 
 ```javascript
-import {container, getByText} from 'react-testing-library'
+import {render, getByText} from 'react-testing-library'
 
 const {container} = render(<div>Hello World</div>)
 
