@@ -19,9 +19,9 @@ to work on.
 * Please make sure that you are familiar with and follow the Code of Conduct for
   this project (found in the CODE_OF_CONDUCT.md file).
 
-We'll probably ask you to submit the fix (after giving some direction). If
-you've never done that before, that's great! Check this free short video
-tutorial to learn how: http://kcd.im/pull-request
+It'd be great if after the discussion you're the one who submits the PR that
+implements this feature. If you've never done that before, that's great! Check
+this free short video tutorial to learn how: http://kcd.im/pull-request
 
 -->
 
