@@ -640,6 +640,8 @@ Some included are:
 * [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47) by [@iwilsonq](https://github.com/iwilsonq)
 * [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest) by [Richard Kotze](https://github.com/rkotze)
 
+* [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html) by [Chris Noring](https://github.com/softchris)
+
 Feel free to contribute more!
 
 ## FAQ
