@@ -641,6 +641,7 @@ Some included are:
 * [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest) by [Richard Kotze](https://github.com/rkotze)
 
 * [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html) by [Chris Noring](https://github.com/softchris)
+* [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894) by [Jeffrey Russom](https://github.com/qswitcher)
 
 Feel free to contribute more!
 
