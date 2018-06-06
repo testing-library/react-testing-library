@@ -2,19 +2,22 @@ import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
 import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
 
-function render(ui, {container = document.createElement('div')} = {}) {
+function render(
+  ui,
+  {container = document.createElement('div'), baseElement = container} = {},
+) {
   ReactDOM.render(ui, container)
   return {
     container,
     // eslint-disable-next-line no-console
-    debug: () => console.log(prettyDOM(container)),
+    debug: () => console.log(prettyDOM(baseElement)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
       render(rerenderUi, {container})
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
-    ...getQueriesForElement(container),
+    ...getQueriesForElement(baseElement),
   }
 }
 
@@ -23,7 +26,7 @@ const mountedContainers = new Set()
 function renderIntoDocument(ui) {
   const container = document.body.appendChild(document.createElement('div'))
   mountedContainers.add(container)
-  return render(ui, {container})
+  return render(ui, {container, baseElement: document.body})
 }
 
 function cleanup() {
