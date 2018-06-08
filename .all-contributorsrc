@@ -313,6 +313,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "icfantv",
+      "name": "Adam Gordon",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/370054?v=4",
+      "profile": "http://gordonizer.com",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }

@@ -8,6 +8,7 @@ import {
   QueryByAttribute,
   QueryByText,
 } from 'dom-testing-library'
+export {prettyDOM} from 'dom-testing-library'
 
 type TextMatchFunction = (content: string, element: HTMLElement) => boolean
 type TextMatch = string | RegExp | TextMatchFunction
