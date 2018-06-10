@@ -330,7 +330,8 @@ const usernameInputElement = getByTestId('username-input')
 ### `renderIntoDocument`
 
 Render into `document.body`. Should be used with [cleanup](#cleanup).
-`renderIntoDocument` will return the same object as [render](#render)
+`renderIntoDocument` will return the same object as [render](#render) but with test utilities exposed for `document.body` rather than the component alone.
+This helps to test [React portal](https://reactjs.org/docs/portals.html) elements.
 
 ```javascript
 import {renderIntoDocument} from 'react-testing-library'
