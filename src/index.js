@@ -44,10 +44,4 @@ syntheticEvents.forEach(eventName => {
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {
-  render,
-  Simulate,
-  renderIntoDocument,
-  cleanup,
-  getQueriesForElement as within,
-}
+export {render, Simulate, renderIntoDocument, cleanup}
