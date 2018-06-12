@@ -9,6 +9,15 @@ it('renders button into document', () => {
   expect(container.firstChild).toBe(ref.current)
 })
 
+it('access portal elements inside body', () => {
+  const {getByText} = renderIntoDocument(<div />)
+  const portalComponent = document.createElement('div')
+  portalComponent.appendChild(document.createTextNode('Hello World'))
+  document.body.appendChild(portalComponent)
+  expect(getByText('Hello World')).not.toBeNull()
+  document.body.removeChild(portalComponent)
+})
+
 it('cleansup document', () => {
   const spy = jest.fn()
 
