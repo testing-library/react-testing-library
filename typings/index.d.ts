@@ -41,7 +41,7 @@ interface GetsAndQueries {
   getAllByAltText: BoundFunction<AllByAttribute>
 }
 
-interface RenderResult extends GetsAndQueries {
+export interface RenderResult extends GetsAndQueries {
   container: HTMLDivElement
   debug: () => void
   rerender: (ui: React.ReactElement<any>) => void
