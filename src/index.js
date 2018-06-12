@@ -26,7 +26,7 @@ const mountedContainers = new Set()
 function renderIntoDocument(ui) {
   const container = document.body.appendChild(document.createElement('div'))
   mountedContainers.add(container)
-  return render(ui, {container, baseElement: document.body})
+  return render(ui, {container, baseElement: document.documentElement})
 }
 
 function cleanup() {
