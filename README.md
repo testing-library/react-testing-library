@@ -654,7 +654,7 @@ Feel free to contribute more!
 <summary>Which get method should I use?</summary>
 
 Based on [the Guiding Principles](#guiding-principles), your test should
-resemble how your code (component, page, etc.) as much as possible. With this
+resemble how your code (component, page, etc.) is used as much as possible. With this
 in mind, we recommend this order of priority:
 
 1.  `getByLabelText`: Only really good for form fields, but this is the number 1
