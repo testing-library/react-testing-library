@@ -1,5 +1,5 @@
 import React from 'react'
-import {renderIntoDocument, cleanup, fireEvent} from '../'
+import {render, cleanup, fireEvent} from '../'
 
 const eventTypes = [
   {
@@ -141,7 +141,7 @@ eventTypes.forEach(({type, events, elementType, init}) => {
         const ref = React.createRef()
         const spy = jest.fn()
 
-        renderIntoDocument(
+        render(
           React.createElement(elementType, {
             [propName]: spy,
             ref,

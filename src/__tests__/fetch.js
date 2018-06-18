@@ -1,6 +1,8 @@
 import React from 'react'
 import axiosMock from 'axios'
-import {render, Simulate, wait} from '../'
+import {render, fireEvent, cleanup, wait} from '../'
+
+afterEach(cleanup)
 
 // instead of importing it, we'll define it inline here
 // import Fetch from '../fetch'
@@ -34,7 +36,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   const {container, getByText} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(getByText('Fetch'))
+  fireEvent.click(getByText('Fetch'))
 
   await wait()
 

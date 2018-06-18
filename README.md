@@ -12,13 +12,11 @@
 
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
-[![version][version-badge]][package]
-[![downloads][downloads-badge]][npmtrends]
+[![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-33-orange.svg?style=flat-square)](#contributors)
-[![PRs Welcome][prs-badge]][prs]
-[![Code of Conduct][coc-badge]][coc]
+[![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
@@ -28,9 +26,9 @@
 ## The problem
 
 You want to write maintainable tests for your React components. As a part of
-this goal, you want your tests to avoid including implementation details of
-your components and rather focus on making your tests give you the confidence
-for which they are intended. As part of this, you want your testbase to be
+this goal, you want your tests to avoid including implementation details of your
+components and rather focus on making your tests give you the confidence for
+which they are intended. As part of this, you want your testbase to be
 maintainable in the long run so refactors of your components (changes to
 implementation but not functionality) don't break your tests and slow you and
 your team down.
@@ -39,10 +37,11 @@ your team down.
 
 The `react-testing-library` is a very light-weight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
-`react-dom/test-utils`, in a way that encourages better testing practices.
-It's primary guiding principle is:
+`react-dom/test-utils`, in a way that encourages better testing practices. It's
+primary guiding principle is:
 
-> [The more your tests resemble the way your software is used, the more confidence they can give you.][guiding-principle]
+> [The more your tests resemble the way your software is used, the more
+> confidence they can give you.][guiding-principle]
 
 So rather than dealing with instances of rendered react components, your tests
 will work with actual DOM nodes. The utilities this library provides facilitate
@@ -66,8 +65,8 @@ facilitate testing implementation details). Read more about this in
 **What this library is not**:
 
 1.  A test runner or framework
-2.  Specific to a testing framework (though we recommend Jest as our
-    preference, the library works with any framework)
+2.  Specific to a testing framework (though we recommend Jest as our preference,
+    the library works with any framework)
 
 > NOTE: This library is built on top of
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
@@ -81,13 +80,11 @@ facilitate testing implementation details). Read more about this in
 - [Installation](#installation)
 - [Usage](#usage)
   - [`render`](#render)
-  - [`renderIntoDocument`](#renderintodocument)
   - [`cleanup`](#cleanup)
-  - [`Simulate`](#simulate)
-  - [`wait`](#wait)
-  - [`waitForElement`](#waitforelement)
+- [`dom-testing-library` APIs](#dom-testing-library-apis)
   - [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
-  - [`prettyDOM`](#prettydom)
+  - [`waitForElement`](#waitforelement)
+  - [`wait`](#wait)
 - [`TextMatch`](#textmatch)
 - [`query` APIs](#query-apis)
 - [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
@@ -124,11 +121,14 @@ You may also be interested in installing `jest-dom` so you can use
 ```javascript
 // __tests__/fetch.js
 import React from 'react'
-import {render, Simulate, wait} from 'react-testing-library'
+import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
 // this add custom jest matchers from jest-dom
 import 'jest-dom/extend-expect'
 import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
+
+// automatically unmount and cleanup DOM after the test is finished.
+afterEach(cleanup)
 
 test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
   // Arrange
@@ -137,11 +137,13 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   const {getByText, getByTestId, container} = render(<Fetch url={url} />)
 
   // Act
-  Simulate.click(getByText('Load Greeting'))
+  fireEvent.click(getByText('Load Greeting'))
 
   // let's wait for our mocked `get` request promise to resolve
   // wait will wait until the callback doesn't throw an error
-  await wait(() => getByTestId('greeting-text'))
+  const greetingTextNode = await waitForElement(() =>
+    getByTestId('greeting-text'),
+  )
 
   // Assert
   expect(axiosMock.get).toHaveBeenCalledTimes(1)
@@ -155,6 +157,46 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 
 ### `render`
 
+Defined as:
+
+```typescript
+function render(
+  ui: React.ReactElement<any>,
+  options?: {
+    /* You wont often use this, expand below for docs on options */
+  },
+): RenderResult
+```
+
+Render into a container which is appended to `document.body`. It should be used
+with [cleanup](#cleanup):
+
+```javascript
+import {render, cleanup} from 'react-testing-library'
+
+afterEach(cleanup)
+
+render(<div />)
+```
+
+<details>
+
+<summary>Expand to see documentation on the options</summary>
+
+You wont often need to specify options, but if you ever do, here are the
+available options which you could provide as a second argument to `render`.
+
+**container**: By default, `react-testing-library` will create a `div` and
+append that div to the `document.body` and this is where your react component
+will be rendered. If you provide your own HTMLElement `container` via this
+option, it will not be appended to the `document.body` automatically.
+
+**baseElement**: If the `container` is specified, then this defaults to that,
+otherwise this defaults to `document.documentElement`. This is used as the base
+element for the queries as well as what is printed when you use `debug()`.
+
+</details>
+
 In the example above, the `render` method returns an object that has a few
 properties:
 
@@ -164,11 +206,13 @@ The containing DOM node of your rendered React Element (rendered using
 `ReactDOM.render`). It's a `div`. This is a regular DOM node, so you can call
 `container.querySelector` etc. to inspect the children.
 
-> Tip: To get the root element of your rendered element, use `container.firstChild`.
+> Tip: To get the root element of your rendered element, use
+> `container.firstChild`.
 >
 > NOTE: When that root element is a
-> [React Fragment](https://reactjs.org/docs/fragments.html), `container.firstChild`
-> will only get the first child of that Fragment, not the Fragment itself.
+> [React Fragment](https://reactjs.org/docs/fragments.html),
+> `container.firstChild` will only get the first child of that Fragment, not the
+> Fragment itself.
 
 #### `debug`
 
@@ -183,9 +227,11 @@ debug()
 // <div>
 //   <h1>Hello World</h1>
 // </div>
+// you can also pass an element: debug(getByTestId('messages'))
 ```
 
-Learn more about [`prettyDOM`](#prettydom) below.
+This is a simple wrapper around `prettyDOM` which is also exposed and comes from
+[`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#prettydom).
 
 #### `rerender`
 
@@ -264,8 +310,8 @@ const inputNode = getByLabelText('username', {selector: 'input'})
 
 #### `getByPlaceholderText(text: TextMatch): HTMLElement`
 
-This will search for all elements with a placeholder attribute and find one
-that matches the given [`TextMatch`](#textmatch).
+This will search for all elements with a placeholder attribute and find one that
+matches the given [`TextMatch`](#textmatch).
 
 ```javascript
 import {render} from 'react-testing-library'
@@ -296,7 +342,9 @@ text. Note that it only supports elements which accept an `alt` attribute:
 [`<img>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img),
 [`<input>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input),
 and [`<area>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/area)
-(intentionally excluding [`<applet>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/applet) as it's deprecated).
+(intentionally excluding
+[`<applet>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/applet)
+as it's deprecated).
 
 ```javascript
 import {render} from 'react-testing-library'
@@ -321,180 +369,95 @@ const usernameInputElement = getByTestId('username-input')
 
 > In the spirit of [the guiding principles](#guiding-principles), it is
 > recommended to use this only after `getByLabel`, `getByPlaceholderText` or
-> `getByText` don't work for your use case. Using data-testid attributes do
-> not resemble how your software is used and should be avoided if possible.
-> That said, they are _way_ better than querying based on DOM structure.
-> Learn more about `data-testid`s from the blog post
-> ["Making your UI tests resilient to change"][data-testid-blog-post]
-
-### `renderIntoDocument`
-
-Render into `document.body`. Should be used with [cleanup](#cleanup).
-`renderIntoDocument` will return the same object as [render](#render)
-but with test utilities exposed for `document.documentElement` rather
-than the `container` alone. This helps to test
-[React portal](https://reactjs.org/docs/portals.html) elements.
-
-```javascript
-import {renderIntoDocument} from 'react-testing-library'
-
-renderIntoDocument(<div />)
-```
+> `getByText` don't work for your use case. Using `data-testid` attributes do
+> not resemble how your software is used and should be avoided if possible. That
+> said, they are _way_ better than querying based on DOM structure. Learn more
+> about `data-testid`s from the blog post ["Making your UI tests resilient to
+> change"][data-testid-blog-post]
 
 ### `cleanup`
 
-Unmounts React trees that were mounted with [renderIntoDocument](#renderintodocument).
+Unmounts React trees that were mounted with [render](#render).
 
 ```javascript
-import {cleanup, renderIntoDocument} from 'react-testing-library'
+import {cleanup, render} from 'react-testing-library'
 
 afterEach(cleanup)
 
 test('renders into document', () => {
-  renderIntoDocument(<div />)
+  render(<div />)
   // ...
 })
 ```
 
-Failing to call `cleanup` when you've called `renderIntoDocument` could
-result in a memory leak and tests which are not `idempotent` (which can
-lead to difficult to debug errors in your tests).
+Failing to call `cleanup` when you've called `render` could result in a memory
+leak and tests which are not "idempotent" (which can lead to difficult to debug
+errors in your tests).
 
-### `Simulate`
+**If you don't want to add this to _every single test file_** then we recommend
+that you configure your test framework to run a file before your tests which
+does this automatically.
 
-This is simply a re-export from the `Simulate` utility from
-`react-dom/test-utils`. See [the docs](https://reactjs.org/docs/test-utils.html#simulate).
-
-Note: `Simulate` does not simulate _browser_ events, meaning if you have an element like
-
-```javascript
-<button type="submit">Submit</button>
-```
-
-calling `Simulate.click` will not cause the submit event to be invoked. In order to get around this and for more info, see [`fireEvent`](#fireeventnode-htmlelement-event-event).
-
-In general, it is better to use `fireEvent` whenever possible because it mimics more closely what happens in the browser when an event happens.
-
-### `wait`
-
-Defined as:
-
-```typescript
-function wait(
-  callback?: () => void,
-  options?: {
-    timeout?: number
-    interval?: number
-  },
-): Promise<void>
-```
-
-When in need to wait for non-deterministic periods of time you can use `wait`,
-to wait for your expectations to pass. The `wait` function is a small wrapper
-around the
-[`wait-for-expect`](https://github.com/TheBrainFamily/wait-for-expect) module.
-Here's a simple example:
+For example, to do this with jest, you can use
+[`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string):
 
 ```javascript
-import {render, wait} from 'react-testing-library'
-
-test('waiting for an expectation to pass before proceeding', async () => {
-  const {getByLabelText} = render(<Login />)
-
-  // wait until the callback does not throw an error. In this case, that means
-  // it'll wait until we can get a form control with a label that matches "username"
-  await wait(() => getByLabelText('username'))
-  getByLabelText('username').value = 'chucknorris'
-})
+// jest.config.js
+module.exports = {
+  setupTestFrameworkScriptFile: require.resolve('./test/setup-test-env.js'),
+}
 ```
 
-This can be useful if you have a unit test that mocks API calls and you need
-to wait for your mock promises to all resolve. This can also be useful when
-(for example) you integration test your apollo-connected react components that
-go a couple level deep, with queries fired up in consequent components.
+Then:
 
-The default `callback` is a no-op function (used like `await wait()`). This can
-be helpful if you only need to wait for one tick of the event loop.
+```javascript
+// test/setup-test-env.js
 
-The default `timeout` is `4500ms` which will keep you under
-[Jest's default timeout of `5000ms`](https://facebook.github.io/jest/docs/en/jest-object.html#jestsettimeouttimeout).
-
-The default `interval` is `50ms`. However it will run your callback immediately
-on the next tick of the event loop (in a `setTimeout`) before starting the
-intervals.
-
-> NOTE: `wait`'s callback can be called many times and because of this you should use as few `wait` calls as possible in each test and put minimum amount of code that absolutely needs to be waited on inside each `wait`'s `callback`. This will help your tests run faster and can avoid unnecessary runtime complexity.
-
-### `waitForElement`
-
-See [dom-testing-library#waitForElement](https://github.com/kentcdodds/dom-testing-library#waitforelement)
-
-```js
-import {render, waitForElement} from 'react-testing-library'
-
-test('waiting for an element', async () => {
-  const {getByText} = render(<SearchForm />)
-
-  await waitForElement(() => getByText('Search'))
-})
+// add some helpful assertions
+import 'jest-dom/extend-expect'
+// this is basically: afterEach(cleanup)
+import 'react-testing-library/cleanup-after-each'
 ```
 
-<details>
-  <summary>
-    Example
-  </summary>
+Or if you're using react-scripts (create-react-app), it has a default value
+that's set to `src/setupTests.js` so put the code above in that file.
 
-```diff
-import {render, Simulate, waitForElement} from 'react-testing-library'
+## `dom-testing-library` APIs
 
-test('should submit form when valid', async () => {
-  const mockSubmit = jest.fn()
-  const {
-    container,
-    getByLabelText,
-    getByText
-   } = render(<Form onSubmit={mockSubmit} />)
-  const nameInput = getByLabelText('Name')
-  nameInput.value = 'Chewbacca'
-  Simulate.change(nameInput)
-+ // wait for button to appear and click it
-+ const submitButton = await waitForElement(() => getByText('Search'))
-+ Simulate.click(submitButton)
-+ expect(mockSubmit).toBeCalled()
-})
-```
-
-</details>
+`react-testing-library` is built on top of
+[`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library) and
+re-exports everything from `dom-testing-library`. Some notable included exports:
 
 ### `fireEvent(node: HTMLElement, event: Event)`
 
 Fire DOM events.
 
 React attaches an event handler on the `document` and handles some DOM events
-via event delegation (events bubbling up from a `target` to an ancestor). Because
-of this, your `node` must be in the `document.body` for `fireEvent` to work with
-React. You can render into the document using the
-[renderIntoDocument](#renderintodocument) utility. This is an alternative to
-simulating Synthetic React Events via [Simulate](#simulate). The benefit of
+via event delegation (events bubbling up from a `target` to an ancestor).
+Because of this, your `node` must be in the `document.body` for `fireEvent` to
+work with React. This is why `render` appends your container to `document.body`.
+This is an alternative to simulating Synthetic React Events via
+[`Simulate`](https://reactjs.org/docs/test-utils.html#simulate). The benefit of
 using `fireEvent` over `Simulate` is that you are testing real DOM events
 instead of Synthetic Events. This aligns better with
 [the Guiding Principles](#guiding-principles).
+([Also Dan Abramov told me to stop use Simulate](https://twitter.com/dan_abramov/status/980807288444383232)).
 
-> NOTE: If you don't like having to render into the document to get `fireEvent`
-> working, then feel free to try to chip into making it possible for React
-> to attach event handlers to the rendered node rather than the `document`.
-> Learn more here:
+> NOTE: If you don't like having to use `cleanup` (which we have to do because
+> we render into `document.body`) to get `fireEvent` working, then feel free to
+> try to chip into making it possible for React to attach event handlers to the
+> rendered node rather than the `document`. Learn more here:
 > [facebook/react#2043](https://github.com/facebook/react/issues/2043)
 
 ```javascript
-import {renderIntoDocument, cleanup, fireEvent} from 'react-testing-library'
+import {render, cleanup, fireEvent} from 'react-testing-library'
 
 // don't forget to clean up the document.body
 afterEach(cleanup)
 
 test('clicks submit button', () => {
   const spy = jest.fn()
-  const {getByText} = renderIntoDocument(<button onClick={spy}>Submit</button>)
+  const {getByText} = render(<button onClick={spy}>Submit</button>)
 
   fireEvent(
     getByText('Submit'),
@@ -526,32 +489,39 @@ fireEvent.click(getElementByText('Submit'), rightClick)
 // default `button` property for click events is set to `0` which is a left click.
 ```
 
-### `prettyDOM`
+### `waitForElement`
 
-This helper function can be used to print out readable representation of the DOM
-tree of a node. This can be helpful for instance when debugging tests.
+> [Read full docs from `dom-testing-library`](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#waitforelement)
 
-It is defined as:
+```js
+import {render, waitForElement} from 'react-testing-library'
 
-```typescript
-function prettyDOM(node: HTMLElement, maxLength?: number): string
+test('waiting for an element', async () => {
+  const {getByText} = render(<SearchForm />)
+
+  await waitForElement(() => getByText('Search'))
+})
 ```
 
-It receives the root node to print out, and an optional extra argument to limit
-the size of the resulting string, for cases when it becomes too large.
+### `wait`
 
-This function is usually used alongside `console.log` to temporarily print out
-DOM trees during tests for debugging purposes:
+> [Read full docs from `dom-testing-library`](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#wait)
+
+It's recommended to prefer `waitForElement`, but this can be helpful on occasion
 
 ```javascript
-import {render, prettyDOM} from 'react-testing-library'
+import 'jest-dom/extend-expect'
+import {render, wait} from 'react-testing-library'
 
-const HelloWorld = () => <h1>Hello World</h1>
-const {container} = render(<HelloWorld />)
-console.log(prettyDOM(container))
-// <div>
-//   <h1>Hello World</h1>
-// </div>
+test('can fill in the form after loaded', async () => {
+  const {getByLabelText} = render(<Login />)
+
+  // wait until the callback does not throw an error. In this case, that means
+  // it'll wait until the element with the text that says "loading..." is gone.
+  await wait(() => expect(queryByText(/loading\.\.\./i).not.toBeInTheDOM())
+  getByLabelText('username').value = 'chucknorris'
+  // continue doing stuff
+})
 ```
 
 ## `TextMatch`
@@ -612,7 +582,9 @@ expect(submitButton).toBeNull() // it doesn't exist
 
 ## `queryAll` and `getAll` APIs
 
-Each of the `query` APIs have a corresponsing `queryAll` version that always returns an Array of matching nodes. `getAll` is the same but throws when the array has a length of 0.
+Each of the `query` APIs have a corresponding `queryAll` version that always
+returns an Array of matching nodes. `getAll` is the same but throws when the
+array has a length of 0.
 
 ```javascript
 import {render} from 'react-testing-library'
@@ -624,6 +596,9 @@ expect(submitButtons[0]).toBeInTheDOM()
 ```
 
 ## Examples
+
+> We're in the process of moving examples to
+> [`react-testing-library-examples`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples).
 
 You'll find examples of testing with different libraries in
 [the `examples` directory](https://github.com/kentcdodds/react-testing-library/blob/master/examples).
@@ -638,12 +613,17 @@ Some included are:
 - [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
 - [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
 - [Testing React and Web Applications](https://kentcdodds.com/workshops/#testing-react-and-web-applications)
-- [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64) by [@mbaranovski](https://github.com/mbaranovski)
-- [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47) by [@iwilsonq](https://github.com/iwilsonq)
-- [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest) by [Richard Kotze](https://github.com/rkotze)
+- [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64)
+  by [@mbaranovski](https://github.com/mbaranovski)
+- [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47)
+  by [@iwilsonq](https://github.com/iwilsonq)
+- [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest)
+  by [Richard Kotze](https://github.com/rkotze)
 
-- [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html) by [Chris Noring](https://github.com/softchris)
-- [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894) by [Jeffrey Russom](https://github.com/qswitcher)
+- [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html)
+  by [Chris Noring](https://github.com/softchris)
+- [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894)
+  by [Jeffrey Russom](https://github.com/qswitcher)
 
 Feel free to contribute more!
 
@@ -654,18 +634,19 @@ Feel free to contribute more!
 <summary>Which get method should I use?</summary>
 
 Based on [the Guiding Principles](#guiding-principles), your test should
-resemble how your code (component, page, etc.) is used as much as possible. With this
-in mind, we recommend this order of priority:
+resemble how your code (component, page, etc.) is used as much as possible. With
+this in mind, we recommend this order of priority:
 
 1.  `getByLabelText`: Only really good for form fields, but this is the number 1
     method a user finds those elements, so it should be your top preference.
-2.  `getByPlaceholderText`: [A placeholder is not a substitute for a label](https://www.nngroup.com/articles/form-design-placeholders/).
+2.  `getByPlaceholderText`:
+    [A placeholder is not a substitute for a label](https://www.nngroup.com/articles/form-design-placeholders/).
     But if that's all you have, then it's better than alternatives.
 3.  `getByText`: Not useful for forms, but this is the number 1 method a user
     finds other elements (like buttons to click), so it should be your top
     preference for non-form elements.
-4.  `getByAltText`: If your element is one which supports `alt` text
-    (`img`, `area`, and `input`), then you can use this to find that element.
+4.  `getByAltText`: If your element is one which supports `alt` text (`img`,
+    `area`, and `input`), then you can use this to find that element.
 5.  `getByTestId`: The user cannot see (or hear) these, so this is only
     recommended for cases where you can't match by text or it doesn't make sense
     (the text is dynamic).
@@ -680,15 +661,16 @@ component as well (using the regular
 
 <summary>Can I write unit tests with this library?</summary>
 
-Definitely yes! You can write unit and integration tests with this library.
-See below for more on how to mock dependencies (because this library
-intentionally does NOT support shallow rendering) if you want to unit test a
-high level component. The tests in this project show several examples of
-unit testing with this library.
+Definitely yes! You can write unit and integration tests with this library. See
+below for more on how to mock dependencies (because this library intentionally
+does NOT support shallow rendering) if you want to unit test a high level
+component. The tests in this project show several examples of unit testing with
+this library.
 
 As you write your tests, keep in mind:
 
-> The more your tests resemble the way your software is used, the more confidence they can give you. - [17 Feb 2018][guiding-principle]
+> The more your tests resemble the way your software is used, the more
+> confidence they can give you. - [17 Feb 2018][guiding-principle]
 
 </details>
 
@@ -696,10 +678,10 @@ As you write your tests, keep in mind:
 
 <summary>What if my app is localized and I don't have access to the text in test?</summary>
 
-This is fairly common. Our first bit of advice is to try to get the default
-text used in your tests. That will make everything much easier (more than just
-using this utility). If that's not possible, then you're probably best
-to just stick with `data-testid`s (which is not bad anyway).
+This is fairly common. Our first bit of advice is to try to get the default text
+used in your tests. That will make everything much easier (more than just using
+this utility). If that's not possible, then you're probably best to just stick
+with `data-testid`s (which is not bad anyway).
 
 </details>
 
@@ -730,7 +712,7 @@ test('you can mock things with jest.mock', () => {
   )
   expect(queryByTestId('hidden-message')).toBeTruthy() // we just care it exists
   // hide the message
-  Simulate.click(getByTestId('toggle-message'))
+  fireEvent.click(getByTestId('toggle-message'))
   // in the real world, the CSSTransition component would take some time
   // before finishing the animation which would actually hide the message.
   // So we've mocked it out for our tests to make it happen instantly
@@ -761,7 +743,11 @@ Learn more about how Jest mocks work from my blog post:
 
 <summary>What if I want to verify that an element does NOT exist?</summary>
 
-You typically will get access to rendered elements using the `getByTestId` utility. However, that function will throw an error if the element isn't found. If you want to specifically test for the absence of an element, then you should use the `queryByTestId` utility which will return the element if found or `null` if not.
+You typically will get access to rendered elements using the `getByTestId`
+utility. However, that function will throw an error if the element isn't found.
+If you want to specifically test for the absence of an element, then you should
+use the `queryByTestId` utility which will return the element if found or `null`
+if not.
 
 ```javascript
 expect(queryByTestId('thing-that-does-not-exist')).toBeNull()
@@ -782,8 +768,8 @@ may want to run some E2E tests that run on the same code you're about to ship to
 production. In that case, the `data-testid` attributes will be valuable there as
 well.
 
-All that said, if you really don't want to ship `data-testid` attributes, then you
-can use
+All that said, if you really don't want to ship `data-testid` attributes, then
+you can use
 [this simple babel plugin](https://www.npmjs.com/package/babel-plugin-react-remove-properties)
 to remove them.
 
@@ -802,7 +788,8 @@ const rootElement = container.firstChild
 
 <summary>What if I’m iterating over a list of items that I want to put the data-testid="item" attribute on. How do I distinguish them from each other?</summary>
 
-You can make your selector just choose the one you want by including :nth-child in the selector.
+You can make your selector just choose the one you want by including :nth-child
+in the selector.
 
 ```javascript
 const thirdLiInUl = container.querySelector('ul > li:nth-child(3)')
@@ -840,7 +827,8 @@ state/properties) (most of enzyme's wrapper APIs allow this).
 
 The guiding principle for this library is:
 
-> The more your tests resemble the way your software is used, the more confidence they can give you. - [17 Feb 2018][guiding-principle]
+> The more your tests resemble the way your software is used, the more
+> confidence they can give you. - [17 Feb 2018][guiding-principle]
 
 Because users can't directly interact with your app's component instances,
 assert on their internal state or what components they render, or call their
@@ -857,14 +845,13 @@ react components.
 
 <summary>Why isn't snapshot diffing working?</summary>
 
-If you use the
-[snapshot-diff](https://github.com/jest-community/snapshot-diff)
-library to save snapshot diffs, it won't work out of the box because
-this library uses the DOM which is mutable. Changes don't return new
-objects so snapshot-diff will think it's the same object and avoid diffing it.
+If you use the [snapshot-diff](https://github.com/jest-community/snapshot-diff)
+library to save snapshot diffs, it won't work out of the box because this
+library uses the DOM which is mutable. Changes don't return new objects so
+snapshot-diff will think it's the same object and avoid diffing it.
 
-Luckily there's an easy way to make it work: clone the DOM when
-passing it into snapshot-diff. It looks like this:
+Luckily there's an easy way to make it work: clone the DOM when passing it into
+snapshot-diff. It looks like this:
 
 ```js
 const firstVersion = container.cloneNode(true)
@@ -878,15 +865,15 @@ snapshotDiff(firstVersion, container.cloneNode(true))
 
 In preparing this project,
 [I tweeted about it](https://twitter.com/kentcdodds/status/974278185540964352)
-and
-[Sune Simonsen](https://github.com/sunesimonsen)
+and [Sune Simonsen](https://github.com/sunesimonsen)
 [took up the challenge](https://twitter.com/sunesimonsen/status/974784783908818944).
 We had different ideas of what to include in the library, so I decided to create
 this one instead.
 
 ## Guiding Principles
 
-> [The more your tests resemble the way your software is used, the more confidence they can give you.][guiding-principle]
+> [The more your tests resemble the way your software is used, the more
+> confidence they can give you.][guiding-principle]
 
 We try to only expose methods and utilities that encourage you to write tests
 that closely resemble how your react components are used.
@@ -926,7 +913,8 @@ Contributions of any kind welcome!
 
 ## Issues
 
-_Looking to contribute? Look for the [Good First Issue][good-first-issue] label._
+_Looking to contribute? Look for the [Good First Issue][good-first-issue]
+label._
 
 ### 🐛 Bugs
 
@@ -957,6 +945,8 @@ MIT
 <!--
 Links:
 -->
+
+<!-- prettier-ignore-start -->
 
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
@@ -994,3 +984,5 @@ Links:
 [good-first-issue]: https://github.com/kentcdodds/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
 [reactiflux]: https://www.reactiflux.com/
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
+
+<!-- prettier-ignore-end -->

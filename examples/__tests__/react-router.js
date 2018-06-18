@@ -2,7 +2,7 @@ import React from 'react'
 import {withRouter} from 'react-router'
 import {Link, Route, Router, Switch} from 'react-router-dom'
 import {createMemoryHistory} from 'history'
-import {render, Simulate} from 'react-testing-library'
+import {render, fireEvent, cleanup} from 'react-testing-library'
 
 const About = () => <div>You are on the about page</div>
 const Home = () => <div>You are home</div>
@@ -29,6 +29,8 @@ function App() {
 
 // Ok, so here's what your tests might look like
 
+afterEach(cleanup)
+
 // this is a handy function that I would utilize for any component
 // that relies on the router being in context
 function renderWithRouter(
@@ -49,7 +51,7 @@ test('full app rendering/navigating', () => {
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are home')
   const leftClick = {button: 0}
-  Simulate.click(getByText(/about/i), leftClick)
+  fireEvent.click(getByText(/about/i), leftClick)
   // normally I'd use a data-testid, but just wanted to show this is also possible
   expect(container.innerHTML).toMatch('You are on the about page')
 })

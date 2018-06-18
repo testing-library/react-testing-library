@@ -1,6 +1,8 @@
 import React from 'react'
-import {render} from '../'
+import {render, cleanup} from '../'
 import 'jest-dom/extend-expect'
+
+afterEach(cleanup)
 
 test('rerender will re-render the element', () => {
   const Greeting = props => <div>{props.message}</div>

@@ -1,16 +1,16 @@
 import React from 'react'
-import {renderIntoDocument, cleanup} from '../'
+import {render, cleanup} from '../'
 
 afterEach(cleanup)
 
 it('renders button into document', () => {
   const ref = React.createRef()
-  const {container} = renderIntoDocument(<div ref={ref} />)
+  const {container} = render(<div ref={ref} />)
   expect(container.firstChild).toBe(ref.current)
 })
 
 it('access portal elements inside body', () => {
-  const {getByText} = renderIntoDocument(<div />)
+  const {getByText} = render(<div />)
   const portalComponent = document.createElement('div')
   portalComponent.appendChild(document.createTextNode('Hello World'))
   document.body.appendChild(portalComponent)
@@ -31,7 +31,7 @@ it('cleansup document', () => {
     }
   }
 
-  renderIntoDocument(<Test />)
+  render(<Test />)
   cleanup()
   expect(document.body.innerHTML).toBe('')
   expect(spy).toHaveBeenCalledTimes(1)

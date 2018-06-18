@@ -1,0 +1,1 @@
+afterEach(require('./dist').cleanup)

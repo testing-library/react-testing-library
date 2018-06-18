@@ -1,7 +1,9 @@
 import React from 'react'
-import {render} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 import 'jest-dom/extend-expect'
 import {NameContext, NameProvider, NameConsumer} from '../react-context'
+
+afterEach(cleanup)
 
 /**
  * Test default values by rendering a context consumer without a
