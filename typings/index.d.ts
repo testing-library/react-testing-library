@@ -50,10 +50,8 @@ export interface RenderResult extends GetsAndQueries {
 
 export function render(
   ui: React.ReactElement<any>,
-  options?: {container: HTMLElement},
+  options?: {container: HTMLElement; baseElement: HTMLElement},
 ): RenderResult
-
-export const Simulate: typeof ReactSimulate
 
 export function wait(
   callback?: () => void,
@@ -149,8 +147,6 @@ type FireObject = {
 }
 
 export const fireEvent: FireFunction & FireObject
-
-export function renderIntoDocument(ui: React.ReactElement<any>): RenderResult
 
 export function cleanup(): void
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import {CSSTransition} from 'react-transition-group'
-import {render, Simulate} from 'react-testing-library'
+import {render, fireEvent, cleanup} from 'react-testing-library'
 
 function Fade({children, ...props}) {
   return (
@@ -27,6 +27,8 @@ class HiddenMessage extends React.Component {
   }
 }
 
+afterEach(cleanup)
+
 jest.mock('react-transition-group', () => {
   const FakeCSSTransition = jest.fn(() => null)
   return {CSSTransition: FakeCSSTransition}
@@ -41,7 +43,7 @@ test('you can mock things with jest.mock', () => {
     {in: true, ...defaultProps},
     context,
   )
-  Simulate.click(getByText(/toggle/i))
+  fireEvent.click(getByText(/toggle/i))
   expect(CSSTransition).toHaveBeenCalledWith(
     {in: true, ...defaultProps},
     expect.any(Object),

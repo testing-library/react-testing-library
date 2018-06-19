@@ -3,7 +3,7 @@
 // that your first call created for you.
 
 import React from 'react'
-import {render} from 'react-testing-library'
+import {render, cleanup} from 'react-testing-library'
 
 let idCounter = 1
 
@@ -18,6 +18,8 @@ class NumberDisplay extends React.Component {
     )
   }
 }
+
+afterEach(cleanup)
 
 test('calling render with the same component on the same container does not remount', () => {
   const {getByTestId, rerender} = render(<NumberDisplay number={1} />)

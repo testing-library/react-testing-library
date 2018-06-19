@@ -43,10 +43,10 @@ tutorial to learn how: http://kcd.im/pull-request
 
 -->
 
-* `react-testing-library` version:
-* `react` version:
-* `node` version:
-* `npm` (or `yarn`) version:
+- `react-testing-library` version:
+- `react` version:
+- `node` version:
+- `npm` (or `yarn`) version:
 
 Relevant code or config
 

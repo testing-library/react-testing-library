@@ -1,7 +1,7 @@
 import React from 'react'
 import {createStore} from 'redux'
 import {Provider, connect} from 'react-redux'
-import {render, Simulate} from 'react-testing-library'
+import {render, fireEvent, cleanup} from 'react-testing-library'
 
 // counter.js
 class Counter extends React.Component {
@@ -61,6 +61,8 @@ function reducer(state = {count: 0}, action) {
 
 // Now here's what your test will look like:
 
+afterEach(cleanup)
+
 // this is a handy function that I normally make available for all my tests
 // that deal with connected components.
 // you can provide initialState or the entire store that the ui is rendered with
@@ -79,7 +81,7 @@ function renderWithRedux(
 
 test('can render with redux with defaults', () => {
   const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />)
-  Simulate.click(getByText('+'))
+  fireEvent.click(getByText('+'))
   expect(getByTestId('count-value').textContent).toBe('1')
 })
 
@@ -87,7 +89,7 @@ test('can render with redux with custom initial state', () => {
   const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />, {
     initialState: {count: 3},
   })
-  Simulate.click(getByText('-'))
+  fireEvent.click(getByText('-'))
   expect(getByTestId('count-value').textContent).toBe('2')
 })
 
@@ -97,8 +99,8 @@ test('can render with redux with custom store', () => {
   const {getByTestId, getByText} = renderWithRedux(<ConnectedCounter />, {
     store,
   })
-  Simulate.click(getByText('+'))
+  fireEvent.click(getByText('+'))
   expect(getByTestId('count-value').textContent).toBe('1000')
-  Simulate.click(getByText('-'))
+  fireEvent.click(getByText('-'))
   expect(getByTestId('count-value').textContent).toBe('1000')
 })
