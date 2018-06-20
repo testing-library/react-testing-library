@@ -489,6 +489,23 @@ fireEvent.click(getElementByText('Submit'), rightClick)
 // default `button` property for click events is set to `0` which is a left click.
 ```
 
+If you want to trigger the
+[`onChange`](https://reactjs.org/docs/dom-elements.html#onchange) handler of a
+[controlled component](https://reactjs.org/docs/forms.html#controlled-components)
+with a different `event.target.value`, sending `value` through `eventProperties`
+won't work like it does with `Simulate`. You need to change the element's
+`value` property, then use `fireEvent` to fire a `change` DOM event.
+
+```javascript
+import {renderIntoDocument, fireEvent} from 'react-testing-library'
+
+const {getByLabelText} = renderIntoDocument(<Form />)
+
+const comment = getByLabelText('Comment')
+comment.value = 'Great advice, I love your posts!'
+fireEvent.change(comment)
+```
+
 ### `waitForElement`
 
 > [Read full docs from `dom-testing-library`](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#waitforelement)
