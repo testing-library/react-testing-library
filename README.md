@@ -547,8 +547,8 @@ test('can fill in the form after loaded', async () => {
 > [Read full docs from `dom-testing-library`](https://github.com/kentcdodds/dom-testing-library/blob/master/README.md#within-and-getqueriesforelement-apis)
 
 The queries returned from `render` are scoped to the entire page. Sometimes,
-there is no garauntee that the text, placeholder, or label you want to query is
-unique on the page. So you might want to explicity tell react-render-dom to get
+there is no guarantee that the text, placeholder, or label you want to query is
+unique on the page. So you might want to explicitly tell react-render-dom to get
 an element only within a particular section of the page. within is a helper
 function for this case.
 
