@@ -630,7 +630,7 @@ array has a length of 0.
 ```javascript
 import {render} from 'react-testing-library'
 
-const {queryByText} = render(<Forms />)
+const {queryAllByText} = render(<Forms />)
 const submitButtons = queryAllByText('submit')
 expect(submitButtons).toHaveLength(3) // expect 3 elements
 expect(submitButtons[0]).toBeInTheDOM()
