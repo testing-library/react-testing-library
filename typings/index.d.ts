@@ -48,11 +48,17 @@ export interface RenderResult extends GetsAndQueries {
   unmount: VoidFunction
 }
 
+/**
+ * Render into a container which is appended to document.body. It should be used with cleanup.
+ */
 export function render(
   ui: React.ReactElement<any>,
   options?: {container: HTMLElement; baseElement: HTMLElement},
 ): RenderResult
 
+/**
+ * When in need to wait for DOM elements to appear, disappear, or change. Prefer waitForElement.
+ */
 export function wait(
   callback?: () => void,
   options?: {
@@ -61,6 +67,9 @@ export function wait(
   },
 ): Promise<void>
 
+/**
+ * When in need to wait for DOM elements to appear, disappear, or change.
+ */
 export function waitForElement<T>(
   callback?: () => T,
   options?: {
@@ -146,8 +155,14 @@ type FireObject = {
   [K in EventType]: (element: HTMLElement, options?: {}) => boolean
 }
 
+/**
+ * Fire DOM events.
+ */
 export const fireEvent: FireFunction & FireObject
 
+/**
+ * Unmounts React trees that were mounted with render.
+ */
 export function cleanup(): void
 
 export function getQueriesForElement(element: HTMLElement): GetsAndQueries
