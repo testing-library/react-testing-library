@@ -3,37 +3,54 @@ import {render, cleanup} from '../'
 
 afterEach(cleanup)
 
-class Portal extends React.Component {
-  componentDidMount() {
-    const portalEl = document.createElement('div')
-    portalEl.appendChild(document.createTextNode('Hello World'))
-    document.body.appendChild(portalEl)
-  }
-
-  render() {
-    return <div />
-  }
-}
-
-it('renders button into document', () => {
+test('renders div into document', () => {
   const ref = React.createRef()
   const {container} = render(<div ref={ref} />)
   expect(container.firstChild).toBe(ref.current)
 })
 
-it('access portal elements inside body', () => {
-  const {getByText} = render(<Portal />)
-  expect(getByText('Hello World')).not.toBeNull()
-  document.body.innerHTML = ''
+test('works great with react portals', () => {
+  class MyPortal extends React.Component {
+    constructor(...args) {
+      super(...args)
+      this.portalNode = document.createElement('div')
+      this.portalNode.dataset.testid = 'my-portal'
+    }
+    componentDidMount() {
+      document.body.appendChild(this.portalNode)
+    }
+    componentWillUnmount() {
+      this.portalNode.parentNode.removeChild(this.portalNode)
+    }
+    render() {
+      return ReactDOM.createPortal(
+        <Greet greeting="Hello" subject="World" />,
+        this.portalNode,
+      )
+    }
+  }
+
+  function Greet({greeting, subject}) {
+    return (
+      <div>
+        <strong>
+          {greeting} {subject}
+        </strong>
+      </div>
+    )
+  }
+
+  const {unmount, getByTestId, getByText} = render(<MyPortal />)
+  expect(getByText('Hello World')).toBeInTheDOM()
+  const portalNode = getByTestId('my-portal')
+  expect(document.body.contains(portalNode)).toBe(true)
+  unmount()
+  expect(document.body.contains(portalNode)).toBe(false)
 })
 
-it('returns baseElement including the Portal DOM', () => {
-  const {baseElement} = render(<Portal />)
-  expect(baseElement.nodeName).toEqual('HTML')
-  expect(baseElement.children[1].innerHTML).toBe(
-    '<div><div></div></div><div>Hello World</div>',
-  )
-  document.body.innerHTML = ''
+test('returns baseElement which defaults to document.documentElement', () => {
+  const {baseElement} = render(<div />)
+  expect(baseElement).toBe(document.documentElement)
 })
 
 it('cleansup document', () => {
