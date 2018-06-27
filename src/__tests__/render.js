@@ -3,6 +3,18 @@ import {render, cleanup} from '../'
 
 afterEach(cleanup)
 
+class Portal extends React.Component {
+  componentDidMount() {
+    const portalEl = document.createElement('div')
+    portalEl.appendChild(document.createTextNode('Hello World'))
+    document.body.appendChild(portalEl)
+  }
+
+  render() {
+    return <div />
+  }
+}
+
 it('renders button into document', () => {
   const ref = React.createRef()
   const {container} = render(<div ref={ref} />)
@@ -10,12 +22,18 @@ it('renders button into document', () => {
 })
 
 it('access portal elements inside body', () => {
-  const {getByText} = render(<div />)
-  const portalComponent = document.createElement('div')
-  portalComponent.appendChild(document.createTextNode('Hello World'))
-  document.body.appendChild(portalComponent)
+  const {getByText} = render(<Portal />)
   expect(getByText('Hello World')).not.toBeNull()
-  document.body.removeChild(portalComponent)
+  document.body.innerHTML = ''
+})
+
+it('returns baseElement including the Portal DOM', () => {
+  const {baseElement} = render(<Portal />)
+  expect(baseElement.nodeName).toEqual('HTML')
+  expect(baseElement.children[1].innerHTML).toBe(
+    '<div><div></div></div><div>Hello World</div>',
+  )
+  document.body.innerHTML = ''
 })
 
 it('cleansup document', () => {

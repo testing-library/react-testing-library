@@ -18,6 +18,7 @@ function render(ui, {container, baseElement = container} = {}) {
   ReactDOM.render(ui, container)
   return {
     container,
+    baseElement,
     // eslint-disable-next-line no-console
     debug: (el = baseElement) => console.log(prettyDOM(el)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
