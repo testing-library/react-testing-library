@@ -223,9 +223,10 @@ default to `documentElement`.
 
 This is useful when the component you want to test renders something outside the
 container div, e.g. when you want to snapshot test your portal component which
-renders it's HTML directly in the body. However, the queries returned by the
-`render` looks into baseElement, so you can use queries to test your portal
-component without the baseElement.
+renders it's HTML directly in the body.
+
+> Note: the queries returned by the `render` looks into baseElement, so you can
+> use queries to test your portal component without the baseElement.
 
 #### `debug`
 
