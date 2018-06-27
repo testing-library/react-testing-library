@@ -492,9 +492,9 @@ Convenience methods for firing DOM events. Check out
 for a full list as well as default `eventProperties`.
 
 ```javascript
-import {renderIntoDocument, fireEvent} from 'react-testing-library'
+import {render, fireEvent} from 'react-testing-library'
 
-const {getElementByText} = renderIntoDocument(<Form />)
+const {getElementByText} = render(<Form />)
 
 // similar to the above example
 // click will bubble for React to see it
@@ -511,9 +511,9 @@ won't work like it does with `Simulate`. You need to change the element's
 `value` property, then use `fireEvent` to fire a `change` DOM event.
 
 ```javascript
-import {renderIntoDocument, fireEvent} from 'react-testing-library'
+import {render, fireEvent} from 'react-testing-library'
 
-const {getByLabelText} = renderIntoDocument(<Form />)
+const {getByLabelText} = render(<Form />)
 
 const comment = getByLabelText('Comment')
 comment.value = 'Great advice, I love your posts!'
