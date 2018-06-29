@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
+import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
@@ -45,13 +45,40 @@ function cleanupAtContainer(container) {
 }
 
 // fallback to synthetic events for React events that the DOM doesn't support
-const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
-syntheticEvents.forEach(eventName => {
-  document.addEventListener(eventName.toLowerCase(), e => {
-    Simulate[eventName](e.target, e)
-  })
-})
+// const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
+// syntheticEvents.forEach(eventName => {
+//   document.addEventListener(eventName.toLowerCase(), e => {
+//     Simulate[eventName](e.target, e)
+//   })
+// })
+
+function setNativeValue(element, value) {
+  const {set: valueSetter} =
+    Object.getOwnPropertyDescriptor(element, 'value') || {}
+  const prototype = Object.getPrototypeOf(element)
+  const {set: prototypeValueSetter} =
+    Object.getOwnPropertyDescriptor(prototype, 'value') || {}
+
+  if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+    prototypeValueSetter.call(element, value)
+  } else if (valueSetter) {
+    valueSetter.call(element, value)
+  } else {
+    throw new Error('The given element does not have a value setter')
+  }
+}
+
+const fireReactEvent = (...args) => fireEvent(...args)
+Object.assign(fireReactEvent, fireEvent)
+
+fireReactEvent.change = (node, init) => {
+  if (init.value !== undefined) {
+    setNativeValue(node, init.value)
+  }
+  return fireEvent.change(node, init)
+}
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {render, cleanup}
+
+export {render, cleanup, fireReactEvent}

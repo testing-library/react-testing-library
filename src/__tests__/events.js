@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup, fireEvent} from '../'
+import {render, cleanup, fireReactEvent as fireEvent} from '../'
 
 const eventTypes = [
   {
@@ -20,18 +20,14 @@ const eventTypes = [
   },
   {
     type: 'Focus',
-    events: ['focus', 'blur'],
+    events: ['focus', 'blur', 'input', 'invalid'],
     elementType: 'input',
   },
   {
-    type: 'Form',
-    events: ['focus', 'blur'],
+    type: 'React Events',
+    events: ['change'],
     elementType: 'input',
-  },
-  {
-    type: 'Focus',
-    events: ['change', 'input', 'invalid'],
-    elementType: 'input',
+    init: {value: 'hi'},
   },
   {
     type: 'Focus',
@@ -148,6 +144,7 @@ eventTypes.forEach(({type, events, elementType, init}) => {
           }),
         )
 
+        console.log(eventName, fireEvent.change)
         fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
       })
