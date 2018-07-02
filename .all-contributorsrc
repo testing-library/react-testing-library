@@ -370,6 +370,15 @@
         "code",
         "doc"
       ]
+    },
+    {
+      "login": "jpavon",
+      "name": "Julio Pavón",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1493505?v=4",
+      "profile": "http://jpavon.com",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
