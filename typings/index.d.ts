@@ -19,27 +19,64 @@ type TextMatchOptions = {
 }
 
 interface GetsAndQueries {
-  queryByTestId: BoundFunction<QueryByAttribute>
-  queryAllByTestId: BoundFunction<AllByAttribute>
-  getByTestId: BoundFunction<GetByAttribute>
-  getAllByTestId: BoundFunction<AllByAttribute>
-  queryByText: BoundFunction<QueryByText>
-  queryAllByText: BoundFunction<AllByText>
-  getByText: BoundFunction<GetByText>
-  getAllByText: BoundFunction<AllByText>
   queryByPlaceholderText: BoundFunction<QueryByAttribute>
   queryAllByPlaceholderText: BoundFunction<AllByAttribute>
   getByPlaceholderText: BoundFunction<GetByAttribute>
   getAllByPlaceholderText: BoundFunction<AllByAttribute>
-  queryByLabelText: BoundFunction<QueryByAttribute>
-  queryAllByLabelText: BoundFunction<AllByAttribute>
-  getByLabelText: BoundFunction<GetByAttribute>
-  getAllByLabelText: BoundFunction<AllByAttribute>
+  queryByText: BoundFunction<QueryByText>
+  queryAllByText: BoundFunction<AllByText>
+  getByText: BoundFunction<GetByText>
+  getAllByText: BoundFunction<AllByText>
+  queryByLabelText: BoundFunction<QueryByText>
+  queryAllByLabelText: BoundFunction<AllByText>
+  getByLabelText: BoundFunction<GetByText>
+  getAllByLabelText: BoundFunction<AllByText>
   queryByAltText: BoundFunction<QueryByAttribute>
   queryAllByAltText: BoundFunction<AllByAttribute>
   getByAltText: BoundFunction<GetByAttribute>
   getAllByAltText: BoundFunction<AllByAttribute>
+  queryByTestId: BoundFunction<QueryByAttribute>
+  queryAllByTestId: BoundFunction<AllByAttribute>
+  getByTestId: BoundFunction<GetByAttribute>
+  getAllByTestId: BoundFunction<AllByAttribute>
+  queryByTitle: BoundFunction<QueryByAttribute>
+  queryAllByTitle: BoundFunction<AllByAttribute>
+  getByTitle: BoundFunction<GetByAttribute>
+  getAllByTitle: BoundFunction<AllByAttribute>
+  queryByValue: BoundFunction<QueryByAttribute>
+  queryAllByValue: BoundFunction<AllByAttribute>
+  getByValue: BoundFunction<GetByAttribute>
+  getAllByValue: BoundFunction<AllByAttribute>
 }
+
+export const queryByPlaceholderText: QueryByAttribute
+export const queryAllByPlaceholderText: AllByAttribute
+export const getByPlaceholderText: GetByAttribute
+export const getAllByPlaceholderText: AllByAttribute
+export const queryByText: QueryByText
+export const queryAllByText: AllByText
+export const getByText: GetByText
+export const getAllByText: AllByText
+export const queryByLabelText: QueryByText
+export const queryAllByLabelText: AllByText
+export const getByLabelText: GetByText
+export const getAllByLabelText: AllByText
+export const queryByAltText: QueryByAttribute
+export const queryAllByAltText: AllByAttribute
+export const getByAltText: GetByAttribute
+export const getAllByAltText: AllByAttribute
+export const queryByTestId: QueryByAttribute
+export const queryAllByTestId: AllByAttribute
+export const getByTestId: GetByAttribute
+export const getAllByTestId: AllByAttribute
+export const queryByTitle: QueryByAttribute
+export const queryAllByTitle: AllByAttribute
+export const getByTitle: GetByAttribute
+export const getAllByTitle: AllByAttribute
+export const queryByValue: QueryByAttribute
+export const queryAllByValue: AllByAttribute
+export const getByValue: GetByAttribute
+export const getAllByValue: AllByAttribute
 
 export interface RenderResult extends GetsAndQueries {
   container: HTMLDivElement
