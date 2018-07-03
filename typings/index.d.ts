@@ -1,4 +1,3 @@
-import {Simulate as ReactSimulate} from 'react-dom/test-utils'
 import {getQueriesForElement} from 'dom-testing-library'
 
 export * from 'dom-testing-library'
