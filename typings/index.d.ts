@@ -8,7 +8,7 @@ export interface RenderResult extends GetsAndQueries {
   container: HTMLDivElement
   debug: () => void
   rerender: (ui: React.ReactElement<any>) => void
-  unmount: VoidFunction
+  unmount: () => void
 }
 
 /**
