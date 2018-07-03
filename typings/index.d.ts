@@ -21,29 +21,6 @@ export function render(
 ): RenderResult
 
 /**
- * When in need to wait for DOM elements to appear, disappear, or change. Prefer waitForElement.
- */
-export function wait(
-  callback?: () => void,
-  options?: {
-    timeout?: number
-    interval?: number
-  },
-): Promise<void>
-
-/**
- * When in need to wait for DOM elements to appear, disappear, or change.
- */
-export function waitForElement<T>(
-  callback?: () => T,
-  options?: {
-    container?: HTMLElement
-    timeout?: number
-    mutationObserverOptions?: MutationObserverInit
-  },
-): Promise<T | undefined>
-
-/**
  * Unmounts React trees that were mounted with render.
  */
 export function cleanup(): void
