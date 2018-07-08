@@ -192,6 +192,19 @@ append that div to the `document.body` and this is where your react component
 will be rendered. If you provide your own HTMLElement `container` via this
 option, it will not be appended to the `document.body` automatically.
 
+For Example:
+If you are unit testing a `tablebody` element, it cannot be a child of a `div`.
+In this case, you can specify a `table` as the render `container`.
+
+```javascript
+const table = document.createElement('table');
+
+const { container } = render(
+  <TableBody {...props} />,
+  { container: document.body.appendChild(table) }
+);
+```
+
 **baseElement**: If the `container` is specified, then this defaults to that,
 otherwise this defaults to `document.documentElement`. This is used as the base
 element for the queries as well as what is printed when you use `debug()`.
