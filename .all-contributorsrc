@@ -379,6 +379,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "duncanleung",
+      "name": "Duncan L",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1765048?v=4",
+      "profile": "http://www.duncanleung.com/",
+      "contributions": [
+        "doc",
+        "example"
+      ]
     }
   ]
 }
