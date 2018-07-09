@@ -50,4 +50,4 @@ test('login form submits', () => {
   expect(handleSubmit).toHaveBeenCalledWith(fakeUser)
 })
 
-/* eslint jsx-a11y/label-has-for:0 */
+/* eslint jsx-a11y/label-has-for:0, jsx-a11y/aria-proptypes:0 */
