@@ -389,6 +389,15 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "tyagow",
+      "name": "Tiago Almeida",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/700778?v=4",
+      "profile": "https://www.linkedin.com/in/tyagow/?locale=en_US",
+      "contributions": [
+        "doc"
+      ]
     }
   ]
 }
