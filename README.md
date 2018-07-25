@@ -231,7 +231,7 @@ The containing DOM node of your rendered React Element (rendered using
 
 The containing DOM node where your React Element is rendered in the container.
 If you don't specify the `baseElement` in the options of `render`, it will
-default to `documentElement`.
+default to `document.body`.
 
 This is useful when the component you want to test renders something outside the
 container div, e.g. when you want to snapshot test your portal component which
