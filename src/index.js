@@ -6,7 +6,9 @@ const mountedContainers = new Set()
 
 function render(ui, {container, baseElement = container} = {}) {
   if (!container) {
-    baseElement = document.documentElement
+    // default to document.body instead of documentElement to avoid output of potentially-large
+    // head elements (such as JSS style blocks) in debug output
+    baseElement = document.body
     container = document.body.appendChild(document.createElement('div'))
   }
 
