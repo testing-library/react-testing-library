@@ -434,6 +434,18 @@
       "contributions": [
         "blog"
       ]
+    },
+    {
+      "login": "timbonicus",
+      "name": "Tim",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/556258?v=4",
+      "profile": "https://github.com/timbonicus",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ]
 }
