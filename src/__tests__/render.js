@@ -50,9 +50,9 @@ test('works great with react portals', () => {
   expect(document.body.contains(portalNode)).toBe(false)
 })
 
-test('returns baseElement which defaults to document.documentElement', () => {
+test('returns baseElement which defaults to document.body', () => {
   const {baseElement} = render(<div />)
-  expect(baseElement).toBe(document.documentElement)
+  expect(baseElement).toBe(document.body)
 })
 
 it('cleansup document', () => {
