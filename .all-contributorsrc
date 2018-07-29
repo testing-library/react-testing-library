@@ -446,6 +446,26 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "divyanshu013",
+      "name": "Divyanshu Maithani",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6682655?v=4",
+      "profile": "http://divyanshu.xyz",
+      "contributions": [
+        "tutorial",
+        "video"
+      ]
+    },
+    {
+      "login": "metagrover",
+      "name": "Deepak Grover",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9116042?v=4",
+      "profile": "https://www.linkedin.com/in/metagrover",
+      "contributions": [
+        "tutorial",
+        "video"
+      ]
     }
   ]
 }
