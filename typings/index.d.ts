@@ -6,6 +6,7 @@ type GetsAndQueries = ReturnType<typeof getQueriesForElement>
 
 export interface RenderResult extends GetsAndQueries {
   container: HTMLDivElement
+  baseElement: HTMLDivElement
   debug: (baseElement?: HTMLElement) => void
   rerender: (ui: React.ReactElement<any>) => void
   unmount: () => boolean
