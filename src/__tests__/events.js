@@ -156,10 +156,12 @@ eventTypes.forEach(({type, events, elementType, init}) => {
 })
 
 test('onChange works', () => {
-  const handleChange = jest.fn()
-  const {
-    container: {firstChild: input},
-  } = render(<input onChange={handleChange} />)
-  fireEvent.change(input, {target: {value: 'a'}})
-  expect(handleChange).toHaveBeenCalledTimes(1)
+  const spy = jest.fn()
+
+  const {container} = render(<input onChange={spy} />)
+  const input = container.firstChild
+  fireEvent.change(input, {target: {value: 'c'}})
+  expect(spy).toHaveBeenCalledTimes(1)
 })
+
+/* eslint complexity:0 */
