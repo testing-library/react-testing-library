@@ -30,7 +30,7 @@ const eventTypes = [
   },
   {
     type: 'Focus',
-    events: ['change', 'input', 'invalid'],
+    events: ['input', 'invalid'],
     elementType: 'input',
   },
   {
@@ -154,3 +154,14 @@ eventTypes.forEach(({type, events, elementType, init}) => {
     })
   })
 })
+
+test('onChange works', () => {
+  const spy = jest.fn()
+
+  const {container} = render(<input onChange={spy} />)
+  const input = container.firstChild
+  fireEvent.change(input, {target: {value: 'c'}})
+  expect(spy).toHaveBeenCalledTimes(1)
+})
+
+/* eslint complexity:0 */
