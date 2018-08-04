@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
+import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
@@ -47,8 +47,34 @@ function cleanupAtContainer(container) {
   mountedContainers.delete(container)
 }
 
+const originalChange = fireEvent.change
+fireEvent.change = function reactChange(node, init) {
+  if (init && init.target && init.target.hasOwnProperty('value')) {
+    setNativeValue(node, init.target.value)
+  }
+  return originalChange(node, init)
+}
+
+// function written after some investigation here:
+// https://github.com/facebook/react/issues/10135#issuecomment-401496776
+function setNativeValue(element, value) {
+  const {set: valueSetter} =
+    Object.getOwnPropertyDescriptor(element, 'value') || {}
+  const prototype = Object.getPrototypeOf(element)
+  const {set: prototypeValueSetter} =
+    Object.getOwnPropertyDescriptor(prototype, 'value') || {}
+
+  if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+    prototypeValueSetter.call(element, value)
+  } else if (valueSetter) {
+    valueSetter.call(element, value)
+  } else {
+    throw new Error('The given element does not have a value setter')
+  }
+}
+
 // fallback to synthetic events for React events that the DOM doesn't support
-const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
+const syntheticEvents = ['select', 'mouseEnter', 'mouseLeave']
 syntheticEvents.forEach(eventName => {
   document.addEventListener(eventName.toLowerCase(), e => {
     Simulate[eventName](e.target, e)
@@ -58,3 +84,5 @@ syntheticEvents.forEach(eventName => {
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
 export {render, cleanup}
+
+/* eslint complexity:0, func-name-matching:0 */
