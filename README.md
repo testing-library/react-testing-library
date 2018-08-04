@@ -506,12 +506,12 @@ for a full list as well as default `eventProperties`.
 ```javascript
 import {render, fireEvent} from 'react-testing-library'
 
-const {getElementByText} = render(<Form />)
+const {getByText} = render(<Form />)
 
 // similar to the above example
 // click will bubble for React to see it
 const rightClick = {button: 2}
-fireEvent.click(getElementByText('Submit'), rightClick)
+fireEvent.click(getByText('Submit'), rightClick)
 // default `button` property for click events is set to `0` which is a left click.
 ```
 
