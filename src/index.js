@@ -48,7 +48,7 @@ function cleanupAtContainer(container) {
 }
 
 // fallback to synthetic events for React events that the DOM doesn't support
-const syntheticEvents = ['change', 'select', 'mouseEnter', 'mouseLeave']
+const syntheticEvents = ['select', 'mouseEnter', 'mouseLeave']
 syntheticEvents.forEach(eventName => {
   document.addEventListener(eventName.toLowerCase(), e => {
     Simulate[eventName](e.target, e)
