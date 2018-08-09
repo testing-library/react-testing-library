@@ -30,7 +30,7 @@ const eventTypes = [
   },
   {
     type: 'Focus',
-    events: ['input', 'invalid'],
+    events: ['change', 'input', 'invalid'],
     elementType: 'input',
   },
   {
@@ -153,13 +153,4 @@ eventTypes.forEach(({type, events, elementType, init}) => {
       })
     })
   })
-})
-
-test('onChange works', () => {
-  const handleChange = jest.fn()
-  const {
-    container: {firstChild: input},
-  } = render(<input onChange={handleChange} />)
-  fireEvent.change(input, {target: {value: 'a'}})
-  expect(handleChange).toHaveBeenCalledTimes(1)
 })
