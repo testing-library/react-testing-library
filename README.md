@@ -561,7 +561,9 @@ test('can fill in the form after loaded', async () => {
 
   // wait until the callback does not throw an error. In this case, that means
   // it'll wait until the element with the text that says "loading..." is gone.
-  await wait(() => expect(queryByText(/loading\.\.\./i).not.toBeInTheDOM()))
+  await wait(() =>
+    expect(queryByText(/loading\.\.\./i).not.toBeInTheDocument()),
+  )
   getByLabelText('username').value = 'chucknorris'
   // continue doing stuff
 })
@@ -658,7 +660,7 @@ import {render} from 'react-testing-library'
 const {queryAllByText} = render(<Forms />)
 const submitButtons = queryAllByText('submit')
 expect(submitButtons).toHaveLength(3) // expect 3 elements
-expect(submitButtons[0]).toBeInTheDOM()
+expect(submitButtons[0]).toBeInTheDocument()
 ```
 
 ## Examples

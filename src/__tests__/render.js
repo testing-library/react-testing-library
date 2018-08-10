@@ -43,11 +43,11 @@ test('works great with react portals', () => {
   }
 
   const {unmount, getByTestId, getByText} = render(<MyPortal />)
-  expect(getByText('Hello World')).toBeInTheDOM()
+  expect(getByText('Hello World')).toBeInTheDocument()
   const portalNode = getByTestId('my-portal')
-  expect(document.body.contains(portalNode)).toBe(true)
+  expect(portalNode).toBeInTheDocument()
   unmount()
-  expect(document.body.contains(portalNode)).toBe(false)
+  expect(portalNode).not.toBeInTheDocument()
 })
 
 test('returns baseElement which defaults to document.body', () => {
