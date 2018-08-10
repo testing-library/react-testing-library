@@ -706,6 +706,61 @@ Feel free to contribute more!
 
 <details>
 
+<summary>How do I test input onChange handlers?</summary>
+
+TL;DR:
+[Go to the `on-change.js` example](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?module=%2Fsrc%2F__tests__%2Fon-change.js&previewwindow=tests)
+
+In summary:
+
+```javascript
+import React from 'react'
+import 'react-testing-library/cleanup-after-each'
+import {render, fireEvent} from 'react-testing-library'
+
+test('change values via the fireEvent.change method', () => {
+  const handleChange = jest.fn()
+  const {container} = render(<input type="text" onChange={handleChange} />)
+  const input = container.firstChild
+  fireEvent.change(input, {target: {value: 'a'}})
+  expect(handleChange).toHaveBeenCalledTimes(1)
+  expect(input.value).toBe('a')
+})
+
+test('checkboxes (and radios) must use fireEvent.click', () => {
+  const handleChange = jest.fn()
+  const {container} = render(<input type="checkbox" onChange={handleChange} />)
+  const checkbox = container.firstChild
+  fireEvent.click(checkbox)
+  expect(handleChange).toHaveBeenCalledTimes(1)
+  expect(checkbox.checked).toBe(true)
+})
+```
+
+If you've used enzyme or React's TestUtils, you may be accustomed to changing
+inputs like so:
+
+```javascript
+input.value = 'a'
+Simulate.change(input)
+```
+
+We can't do this with react-testing-library because React actually keeps track
+of any time you assign the `value` property on an `input` and so when you fire
+the `change` event, React thinks that the value hasn't actually been changed.
+
+This works for Simulate because they use internal APIs to fire special simulated
+events. With react-testing-library, we try to avoid implementation details to
+make your tests more resiliant.
+
+So we have it worked out for the change event handler to set the property for
+you in a way that's not trackable by React. This is why you must pass the value
+as part of the `change` method call.
+
+</details>
+
+<details>
+
 <summary>Which get method should I use?</summary>
 
 Based on [the Guiding Principles](#guiding-principles), your test should
