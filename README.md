@@ -37,7 +37,7 @@ your team down.
 
 The `react-testing-library` is a very light-weight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
-`react-dom/test-utils`, in a way that encourages better testing practices. It's
+`react-dom/test-utils`, in a way that encourages better testing practices. Its
 primary guiding principle is:
 
 > [The more your tests resemble the way your software is used, the more
