@@ -124,7 +124,7 @@ You may also be interested in installing `jest-dom` so you can use
 // __tests__/fetch.js
 import React from 'react'
 import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
-// this add custom jest matchers from jest-dom
+// this adds custom jest matchers from jest-dom
 import 'jest-dom/extend-expect'
 import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
