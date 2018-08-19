@@ -701,6 +701,8 @@ Some included are:
 - [Building a React Tooltip Library](https://www.youtube.com/playlist?list=PLMV09mSPNaQmFLPyrfFtpUdClVfutjF5G)
   by [divyanshu013](https://github.com/divyanshu013) and
   [metagrover](https://github.com/metagrover)
+  
+- [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
 
 Feel free to contribute more!
 
