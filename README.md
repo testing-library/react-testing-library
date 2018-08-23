@@ -519,8 +519,8 @@ If you want to trigger the
 [`onChange`](https://reactjs.org/docs/dom-elements.html#onchange) handler of a
 [controlled component](https://reactjs.org/docs/forms.html#controlled-components)
 with a different `event.target.value`, sending `value` through `eventProperties`
-won't work like it does with `Simulate`. You need to change the element's
-`value` property, then use `fireEvent` to fire a `change` DOM event.
+won't work like it does with `Simulate`. You need to use `fireEvent` to fire a 
+`change` DOM event with `value` property set on `target`
 
 ```javascript
 import {render, fireEvent} from 'react-testing-library'
@@ -528,8 +528,7 @@ import {render, fireEvent} from 'react-testing-library'
 const {getByLabelText} = render(<Form />)
 
 const comment = getByLabelText('Comment')
-comment.value = 'Great advice, I love your posts!'
-fireEvent.change(comment)
+fireEvent.change(comment, { target: { value: 'Great advice, I love your posts!' })
 ```
 
 ### `waitForElement`
