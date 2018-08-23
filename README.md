@@ -242,7 +242,7 @@ renders it's HTML directly in the body.
 
 #### `debug`
 
-This method is a shortcut for `console.log(prettyDOM(container))`.
+This method is a shortcut for `console.log(prettyDOM(baseElement))`.
 
 ```javascript
 import {render} from 'react-testing-library'
