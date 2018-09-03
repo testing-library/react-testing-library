@@ -121,6 +121,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 * [Installation](#installation)
 * [Setup](#setup)
   * [Globals](#globals)
+  * [Custom Render](#custom-render)
 * [API](#api)
   * [`render`](#render)
   * [`cleanup`](#cleanup)
@@ -169,8 +170,6 @@ the setup and teardown of tests in individual files. For example, you can ensure
 [`cleanup`](#cleanup) is called after each test and import additional
 assertions.
 
-#### Jest
-
 To do this with Jest, you can add the
 [`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string)
 option to your Jest config. The setup file can be anywhere, but if you're using
@@ -192,6 +191,65 @@ import 'jest-dom/extend-expect'
 
 // this is basically: afterEach(cleanup)
 import 'react-testing-library/cleanup-after-each'
+```
+
+### Custom Render
+
+It's often useful to define a custom render method that includes things like
+global context providers, data stores, etc. To make this available globally, one
+approach is to define a utility file that re-exports everything from
+`react-testing-library`. You can replace react-testing-library with this file in
+all your imports.
+
+```diff
+// my-component.test.js
+- import { render, fireEvent } from 'react-testing-library';
++ import { render, fireEvent } from '../test-utils';
+```
+
+```js
+// test-utils.js
+import {render} from 'react-testing-library'
+import {ThemeProvider} from 'my-ui-lib'
+import {TranslationProvider} from 'my-i18n-lib'
+import defaultStrings from 'i18n/en-x-default'
+
+const customRender = (node, ...options) => {
+  return render(
+    <ThemeProvider theme="light">
+      <TranslationProvider messages={defaultStrings}>
+        {node}
+      </TranslationProvider>
+    </ThemeProvider>,
+    ...options,
+  )
+}
+
+// re-export everything
+export * from 'react-testing-library'
+
+// override render method
+export {customRender as render}
+```
+
+To make this file accessible without using relative imports, add the folder
+containing the file to the Jest `moduleDirectories` option.
+
+```diff
+// my-component.test.js
+- import { render, fireEvent } from '../test-utils';
++ import { render, fireEvent } from 'test-utils';
+```
+
+```diff
+// jest.config.js
+module.exports = {
+  moduleDirectories: [
+    'node_modules',
++    __dirname, // the project root
+  ],
+  // ... other options ...
+}
 ```
 
 ## API
