@@ -121,7 +121,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 - [Setup](#setup)
   - [Globals](#globals)
   - [Custom Render](#custom-render)
-- [API](#api)
+- [Usage](#usage)
   - [`render`](#render)
   - [`cleanup`](#cleanup)
 - [`dom-testing-library` APIs](#dom-testing-library-apis)
@@ -251,7 +251,7 @@ module.exports = {
 }
 ```
 
-## API
+## Usage
 
 ### `render`
 
