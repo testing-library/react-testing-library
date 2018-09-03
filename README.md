@@ -115,35 +115,34 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-* [Installation](#installation)
-* [Setup](#setup)
-  * [Globals](#globals)
-  * [Custom Render](#custom-render)
-* [API](#api)
-  * [`render`](#render)
-  * [`cleanup`](#cleanup)
-* [`dom-testing-library` APIs](#dom-testing-library-apis)
-  * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
-  * [`waitForElement`](#waitforelement)
-  * [`wait`](#wait)
-  * [`within`](#within)
-* [`TextMatch`](#textmatch)
-* [`query` APIs](#query-apis)
-* [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
-* [Examples](#examples)
-* [Learning Material](#learning-material)
-* [FAQ](#faq)
-* [Other Solutions](#other-solutions)
-* [Guiding Principles](#guiding-principles)
-* [Contributors](#contributors)
-* [Issues](#issues)
-  * [🐛 Bugs](#-bugs)
-  * [💡 Feature Requests](#-feature-requests)
-  * [❓ Questions](#-questions)
-* [LICENSE](#license)
+- [Installation](#installation)
+- [Setup](#setup)
+  - [Globals](#globals)
+  - [Custom Render](#custom-render)
+- [API](#api)
+  - [`render`](#render)
+  - [`cleanup`](#cleanup)
+- [`dom-testing-library` APIs](#dom-testing-library-apis)
+  - [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
+  - [`waitForElement`](#waitforelement)
+  - [`wait`](#wait)
+  - [`within`](#within)
+- [`TextMatch`](#textmatch)
+- [`query` APIs](#query-apis)
+- [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
+- [Examples](#examples)
+- [Learning Material](#learning-material)
+- [FAQ](#faq)
+- [Other Solutions](#other-solutions)
+- [Guiding Principles](#guiding-principles)
+- [Contributors](#contributors)
+- [Issues](#issues)
+  - [🐛 Bugs](#-bugs)
+  - [💡 Feature Requests](#-feature-requests)
+  - [❓ Questions](#-questions)
+- [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -747,37 +746,37 @@ You'll find examples of testing with different libraries in
 [the `examples` directory](https://github.com/kentcdodds/react-testing-library/blob/master/examples).
 Some included are:
 
-* [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
-* [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
-* [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
+- [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
+- [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
+- [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
 
 ## Learning Material
 
-* [Migrating from Enzyme shallow rendering to explicit component mocks](https://www.youtube.com/watch?v=LHUdxkThTM0&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
+- [Migrating from Enzyme shallow rendering to explicit component mocks](https://www.youtube.com/watch?v=LHUdxkThTM0&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
 
-* [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
-* [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
-* [Testing React and Web Applications](https://kentcdodds.com/workshops/#testing-react-and-web-applications)
-* [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64)
+- [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
+- [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
+- [Testing React and Web Applications](https://kentcdodds.com/workshops/#testing-react-and-web-applications)
+- [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64)
   by [@mbaranovski](https://github.com/mbaranovski)
-* [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47)
+- [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47)
   by [@iwilsonq](https://github.com/iwilsonq)
-* [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest)
+- [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest)
   by [Richard Kotze](https://github.com/rkotze)
 
-* [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html)
+- [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html)
   by [Chris Noring](https://github.com/softchris)
-* [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894)
+- [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894)
   by [Jeffrey Russom](https://github.com/qswitcher)
 
-* [React-testing-library have fantastic testing 🐐](https://medium.com/yazanaabed/react-testing-library-have-a-fantastic-testing-198b04699237)
+- [React-testing-library have fantastic testing 🐐](https://medium.com/yazanaabed/react-testing-library-have-a-fantastic-testing-198b04699237)
   by [Yazan Aabed](https://github.com/YazanAabeed)
 
-* [Building a React Tooltip Library](https://www.youtube.com/playlist?list=PLMV09mSPNaQmFLPyrfFtpUdClVfutjF5G)
+- [Building a React Tooltip Library](https://www.youtube.com/playlist?list=PLMV09mSPNaQmFLPyrfFtpUdClVfutjF5G)
   by [divyanshu013](https://github.com/divyanshu013) and
   [metagrover](https://github.com/metagrover)
 
-* [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
+- [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
 
 Feel free to contribute more!
 
@@ -1146,9 +1145,9 @@ a 👍. This helps maintainers prioritize what to work on.
 For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
-* [Spectrum][spectrum]
-* [Reactiflux on Discord][reactiflux]
-* [Stack Overflow][stackoverflow]
+- [Spectrum][spectrum]
+- [Reactiflux on Discord][reactiflux]
+- [Stack Overflow][stackoverflow]
 
 ## LICENSE
 
