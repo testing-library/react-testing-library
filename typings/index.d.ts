@@ -17,7 +17,7 @@ export interface RenderResult extends GetsAndQueries {
  */
 export function render(
   ui: React.ReactElement<any>,
-  options?: {container: HTMLElement; baseElement: HTMLElement},
+  options?: {container: HTMLElement; baseElement?: HTMLElement},
 ): RenderResult
 
 /**
