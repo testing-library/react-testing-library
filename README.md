@@ -73,52 +73,7 @@ facilitate testing implementation details). Read more about this in
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
 > which is where most of the logic behind the queries is.
 
-## Table of Contents
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Installation](#installation)
-- [Usage](#usage)
-  - [`render`](#render)
-  - [`cleanup`](#cleanup)
-- [`dom-testing-library` APIs](#dom-testing-library-apis)
-  - [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
-  - [`waitForElement`](#waitforelement)
-  - [`wait`](#wait)
-  - [`within`](#within)
-- [`TextMatch`](#textmatch)
-- [`query` APIs](#query-apis)
-- [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
-- [Examples](#examples)
-- [Learning Material](#learning-material)
-- [FAQ](#faq)
-- [Other Solutions](#other-solutions)
-- [Guiding Principles](#guiding-principles)
-- [Contributors](#contributors)
-- [Issues](#issues)
-  - [🐛 Bugs](#-bugs)
-  - [💡 Feature Requests](#-feature-requests)
-  - [❓ Questions](#-questions)
-- [LICENSE](#license)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Installation
-
-This module is distributed via [npm][npm] which is bundled with [node][node] and
-should be installed as one of your project's `devDependencies`:
-
-```
-npm install --save-dev react-testing-library
-```
-
-This library has a `peerDependencies` listing for `react-dom`.
-
-You may also be interested in installing `jest-dom` so you can use
-[the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
-
-## Usage
+## Example
 
 ```javascript
 // __tests__/fetch.js
@@ -157,6 +112,90 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 })
 ```
 
+## Table of Contents
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+* [Installation](#installation)
+* [Setup](#setup)
+  * [Globals](#globals)
+* [API](#api)
+  * [`render`](#render)
+  * [`cleanup`](#cleanup)
+* [`dom-testing-library` APIs](#dom-testing-library-apis)
+  * [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
+  * [`waitForElement`](#waitforelement)
+  * [`wait`](#wait)
+  * [`within`](#within)
+* [`TextMatch`](#textmatch)
+* [`query` APIs](#query-apis)
+* [`queryAll` and `getAll` APIs](#queryall-and-getall-apis)
+* [Examples](#examples)
+* [Learning Material](#learning-material)
+* [FAQ](#faq)
+* [Other Solutions](#other-solutions)
+* [Guiding Principles](#guiding-principles)
+* [Contributors](#contributors)
+* [Issues](#issues)
+  * [🐛 Bugs](#-bugs)
+  * [💡 Feature Requests](#-feature-requests)
+  * [❓ Questions](#-questions)
+* [LICENSE](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Installation
+
+This module is distributed via [npm][npm] which is bundled with [node][node] and
+should be installed as one of your project's `devDependencies`:
+
+```
+npm install --save-dev react-testing-library
+```
+
+This library has a `peerDependencies` listing for `react-dom`.
+
+You may also be interested in installing `jest-dom` so you can use
+[the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
+
+## Setup
+
+### Globals
+
+There are several options you can add to your global test config that simplify
+the setup and teardown of tests in individual files. For example, you can ensure
+[`cleanup`](#cleanup) is called after each test and import additional
+assertions.
+
+#### Jest
+
+To do this with Jest, you can add the
+[`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string)
+option to your Jest config. The setup file can be anywhere, but if you're using
+create-react-app, use the default `src/setupTests.js`.
+
+```javascript
+// jest.config.js
+module.exports = {
+  setupTestFrameworkScriptFile: require.resolve('./jest.setup.js'),
+  // ... other options ...
+}
+```
+
+```javascript
+// jest.setup.js
+
+// add some helpful assertions
+import 'jest-dom/extend-expect'
+
+// this is basically: afterEach(cleanup)
+import 'react-testing-library/cleanup-after-each'
+```
+
+## API
+
 ### `render`
 
 Defined as:
@@ -174,9 +213,7 @@ Render into a container which is appended to `document.body`. It should be used
 with [cleanup](#cleanup):
 
 ```javascript
-import {render, cleanup} from 'react-testing-library'
-
-afterEach(cleanup)
+import {render} from 'react-testing-library'
 
 render(<div />)
 ```
@@ -408,12 +445,14 @@ Unmounts React trees that were mounted with [render](#render).
 ```javascript
 import {cleanup, render} from 'react-testing-library'
 
-afterEach(cleanup)
+afterEach(cleanup) // <-- add this
 
 test('renders into document', () => {
   render(<div />)
   // ...
 })
+
+// ... more tests ...
 ```
 
 Failing to call `cleanup` when you've called `render` could result in a memory
@@ -422,31 +461,8 @@ errors in your tests).
 
 **If you don't want to add this to _every single test file_** then we recommend
 that you configure your test framework to run a file before your tests which
-does this automatically.
-
-For example, to do this with jest, you can use
-[`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string):
-
-```javascript
-// jest.config.js
-module.exports = {
-  setupTestFrameworkScriptFile: require.resolve('./test/setup-test-env.js'),
-}
-```
-
-Then:
-
-```javascript
-// test/setup-test-env.js
-
-// add some helpful assertions
-import 'jest-dom/extend-expect'
-// this is basically: afterEach(cleanup)
-import 'react-testing-library/cleanup-after-each'
-```
-
-Or if you're using react-scripts (create-react-app), it has a default value
-that's set to `src/setupTests.js` so put the code above in that file.
+does this automatically. See the [setup](#setup) section for guidance on how to
+set up your framework.
 
 ## `dom-testing-library` APIs
 
@@ -673,37 +689,37 @@ You'll find examples of testing with different libraries in
 [the `examples` directory](https://github.com/kentcdodds/react-testing-library/blob/master/examples).
 Some included are:
 
-- [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
-- [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
-- [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
+* [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
+* [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
+* [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
 
 ## Learning Material
 
-- [Migrating from Enzyme shallow rendering to explicit component mocks](https://www.youtube.com/watch?v=LHUdxkThTM0&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
+* [Migrating from Enzyme shallow rendering to explicit component mocks](https://www.youtube.com/watch?v=LHUdxkThTM0&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
 
-- [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
-- [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
-- [Testing React and Web Applications](https://kentcdodds.com/workshops/#testing-react-and-web-applications)
-- [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64)
+* [Confident React](https://www.youtube.com/watch?v=qXRPHRgcXJ0&list=PLV5CVI1eNcJgNqzNwcs4UKrlJdhfDjshf)
+* [Test Driven Development with react-testing-library](https://www.youtube.com/watch?v=kCR3JAR7CHE&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
+* [Testing React and Web Applications](https://kentcdodds.com/workshops/#testing-react-and-web-applications)
+* [Build a joke app with TDD](https://medium.com/@mbaranovski/quick-guide-to-tdd-in-react-81888be67c64)
   by [@mbaranovski](https://github.com/mbaranovski)
-- [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47)
+* [Build a comment feed with TDD](https://medium.freecodecamp.org/how-to-build-sturdy-react-apps-with-tdd-and-the-react-testing-library-47ad3c5c8e47)
   by [@iwilsonq](https://github.com/iwilsonq)
-- [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest)
+* [A clear way to unit testing React JS components using Jest and react-testing-library](https://www.richardkotze.com/coding/react-testing-library-jest)
   by [Richard Kotze](https://github.com/rkotze)
 
-- [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html)
+* [Intro to react-testing-library](https://chrisnoring.gitbooks.io/react/content/testing/react-testing-library.html)
   by [Chris Noring](https://github.com/softchris)
-- [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894)
+* [Integration testing in React](https://medium.com/@jeffreyrussom/integration-testing-in-react-21f92a55a894)
   by [Jeffrey Russom](https://github.com/qswitcher)
 
-- [React-testing-library have fantastic testing 🐐](https://medium.com/yazanaabed/react-testing-library-have-a-fantastic-testing-198b04699237)
+* [React-testing-library have fantastic testing 🐐](https://medium.com/yazanaabed/react-testing-library-have-a-fantastic-testing-198b04699237)
   by [Yazan Aabed](https://github.com/YazanAabeed)
 
-- [Building a React Tooltip Library](https://www.youtube.com/playlist?list=PLMV09mSPNaQmFLPyrfFtpUdClVfutjF5G)
+* [Building a React Tooltip Library](https://www.youtube.com/playlist?list=PLMV09mSPNaQmFLPyrfFtpUdClVfutjF5G)
   by [divyanshu013](https://github.com/divyanshu013) and
   [metagrover](https://github.com/metagrover)
 
-- [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
+* [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
 
 Feel free to contribute more!
 
@@ -1033,6 +1049,7 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -1071,9 +1088,9 @@ a 👍. This helps maintainers prioritize what to work on.
 For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
-- [Spectrum][spectrum]
-- [Reactiflux on Discord][reactiflux]
-- [Stack Overflow][stackoverflow]
+* [Spectrum][spectrum]
+* [Reactiflux on Discord][reactiflux]
+* [Stack Overflow][stackoverflow]
 
 ## LICENSE
 
