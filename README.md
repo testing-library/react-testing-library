@@ -237,7 +237,8 @@ export {customRender as render}
 ```
 
 To make this file accessible without using relative imports, add the folder
-containing the file to the Jest `moduleDirectories` option.
+containing the file to the Jest `moduleDirectories` option. Note: this will
+make _all_ the .js files in that directory importable without `../`.
 
 ```diff
 // my-component.test.js
@@ -250,7 +251,9 @@ containing the file to the Jest `moduleDirectories` option.
 module.exports = {
   moduleDirectories: [
     'node_modules',
-+    __dirname, // the project root
++   // add the directory with the test-utils.js file, for example:
++   'utils', // a utility folder
++    __dirname, // the root directory
   ],
   // ... other options ...
 }
