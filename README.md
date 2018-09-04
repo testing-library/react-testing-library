@@ -176,8 +176,9 @@ assertions.
 
 To do this with Jest, you can add the
 [`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string)
-option to your Jest config. The setup file can be anywhere, but if you're using
-create-react-app, use the default `src/setupTests.js`.
+option to your Jest config. The setup file can be anywhere, for example `jest.setup.js` or `./utils/setupTests.js`.
+
+If you are using the default setup from create-react-app, this option is set to `src/setupTests.js`. You should create this file if it doesn't exist and put the setup code there.
 
 ```javascript
 // jest.config.js
