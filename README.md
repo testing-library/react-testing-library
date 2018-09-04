@@ -96,8 +96,10 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Act
   fireEvent.click(getByText('Load Greeting'))
 
-  // let's wait for our mocked `get` request promise to resolve
-  // wait will wait until the callback doesn't throw an error
+  // Let's wait until our mocked `get` request promise resolves and
+  // the component calls setState and re-renders.
+  // getByTestId throws an error if it cannot find an element with the given ID
+  // and waitForElement will wait until the callback doesn't throw an error
   const greetingTextNode = await waitForElement(() =>
     getByTestId('greeting-text'),
   )
