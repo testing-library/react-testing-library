@@ -73,12 +73,56 @@ facilitate testing implementation details). Read more about this in
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
 > which is where most of the logic behind the queries is.
 
+## Example
+
+```javascript
+// __tests__/fetch.js
+import React from 'react'
+import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
+// this adds custom jest matchers from jest-dom
+import 'jest-dom/extend-expect'
+import axiosMock from 'axios' // the mock lives in a __mocks__ directory
+import Fetch from '../fetch' // see the tests for a full implementation
+
+// automatically unmount and cleanup DOM after the test is finished.
+afterEach(cleanup)
+
+test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
+  // Arrange
+  axiosMock.get.mockResolvedValueOnce({data: {greeting: 'hello there'}})
+  const url = '/greeting'
+  const {getByText, getByTestId, container} = render(<Fetch url={url} />)
+
+  // Act
+  fireEvent.click(getByText('Load Greeting'))
+
+  // Let's wait until our mocked `get` request promise resolves and
+  // the component calls setState and re-renders.
+  // getByTestId throws an error if it cannot find an element with the given ID
+  // and waitForElement will wait until the callback doesn't throw an error
+  const greetingTextNode = await waitForElement(() =>
+    getByTestId('greeting-text'),
+  )
+
+  // Assert
+  expect(axiosMock.get).toHaveBeenCalledTimes(1)
+  expect(axiosMock.get).toHaveBeenCalledWith(url)
+  expect(getByTestId('greeting-text')).toHaveTextContent('hello there')
+  expect(getByTestId('ok-button')).toHaveAttribute('disabled')
+  // snapshots work great with regular DOM nodes!
+  expect(container.firstChild).toMatchSnapshot()
+})
+```
+
 ## Table of Contents
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [Installation](#installation)
+- [Setup](#setup)
+  - [Global Config](#global-config)
+  - [Custom Render](#custom-render)
 - [Usage](#usage)
   - [`render`](#render)
   - [`cleanup`](#cleanup)
@@ -118,44 +162,105 @@ This library has a `peerDependencies` listing for `react-dom`.
 You may also be interested in installing `jest-dom` so you can use
 [the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
 
-## Usage
+## Setup
+
+`react-testing-library` does not require any configuration to be used (as demonstrated in the example above). However, there are some things you can do to when configuring your testing framework to reduce some boilerplate. In these docs we'll demonstrate configuring Jest, but you should be able to do similar things with any testing framework (react-testing-library does not require that you use Jest).
+
+
+### Global Config
+
+There are several options you can add to your global test config that simplify
+the setup and teardown of tests in individual files. For example, you can ensure
+[`cleanup`](#cleanup) is called after each test and import additional
+assertions.
+
+To do this with Jest, you can add the
+[`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string)
+option to your Jest config. The setup file can be anywhere, for example `jest.setup.js` or `./utils/setupTests.js`.
+
+If you are using the default setup from create-react-app, this option is set to `src/setupTests.js`. You should create this file if it doesn't exist and put the setup code there.
 
 ```javascript
-// __tests__/fetch.js
-import React from 'react'
-import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
-// this adds custom jest matchers from jest-dom
-import 'jest-dom/extend-expect'
-import axiosMock from 'axios' // the mock lives in a __mocks__ directory
-import Fetch from '../fetch' // see the tests for a full implementation
-
-// automatically unmount and cleanup DOM after the test is finished.
-afterEach(cleanup)
-
-test('Fetch makes an API call and displays the greeting when load-greeting is clicked', async () => {
-  // Arrange
-  axiosMock.get.mockResolvedValueOnce({data: {greeting: 'hello there'}})
-  const url = '/greeting'
-  const {getByText, getByTestId, container} = render(<Fetch url={url} />)
-
-  // Act
-  fireEvent.click(getByText('Load Greeting'))
-
-  // let's wait for our mocked `get` request promise to resolve
-  // wait will wait until the callback doesn't throw an error
-  const greetingTextNode = await waitForElement(() =>
-    getByTestId('greeting-text'),
-  )
-
-  // Assert
-  expect(axiosMock.get).toHaveBeenCalledTimes(1)
-  expect(axiosMock.get).toHaveBeenCalledWith(url)
-  expect(getByTestId('greeting-text')).toHaveTextContent('hello there')
-  expect(getByTestId('ok-button')).toHaveAttribute('disabled')
-  // snapshots work great with regular DOM nodes!
-  expect(container.firstChild).toMatchSnapshot()
-})
+// jest.config.js
+module.exports = {
+  setupTestFrameworkScriptFile: require.resolve('./jest.setup.js'),
+  // ... other options ...
+}
 ```
+
+```javascript
+// jest.setup.js
+
+// add some helpful assertions
+import 'jest-dom/extend-expect'
+
+// this is basically: afterEach(cleanup)
+import 'react-testing-library/cleanup-after-each'
+```
+
+### Custom Render
+
+It's often useful to define a custom render method that includes things like
+global context providers, data stores, etc. To make this available globally, one
+approach is to define a utility file that re-exports everything from
+`react-testing-library`. You can replace react-testing-library with this file in
+all your imports.
+
+```diff
+// my-component.test.js
+- import { render, fireEvent } from 'react-testing-library';
++ import { render, fireEvent } from '../test-utils';
+```
+
+```js
+// test-utils.js
+import {render} from 'react-testing-library'
+import {ThemeProvider} from 'my-ui-lib'
+import {TranslationProvider} from 'my-i18n-lib'
+import defaultStrings from 'i18n/en-x-default'
+
+const customRender = (node, ...options) => {
+  return render(
+    <ThemeProvider theme="light">
+      <TranslationProvider messages={defaultStrings}>
+        {node}
+      </TranslationProvider>
+    </ThemeProvider>,
+    ...options,
+  )
+}
+
+// re-export everything
+export * from 'react-testing-library'
+
+// override render method
+export {customRender as render}
+```
+
+To make this file accessible without using relative imports, add the folder
+containing the file to the Jest `moduleDirectories` option. Note: this will
+make _all_ the .js files in that directory importable without `../`.
+
+```diff
+// my-component.test.js
+- import { render, fireEvent } from '../test-utils';
++ import { render, fireEvent } from 'test-utils';
+```
+
+```diff
+// jest.config.js
+module.exports = {
+  moduleDirectories: [
+    'node_modules',
++   // add the directory with the test-utils.js file, for example:
++   'utils', // a utility folder
++    __dirname, // the root directory
+  ],
+  // ... other options ...
+}
+```
+
+## Usage
 
 ### `render`
 
@@ -174,9 +279,7 @@ Render into a container which is appended to `document.body`. It should be used
 with [cleanup](#cleanup):
 
 ```javascript
-import {render, cleanup} from 'react-testing-library'
-
-afterEach(cleanup)
+import {render} from 'react-testing-library'
 
 render(<div />)
 ```
@@ -408,12 +511,14 @@ Unmounts React trees that were mounted with [render](#render).
 ```javascript
 import {cleanup, render} from 'react-testing-library'
 
-afterEach(cleanup)
+afterEach(cleanup) // <-- add this
 
 test('renders into document', () => {
   render(<div />)
   // ...
 })
+
+// ... more tests ...
 ```
 
 Failing to call `cleanup` when you've called `render` could result in a memory
@@ -422,31 +527,8 @@ errors in your tests).
 
 **If you don't want to add this to _every single test file_** then we recommend
 that you configure your test framework to run a file before your tests which
-does this automatically.
-
-For example, to do this with jest, you can use
-[`setupTestFrameworkScriptFile`](https://facebook.github.io/jest/docs/en/configuration.html#setuptestframeworkscriptfile-string):
-
-```javascript
-// jest.config.js
-module.exports = {
-  setupTestFrameworkScriptFile: require.resolve('./test/setup-test-env.js'),
-}
-```
-
-Then:
-
-```javascript
-// test/setup-test-env.js
-
-// add some helpful assertions
-import 'jest-dom/extend-expect'
-// this is basically: afterEach(cleanup)
-import 'react-testing-library/cleanup-after-each'
-```
-
-Or if you're using react-scripts (create-react-app), it has a default value
-that's set to `src/setupTests.js` so put the code above in that file.
+does this automatically. See the [setup](#setup) section for guidance on how to
+set up your framework.
 
 ## `dom-testing-library` APIs
 
@@ -1033,6 +1115,7 @@ light-weight, simple, and understandable.
 Thanks goes to these people ([emoji key][emojis]):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub><b>Kent C. Dodds</b></sub>](https://kentcdodds.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=kentcdodds "Tests") | [<img src="https://avatars1.githubusercontent.com/u/2430381?v=4" width="100px;"/><br /><sub><b>Ryan Castner</b></sub>](http://audiolion.github.io)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=audiolion "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8008023?v=4" width="100px;"/><br /><sub><b>Daniel Sandiego</b></sub>](https://www.dnlsandiego.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=dnlsandiego "Code") | [<img src="https://avatars2.githubusercontent.com/u/12592677?v=4" width="100px;"/><br /><sub><b>Paweł Mikołajczyk</b></sub>](https://github.com/Miklet)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=Miklet "Code") | [<img src="https://avatars3.githubusercontent.com/u/464978?v=4" width="100px;"/><br /><sub><b>Alejandro Ñáñez Ortiz</b></sub>](http://co.linkedin.com/in/alejandronanez/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=alejandronanez "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1402095?v=4" width="100px;"/><br /><sub><b>Matt Parrish</b></sub>](https://github.com/pbomb)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Apbomb "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=pbomb "Tests") | [<img src="https://avatars1.githubusercontent.com/u/1288694?v=4" width="100px;"/><br /><sub><b>Justin Hall</b></sub>](https://github.com/wKovacs64)<br />[📦](#platform-wKovacs64 "Packaging/porting to new platform") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
