@@ -162,6 +162,9 @@ You may also be interested in installing `jest-dom` so you can use
 
 ## Setup
 
+`react-testing-library` does not require any configuration to be used (as demonstrated in the example above). However, there are some things you can do to when configuring your testing framework to reduce some boilerplate. In these docs we'll demonstrate configuring Jest, but you should be able to do similar things with any testing framework (react-testing-library does not require that you use Jest).
+
+
 ### Globals
 
 There are several options you can add to your global test config that simplify
