@@ -121,7 +121,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 
 - [Installation](#installation)
 - [Setup](#setup)
-  - [Globals](#globals)
+  - [Global Config](#global-config)
   - [Custom Render](#custom-render)
 - [Usage](#usage)
   - [`render`](#render)
@@ -167,7 +167,7 @@ You may also be interested in installing `jest-dom` so you can use
 `react-testing-library` does not require any configuration to be used (as demonstrated in the example above). However, there are some things you can do to when configuring your testing framework to reduce some boilerplate. In these docs we'll demonstrate configuring Jest, but you should be able to do similar things with any testing framework (react-testing-library does not require that you use Jest).
 
 
-### Globals
+### Global Config
 
 There are several options you can add to your global test config that simplify
 the setup and teardown of tests in individual files. For example, you can ensure
