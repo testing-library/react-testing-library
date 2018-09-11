@@ -348,6 +348,7 @@ renders it's HTML directly in the body.
 This method is a shortcut for `console.log(prettyDOM(baseElement))`.
 
 ```javascript
+import React from 'react'
 import {render} from 'react-testing-library'
 
 const HelloWorld = () => <h1>Hello World</h1>
