@@ -641,7 +641,7 @@ import 'jest-dom/extend-expect'
 import {render, wait} from 'react-testing-library'
 
 test('can fill in the form after loaded', async () => {
-  const {getByLabelText} = render(<Login />)
+  const {queryByText, getByLabelText} = render(<Login />)
 
   // wait until the callback does not throw an error. In this case, that means
   // it'll wait until the element with the text that says "loading..." is gone.
