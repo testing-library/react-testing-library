@@ -75,7 +75,8 @@ facilitate testing implementation details). Read more about this in
 
 ## What is react-testing-libary?
 
-[![what is react testing libary](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
+Have a look at the video below for an explanation
+[![what is react testing libary](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library'){:target="\_blank"}
 
 ## Example
 
