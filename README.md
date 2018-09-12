@@ -73,6 +73,10 @@ facilitate testing implementation details). Read more about this in
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
 > which is where most of the logic behind the queries is.
 
+## What is react-testing-libary?
+
+[![what is react testing libary](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
+
 ## Example
 
 ```javascript
@@ -795,7 +799,7 @@ Some included are:
 
 - [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
 
-- [Creating Readable Tests Using React Testing Library](https://medium.com/flatiron-labs/creating-readable-tests-using-react-testing-library-2bd03c49c284) 
+- [Creating Readable Tests Using React Testing Library](https://medium.com/flatiron-labs/creating-readable-tests-using-react-testing-library-2bd03c49c284)
   by [Lukeghenco](https://github.com/Lukeghenco)
 
 Feel free to contribute more!
