@@ -795,6 +795,9 @@ Some included are:
 
 - [A sample repo using react-testing-library to test a Relay Modern GraphQL app](https://github.com/zth/relay-modern-flow-jest-example)
 
+- [Creating Readable Tests Using React Testing Library](https://medium.com/flatiron-labs/creating-readable-tests-using-react-testing-library-2bd03c49c284) 
+  by [Lukeghenco](https://github.com/Lukeghenco)
+
 Feel free to contribute more!
 
 ## FAQ
