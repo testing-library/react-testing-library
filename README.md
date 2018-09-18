@@ -86,7 +86,10 @@ import React from 'react'
 import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
 // this adds custom jest matchers from jest-dom
 import 'jest-dom/extend-expect'
-import axiosMock from 'axios' // the mock lives in a __mocks__ directory
+
+// the mock lives in a __mocks__ directory 
+// to know more about manual mocks, access: https://jestjs.io/docs/en/manual-mocks
+import axiosMock from 'axios' 
 import Fetch from '../fetch' // see the tests for a full implementation
 
 // automatically unmount and cleanup DOM after the test is finished.
