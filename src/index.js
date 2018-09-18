@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {getQueriesForElement, prettyDOM, queries as domQueries} from 'dom-testing-library'
+import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
-function render(ui, {container, baseElement = container, queries = domQueries} = {}) {
+function render(ui, {container, baseElement = container, queries} = {}) {
   if (!container) {
     // default to document.body instead of documentElement to avoid output of potentially-large
     // head elements (such as JSS style blocks) in debug output
