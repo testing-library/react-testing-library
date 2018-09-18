@@ -89,6 +89,10 @@ import 'jest-dom/extend-expect'
 import axiosMock from 'axios' // the mock lives in a __mocks__ directory
 import Fetch from '../fetch' // see the tests for a full implementation
 
+// Once we mock the module we can provide a mockResolvedValueOnce for .get 
+// that returns the fake data we want our test to assert against.
+jest.mock('axios');
+
 // automatically unmount and cleanup DOM after the test is finished.
 afterEach(cleanup)
 
@@ -271,34 +275,6 @@ module.exports = {
   // ... other options ...
 }
 ```
-
-
-#### Export Issue with Babel Versions Lower Than 7
-
-Babel versions lower than 7 throw an error when trying to override the named export
-in the example above. (See
-[#169](https://github.com/kentcdodds/react-testing-library/issues/169).)
-
-<details>
-<summary>Workaround</summary>    
-
-You can use CommonJS modules instead of ES modules, which should work in Node:
-
-```js
-// test-utils.js
-const rtl = require('react-testing-library')
-
-const customRender = (node, ...options) => {
-  return rtl.render(<Something>{node}</Something>)
-}
-
-module.exports = {
-   ...rtl,
-   render: customRender,
-}
-```
-
-</details>
 
 ## Usage
 
