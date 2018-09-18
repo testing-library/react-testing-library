@@ -226,13 +226,13 @@ all your imports.
 
 ```js
 // test-utils.js
-import {render} from 'react-testing-library'
+import {render as rtlRender} from 'react-testing-library'
 import {ThemeProvider} from 'my-ui-lib'
 import {TranslationProvider} from 'my-i18n-lib'
 import defaultStrings from 'i18n/en-x-default'
 
-const customRender = (node, ...options) => {
-  return render(
+const render = (node, ...options) => {
+  return rtlRender(
     <ThemeProvider theme="light">
       <TranslationProvider messages={defaultStrings}>
         {node}
@@ -246,7 +246,7 @@ const customRender = (node, ...options) => {
 export * from 'react-testing-library'
 
 // override render method
-export {customRender as render}
+export {render}
 ```
 
 To make this file accessible without using relative imports, add the folder
