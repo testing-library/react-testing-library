@@ -275,11 +275,12 @@ module.exports = {
 
 #### Export Issue with Babel Versions Lower Than 7
 
-Babel versions lower than 7 throw an error when trying to override the named export in the example above. (See [bug](https://github.com/kentcdodds/react-testing-library/issues/169).)
+Babel versions lower than 7 throw an error when trying to override the named export
+in the example above. (See
+[#169](https://github.com/kentcdodds/react-testing-library/issues/169).)
 
 <details>
-    <summary>Workaround</summary>
-    
+<summary>Workaround</summary>    
 
 You can use CommonJS modules instead of ES modules, which should work in Node:
 
