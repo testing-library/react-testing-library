@@ -1,10 +1,10 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
-import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
+import {getQueriesForElement, prettyDOM, queries as domQueries} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
-function render(ui, {container, baseElement = container} = {}) {
+function render(ui, {container, baseElement = container, queries = domQueries} = {}) {
   if (!container) {
     // default to document.body instead of documentElement to avoid output of potentially-large
     // head elements (such as JSS style blocks) in debug output
@@ -29,7 +29,7 @@ function render(ui, {container, baseElement = container} = {}) {
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
-    ...getQueriesForElement(baseElement),
+    ...getQueriesForElement(baseElement, queries),
   }
 }
 
