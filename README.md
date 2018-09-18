@@ -272,6 +272,34 @@ module.exports = {
 }
 ```
 
+
+#### Export Issue with Babel Versions Lower Than 7
+
+Babel versions lower than 7 throw an error when trying to override the named export
+in the example above. (See
+[#169](https://github.com/kentcdodds/react-testing-library/issues/169).)
+
+<details>
+<summary>Workaround</summary>    
+
+You can use CommonJS modules instead of ES modules, which should work in Node:
+
+```js
+// test-utils.js
+const rtl = require('react-testing-library')
+
+const customRender = (node, ...options) => {
+  return rtl.render(<Something>{node}</Something>)
+}
+
+module.exports = {
+   ...rtl,
+   render: customRender,
+}
+```
+
+</details>
+
 ## Usage
 
 ### `render`
