@@ -87,9 +87,9 @@ import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
 // this adds custom jest matchers from jest-dom
 import 'jest-dom/extend-expect'
 
-// the mock lives in a __mocks__ directory 
+// the mock lives in a __mocks__ directory
 // to know more about manual mocks, access: https://jestjs.io/docs/en/manual-mocks
-import axiosMock from 'axios' 
+import axiosMock from 'axios'
 import Fetch from '../fetch' // see the tests for a full implementation
 
 // automatically unmount and cleanup DOM after the test is finished.
@@ -275,15 +275,14 @@ module.exports = {
 }
 ```
 
-
 #### Export Issue with Babel Versions Lower Than 7
 
-Babel versions lower than 7 throw an error when trying to override the named export
-in the example above. (See
+Babel versions lower than 7 throw an error when trying to override the named
+export in the example above. (See
 [#169](https://github.com/kentcdodds/react-testing-library/issues/169).)
 
 <details>
-<summary>Workaround</summary>    
+<summary>Workaround</summary>
 
 You can use CommonJS modules instead of ES modules, which should work in Node:
 
@@ -296,8 +295,8 @@ const customRender = (node, ...options) => {
 }
 
 module.exports = {
-   ...rtl,
-   render: customRender,
+  ...rtl,
+  render: customRender,
 }
 ```
 
@@ -608,18 +607,9 @@ import {render, cleanup, fireEvent} from 'react-testing-library'
 afterEach(cleanup)
 
 test('clicks submit button', () => {
-  const spy = jest.fn()
-  const {getByText} = render(<button onClick={spy}>Submit</button>)
+  const {getByText} = render(<button onClick={handleClick}>Submit</button>)
 
-  fireEvent(
-    getByText('Submit'),
-    new MouseEvent('click', {
-      bubbles: true, // click events must bubble for React to see it
-      cancelable: true,
-    }),
-  )
-
-  expect(spy).toHaveBeenCalledTimes(1)
+  fireEvent.click(getByText('Submit'))
 })
 ```
 
