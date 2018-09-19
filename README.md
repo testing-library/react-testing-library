@@ -607,9 +607,11 @@ import {render, cleanup, fireEvent} from 'react-testing-library'
 afterEach(cleanup)
 
 test('clicks submit button', () => {
+  const handleClick = jest.fn()
   const {getByText} = render(<button onClick={handleClick}>Submit</button>)
 
   fireEvent.click(getByText('Submit'))
+  expect(handleClick).toHaveBeenCalledTimes(1)
 })
 ```
 
