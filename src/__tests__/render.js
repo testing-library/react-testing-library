@@ -55,6 +55,18 @@ test('returns baseElement which defaults to document.body', () => {
   expect(baseElement).toBe(document.body)
 })
 
+test('returns a component instance', () => {
+  // eslint-disable-next-line react/prefer-stateless-function
+  class Test extends React.Component {
+    render() {
+      return <div />
+    }
+  }
+
+  const {instance} = render(<Test />)
+  expect(instance).toBeInstanceOf(Test)
+})
+
 it('cleansup document', () => {
   const spy = jest.fn()
 

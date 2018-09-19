@@ -17,10 +17,12 @@ function render(ui, {container, baseElement = container, queries} = {}) {
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
-  ReactDOM.render(ui, container)
+  // eslint-disable-next-line react/no-render-return-value
+  const instance = ReactDOM.render(ui, container)
   return {
     container,
     baseElement,
+    instance,
     // eslint-disable-next-line no-console
     debug: (el = baseElement) => console.log(prettyDOM(el)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
