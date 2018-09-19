@@ -57,21 +57,14 @@ test('returns baseElement which defaults to document.body', () => {
 
 test('returns a component instance', () => {
   // eslint-disable-next-line react/prefer-stateless-function
-  class Greet extends React.Component {
+  class Test extends React.Component {
     render() {
-      const {greeting, subject} = this.props;
-      return (
-        <div>
-          <strong>
-            {greeting} {subject}
-          </strong>
-        </div>
-      )
+      return <div />
     }
   }
 
-  const {instance} = render(<Greet greeting="Hello" subject="World" />)
-  expect(instance).toBeInstanceOf(Greet)
+  const {instance} = render(<Test />)
+  expect(instance).toBeInstanceOf(Test)
 })
 
 it('cleansup document', () => {
