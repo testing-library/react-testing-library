@@ -1128,6 +1128,30 @@ snapshotDiff(firstVersion, container.cloneNode(true))
 
 </details>
 
+<details>
+
+<summary>Does this library work with React Native?</summary>
+
+> This is still quite experimental - please contribute with your own
+> results/findings!
+
+The short answer is yes, but with a few caveats. It's possible to replicate a
+lot of DOM functionality with
+[`react-native-web`](https://github.com/necolas/react-native-web), allowing you
+to use the query APIs like `getByText`. You can then add a `press` event to
+`fireEvent` that simulates a mouseDown immediately followed by a mouseUp, and
+call this with Touchable\* components.
+
+One thing this approach does _not_ support is any kind of native module
+functionality (like native navigation modules). The way around this is to design
+your components so that as much of the functionality you need tested is
+encapsulated outside of any native module functionality.
+
+For a barebones example of testing a React Native component,
+[see here](https://github.com/thchia/rn-testing-library-example).
+
+</details>
+
 ## Other Solutions
 
 In preparing this project,
