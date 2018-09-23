@@ -836,6 +836,8 @@ Some included are:
 
 - [Creating Readable Tests Using React Testing Library](https://medium.com/flatiron-labs/creating-readable-tests-using-react-testing-library-2bd03c49c284)
   by [Lukeghenco](https://github.com/Lukeghenco)
+- [Course material with many examples using react-testing-library](https://github.com/kentcdodds/react-testing-library-course)
+  by [Kent C. Dodds](https://github.com/kentcdodds)
 
 Feel free to contribute more!
 
