@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`supports fragments 1`] = `
+<DocumentFragment>
+  <div>
+    <code>
+      DocumentFragment
+    </code>
+     is pretty cool!
+  </div>
+</DocumentFragment>
+`;

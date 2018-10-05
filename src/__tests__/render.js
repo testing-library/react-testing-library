@@ -73,3 +73,20 @@ it('cleansup document', () => {
   expect(document.body.innerHTML).toBe('')
   expect(spy).toHaveBeenCalledTimes(1)
 })
+
+it('supports fragments', () => {
+  class Test extends React.Component {
+    render() {
+      return (
+        <div>
+          <code>DocumentFragment</code> is pretty cool!
+        </div>
+      )
+    }
+  }
+
+  const {asFragment} = render(<Test />)
+  expect(asFragment()).toMatchSnapshot()
+  cleanup()
+  expect(document.body.innerHTML).toBe('')
+})

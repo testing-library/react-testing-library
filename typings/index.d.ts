@@ -7,9 +7,10 @@ type GetsAndQueries = ReturnType<typeof getQueriesForElement>
 export interface RenderResult extends GetsAndQueries {
   container: HTMLElement
   baseElement: HTMLElement
-  debug: (baseElement?: HTMLElement) => void
+  debug: (baseElement?: HTMLElement | DocumentFragment) => void
   rerender: (ui: React.ReactElement<any>) => void
   unmount: () => boolean
+  asFragment: () => DocumentFragment
 }
 
 /**

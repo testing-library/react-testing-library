@@ -99,7 +99,9 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   // Arrange
   axiosMock.get.mockResolvedValueOnce({data: {greeting: 'hello there'}})
   const url = '/greeting'
-  const {getByText, getByTestId, container} = render(<Fetch url={url} />)
+  const {getByText, getByTestId, container, asFragment} = render(
+    <Fetch url={url} />,
+  )
 
   // Act
   fireEvent.click(getByText('Load Greeting'))
@@ -119,6 +121,8 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   expect(getByTestId('ok-button')).toHaveAttribute('disabled')
   // snapshots work great with regular DOM nodes!
   expect(container.firstChild).toMatchSnapshot()
+  // you can also use get a `DocumentFragment`, which is useful if you want to compare nodes across render
+  expect(asFragment()).toMatchSnapshot()
 })
 ```
 
@@ -546,6 +550,38 @@ const usernameInputElement = getByTestId('username-input')
 > said, they are _way_ better than querying based on DOM structure. Learn more
 > about `data-testid`s from the blog post ["Making your UI tests resilient to
 > change"][data-testid-blog-post]
+
+#### `asFragment(): DocumentFragment`
+
+Returns a `DocumentFragment` of your rendered component. This can be useful if
+you need to avoid live bindings and see how your component reacts to events.
+
+```javascript
+import {render, fireEvent} from 'react-testing-library'
+
+class TestComponent extends React.Component {
+  constructor() {
+    super()
+    this.state = {count: 0}
+  }
+
+  render() {
+    const {count} = this.state
+
+    return <button onClick={() => this.setState({count: count + 1})}>Click to increase: {count}</div>
+  }
+}
+
+const {getByText, asFragment} = render(<TestComponent />)
+const firstRender = asFragment()
+
+fireEvent.click(getByText(/Click to increase/))
+
+// This will snapshot only the difference between the first render, and the
+// state of the DOM after the click event.
+// See https://github.com/jest-community/snapshot-diff
+expect(firstRender).toMatchDiffSnapshot(asFragment())
+```
 
 ### `cleanup`
 

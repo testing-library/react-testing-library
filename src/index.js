@@ -29,6 +29,17 @@ function render(ui, {container, baseElement = container, queries} = {}) {
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
+    asFragment: () => {
+      if (typeof document.createRange === 'function') {
+        return document
+          .createRange()
+          .createContextualFragment(container.innerHTML)
+      }
+
+      const template = document.createElement('template')
+      template.innerHTML = container.innerHTML
+      return template.content
+    },
     ...getQueriesForElement(baseElement, queries),
   }
 }
