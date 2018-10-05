@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 import {Simulate} from 'react-dom/test-utils'
 import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
+import {JSDOM} from 'jsdom'
 
 const mountedContainers = new Set()
 
@@ -29,6 +30,7 @@ function render(ui, {container, baseElement = container, queries} = {}) {
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
+    asFragment: () => JSDOM.fragment(container.innerHTML),
     ...getQueriesForElement(baseElement, queries),
   }
 }
