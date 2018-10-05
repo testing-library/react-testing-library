@@ -38,7 +38,6 @@
   "license": "MIT",
   "dependencies": {
     "dom-testing-library": "^3.8.1",
-    "jsdom": "^11.0.0",
     "wait-for-expect": "^1.0.0"
   },
   "devDependencies": {
