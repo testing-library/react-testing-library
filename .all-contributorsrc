@@ -531,6 +531,15 @@
         "ideas",
         "platform"
       ]
+    },
+    {
+      "login": "hhagely",
+      "name": "Herb Hagely",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10118777?v=4",
+      "profile": "https://github.com/hhagely",
+      "contributions": [
+        "example"
+      ]
     }
   ]
 }

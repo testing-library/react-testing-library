@@ -41,6 +41,7 @@
     "wait-for-expect": "^1.0.0"
   },
   "devDependencies": {
+    "@reach/router": "^1.2.1",
     "@types/react-dom": "^16.0.6",
     "axios": "^0.18.0",
     "eslint-import-resolver-jest": "^2.1.1",
