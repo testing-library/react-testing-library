@@ -30,6 +30,7 @@ function render(ui, {container, baseElement = container, queries} = {}) {
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
     asFragment: () => {
+      /* istanbul ignore if (jsdom limitation) */
       if (typeof document.createRange === 'function') {
         return document
           .createRange()
