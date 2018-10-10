@@ -73,10 +73,10 @@ facilitate testing implementation details). Read more about this in
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
 > which is where most of the logic behind the queries is.
 
-## What is react-testing-libary?
+## What is react-testing-library?
 
 Have a look at the video below for an explanation. <br/><br/>
-[![what is react testing libary](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
+[![what is react testing library](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
 
 ## Example
 
@@ -172,12 +172,12 @@ npm install --save-dev react-testing-library
 This library has a `peerDependencies` listing for `react-dom`.
 
 You may also be interested in installing `jest-dom` so you can use
-[the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
+[the custom jest matchers](https://github.com/gnapse/jest-dom#readme).
 
 ## Setup
 
 `react-testing-library` does not require any configuration to be used (as
-demonstrated in the example above). However, there are some things you can do to
+demonstrated in the example above). However, there are some things you can do
 when configuring your testing framework to reduce some boilerplate. In these
 docs we'll demonstrate configuring Jest, but you should be able to do similar
 things with any testing framework (react-testing-library does not require that
@@ -316,7 +316,7 @@ Defined as:
 function render(
   ui: React.ReactElement<any>,
   options?: {
-    /* You wont often use this, expand below for docs on options */
+    /* You won't often use this, expand below for docs on options */
   },
 ): RenderResult
 ```
@@ -1237,7 +1237,7 @@ Thanks goes to these people ([emoji key][emojis]):
 | [<img src="https://avatars2.githubusercontent.com/u/5286559?v=4" width="100px;"/><br /><sub><b>Mark Pollmann</b></sub>](https://markpollmann.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=MarkPollmann "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/1213123?v=4" width="100px;"/><br /><sub><b>Ehtesham Kafeel</b></sub>](https://github.com/ehteshamkafeel)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=ehteshamkafeel "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=ehteshamkafeel "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/1493505?v=4" width="100px;"/><br /><sub><b>Julio Pavón</b></sub>](http://jpavon.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jpavon "Code") | [<img src="https://avatars3.githubusercontent.com/u/1765048?v=4" width="100px;"/><br /><sub><b>Duncan L</b></sub>](http://www.duncanleung.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=duncanleung "Documentation") [💡](#example-duncanleung "Examples") | [<img src="https://avatars1.githubusercontent.com/u/700778?v=4" width="100px;"/><br /><sub><b>Tiago Almeida</b></sub>](https://www.linkedin.com/in/tyagow/?locale=en_US)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=tyagow "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/4982001?v=4" width="100px;"/><br /><sub><b>Robert Smith</b></sub>](http://rbrtsmith.com/)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Arbrtsmith "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/1700355?v=4" width="100px;"/><br /><sub><b>Zach Green</b></sub>](https://offbyone.tech)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=zgreen "Documentation") |
 | [<img src="https://avatars3.githubusercontent.com/u/881986?v=4" width="100px;"/><br /><sub><b>dadamssg</b></sub>](https://github.com/dadamssg)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=dadamssg "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8734097?v=4" width="100px;"/><br /><sub><b>Yazan Aabed</b></sub>](https://www.yaabed.com/)<br />[📝](#blog-YazanAabeed "Blogposts") | [<img src="https://avatars0.githubusercontent.com/u/556258?v=4" width="100px;"/><br /><sub><b>Tim</b></sub>](https://github.com/timbonicus)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Atimbonicus "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Tests") | [<img src="https://avatars3.githubusercontent.com/u/6682655?v=4" width="100px;"/><br /><sub><b>Divyanshu Maithani</b></sub>](http://divyanshu.xyz)<br />[✅](#tutorial-divyanshu013 "Tutorials") [📹](#video-divyanshu013 "Videos") | [<img src="https://avatars2.githubusercontent.com/u/9116042?v=4" width="100px;"/><br /><sub><b>Deepak Grover</b></sub>](https://www.linkedin.com/in/metagrover)<br />[✅](#tutorial-metagrover "Tutorials") [📹](#video-metagrover "Videos") | [<img src="https://avatars0.githubusercontent.com/u/16276358?v=4" width="100px;"/><br /><sub><b>Eyal Cohen</b></sub>](https://github.com/eyalcohen4)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=eyalcohen4 "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/7452681?v=4" width="100px;"/><br /><sub><b>Peter Makowski</b></sub>](https://github.com/petermakowski)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=petermakowski "Documentation") |
 | [<img src="https://avatars2.githubusercontent.com/u/20361668?v=4" width="100px;"/><br /><sub><b>Michiel Nuyts</b></sub>](https://github.com/Michielnuyts)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Michielnuyts "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1195863?v=4" width="100px;"/><br /><sub><b>Joe Ng'ethe</b></sub>](https://github.com/joeynimu)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/19998290?v=4" width="100px;"/><br /><sub><b>Kate</b></sub>](https://github.com/Enikol)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Enikol "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/11980217?v=4" width="100px;"/><br /><sub><b>Sean</b></sub>](http://www.seanrparker.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=SeanRParker "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/17031?v=4" width="100px;"/><br /><sub><b>James Long</b></sub>](http://jlongster.com)<br />[🤔](#ideas-jlongster "Ideas, Planning, & Feedback") [📦](#platform-jlongster "Packaging/porting to new platform") | [<img src="https://avatars1.githubusercontent.com/u/10118777?v=4" width="100px;"/><br /><sub><b>Herb Hagely</b></sub>](https://github.com/hhagely)<br />[💡](#example-hhagely "Examples") | [<img src="https://avatars2.githubusercontent.com/u/5779538?v=4" width="100px;"/><br /><sub><b>Alex Wendte</b></sub>](http://www.wendtedesigns.com/)<br />[💡](#example-themostcolm "Examples") |
-
+|[<img src="https://avatars1.githubusercontent.com/u/6998954?s=460&v=4" width="100px;"/><br /><sub><b>Monica Powell</b></sub>](http://aboutmonica.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=m0nica " Documentation") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
