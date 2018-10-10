@@ -73,10 +73,10 @@ facilitate testing implementation details). Read more about this in
 > [`dom-testing-library`](https://github.com/kentcdodds/dom-testing-library)
 > which is where most of the logic behind the queries is.
 
-## What is react-testing-libary?
+## What is react-testing-library?
 
 Have a look at the video below for an explanation. <br/><br/>
-[![what is react testing libary](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
+[![what is react testing library](https://img.youtube.com/vi/JKOwJUM4_RM/0.jpg)](https://youtu.be/JKOwJUM4_RM 'what is react testing library')
 
 ## Example
 
@@ -172,12 +172,12 @@ npm install --save-dev react-testing-library
 This library has a `peerDependencies` listing for `react-dom`.
 
 You may also be interested in installing `jest-dom` so you can use
-[the custom jest matchers](https://github.com/gnapse/jest-dom#readme)
+[the custom jest matchers](https://github.com/gnapse/jest-dom#readme).
 
 ## Setup
 
 `react-testing-library` does not require any configuration to be used (as
-demonstrated in the example above). However, there are some things you can do to
+demonstrated in the example above). However, there are some things you can do
 when configuring your testing framework to reduce some boilerplate. In these
 docs we'll demonstrate configuring Jest, but you should be able to do similar
 things with any testing framework (react-testing-library does not require that
@@ -316,7 +316,7 @@ Defined as:
 function render(
   ui: React.ReactElement<any>,
   options?: {
-    /* You wont often use this, expand below for docs on options */
+    /* You won't often use this, expand below for docs on options */
   },
 ): RenderResult
 ```
