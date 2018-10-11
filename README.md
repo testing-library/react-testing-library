@@ -1188,6 +1188,8 @@ encapsulated outside of any native module functionality.
 For a barebones example of testing a React Native component,
 [see here](https://github.com/thchia/rn-testing-library-example).
 
+There is also a sibling project called [react-native-testing-library](https://github.com/callstack/react-native-testing-library) which aims to test React Native apps without mentioned tradeoffs, having the API inspired by and mostly compatible with this library.
+
 </details>
 
 ## Other Solutions
