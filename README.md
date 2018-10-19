@@ -25,7 +25,7 @@
 
 <div align="center">
 <a href="https://testingjavascript.com">
-<img height="500" width="500" alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application." src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/testingjavascript.jpg" />
+<img width="500" alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application." src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/testingjavascript.jpg" />
 </a>
 </div>
 
@@ -1194,7 +1194,10 @@ encapsulated outside of any native module functionality.
 For a barebones example of testing a React Native component,
 [see here](https://github.com/thchia/rn-testing-library-example).
 
-There is also a sibling project called [react-native-testing-library](https://github.com/callstack/react-native-testing-library) which aims to test React Native apps without mentioned tradeoffs, having the API inspired by and mostly compatible with this library.
+There is also a sibling project called
+[react-native-testing-library](https://github.com/callstack/react-native-testing-library)
+which aims to test React Native apps without mentioned tradeoffs, having the API
+inspired by and mostly compatible with this library.
 
 </details>
 
