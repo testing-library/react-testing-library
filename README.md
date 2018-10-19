@@ -23,6 +23,12 @@
 [![Star on GitHub][github-star-badge]][github-star]
 [![Tweet][twitter-badge]][twitter]
 
+<div align="center">
+<a href="https://testingjavascript.com">
+<img height="500" width="500" alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application." src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/testingjavascript.jpg" />
+</a>
+</div>
+
 ## The problem
 
 You want to write maintainable tests for your React components. As a part of
