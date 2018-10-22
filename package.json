@@ -37,8 +37,7 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "dom-testing-library": "^3.9.0",
-    "wait-for-expect": "^1.0.1"
+    "dom-testing-library": "^3.9.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
