@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom'
-import {Simulate} from 'react-dom/test-utils'
 import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
 const mountedContainers = new Set()
@@ -67,6 +66,25 @@ fireEvent.change = function reactChange(node, init) {
   return originalChange(node, init)
 }
 
+// probably there is a better way to get access to a component instance
+const [
+  getInstanceFromNode,
+] = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.Events
+const createReactEventSimulator = eventName => (node, init) => {
+  const propName = `on${eventName.charAt(0).toUpperCase()}${eventName.slice(1)}`
+  const simulate = getInstanceFromNode(node).memoizedProps[propName]
+
+  if (init && init.target && init.target.hasOwnProperty('value')) {
+    setNativeValue(node, init.target.value)
+  }
+
+  return simulate({
+    target: node,
+    type: eventName,
+    ...init,
+  })
+}
+
 // function written after some investigation here:
 // https://github.com/facebook/react/issues/10135#issuecomment-401496776
 function setNativeValue(element, value) {
@@ -88,9 +106,7 @@ function setNativeValue(element, value) {
 // fallback to synthetic events for React events that the DOM doesn't support
 const syntheticEvents = ['select', 'mouseEnter', 'mouseLeave']
 syntheticEvents.forEach(eventName => {
-  document.addEventListener(eventName.toLowerCase(), e => {
-    Simulate[eventName](e.target, e)
-  })
+  fireEvent[eventName] = createReactEventSimulator(eventName)
 })
 
 // just re-export everything from dom-testing-library
