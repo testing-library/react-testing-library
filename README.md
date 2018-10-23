@@ -557,6 +557,47 @@ const usernameInputElement = getByTestId('username-input')
 > about `data-testid`s from the blog post ["Making your UI tests resilient to
 > change"][data-testid-blog-post]
 
+<details>
+  <summary>What if my project already uses <code>data-test-id</code>? Do I have to migrate to <code>data-testid</code>?
+</summary>
+
+`getByTestId` is looking for the `data-testid` attribute and that's not going to
+change
+[#76](https://github.com/kentcdodds/dom-testing-library/issues/76#issuecomment-406321122)
+[#128](https://github.com/kentcdodds/dom-testing-library/issues/128)
+[#204](https://github.com/kentcdodds/react-testing-library/issues/204).
+
+What you can do is to create a [custom render](#custom-render) that overwrites
+`getByTestId`:
+
+```js
+// test-utils.js
+import {render} from 'react-testing-library'
+
+const customRender = (node, ...options) => {
+  const utils = render(node, ...options)
+
+  return {
+    ...utils,
+    getByTestId: id => {
+      const el = utils.container.querySelector(`[data-test-id="${id}"]`)
+      if (!el) {
+        throw Error(`Unable to find an element by: [data-test-id="${id}"]`)
+      }
+      return el
+    },
+  }
+}
+
+// re-export everything
+export * from 'react-testing-library'
+
+// override render method
+export {customRender as render}
+```
+
+</details>
+
 #### `asFragment(): DocumentFragment`
 
 Returns a `DocumentFragment` of your rendered component. This can be useful if
