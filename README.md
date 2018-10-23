@@ -572,20 +572,35 @@ What you can do is to create a [custom render](#custom-render) that overwrites
 
 ```js
 // test-utils.js
-import {render} from 'react-testing-library'
+import {render, queryHelpers} from 'react-testing-library'
+
+export const queryByTestId = queryHelpers.queryByAttribute.bind(null, 'data-test-id')
+export const queryAllByTestId = queryHelpers.queryAllByAttribute.bind(null, 'data-test-id')
+
+export function getAllByTestId(container, id, ...rest) {
+  const els = queryAllByTestId(container, id, ...rest)
+  if (!els.length) {
+    throw getElementError(
+      `Unable to find an element by: [data-test-id="${id}"]`,
+      container,
+    )
+  }
+  return els
+}
+
+export function getByTestId(...args) {
+  return queryHelpers.firstResultOrNull(getAllByTestId, ...args)
+}
 
 const customRender = (node, ...options) => {
   const utils = render(node, ...options)
 
   return {
     ...utils,
-    getByTestId: id => {
-      const el = utils.container.querySelector(`[data-test-id="${id}"]`)
-      if (!el) {
-        throw Error(`Unable to find an element by: [data-test-id="${id}"]`)
-      }
-      return el
-    },
+    getByTestId: getByTestId.bind(container),
+    getAllByTestId: getAllByTestId.bind(container),
+    queryByTestId: queryByTestId.bind(container),
+    queryAllByTestId: queryAllByTestId.bind(container),
   }
 }
 
