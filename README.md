@@ -562,7 +562,10 @@ const usernameInputElement = getByTestId('username-input')
 </summary>
 
 `getByTestId` is looking for the `data-testid` attribute and that's not going to
-change
+change. This follows the precident set by
+[React Native Web](https://github.com/kentcdodds/react-testing-library/issues/1)
+which uses a `testID` prop which emits a `data-testid` attribute on the element.
+
 [#76](https://github.com/kentcdodds/dom-testing-library/issues/76#issuecomment-406321122)
 [#128](https://github.com/kentcdodds/dom-testing-library/issues/128)
 [#204](https://github.com/kentcdodds/react-testing-library/issues/204).
