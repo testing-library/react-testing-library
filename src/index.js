@@ -83,4 +83,4 @@ fireEvent.select = (node, init) => {
 export * from 'dom-testing-library'
 export {render, cleanup}
 
-/* eslint complexity:0, func-name-matching:0 */
+/* eslint func-name-matching:0 */
