@@ -558,6 +558,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "sivkoff",
+      "name": "Vitaly Sivkov",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/2699953?v=4",
+      "profile": "http://sivkoff.com",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

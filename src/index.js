@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom'
-import {Simulate} from 'react-dom/test-utils'
-import {getQueriesForElement, prettyDOM} from 'dom-testing-library'
+import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
@@ -59,14 +58,29 @@ function cleanupAtContainer(container) {
   mountedContainers.delete(container)
 }
 
-// fallback to synthetic events for React events that the DOM doesn't support
-const syntheticEvents = ['select', 'mouseEnter', 'mouseLeave']
-syntheticEvents.forEach(eventName => {
-  document.addEventListener(eventName.toLowerCase(), e => {
-    Simulate[eventName](e.target, e)
-  })
-})
+// React event system tracks native mouseOver/mouseOut events for
+// running onMouseEnter/onMouseLeave handlers
+// @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/EnterLeaveEventPlugin.js#L24-L31
+fireEvent.mouseEnter = fireEvent.mouseOver
+fireEvent.mouseLeave = fireEvent.mouseOut
+
+fireEvent.select = (node, init) => {
+  // React tracks this event only on focused inputs
+  node.focus()
+
+  // React creates this event when one of the following native events happens
+  // - contextMenu
+  // - mouseUp
+  // - dragEnd
+  // - keyUp
+  // - keyDown
+  // so we can use any here
+  // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/SelectEventPlugin.js#L203-L224
+  fireEvent.keyUp(node, init)
+}
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
 export {render, cleanup}
+
+/* eslint func-name-matching:0 */
