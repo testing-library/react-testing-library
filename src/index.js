@@ -58,56 +58,26 @@ function cleanupAtContainer(container) {
   mountedContainers.delete(container)
 }
 
-const originalChange = fireEvent.change
-fireEvent.change = function reactChange(node, init) {
-  if (init && init.target && init.target.hasOwnProperty('value')) {
-    setNativeValue(node, init.target.value)
-  }
-  return originalChange(node, init)
+// React event system tracks native mouseOver/mouseOut events for
+// running onMouseEnter/onMouseLeave handlers
+// @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/EnterLeaveEventPlugin.js#L24-L31
+fireEvent.mouseEnter = fireEvent.mouseOver
+fireEvent.mouseLeave = fireEvent.mouseOut
+
+fireEvent.select = (node, init) => {
+  // React tracks this event only on focused inputs
+  node.focus()
+
+  // React creates this event when one of the following native events happens
+  // - contextMenu
+  // - mouseUp
+  // - dragEnd
+  // - keyUp
+  // - keyDown
+  // so we can use any here
+  // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/SelectEventPlugin.js#L203-L224
+  fireEvent.keyUp(node, init)
 }
-
-// probably there is a better way to get access to a component instance
-const [
-  getInstanceFromNode,
-] = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.Events
-const createReactEventSimulator = eventName => (node, init) => {
-  const propName = `on${eventName.charAt(0).toUpperCase()}${eventName.slice(1)}`
-  const simulate = getInstanceFromNode(node).memoizedProps[propName]
-
-  if (init && init.target && init.target.hasOwnProperty('value')) {
-    setNativeValue(node, init.target.value)
-  }
-
-  return simulate({
-    target: node,
-    type: eventName,
-    ...init,
-  })
-}
-
-// function written after some investigation here:
-// https://github.com/facebook/react/issues/10135#issuecomment-401496776
-function setNativeValue(element, value) {
-  const {set: valueSetter} =
-    Object.getOwnPropertyDescriptor(element, 'value') || {}
-  const prototype = Object.getPrototypeOf(element)
-  const {set: prototypeValueSetter} =
-    Object.getOwnPropertyDescriptor(prototype, 'value') || {}
-
-  if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
-    prototypeValueSetter.call(element, value)
-  } else if (valueSetter) {
-    valueSetter.call(element, value)
-  } else {
-    throw new Error('The given element does not have a value setter')
-  }
-}
-
-// fallback to synthetic events for React events that the DOM doesn't support
-const syntheticEvents = ['select', 'mouseEnter', 'mouseLeave']
-syntheticEvents.forEach(eventName => {
-  fireEvent[eventName] = createReactEventSimulator(eventName)
-})
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
