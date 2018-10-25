@@ -9,7 +9,7 @@
   },
   "scripts": {
     "add-contributor": "kcd-scripts contributors add",
-    "build": "kcd-scripts build",
+    "build": "kcd-scripts build && kcd-scripts build --bundle --no-clean",
     "lint": "kcd-scripts lint",
     "test": "kcd-scripts test --config=other/jest.config.js",
     "test:update": "npm test -- --updateSnapshot --coverage",

@@ -567,6 +567,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "weyert",
+      "name": "Weyert de Boer",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7049?v=4",
+      "profile": "https://github.com/weyert",
+      "contributions": [
+        "ideas",
+        "review"
+      ]
     }
   ]
 }
