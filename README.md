@@ -913,6 +913,8 @@ Some included are:
 - [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
 - [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
 
+You can also find react-testing-library examples at [react-testing-examples.com](https://react-testing-examples.com/jest-rtl/).
+
 ## Learning Material
 
 - [Migrating from Enzyme shallow rendering to explicit component mocks](https://www.youtube.com/watch?v=LHUdxkThTM0&list=PLV5CVI1eNcJgCrPH_e6d57KRUTiDZgs0u)
