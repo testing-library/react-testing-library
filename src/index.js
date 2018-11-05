@@ -1,3 +1,4 @@
+import React from 'react'
 import ReactDOM from 'react-dom'
 import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
@@ -23,7 +24,8 @@ function render(
   // useEffect hooks are always called before the next render;
   // render again to trigger the effects
   if (flushEffects) {
-    ReactDOM.render(element, container)
+    const Noop = () => null
+    ReactDOM.render(<Noop />, document.createElement('template'))
   }
 
   return {
