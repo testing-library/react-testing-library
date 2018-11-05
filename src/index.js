@@ -3,7 +3,10 @@ import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
 const mountedContainers = new Set()
 
-function render(ui, {container, baseElement = container, queries} = {}) {
+function render(
+  element,
+  {container, baseElement = container, queries, flushEffects = true} = {},
+) {
   if (!container) {
     // default to document.body instead of documentElement to avoid output of potentially-large
     // head elements (such as JSS style blocks) in debug output
@@ -15,8 +18,14 @@ function render(ui, {container, baseElement = container, queries} = {}) {
   // added to document.body so the cleanup method works regardless of whether
   // they're passing us a custom container or not.
   mountedContainers.add(container)
+  ReactDOM.render(element, container)
 
-  ReactDOM.render(ui, container)
+  // useEffect hooks are always called before the next render;
+  // render again to trigger the effects
+  if (flushEffects) {
+    ReactDOM.render(element, container)
+  }
+
   return {
     container,
     baseElement,

@@ -1,5 +1,5 @@
 import 'jest-dom/extend-expect'
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import {render, cleanup} from '../'
 
@@ -89,4 +89,34 @@ it('supports fragments', () => {
   expect(asFragment()).toMatchSnapshot()
   cleanup()
   expect(document.body.innerHTML).toBe('')
+})
+
+test('flushes hooks by default', () => {
+  let count = 0
+  const effectFn = jest.fn(() => {
+    count++
+  })
+  function SideEffectfulComponent() {
+    useEffect(effectFn)
+    return <div />
+  }
+  expect(count).toBe(0)
+  render(<SideEffectfulComponent />)
+  expect(effectFn).toHaveBeenCalled()
+  expect(count).toBe(1)
+})
+
+test('does not flush hooks if flushEffects option is false', () => {
+  let count = 0
+  const effectFn = jest.fn(() => {
+    count++
+  })
+  function SideEffectfulComponent() {
+    useEffect(effectFn)
+    return <div />
+  }
+  expect(count).toBe(0)
+  render(<SideEffectfulComponent />, {flushEffects: false})
+  expect(effectFn).not.toHaveBeenCalled()
+  expect(count).toBe(0)
 })
