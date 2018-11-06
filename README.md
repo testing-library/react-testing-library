@@ -589,7 +589,7 @@ export const queryAllByTestId = queryHelpers.queryAllByAttribute.bind(
 export function getAllByTestId(container, id, ...rest) {
   const els = queryAllByTestId(container, id, ...rest)
   if (!els.length) {
-    throw getElementError(
+    throw queryHelpers.getElementError(
       `Unable to find an element by: [data-test-id="${id}"]`,
       container,
     )
@@ -601,8 +601,8 @@ export function getByTestId(...args) {
   return queryHelpers.firstResultOrNull(getAllByTestId, ...args)
 }
 
-const customRender = (node, ...options) => {
-  const utils = render(node, ...options)
+const customRender = (container, ...options) => {
+  const utils = render(container, ...options)
 
   return {
     ...utils,
