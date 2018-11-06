@@ -562,7 +562,7 @@ const usernameInputElement = getByTestId('username-input')
 </summary>
 
 `getByTestId` is looking for the `data-testid` attribute and that's not going to
-change. This follows the precident set by
+change. This follows the precedent set by
 [React Native Web](https://github.com/kentcdodds/react-testing-library/issues/1)
 which uses a `testID` prop which emits a `data-testid` attribute on the element.
 
@@ -813,7 +813,7 @@ test('can fill in the form after loaded', async () => {
 The queries returned from `render` are scoped to the entire page. Sometimes,
 there is no guarantee that the text, placeholder, or label you want to query is
 unique on the page. So you might want to explicitly tell react-render-dom to get
-an element only within a particular section of the page. within is a helper
+an element only within a particular section of the page, within is a helper
 function for this case.
 
 Example: To get the text 'hello' only within a section called 'messages', you
@@ -1103,7 +1103,7 @@ assertions on those as well if you wanted.
 for the full example.
 
 This looks like more work that shallow rendering (and it is), but it gives you
-more confidence so long as your mock resembles the thing you're mocking closly
+more confidence so long as your mock resembles the thing you're mocking closely
 enough.
 
 If you want to make things more like shallow rendering, then you could do
