@@ -639,7 +639,7 @@ class TestComponent extends React.Component {
   render() {
     const {count} = this.state
 
-    return <button onClick={() => this.setState({count: count + 1})}>Click to increase: {count}</div>
+    return <button onClick={() => this.setState({count: count + 1})}>Click to increase: {count}</button>
   }
 }
 
