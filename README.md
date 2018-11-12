@@ -283,6 +283,27 @@ module.exports = {
   ],
   // ... other options ...
 }
+```  
+
+If your project is based on top of Create React App, to make the file accessible without using relative imports, you just need to create a ```.env``` file in the root of your project with the following configuration:  
+
+```
+// Create React App project structure
+
+$ app
+.
+├── .env
+├── src
+│   ├── utils
+│   │  └── test-utils.js
+│
+```
+
+```
+// .env
+
+// example if your utils folder is inside the /src directory.
+NODE_PATH=src/utils
 ```
 
 There is the case when you want to wrap your components in a `Provider`, this
