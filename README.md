@@ -285,7 +285,7 @@ module.exports = {
 }
 ```  
 
-If your project is based on top of Create React App, to make the file accessible without using relative imports, you just need to create a ```.env``` file in the root of your project with the following configuration:  
+If your project is based on top of Create React App, to make the file accessible without using relative imports, you just need to create a `.env` file in the root of your project with the following configuration:  
 
 ```
 // Create React App project structure
