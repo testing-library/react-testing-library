@@ -529,7 +529,7 @@ const inputNode = getByLabelText('username', {selector: 'input'})
 > want this behavior (for example you wish to assert that it doesn't exist),
 > then use `queryByLabelText` instead.
 
-#### `getByPlaceholderText(text: TextMatch): HTMLElement`
+#### `getByPlaceholderText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
 
 This will search for all elements with a placeholder attribute and find one that
 matches the given [`TextMatch`](#textmatch).
@@ -544,7 +544,7 @@ const inputNode = getByPlaceholderText('Username')
 > NOTE: a placeholder is not a good substitute for a label so you should
 > generally use `getByLabelText` instead.
 
-#### `getByText(text: TextMatch): HTMLElement`
+#### `getByText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
 
 This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
@@ -556,7 +556,7 @@ const {getByText} = render(<a href="/about">About ℹ️</a>)
 const aboutAnchorNode = getByText('about')
 ```
 
-#### `getByAltText(text: TextMatch): HTMLElement`
+#### `getByAltText(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
 
 This will return the element (normally an `<img>`) that has the given `alt`
 text. Note that it only supports elements which accept an `alt` attribute:
@@ -576,7 +576,7 @@ const {getByAltText} = render(
 const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
-#### `getByTestId(text: TextMatch): HTMLElement`
+#### `getByTestId(text: TextMatch, options: {selector: string = '*'}): HTMLElement`
 
 A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
 also accepts a [`TextMatch`](#textmatch)).
