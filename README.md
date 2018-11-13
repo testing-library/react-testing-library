@@ -244,14 +244,14 @@ import {ThemeProvider} from 'my-ui-lib'
 import {TranslationProvider} from 'my-i18n-lib'
 import defaultStrings from 'i18n/en-x-default'
 
-const customRender = (node, ...options) => {
+const customRender = (node, options) => {
   return render(
     <ThemeProvider theme="light">
       <TranslationProvider messages={defaultStrings}>
         {node}
       </TranslationProvider>
     </ThemeProvider>,
-    ...options,
+    options,
   )
 }
 
@@ -314,7 +314,7 @@ return value of the customRender.
 ```js
 // test-utils.js
 
-const customRender = (node, ...options) => {
+const customRender = (node, options) => {
   const rendered = render(<div>{node}</div>, options)
   return {
     ...rendered,
@@ -339,7 +339,7 @@ You can use CommonJS modules instead of ES modules, which should work in Node:
 // test-utils.js
 const rtl = require('react-testing-library')
 
-const customRender = (node, ...options) => {
+const customRender = (node, options) => {
   return rtl.render(<Something>{node}</Something>)
 }
 
@@ -640,8 +640,8 @@ export function getByTestId(...args) {
   return queryHelpers.firstResultOrNull(getAllByTestId, ...args)
 }
 
-const customRender = (container, ...options) => {
-  const utils = render(container, ...options)
+const customRender = (container, options) => {
+  const utils = render(container, options)
 
   return {
     ...utils,
