@@ -491,7 +491,9 @@ unmount()
 // your component has been unmounted and now: container.innerHTML === ''
 ```
 
-#### `getByLabelText(text: TextMatch, options: {selector = '*', exact = true, collapseWhitespace = true, trim = true}): HTMLElement`
+#### `getByLabelText(text: TextMatch, options): HTMLElement`
+
+> Options: `{selector = '*', exact = true, collapseWhitespace = true, trim = true}`
 
 This will search for the label that matches the given [`TextMatch`](#textmatch),
 then find the element associated with that label.
@@ -529,7 +531,9 @@ const inputNode = getByLabelText('username', {selector: 'input'})
 > want this behavior (for example you wish to assert that it doesn't exist),
 > then use `queryByLabelText` instead.
 
-#### `getByPlaceholderText(text: TextMatch, options: {selector = '*', exact = true, collapseWhitespace = true, trim = true}): HTMLElement`
+#### `getByPlaceholderText(text: TextMatch, options): HTMLElement`
+
+> Options: `{exact = true, collapseWhitespace = true, trim = true}`
 
 This will search for all elements with a placeholder attribute and find one that
 matches the given [`TextMatch`](#textmatch).
@@ -544,7 +548,9 @@ const inputNode = getByPlaceholderText('Username')
 > NOTE: a placeholder is not a good substitute for a label so you should
 > generally use `getByLabelText` instead.
 
-#### `getByText(text: TextMatch, options: {selector = '*', exact = true, collapseWhitespace = true, trim = true}): HTMLElement`
+#### `getByText(text: TextMatch, options): HTMLElement`
+
+> Options: `{selector = '*', exact = true, collapseWhitespace = true, trim = true, ignore = 'script, style'}`
 
 This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
@@ -556,7 +562,9 @@ const {getByText} = render(<a href="/about">About ℹ️</a>)
 const aboutAnchorNode = getByText('about')
 ```
 
-#### `getByAltText(text: TextMatch, options: {selector = '*', exact = true, collapseWhitespace = true, trim = true}): HTMLElement`
+#### `getByAltText(text: TextMatch, options): HTMLElement`
+
+> Options: `{exact = true, collapseWhitespace = true, trim = true}`
 
 This will return the element (normally an `<img>`) that has the given `alt`
 text. Note that it only supports elements which accept an `alt` attribute:
@@ -576,7 +584,9 @@ const {getByAltText} = render(
 const incrediblesPosterImg = getByAltText(/incredibles.*poster$/i)
 ```
 
-#### `getByTestId(text: TextMatch, options: {selector = '*', exact = true, collapseWhitespace = true, trim = true}): HTMLElement`
+#### `getByTestId(text: TextMatch, options): HTMLElement`
+
+> Options: `{exact = true, collapseWhitespace = true, trim = true}`
 
 A shortcut to `` container.querySelector(`[data-testid="${yourId}"]`) `` (and it
 also accepts a [`TextMatch`](#textmatch)).
