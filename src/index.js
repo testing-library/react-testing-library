@@ -48,6 +48,10 @@ function cleanup() {
   mountedContainers.forEach(cleanupAtContainer)
 }
 
+function flushEffects() {
+  ReactDOM.render(null, document.createElement('div'))
+}
+
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
@@ -81,6 +85,6 @@ fireEvent.select = (node, init) => {
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {render, cleanup}
+export {render, cleanup, flushEffects}
 
 /* eslint func-name-matching:0 */
