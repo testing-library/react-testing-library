@@ -144,6 +144,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
 - [Usage](#usage)
   - [`render`](#render)
   - [`cleanup`](#cleanup)
+  - [`flushEffects` (experimental)](#flusheffects-experimental)
 - [`dom-testing-library` APIs](#dom-testing-library-apis)
   - [`fireEvent(node: HTMLElement, event: Event)`](#fireeventnode-htmlelement-event-event)
   - [`waitForElement`](#waitforelement)
@@ -283,9 +284,11 @@ module.exports = {
   ],
   // ... other options ...
 }
-```  
+```
 
-If your project is based on top of Create React App, to make the file accessible without using relative imports, you just need to create a `.env` file in the root of your project with the following configuration:  
+If your project is based on top of Create React App, to make the file accessible
+without using relative imports, you just need to create a `.env` file in the
+root of your project with the following configuration:
 
 ```
 // Create React App project structure
@@ -493,7 +496,8 @@ unmount()
 
 #### `getByLabelText(text: TextMatch, options): HTMLElement`
 
-> Options: `{selector = '*', exact = true, collapseWhitespace = true, trim = true}`
+> Options:
+> `{selector = '*', exact = true, collapseWhitespace = true, trim = true}`
 
 This will search for the label that matches the given [`TextMatch`](#textmatch),
 then find the element associated with that label.
@@ -550,7 +554,8 @@ const inputNode = getByPlaceholderText('Username')
 
 #### `getByText(text: TextMatch, options): HTMLElement`
 
-> Options: `{selector = '*', exact = true, collapseWhitespace = true, trim = true, ignore = 'script, style'}`
+> Options:
+> `{selector = '*', exact = true, collapseWhitespace = true, trim = true, ignore = 'script, style'}`
 
 This will search for all elements that have a text node with `textContent`
 matching the given [`TextMatch`](#textmatch).
@@ -732,6 +737,11 @@ errors in your tests).
 that you configure your test framework to run a file before your tests which
 does this automatically. See the [setup](#setup) section for guidance on how to
 set up your framework.
+
+### `flushEffects` (experimental)
+
+This experimental API is intended to be used to force React's `useEffect` hook
+to run synchronously.
 
 ## `dom-testing-library` APIs
 
@@ -1369,6 +1379,7 @@ Thanks goes to these people ([emoji key][emojis]):
 | [<img src="https://avatars3.githubusercontent.com/u/881986?v=4" width="100px;"/><br /><sub><b>dadamssg</b></sub>](https://github.com/dadamssg)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=dadamssg "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8734097?v=4" width="100px;"/><br /><sub><b>Yazan Aabed</b></sub>](https://www.yaabed.com/)<br />[📝](#blog-YazanAabeed "Blogposts") | [<img src="https://avatars0.githubusercontent.com/u/556258?v=4" width="100px;"/><br /><sub><b>Tim</b></sub>](https://github.com/timbonicus)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Atimbonicus "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Tests") | [<img src="https://avatars3.githubusercontent.com/u/6682655?v=4" width="100px;"/><br /><sub><b>Divyanshu Maithani</b></sub>](http://divyanshu.xyz)<br />[✅](#tutorial-divyanshu013 "Tutorials") [📹](#video-divyanshu013 "Videos") | [<img src="https://avatars2.githubusercontent.com/u/9116042?v=4" width="100px;"/><br /><sub><b>Deepak Grover</b></sub>](https://www.linkedin.com/in/metagrover)<br />[✅](#tutorial-metagrover "Tutorials") [📹](#video-metagrover "Videos") | [<img src="https://avatars0.githubusercontent.com/u/16276358?v=4" width="100px;"/><br /><sub><b>Eyal Cohen</b></sub>](https://github.com/eyalcohen4)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=eyalcohen4 "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/7452681?v=4" width="100px;"/><br /><sub><b>Peter Makowski</b></sub>](https://github.com/petermakowski)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=petermakowski "Documentation") |
 | [<img src="https://avatars2.githubusercontent.com/u/20361668?v=4" width="100px;"/><br /><sub><b>Michiel Nuyts</b></sub>](https://github.com/Michielnuyts)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Michielnuyts "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1195863?v=4" width="100px;"/><br /><sub><b>Joe Ng'ethe</b></sub>](https://github.com/joeynimu)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/19998290?v=4" width="100px;"/><br /><sub><b>Kate</b></sub>](https://github.com/Enikol)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Enikol "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/11980217?v=4" width="100px;"/><br /><sub><b>Sean</b></sub>](http://www.seanrparker.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=SeanRParker "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/17031?v=4" width="100px;"/><br /><sub><b>James Long</b></sub>](http://jlongster.com)<br />[🤔](#ideas-jlongster "Ideas, Planning, & Feedback") [📦](#platform-jlongster "Packaging/porting to new platform") | [<img src="https://avatars1.githubusercontent.com/u/10118777?v=4" width="100px;"/><br /><sub><b>Herb Hagely</b></sub>](https://github.com/hhagely)<br />[💡](#example-hhagely "Examples") | [<img src="https://avatars2.githubusercontent.com/u/5779538?v=4" width="100px;"/><br /><sub><b>Alex Wendte</b></sub>](http://www.wendtedesigns.com/)<br />[💡](#example-themostcolm "Examples") |
 | [<img src="https://avatars0.githubusercontent.com/u/6998954?v=4" width="100px;"/><br /><sub><b>Monica Powell</b></sub>](http://www.aboutmonica.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=M0nica "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2699953?v=4" width="100px;"/><br /><sub><b>Vitaly Sivkov</b></sub>](http://sivkoff.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=sivkoff "Code") | [<img src="https://avatars3.githubusercontent.com/u/7049?v=4" width="100px;"/><br /><sub><b>Weyert de Boer</b></sub>](https://github.com/weyert)<br />[🤔](#ideas-weyert "Ideas, Planning, & Feedback") [👀](#review-weyert "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/13613037?v=4" width="100px;"/><br /><sub><b>EstebanMarin</b></sub>](https://github.com/EstebanMarin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=EstebanMarin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/13953703?v=4" width="100px;"/><br /><sub><b>Victor Martins</b></sub>](https://github.com/vctormb)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=vctormb "Documentation") |
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
