@@ -595,6 +595,17 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "RoystonS",
+      "name": "Royston Shufflebotham",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/19773?v=4",
+      "profile": "https://github.com/RoystonS",
+      "contributions": [
+        "bug",
+        "doc",
+        "example"
+      ]
     }
   ]
 }

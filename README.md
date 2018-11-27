@@ -10,18 +10,20 @@
 
 <hr />
 
+<!-- prettier-ignore-start -->
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-61-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-62-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
 [![Tweet][twitter-badge]][twitter]
+<!-- prettier-ignore-end -->
 
 <div align="center">
 <a href="https://testingjavascript.com">
@@ -317,12 +319,15 @@ return value of the customRender.
 ```js
 // test-utils.js
 
-const customRender = (node, options) => {
-  const rendered = render(<div>{node}</div>, options)
+const customRender = (ui, options) => {
+  const rendered = render(<div>{ui}</div>, options)
   return {
     ...rendered,
-    rerender: (ui, options) =>
-      customRender(ui, {container: rendered.container, ...options}),
+    rerender: newUi =>
+      customRender(newUi, {
+        container: rendered.container,
+        baseElement: rendered.baseElement,
+      }),
   }
 }
 ```
@@ -620,25 +625,23 @@ change. This follows the precedent set by
 [React Native Web](https://github.com/kentcdodds/react-testing-library/issues/1)
 which uses a `testID` prop which emits a `data-testid` attribute on the element.
 
+<!-- prettier-ignore-start -->
 [#76](https://github.com/kentcdodds/dom-testing-library/issues/76#issuecomment-406321122)
 [#128](https://github.com/kentcdodds/dom-testing-library/issues/128)
 [#204](https://github.com/kentcdodds/react-testing-library/issues/204).
+<!-- prettier-ignore-end -->
 
 What you can do is to create a [custom render](#custom-render) that overwrites
-`getByTestId`:
+`getByTestId` and related methods, and also `rerender`:
 
 ```js
 // test-utils.js
 import {render, queryHelpers} from 'react-testing-library'
 
-export const queryByTestId = queryHelpers.queryByAttribute.bind(
-  null,
-  'data-test-id',
-)
-export const queryAllByTestId = queryHelpers.queryAllByAttribute.bind(
-  null,
-  'data-test-id',
-)
+export const queryByTestId = (...rest) =>
+  queryHelpers.queryByAttribute('data-test-id', ...rest)
+export const queryAllByTestId = (...rest) =>
+  queryHelpers.queryAllByAttribute('data-test-id', ...rest)
 
 export function getAllByTestId(container, id, ...rest) {
   const els = queryAllByTestId(container, id, ...rest)
@@ -651,19 +654,25 @@ export function getAllByTestId(container, id, ...rest) {
   return els
 }
 
-export function getByTestId(...args) {
-  return queryHelpers.firstResultOrNull(getAllByTestId, ...args)
-}
+export const getByTestId = (...rest) =>
+  queryHelpers.firstResultOrNull(getAllByTestId, ...rest)
 
-const customRender = (container, options) => {
-  const utils = render(container, options)
+const customRender = (ui, options) => {
+  const rendered = render(ui, options)
 
   return {
-    ...utils,
-    getByTestId: getByTestId.bind(container),
-    getAllByTestId: getAllByTestId.bind(container),
-    queryByTestId: queryByTestId.bind(container),
-    queryAllByTestId: queryAllByTestId.bind(container),
+    ...rendered,
+    getByTestId: (...rest) => getByTestId(rendered.container, ...rest),
+    getAllByTestId: (...rest) => getAllByTestId(rendered.container, ...rest),
+    queryByTestId: (...rest) => queryByTestId(rendered.container, ...rest),
+    queryAllByTestId: (...rest) =>
+      queryAllByTestId(rendered.container, ...rest),
+
+    rerender: newUi =>
+      customRender(newUi, {
+        container: rendered.container,
+        baseElement: rendered.baseElement,
+      }),
   }
 }
 
@@ -1378,7 +1387,7 @@ Thanks goes to these people ([emoji key][emojis]):
 | [<img src="https://avatars2.githubusercontent.com/u/5286559?v=4" width="100px;"/><br /><sub><b>Mark Pollmann</b></sub>](https://markpollmann.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=MarkPollmann "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/1213123?v=4" width="100px;"/><br /><sub><b>Ehtesham Kafeel</b></sub>](https://github.com/ehteshamkafeel)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=ehteshamkafeel "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=ehteshamkafeel "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/1493505?v=4" width="100px;"/><br /><sub><b>Julio Pavón</b></sub>](http://jpavon.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=jpavon "Code") | [<img src="https://avatars3.githubusercontent.com/u/1765048?v=4" width="100px;"/><br /><sub><b>Duncan L</b></sub>](http://www.duncanleung.com/)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=duncanleung "Documentation") [💡](#example-duncanleung "Examples") | [<img src="https://avatars1.githubusercontent.com/u/700778?v=4" width="100px;"/><br /><sub><b>Tiago Almeida</b></sub>](https://www.linkedin.com/in/tyagow/?locale=en_US)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=tyagow "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/4982001?v=4" width="100px;"/><br /><sub><b>Robert Smith</b></sub>](http://rbrtsmith.com/)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Arbrtsmith "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/1700355?v=4" width="100px;"/><br /><sub><b>Zach Green</b></sub>](https://offbyone.tech)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=zgreen "Documentation") |
 | [<img src="https://avatars3.githubusercontent.com/u/881986?v=4" width="100px;"/><br /><sub><b>dadamssg</b></sub>](https://github.com/dadamssg)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=dadamssg "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/8734097?v=4" width="100px;"/><br /><sub><b>Yazan Aabed</b></sub>](https://www.yaabed.com/)<br />[📝](#blog-YazanAabeed "Blogposts") | [<img src="https://avatars0.githubusercontent.com/u/556258?v=4" width="100px;"/><br /><sub><b>Tim</b></sub>](https://github.com/timbonicus)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3Atimbonicus "Bug reports") [💻](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Documentation") [⚠️](https://github.com/kentcdodds/react-testing-library/commits?author=timbonicus "Tests") | [<img src="https://avatars3.githubusercontent.com/u/6682655?v=4" width="100px;"/><br /><sub><b>Divyanshu Maithani</b></sub>](http://divyanshu.xyz)<br />[✅](#tutorial-divyanshu013 "Tutorials") [📹](#video-divyanshu013 "Videos") | [<img src="https://avatars2.githubusercontent.com/u/9116042?v=4" width="100px;"/><br /><sub><b>Deepak Grover</b></sub>](https://www.linkedin.com/in/metagrover)<br />[✅](#tutorial-metagrover "Tutorials") [📹](#video-metagrover "Videos") | [<img src="https://avatars0.githubusercontent.com/u/16276358?v=4" width="100px;"/><br /><sub><b>Eyal Cohen</b></sub>](https://github.com/eyalcohen4)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=eyalcohen4 "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/7452681?v=4" width="100px;"/><br /><sub><b>Peter Makowski</b></sub>](https://github.com/petermakowski)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=petermakowski "Documentation") |
 | [<img src="https://avatars2.githubusercontent.com/u/20361668?v=4" width="100px;"/><br /><sub><b>Michiel Nuyts</b></sub>](https://github.com/Michielnuyts)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Michielnuyts "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/1195863?v=4" width="100px;"/><br /><sub><b>Joe Ng'ethe</b></sub>](https://github.com/joeynimu)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Code") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=joeynimu "Documentation") | [<img src="https://avatars3.githubusercontent.com/u/19998290?v=4" width="100px;"/><br /><sub><b>Kate</b></sub>](https://github.com/Enikol)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=Enikol "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/11980217?v=4" width="100px;"/><br /><sub><b>Sean</b></sub>](http://www.seanrparker.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=SeanRParker "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/17031?v=4" width="100px;"/><br /><sub><b>James Long</b></sub>](http://jlongster.com)<br />[🤔](#ideas-jlongster "Ideas, Planning, & Feedback") [📦](#platform-jlongster "Packaging/porting to new platform") | [<img src="https://avatars1.githubusercontent.com/u/10118777?v=4" width="100px;"/><br /><sub><b>Herb Hagely</b></sub>](https://github.com/hhagely)<br />[💡](#example-hhagely "Examples") | [<img src="https://avatars2.githubusercontent.com/u/5779538?v=4" width="100px;"/><br /><sub><b>Alex Wendte</b></sub>](http://www.wendtedesigns.com/)<br />[💡](#example-themostcolm "Examples") |
-| [<img src="https://avatars0.githubusercontent.com/u/6998954?v=4" width="100px;"/><br /><sub><b>Monica Powell</b></sub>](http://www.aboutmonica.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=M0nica "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2699953?v=4" width="100px;"/><br /><sub><b>Vitaly Sivkov</b></sub>](http://sivkoff.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=sivkoff "Code") | [<img src="https://avatars3.githubusercontent.com/u/7049?v=4" width="100px;"/><br /><sub><b>Weyert de Boer</b></sub>](https://github.com/weyert)<br />[🤔](#ideas-weyert "Ideas, Planning, & Feedback") [👀](#review-weyert "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/13613037?v=4" width="100px;"/><br /><sub><b>EstebanMarin</b></sub>](https://github.com/EstebanMarin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=EstebanMarin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/13953703?v=4" width="100px;"/><br /><sub><b>Victor Martins</b></sub>](https://github.com/vctormb)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=vctormb "Documentation") |
+| [<img src="https://avatars0.githubusercontent.com/u/6998954?v=4" width="100px;"/><br /><sub><b>Monica Powell</b></sub>](http://www.aboutmonica.com)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=M0nica "Documentation") | [<img src="https://avatars1.githubusercontent.com/u/2699953?v=4" width="100px;"/><br /><sub><b>Vitaly Sivkov</b></sub>](http://sivkoff.com)<br />[💻](https://github.com/kentcdodds/react-testing-library/commits?author=sivkoff "Code") | [<img src="https://avatars3.githubusercontent.com/u/7049?v=4" width="100px;"/><br /><sub><b>Weyert de Boer</b></sub>](https://github.com/weyert)<br />[🤔](#ideas-weyert "Ideas, Planning, & Feedback") [👀](#review-weyert "Reviewed Pull Requests") | [<img src="https://avatars3.githubusercontent.com/u/13613037?v=4" width="100px;"/><br /><sub><b>EstebanMarin</b></sub>](https://github.com/EstebanMarin)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=EstebanMarin "Documentation") | [<img src="https://avatars2.githubusercontent.com/u/13953703?v=4" width="100px;"/><br /><sub><b>Victor Martins</b></sub>](https://github.com/vctormb)<br />[📖](https://github.com/kentcdodds/react-testing-library/commits?author=vctormb "Documentation") | [<img src="https://avatars0.githubusercontent.com/u/19773?v=4" width="100px;"/><br /><sub><b>Royston Shufflebotham</b></sub>](https://github.com/RoystonS)<br />[🐛](https://github.com/kentcdodds/react-testing-library/issues?q=author%3ARoystonS "Bug reports") [📖](https://github.com/kentcdodds/react-testing-library/commits?author=RoystonS "Documentation") [💡](#example-RoystonS "Examples") |
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
