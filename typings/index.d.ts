@@ -25,3 +25,8 @@ export function render(
  * Unmounts React trees that were mounted with render.
  */
 export function cleanup(): void
+
+/**
+ * Forces React's `useEffect` hook to run synchronously.
+ */
+export function flushEffects(): void
