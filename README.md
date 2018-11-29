@@ -617,70 +617,20 @@ const usernameInputElement = getByTestId('username-input')
 > change"][data-testid-blog-post]
 
 <details>
-  <summary>What if my project already uses <code>data-test-id</code>? Do I have to migrate to <code>data-testid</code>?
+  <summary>What if my project already uses <code>data-test-id</code> or another attribute?
+  Do I have to migrate to <code>data-testid</code>?
 </summary>
 
-`getByTestId` is looking for the `data-testid` attribute and that's not going to
-change. This follows the precedent set by
-[React Native Web](https://github.com/kentcdodds/react-testing-library/issues/1)
-which uses a `testID` prop which emits a `data-testid` attribute on the element.
+If you're starting out with a new codebase, it's recommended that you stick with
+<code>data-testid</code>, following the precedent set by
+[React Native Web](https://github.com/kentcdodds/react-testing-library/issues/1),
+but if you already have a codebase that uses a different attribute for this
+purpose, you can use the `configure` function of `dom-testing-library` to change
+the attribute that is used. This requires `dom-testing-library` version 3.13:
 
-<!-- prettier-ignore-start -->
-[#76](https://github.com/kentcdodds/dom-testing-library/issues/76#issuecomment-406321122)
-[#128](https://github.com/kentcdodds/dom-testing-library/issues/128)
-[#204](https://github.com/kentcdodds/react-testing-library/issues/204).
-<!-- prettier-ignore-end -->
-
-What you can do is to create a [custom render](#custom-render) that overwrites
-`getByTestId` and related methods, and also `rerender`:
-
-```js
-// test-utils.js
-import {render, queryHelpers} from 'react-testing-library'
-
-export const queryByTestId = (...rest) =>
-  queryHelpers.queryByAttribute('data-test-id', ...rest)
-export const queryAllByTestId = (...rest) =>
-  queryHelpers.queryAllByAttribute('data-test-id', ...rest)
-
-export function getAllByTestId(container, id, ...rest) {
-  const els = queryAllByTestId(container, id, ...rest)
-  if (!els.length) {
-    throw queryHelpers.getElementError(
-      `Unable to find an element by: [data-test-id="${id}"]`,
-      container,
-    )
-  }
-  return els
-}
-
-export const getByTestId = (...rest) =>
-  queryHelpers.firstResultOrNull(getAllByTestId, ...rest)
-
-const customRender = (ui, options) => {
-  const rendered = render(ui, options)
-
-  return {
-    ...rendered,
-    getByTestId: (...rest) => getByTestId(rendered.container, ...rest),
-    getAllByTestId: (...rest) => getAllByTestId(rendered.container, ...rest),
-    queryByTestId: (...rest) => queryByTestId(rendered.container, ...rest),
-    queryAllByTestId: (...rest) =>
-      queryAllByTestId(rendered.container, ...rest),
-
-    rerender: newUi =>
-      customRender(newUi, {
-        container: rendered.container,
-        baseElement: rendered.baseElement,
-      }),
-  }
-}
-
-// re-export everything
-export * from 'react-testing-library'
-
-// override render method
-export {customRender as render}
+```javascript
+import {configure} from 'dom-testing-library'
+configure({testIdAttribute: 'data-test-id'})
 ```
 
 </details>
