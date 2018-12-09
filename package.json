@@ -37,7 +37,7 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "dom-testing-library": "^3.12.0"
+    "dom-testing-library": "^3.13.1"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
