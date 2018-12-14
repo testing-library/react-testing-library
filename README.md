@@ -429,6 +429,11 @@ The containing DOM node of your rendered React Element (rendered using
 > `container.firstChild` will only get the first child of that Fragment, not the
 > Fragment itself.
 
+> 🚨 If you find yourself using `container` to query for rendered elements then
+> you should reconsider! The other queries are designed to be more resiliant to
+> changes that will be made to the component you're testing. Avoid using
+> `container` to query for elements!
+
 #### `baseElement`
 
 The containing DOM node where your React Element is rendered in the container.
