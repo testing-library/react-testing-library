@@ -13,12 +13,18 @@ export interface RenderResult extends GetsAndQueries {
   asFragment: () => DocumentFragment
 }
 
+export interface RenderOptions {
+  container: HTMLElement
+  baseElement?: HTMLElement
+  hydrate?: boolean
+}
+
 /**
  * Render into a container which is appended to document.body. It should be used with cleanup.
  */
 export function render(
   ui: React.ReactElement<any>,
-  options?: {container: HTMLElement; baseElement?: HTMLElement},
+  options?: RenderOptions,
 ): RenderResult
 
 /**
