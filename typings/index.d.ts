@@ -14,7 +14,7 @@ export interface RenderResult extends GetsAndQueries {
 }
 
 export interface RenderOptions {
-  container: HTMLElement
+  container?: HTMLElement
   baseElement?: HTMLElement
   hydrate?: boolean
 }
