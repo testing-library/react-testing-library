@@ -6,9 +6,11 @@
 </a>
 
 <p>Simple and complete React DOM testing utilities that encourage good testing practices.</p>
-</div>
 
 [**Read The Docs**](https://react-testing-library-docs.netlify.com/react) | [Edit the docs](https://github.com/alexkrolick/react-testing-library-docs)
+
+</div>
+
 
 <hr />
 
