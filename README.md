@@ -7,7 +7,7 @@
 
 <p>Simple and complete React DOM testing utilities that encourage good testing practices.</p>
 
-[**Read The Docs**](https://react-testing-library-docs.netlify.com/react) | [Edit the docs](https://github.com/alexkrolick/react-testing-library-docs)
+[**Read The Docs**](https://testing-library.com/react) | [Edit the docs](https://github.com/alexkrolick/testing-library-docs)
 
 </div>
 
@@ -139,13 +139,13 @@ This library has a `peerDependencies` listing for `react-dom`.
 You may also be interested in installing `jest-dom` so you can use
 [the custom jest matchers](https://github.com/gnapse/jest-dom#readme).
 
-> [**Docs**](https://react-testing-library-docs.netlify.com/docs/react-testing-library/intro)
+> [**Docs**](https://testing-library.com/docs/react-testing-library/intro)
 
 
 ## Examples
 
 > We're in the process of moving examples to the
-> [docs site](https://react-testing-library-docs.netlify.com/docs/example-codesandbox)
+> [docs site](https://testing-library.com/docs/example-codesandbox)
 
 You'll find runnable examples of testing with different libraries in
 [the `examples` directory](https://github.com/kentcdodds/react-testing-library/blob/master/examples).
