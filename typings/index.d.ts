@@ -3,7 +3,7 @@ import {queries, BoundFunction} from 'dom-testing-library'
 export * from 'dom-testing-library'
 
 interface Query extends Function {
-  (container: HTMLElement, ...args): HTMLElement[] | HTMLElement | null
+  (container: HTMLElement, ...args: any[]): HTMLElement[] | HTMLElement | null
 }
 
 interface Queries {
