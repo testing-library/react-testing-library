@@ -47,7 +47,7 @@ function render(
       template.innerHTML = container.innerHTML
       return template.content
     },
-    ...getQueriesForElement(baseElement, queries),
+    ...getQueriesForElement(container, queries),
   }
 }
 

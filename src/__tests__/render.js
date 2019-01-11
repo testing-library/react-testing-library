@@ -1,7 +1,7 @@
 import 'jest-dom/extend-expect'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {render, cleanup, flushEffects} from '../'
+import {render, cleanup, flushEffects, getByText, getByTestId} from '../'
 
 afterEach(cleanup)
 
@@ -42,9 +42,9 @@ test('works great with react portals', () => {
     )
   }
 
-  const {unmount, getByTestId, getByText} = render(<MyPortal />)
-  expect(getByText('Hello World')).toBeInTheDocument()
-  const portalNode = getByTestId('my-portal')
+  const {unmount} = render(<MyPortal />)
+  expect(getByText(document.body, 'Hello World')).toBeInTheDocument()
+  const portalNode = getByTestId(document.body, 'my-portal')
   expect(portalNode).toBeInTheDocument()
   unmount()
   expect(portalNode).not.toBeInTheDocument()
