@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import {queries, BoundFunction} from 'dom-testing-library'
 
 export * from 'dom-testing-library'
@@ -11,8 +13,8 @@ interface Queries {
 }
 
 export type RenderResult<Q extends Queries = typeof queries> = {
-  container: HTMLElement
-  baseElement: HTMLElement
+  container: Node
+  baseElement: Node
   debug: (baseElement?: HTMLElement | DocumentFragment) => void
   rerender: (ui: React.ReactElement<any>) => void
   unmount: () => boolean
