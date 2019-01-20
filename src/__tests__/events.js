@@ -163,3 +163,22 @@ test('onChange works', () => {
   fireEvent.change(input, {target: {value: 'a'}})
   expect(handleChange).toHaveBeenCalledTimes(1)
 })
+
+describe('onKeyPress works', () => {
+  test('with charCode', () => {
+    const handleChange = jest.fn()
+    const {
+      container: {firstChild: input},
+    } = render(<input onKeyPress={handleChange} />)
+    fireEvent.keyPress(input, {target: {value: 'a'}, charCode: 65})
+    expect(handleChange).toHaveBeenCalledTimes(1)
+  })
+  test('without charCode', () => {
+    const handleChange = jest.fn()
+    const {
+      container: {firstChild: input},
+    } = render(<input onKeyPress={handleChange} />)
+    fireEvent.keyPress(input, {target: {value: 'a'}})
+    expect(handleChange).toHaveBeenCalledTimes(1)
+  })
+})
