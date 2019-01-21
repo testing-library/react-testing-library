@@ -142,6 +142,22 @@ You may also be interested in installing `jest-dom` so you can use
 > [**Docs**](https://testing-library.com/docs/react-testing-library/intro)
 
 
+## TypeScript
+
+There are types included with this module. The TypeScript compiler should
+automatically pick them up for you.
+
+If you are still having issues, make sure `dom` is included as a lib in
+your `tsconfig.json`.
+
+```diff
+{
+  "compilerOptions": {
++    "lib": ["dom"],
+  },
+}
+```
+
 ## Examples
 
 > We're in the process of moving examples to the
