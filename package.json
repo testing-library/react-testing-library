@@ -57,6 +57,7 @@
     "redux": "^4.0.0"
   },
   "peerDependencies": {
+    "react": "*",
     "react-dom": "*"
   },
   "eslintConfig": {
