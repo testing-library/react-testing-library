@@ -615,6 +615,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "donavon",
+      "name": "Donavon West",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/887639?v=4",
+      "profile": "http://donavon.com",
+      "contributions": [
+        "code",
+        "doc",
+        "ideas",
+        "test"
+      ]
     }
   ]
 }
