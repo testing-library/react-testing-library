@@ -1,6 +1,6 @@
 import {testHook, cleanup} from 'react-testing-library'
 
-import useCounter from '../use-counter'
+import useCounter from '../react-hooks'
 
 afterEach(cleanup)
 

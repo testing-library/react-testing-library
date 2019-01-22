@@ -152,7 +152,7 @@ Some included are:
 - [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
 - [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
 - [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
-- [`use-counter`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/use-counter.js) -
+- [`react-hooks`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-hooks.js) -
   Use react-testing-library to test a custom React Hook.
 
 You can also find react-testing-library examples at
