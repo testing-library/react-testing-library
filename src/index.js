@@ -57,7 +57,7 @@ function TestHook({callback}) {
   return null
 }
 
-const testHook = callback => {
+function testHook(callback) {
   render(<TestHook callback={callback} />)
 }
 
