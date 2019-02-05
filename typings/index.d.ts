@@ -51,6 +51,8 @@ export function testHook(callback: () => void): void
 export function cleanup(): void
 
 /**
- * Forces React's `useEffect` hook to run synchronously.
+ * Simply calls ReactDOMTestUtils.act(cb)
+ * If that's not available (older version of react) then it
+ * simply calls the given callback immediately
  */
-export function flushEffects(): void
+export function act(callback: () => void): void
