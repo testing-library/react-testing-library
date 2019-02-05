@@ -1,3 +1,4 @@
+import React from 'react'
 import ReactDOM from 'react-dom'
 import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
 
@@ -51,6 +52,15 @@ function render(
   }
 }
 
+function TestHook({callback}) {
+  callback()
+  return null
+}
+
+function testHook(callback) {
+  render(<TestHook callback={callback} />)
+}
+
 function cleanup() {
   mountedContainers.forEach(cleanupAtContainer)
 }
@@ -92,6 +102,6 @@ fireEvent.select = (node, init) => {
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {render, cleanup, flushEffects}
+export {render, testHook, cleanup, flushEffects}
 
 /* eslint func-name-matching:0 */
