@@ -41,6 +41,11 @@ export function render<Q extends Queries>(
 ): RenderResult<Q>
 
 /**
+ * Renders a test component that calls back to the test.
+ */
+export function testHook(callback: () => void): void
+
+/**
  * Unmounts React trees that were mounted with render.
  */
 export function cleanup(): void
