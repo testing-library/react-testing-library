@@ -6,7 +6,10 @@ dist
 .DS_Store
 .eslintcache
 
+yarn-error.log
+
 # these cause more harm than good
 # when working with contributors
 package-lock.json
 yarn.lock
+
