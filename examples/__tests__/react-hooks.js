@@ -4,7 +4,7 @@
  * single-use custom hooks. Typically those are better tested by testing
  * the component that is using it.
  */
-import {testHook, cleanup} from 'react-testing-library'
+import {testHook, act, cleanup} from 'react-testing-library'
 
 import useCounter from '../react-hooks'
 
@@ -29,7 +29,9 @@ test('provides an `increment` function', () => {
   testHook(() => ({count, increment} = useCounter({step: 2})))
 
   expect(count).toBe(0)
-  increment()
+  act(() => {
+    increment()
+  })
   expect(count).toBe(2)
 })
 
@@ -38,7 +40,9 @@ test('provides an `decrement` function', () => {
   testHook(() => ({count, decrement} = useCounter({step: 2})))
 
   expect(count).toBe(0)
-  decrement()
+  act(() => {
+    decrement()
+  })
   expect(count).toBe(-2)
 })
 
@@ -47,6 +51,8 @@ test('accepts a default initial value for `step`', () => {
   testHook(() => ({count, increment} = useCounter({})))
 
   expect(count).toBe(0)
-  increment()
+  act(() => {
+    increment()
+  })
   expect(count).toBe(1)
 })

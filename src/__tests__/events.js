@@ -163,3 +163,18 @@ test('onChange works', () => {
   fireEvent.change(input, {target: {value: 'a'}})
   expect(handleChange).toHaveBeenCalledTimes(1)
 })
+
+test('calling `fireEvent` directly works too', () => {
+  const handleEvent = jest.fn()
+  const {
+    container: {firstChild: button},
+  } = render(<button onClick={handleEvent} />)
+  fireEvent(
+    button,
+    new Event('MouseEvent', {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+    }),
+  )
+})
