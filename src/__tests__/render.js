@@ -1,7 +1,7 @@
 import 'jest-dom/extend-expect'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {render, cleanup, flushEffects} from '../'
+import {render, cleanup} from '../'
 
 afterEach(cleanup)
 
@@ -89,11 +89,4 @@ it('supports fragments', () => {
   expect(asFragment()).toMatchSnapshot()
   cleanup()
   expect(document.body.innerHTML).toBe('')
-})
-
-test('flushEffects can be called without causing issues', () => {
-  render(<div />)
-  const preHtml = document.documentElement.innerHTML
-  flushEffects()
-  expect(document.documentElement.innerHTML).toBe(preHtml)
 })

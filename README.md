@@ -2,10 +2,16 @@
 <h1>react-testing-library</h1>
 
 <a href="https://www.emojione.com/emoji/1f410">
-<img height="80" width="80" alt="goat" src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/goat.png" />
+  <img
+    height="80"
+    width="80"
+    alt="goat"
+    src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/goat.png"
+  />
 </a>
 
-<p>Simple and complete React DOM testing utilities that encourage good testing practices.</p>
+<p>Simple and complete React DOM testing utilities that encourage good testing
+practices.</p>
 
 [**Read The Docs**](https://testing-library.com/react) |
 [Edit the docs](https://github.com/alexkrolick/testing-library-docs)
@@ -30,9 +36,13 @@
 <!-- prettier-ignore-end -->
 
 <div align="center">
-<a href="https://testingjavascript.com">
-<img width="500" alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application." src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/testingjavascript.jpg" />
-</a>
+  <a href="https://testingjavascript.com">
+    <img
+      width="500"
+      alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application."
+      src="https://raw.githubusercontent.com/kentcdodds/react-testing-library/master/other/testingjavascript.jpg"
+    />
+  </a>
 </div>
 
 ## Table of Contents
@@ -102,7 +112,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   )
 
   // Act
-  fireEvent.click(getByText('Load Greeting'))
+  fireEvent.click(getByText(/load greeting/i))
 
   // Let's wait until our mocked `get` request promise resolves and
   // the component calls setState and re-renders.
