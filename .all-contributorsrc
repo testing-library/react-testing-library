@@ -627,6 +627,15 @@
         "ideas",
         "test"
       ]
+    },
+    {
+      "login": "maisano",
+      "name": "Richard Maisano",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/689081?v=4",
+      "profile": "https://github.com/maisano",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
