@@ -3,6 +3,7 @@
   "version": "0.0.0-semantically-released",
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
+  "module": "dist/react-testing-library.esm.js",
   "typings": "typings/index.d.ts",
   "engines": {
     "node": ">=8"
