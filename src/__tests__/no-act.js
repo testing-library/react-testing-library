@@ -6,5 +6,4 @@ test('act works even when there is no act from test utils', () => {
   const callback = jest.fn()
   act(callback)
   expect(callback).toHaveBeenCalledTimes(1)
-  expect(callback).toHaveBeenCalledWith(/* nothing */)
 })
