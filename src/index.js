@@ -1,6 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {getQueriesForElement, prettyDOM, fireEvent} from 'dom-testing-library'
+import {
+  getQueriesForElement,
+  prettyDOM,
+  fireEvent as dtlFireEvent,
+} from 'dom-testing-library'
+import act from './act-compat'
 
 const mountedContainers = new Set()
 
@@ -21,9 +26,13 @@ function render(
   mountedContainers.add(container)
 
   if (hydrate) {
-    ReactDOM.hydrate(ui, container)
+    act(() => {
+      ReactDOM.hydrate(ui, container)
+    })
   } else {
-    ReactDOM.render(ui, container)
+    act(() => {
+      ReactDOM.render(ui, container)
+    })
   }
   return {
     container,
@@ -65,10 +74,6 @@ function cleanup() {
   mountedContainers.forEach(cleanupAtContainer)
 }
 
-function flushEffects() {
-  ReactDOM.render(null, document.createElement('div'))
-}
-
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
@@ -78,6 +83,29 @@ function cleanupAtContainer(container) {
   ReactDOM.unmountComponentAtNode(container)
   mountedContainers.delete(container)
 }
+
+// react-testing-library's version of fireEvent will call
+// dom-testing-library's version of fireEvent wrapped inside
+// an "act" call so that after all event callbacks have been
+// been called, the resulting useEffect callbacks will also
+// be called.
+function fireEvent(...args) {
+  let returnValue
+  act(() => {
+    returnValue = dtlFireEvent(...args)
+  })
+  return returnValue
+}
+
+Object.keys(dtlFireEvent).forEach(key => {
+  fireEvent[key] = (...args) => {
+    let returnValue
+    act(() => {
+      returnValue = dtlFireEvent[key](...args)
+    })
+    return returnValue
+  }
+})
 
 // React event system tracks native mouseOver/mouseOut events for
 // running onMouseEnter/onMouseLeave handlers
@@ -102,6 +130,6 @@ fireEvent.select = (node, init) => {
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {render, testHook, cleanup, flushEffects}
+export {render, testHook, cleanup, fireEvent, act}
 
 /* eslint func-name-matching:0 */
