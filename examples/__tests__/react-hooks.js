@@ -1,3 +1,9 @@
+/*
+ * This is the recommended way to test reusable custom react hooks.
+ * It is not however recommended to use the testHook utility to test
+ * single-use custom hooks. Typically those are better tested by testing
+ * the component that is using it.
+ */
 import {testHook, cleanup} from 'react-testing-library'
 
 import useCounter from '../react-hooks'
