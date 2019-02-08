@@ -6,53 +6,76 @@
  */
 import {testHook, act, cleanup} from 'react-testing-library'
 
-import useCounter from '../react-hooks'
+import { useCounter, useDocumentTitle } from '../react-hooks'
 
 afterEach(cleanup)
 
-test('accepts default initial values', () => {
-  let count
-  testHook(() => ({count} = useCounter()))
+describe('useCounter', () => {
+  test('accepts default initial values', () => {
+    let count
+    testHook(() => ({count} = useCounter()))
 
-  expect(count).toBe(0)
-})
-
-test('accepts a default initial value for `count`', () => {
-  let count
-  testHook(() => ({count} = useCounter({})))
-
-  expect(count).toBe(0)
-})
-
-test('provides an `increment` function', () => {
-  let count, increment
-  testHook(() => ({count, increment} = useCounter({step: 2})))
-
-  expect(count).toBe(0)
-  act(() => {
-    increment()
+    expect(count).toBe(0)
   })
-  expect(count).toBe(2)
+
+  test('accepts a default initial value for `count`', () => {
+    let count
+    testHook(() => ({count} = useCounter({})))
+
+    expect(count).toBe(0)
+  })
+
+  test('provides an `increment` function', () => {
+    let count, increment
+    testHook(() => ({count, increment} = useCounter({step: 2})))
+
+    expect(count).toBe(0)
+    act(() => {
+      increment()
+    })
+    expect(count).toBe(2)
+  })
+
+  test('provides an `decrement` function', () => {
+    let count, decrement
+    testHook(() => ({count, decrement} = useCounter({step: 2})))
+
+    expect(count).toBe(0)
+    act(() => {
+      decrement()
+    })
+    expect(count).toBe(-2)
+  })
+
+  test('accepts a default initial value for `step`', () => {
+    let count, increment
+    testHook(() => ({count, increment} = useCounter({})))
+
+    expect(count).toBe(0)
+    act(() => {
+      increment()
+    })
+    expect(count).toBe(1)
+  })
 })
 
-test('provides an `decrement` function', () => {
-  let count, decrement
-  testHook(() => ({count, decrement} = useCounter({step: 2})))
+describe('useDocumentTitle', () => {
+  test('sets a title', () => {
+    document.title = 'original title'
+    testHook(() => {
+      useDocumentTitle('modified title')
+    })
 
-  expect(count).toBe(0)
-  act(() => {
-    decrement()
+    expect(document.title).toBe('modified title')
   })
-  expect(count).toBe(-2)
-})
 
-test('accepts a default initial value for `step`', () => {
-  let count, increment
-  testHook(() => ({count, increment} = useCounter({})))
+  test('returns to original title when component is unmounted', () => {
+    document.title = 'original title'
+    const { unmount } = testHook(() => {
+      useDocumentTitle('modified title')
+    })
 
-  expect(count).toBe(0)
-  act(() => {
-    increment()
+    unmount()
+    expect(document.title).toBe('original title')
   })
-  expect(count).toBe(1)
 })

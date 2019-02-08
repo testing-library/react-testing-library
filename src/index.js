@@ -68,7 +68,7 @@ function TestHook({callback}) {
 
 function testHook(callback) {
   const { unmount } = render(<TestHook callback={callback} />)
-  return unmount
+  return { unmount }
 }
 
 function cleanup() {
