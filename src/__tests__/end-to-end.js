@@ -22,13 +22,12 @@ class ComponentWithLoader extends React.Component {
   render() {
     if (this.state.loading) {
       return <div>Loading...</div>
-    } else {
-      return (
-        <div data-testid="message">
-          Loaded this message: {this.state.data.returnedMessage}!
-        </div>
-      )
     }
+    return (
+      <div data-testid="message">
+        Loaded this message: {this.state.data.returnedMessage}!
+      </div>
+    )
   }
 }
 
