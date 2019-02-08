@@ -1,3 +1,4 @@
+import React from 'react'
 import ReactDOM from 'react-dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
@@ -7,7 +8,7 @@ import {act as reactAct} from 'react-dom/test-utils'
 // better than nothing.
 function actPolyfill(cb) {
   ReactDOM.unstable_batchedUpdates(cb)
-  ReactDOM.render(null, document.createElement('div'))
+  ReactDOM.render(<div />, document.createElement('div'))
 }
 
 const act = reactAct || actPolyfill
