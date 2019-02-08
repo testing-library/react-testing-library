@@ -647,6 +647,16 @@
         "maintenance",
         "test"
       ]
+    },
+    {
+      "login": "alexzherdev",
+      "name": "Alex Zherdev",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/93752?v=4",
+      "profile": "https://github.com/alexzherdev",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ]
 }
