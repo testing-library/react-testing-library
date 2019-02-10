@@ -6,7 +6,7 @@
  */
 import {testHook, act, cleanup} from 'react-testing-library'
 
-import { useCounter, useDocumentTitle } from '../react-hooks'
+import {useCounter, useDocumentTitle, useCall} from '../react-hooks'
 
 afterEach(cleanup)
 
@@ -59,6 +59,7 @@ describe('useCounter', () => {
   })
 })
 
+// using unmount function to check useEffect behavior when unmounting
 describe('useDocumentTitle', () => {
   test('sets a title', () => {
     document.title = 'original title'
@@ -71,11 +72,48 @@ describe('useDocumentTitle', () => {
 
   test('returns to original title when component is unmounted', () => {
     document.title = 'original title'
-    const { unmount } = testHook(() => {
+    const {unmount} = testHook(() => {
       useDocumentTitle('modified title')
     })
 
     unmount()
     expect(document.title).toBe('original title')
+  })
+})
+
+// using rerender function to test calling useEffect multiple times
+describe('useCall', () => {
+  test('calls once on render', () => {
+    const spy = jest.fn()
+    testHook(() => {
+      useCall(spy, [])
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
+
+  test('calls again if deps change', () => {
+    let deps = [false]
+    const spy = jest.fn()
+    const {rerender} = testHook(() => {
+      useCall(spy, deps)
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    deps = [true]
+    rerender()
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
+
+  test('does not call again if deps are the same', () => {
+    let deps = [false]
+    const spy = jest.fn()
+    const {rerender} = testHook(() => {
+      useCall(spy, deps)
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    deps = [false]
+    rerender()
+    expect(spy).toHaveBeenCalledTimes(1)
   })
 })

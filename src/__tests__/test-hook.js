@@ -12,9 +12,9 @@ test('testHook calls the callback', () => {
 test('confirm we can safely call a React Hook from within the callback', () => {
   testHook(() => useState())
 })
-test('returns a function to unmount the component', () => {
+test('returns a function to unmount component', () => {
   let isMounted
-  const { unmount } = testHook(() => {
+  const {unmount} = testHook(() => {
     useEffect(() => {
       isMounted = true
       return () => {
@@ -25,4 +25,16 @@ test('returns a function to unmount the component', () => {
   expect(isMounted).toBe(true)
   unmount()
   expect(isMounted).toBe(false)
+})
+test('returns a function to rerender component', () => {
+  let renderCount = 0
+  const {rerender} = testHook(() => {
+    useEffect(() => {
+      renderCount++
+    })
+  })
+
+  expect(renderCount).toBe(1)
+  rerender()
+  expect(renderCount).toBe(2)
 })

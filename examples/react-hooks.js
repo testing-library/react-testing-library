@@ -17,3 +17,9 @@ export function useDocumentTitle(title) {
     }
   }, [title])
 }
+
+export function useCall(callback, deps) {
+  useEffect(() => {
+    callback()
+  }, deps)
+}
