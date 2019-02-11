@@ -19,6 +19,11 @@ export type RenderResult<Q extends Queries = typeof queries> = {
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
+export type HookResult = {
+  rerender: () => void
+  unmount: () => boolean
+}
+
 export interface RenderOptions<Q extends Queries = typeof queries> {
   container?: HTMLElement
   baseElement?: HTMLElement
@@ -43,7 +48,7 @@ export function render<Q extends Queries>(
 /**
  * Renders a test component that calls back to the test.
  */
-export function testHook(callback: () => void): void
+export function testHook(callback: () => void): HookResult
 
 /**
  * Unmounts React trees that were mounted with render.
