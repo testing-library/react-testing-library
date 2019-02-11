@@ -58,6 +58,14 @@ inside:
 pre-commit
 ```
 
+### Add typings
+
+If your PR introduced some changes in the API, you are more than welcome to
+modify the Typescript type definition to reflect those changes. Just modify the
+`/typings/index.d.ts` file accordingly. If you have never seen Typescript
+definitions before, you can read more about it in its
+[documentation pages](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+
 ## Help needed
 
 Please checkout the [the open issues][issues]
