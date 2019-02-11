@@ -6,53 +6,114 @@
  */
 import {testHook, act, cleanup} from 'react-testing-library'
 
-import useCounter from '../react-hooks'
+import {useCounter, useDocumentTitle, useCall} from '../react-hooks'
 
 afterEach(cleanup)
 
-test('accepts default initial values', () => {
-  let count
-  testHook(() => ({count} = useCounter()))
+describe('useCounter', () => {
+  test('accepts default initial values', () => {
+    let count
+    testHook(() => ({count} = useCounter()))
 
-  expect(count).toBe(0)
-})
-
-test('accepts a default initial value for `count`', () => {
-  let count
-  testHook(() => ({count} = useCounter({})))
-
-  expect(count).toBe(0)
-})
-
-test('provides an `increment` function', () => {
-  let count, increment
-  testHook(() => ({count, increment} = useCounter({step: 2})))
-
-  expect(count).toBe(0)
-  act(() => {
-    increment()
+    expect(count).toBe(0)
   })
-  expect(count).toBe(2)
+
+  test('accepts a default initial value for `count`', () => {
+    let count
+    testHook(() => ({count} = useCounter({})))
+
+    expect(count).toBe(0)
+  })
+
+  test('provides an `increment` function', () => {
+    let count, increment
+    testHook(() => ({count, increment} = useCounter({step: 2})))
+
+    expect(count).toBe(0)
+    act(() => {
+      increment()
+    })
+    expect(count).toBe(2)
+  })
+
+  test('provides an `decrement` function', () => {
+    let count, decrement
+    testHook(() => ({count, decrement} = useCounter({step: 2})))
+
+    expect(count).toBe(0)
+    act(() => {
+      decrement()
+    })
+    expect(count).toBe(-2)
+  })
+
+  test('accepts a default initial value for `step`', () => {
+    let count, increment
+    testHook(() => ({count, increment} = useCounter({})))
+
+    expect(count).toBe(0)
+    act(() => {
+      increment()
+    })
+    expect(count).toBe(1)
+  })
 })
 
-test('provides an `decrement` function', () => {
-  let count, decrement
-  testHook(() => ({count, decrement} = useCounter({step: 2})))
+// using unmount function to check useEffect behavior when unmounting
+describe('useDocumentTitle', () => {
+  test('sets a title', () => {
+    document.title = 'original title'
+    testHook(() => {
+      useDocumentTitle('modified title')
+    })
 
-  expect(count).toBe(0)
-  act(() => {
-    decrement()
+    expect(document.title).toBe('modified title')
   })
-  expect(count).toBe(-2)
+
+  test('returns to original title when component is unmounted', () => {
+    document.title = 'original title'
+    const {unmount} = testHook(() => {
+      useDocumentTitle('modified title')
+    })
+
+    unmount()
+    expect(document.title).toBe('original title')
+  })
 })
 
-test('accepts a default initial value for `step`', () => {
-  let count, increment
-  testHook(() => ({count, increment} = useCounter({})))
-
-  expect(count).toBe(0)
-  act(() => {
-    increment()
+// using rerender function to test calling useEffect multiple times
+describe('useCall', () => {
+  test('calls once on render', () => {
+    const spy = jest.fn()
+    testHook(() => {
+      useCall(spy, [])
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
   })
-  expect(count).toBe(1)
+
+  test('calls again if deps change', () => {
+    let deps = [false]
+    const spy = jest.fn()
+    const {rerender} = testHook(() => {
+      useCall(spy, deps)
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    deps = [true]
+    rerender()
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
+
+  test('does not call again if deps are the same', () => {
+    let deps = [false]
+    const spy = jest.fn()
+    const {rerender} = testHook(() => {
+      useCall(spy, deps)
+    })
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    deps = [false]
+    rerender()
+    expect(spy).toHaveBeenCalledTimes(1)
+  })
 })

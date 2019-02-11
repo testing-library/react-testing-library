@@ -657,6 +657,17 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "Andrewmat",
+      "name": "André Matulionis dos Santos",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/5133846?v=4",
+      "profile": "https://twitter.com/Andrewmat",
+      "contributions": [
+        "code",
+        "example",
+        "test"
+      ]
     }
   ]
 }

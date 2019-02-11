@@ -67,7 +67,15 @@ function TestHook({callback}) {
 }
 
 function testHook(callback) {
-  render(<TestHook callback={callback} />)
+  const {unmount, rerender: rerenderComponent} = render(
+    <TestHook callback={callback} />,
+  )
+  return {
+    unmount,
+    rerender: () => {
+      rerenderComponent(<TestHook callback={callback} />)
+    },
+  }
 }
 
 function cleanup() {

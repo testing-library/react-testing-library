@@ -59,7 +59,8 @@ What happened:
 
 <!-- Please provide the full error message/screenshots/anything -->
 
-Reproduction repository: https://github.com/alexkrolick/dom-testing-library-template
+Reproduction repository:
+https://github.com/alexkrolick/dom-testing-library-template
 
 <!--
 If possible, please create a repository that reproduces the issue with the
