@@ -19,7 +19,8 @@ export type RenderResult<Q extends Queries = typeof queries> = {
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
-export type HookResult = {
+export type HookResult<TResult> = {
+  result: React.MutableRefObject<TResult>
   rerender: () => void
   unmount: () => boolean
 }
@@ -52,7 +53,10 @@ export function render<Q extends Queries>(
 /**
  * Renders a test component that calls back to the test.
  */
-export function testHook(callback: () => void, options?: Partial<HookOptions>): HookResult
+export function testHook<T>(
+  callback: () => T,
+  options?: Partial<HookOptions>,
+): HookResult<T>
 
 /**
  * Unmounts React trees that were mounted with render.

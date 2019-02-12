@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import 'jest-dom/extend-expect'
-import {testHook, cleanup} from '../'
+import {testHook, cleanup, act} from '../'
 
 afterEach(cleanup)
 
@@ -59,4 +59,19 @@ test('accepts wrapper option to wrap rendered hook with', () => {
     },
   )
   expect(actual).toBe(12)
+})
+test('returns result ref with latest result from hook execution', () => {
+  function useCounter({initialCount = 0, step = 1} = {}) {
+    const [count, setCount] = React.useState(initialCount)
+    const increment = () => setCount(c => c + step)
+    const decrement = () => setCount(c => c - step)
+    return {count, increment, decrement}
+  }
+
+  const {result} = testHook(useCounter)
+  expect(result.current.count).toBe(0)
+  act(() => {
+    result.current.increment()
+  })
+  expect(result.current.count).toBe(1)
 })
