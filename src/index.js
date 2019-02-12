@@ -66,14 +66,19 @@ function TestHook({callback}) {
   return null
 }
 
-function testHook(callback) {
-  const {unmount, rerender: rerenderComponent} = render(
-    <TestHook callback={callback} />,
-  )
+function testHook(callback, options = {}) {
+  const toRender = () => {
+    const hookRender = <TestHook callback={callback} />
+    if (options.wrapper) {
+      return React.createElement(options.wrapper, null, hookRender)
+    }
+    return hookRender
+  }
+  const {unmount, rerender: rerenderComponent} = render(toRender())
   return {
     unmount,
     rerender: () => {
-      rerenderComponent(<TestHook callback={callback} />)
+      rerenderComponent(toRender())
     },
   }
 }
