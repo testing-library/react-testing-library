@@ -50,6 +50,7 @@ test('accepts wrapper option to wrap rendered hook with', () => {
       actual = useHook()
     },
     {
+      // eslint-disable-next-line react/display-name
       wrapper: props => (
         <ctxA.Provider value={3}>
           <ctxB.Provider value={4} {...props} />
