@@ -61,14 +61,23 @@ function render(
   }
 }
 
-function TestHook({callback}) {
-  callback()
+function TestHook({callback, children}) {
+  children(callback())
   return null
 }
 
 function testHook(callback, options = {}) {
+  const result = {
+    current: null,
+  }
   const toRender = () => {
-    const hookRender = <TestHook callback={callback} />
+    const hookRender = (
+      <TestHook callback={callback}>
+        {res => {
+          result.current = res
+        }}
+      </TestHook>
+    )
     if (options.wrapper) {
       return React.createElement(options.wrapper, null, hookRender)
     }
@@ -76,6 +85,7 @@ function testHook(callback, options = {}) {
   }
   const {unmount, rerender: rerenderComponent} = render(toRender())
   return {
+    result,
     unmount,
     rerender: () => {
       rerenderComponent(toRender())
