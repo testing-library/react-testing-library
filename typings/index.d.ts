@@ -24,6 +24,10 @@ export type HookResult = {
   unmount: () => boolean
 }
 
+export type HookOptions = {
+  wrapper: React.FunctionComponent
+}
+
 export interface RenderOptions<Q extends Queries = typeof queries> {
   container?: HTMLElement
   baseElement?: HTMLElement
@@ -48,7 +52,7 @@ export function render<Q extends Queries>(
 /**
  * Renders a test component that calls back to the test.
  */
-export function testHook(callback: () => void): HookResult
+export function testHook(callback: () => void, options?: Partial<HookOptions>): HookResult
 
 /**
  * Unmounts React trees that were mounted with render.
