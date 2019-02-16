@@ -47,7 +47,8 @@
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
-    "@types/react-dom": "^16.0.9",
+    "@types/react": "^16.8.3",
+    "@types/react-dom": "^16.8.2",
     "axios": "^0.18.0",
     "eslint-import-resolver-jest": "^2.1.1",
     "history": "^4.7.2",

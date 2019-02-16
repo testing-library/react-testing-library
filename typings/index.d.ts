@@ -25,16 +25,17 @@ export type HookResult<TResult> = {
   unmount: () => boolean
 }
 
-export type HookOptions = {
-  wrapper: React.FunctionComponent
-}
+type WrapperComponent = React.FunctionComponent
 
 export interface RenderOptions<Q extends Queries = typeof queries> {
   container?: HTMLElement
   baseElement?: HTMLElement
   hydrate?: boolean
   queries?: Q
+  wrapper: React.ComponentType
 }
+
+export type HookOptions = RenderOptions
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
