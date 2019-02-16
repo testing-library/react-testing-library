@@ -25,8 +25,6 @@ export type HookResult<TResult> = {
   unmount: () => boolean
 }
 
-type WrapperComponent = React.FunctionComponent
-
 export interface RenderOptions<Q extends Queries = typeof queries> {
   container?: HTMLElement
   baseElement?: HTMLElement
