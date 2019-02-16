@@ -11,7 +11,13 @@ const mountedContainers = new Set()
 
 function render(
   ui,
-  {container, baseElement = container, queries, hydrate = false} = {},
+  {
+    container,
+    baseElement = container,
+    queries,
+    hydrate = false,
+    wrapper: WrapperComponent,
+  } = {},
 ) {
   if (!container) {
     // default to document.body instead of documentElement to avoid output of potentially-large
@@ -25,13 +31,18 @@ function render(
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
+  const wrapUiIfNeeded = innerElement =>
+    WrapperComponent
+      ? React.createElement(WrapperComponent, null, innerElement)
+      : innerElement
+
   if (hydrate) {
     act(() => {
-      ReactDOM.hydrate(ui, container)
+      ReactDOM.hydrate(wrapUiIfNeeded(ui), container)
     })
   } else {
     act(() => {
-      ReactDOM.render(ui, container)
+      ReactDOM.render(wrapUiIfNeeded(ui), container)
     })
   }
   return {
@@ -41,7 +52,7 @@ function render(
     debug: (el = baseElement) => console.log(prettyDOM(el)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
-      render(rerenderUi, {container, baseElement})
+      render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
@@ -70,25 +81,20 @@ function testHook(callback, options = {}) {
   const result = {
     current: null,
   }
-  const toRender = () => {
-    const hookRender = (
-      <TestHook callback={callback}>
-        {res => {
-          result.current = res
-        }}
-      </TestHook>
-    )
-    if (options.wrapper) {
-      return React.createElement(options.wrapper, null, hookRender)
-    }
-    return hookRender
-  }
-  const {unmount, rerender: rerenderComponent} = render(toRender())
+  const toRender = () => (
+    <TestHook callback={callback}>
+      {res => {
+        result.current = res
+      }}
+    </TestHook>
+  )
+
+  const {unmount, rerender: rerenderComponent} = render(toRender(), options)
   return {
     result,
     unmount,
     rerender: () => {
-      rerenderComponent(toRender())
+      rerenderComponent(toRender(), options)
     },
   }
 }

@@ -90,3 +90,24 @@ it('supports fragments', () => {
   cleanup()
   expect(document.body.innerHTML).toBe('')
 })
+
+test('renders options.wrapper around node', () => {
+  const WrapperComponent = ({children}) => (
+    <div data-testid="wrapper">{children}</div>
+  )
+
+  const {container, getByTestId} = render(<div data-testid="inner" />, {
+    wrapper: WrapperComponent,
+  })
+
+  expect(getByTestId('wrapper')).toBeInTheDocument()
+  expect(container.firstChild).toMatchInlineSnapshot(`
+<div
+  data-testid="wrapper"
+>
+  <div
+    data-testid="inner"
+  />
+</div>
+`)
+})
