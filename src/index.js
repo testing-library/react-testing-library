@@ -25,15 +25,13 @@ function render(
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
-  if (hydrate) {
-    act(() => {
+  act(() => {
+    if (hydrate) {
       ReactDOM.hydrate(ui, container)
-    })
-  } else {
-    act(() => {
+    } else {
       ReactDOM.render(ui, container)
-    })
-  }
+    }
+  })
   return {
     container,
     baseElement,
