@@ -30,7 +30,7 @@ export interface RenderOptions<Q extends Queries = typeof queries> {
   baseElement?: HTMLElement
   hydrate?: boolean
   queries?: Q
-  wrapper: React.ComponentType
+  wrapper?: React.ComponentType
 }
 
 export type HookOptions = RenderOptions
