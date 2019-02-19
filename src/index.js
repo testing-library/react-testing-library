@@ -31,20 +31,20 @@ function render(
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
+
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
       ? React.createElement(WrapperComponent, null, innerElement)
       : innerElement
 
-  if (hydrate) {
-    act(() => {
+  act(() => {
+    if (hydrate) {
       ReactDOM.hydrate(wrapUiIfNeeded(ui), container)
-    })
-  } else {
-    act(() => {
+    } else {
       ReactDOM.render(wrapUiIfNeeded(ui), container)
-    })
-  }
+    }
+  })
+
   return {
     container,
     baseElement,
