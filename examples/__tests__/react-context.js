@@ -45,7 +45,7 @@ test('NameProvider composes full name from first, last', () => {
 })
 
 /**
- * A tree containing both a providers and consumer can be rendered normally
+ * A tree containing both a provider and consumer can be rendered normally
  */
 test('NameProvider/Consumer shows name of character', () => {
   const tree = (
