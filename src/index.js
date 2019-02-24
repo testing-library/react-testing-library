@@ -31,7 +31,6 @@ function render(
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
-
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
       ? React.createElement(WrapperComponent, null, innerElement)
@@ -69,33 +68,6 @@ function render(
       return template.content
     },
     ...getQueriesForElement(baseElement, queries),
-  }
-}
-
-function TestHook({callback, children}) {
-  children(callback())
-  return null
-}
-
-function testHook(callback, options = {}) {
-  const result = {
-    current: null,
-  }
-  const toRender = () => (
-    <TestHook callback={callback}>
-      {res => {
-        result.current = res
-      }}
-    </TestHook>
-  )
-
-  const {unmount, rerender: rerenderComponent} = render(toRender(), options)
-  return {
-    result,
-    unmount,
-    rerender: () => {
-      rerenderComponent(toRender(), options)
-    },
   }
 }
 
@@ -159,6 +131,6 @@ fireEvent.select = (node, init) => {
 
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
-export {render, testHook, cleanup, fireEvent, act}
+export {render, cleanup, fireEvent, act}
 
 /* eslint func-name-matching:0 */
