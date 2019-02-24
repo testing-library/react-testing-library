@@ -55,6 +55,7 @@ practices.</p>
 - [Example](#example)
 - [Installation](#installation)
 - [Examples](#examples)
+- [Hooks](#hooks)
 - [Other Solutions](#other-solutions)
 - [Guiding Principles](#guiding-principles)
 - [Contributors](#contributors)
@@ -162,11 +163,14 @@ Some included are:
 - [`react-redux`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-redux.js)
 - [`react-router`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-router.js)
 - [`react-context`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-context.js)
-- [`react-hooks`](https://github.com/kentcdodds/react-testing-library/blob/master/examples/__tests__/react-hooks.js) -
-  Use react-testing-library to test a custom React Hook.
 
 You can also find react-testing-library examples at
 [react-testing-examples.com](https://react-testing-examples.com/jest-rtl/).
+
+## Hooks
+
+If you are interested in testing a custom hook, check out
+[react-hooks-testing-library](react-hooks-testing-library)
 
 ## Other Solutions
 
@@ -296,5 +300,6 @@ Links:
 [good-first-issue]: https://github.com/kentcdodds/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
 [reactiflux]: https://www.reactiflux.com/
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
+[react-hooks-testing-library]: https://github.com/mpeyper/react-hooks-testing-library
 
 <!-- prettier-ignore-end -->
