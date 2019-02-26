@@ -689,6 +689,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "lorensr",
+      "name": "Loren ☺️",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/251288?v=4",
+      "profile": "http://lorensr.me",
+      "contributions": [
+        "doc"
+      ]
     }
-  ]
+  ],
+  "contributorsPerLine": 7
 }
