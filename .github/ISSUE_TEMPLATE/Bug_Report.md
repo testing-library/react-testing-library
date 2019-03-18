@@ -33,6 +33,11 @@ tutorial to learn how: http://kcd.im/pull-request
 var your => (code) => here;
 ```
 
+<!--
+If this is an issue with documentation, please file an issue on the docs repo:
+https://github.com/alexkrolick/testing-library-docs
+-->
+
 ### What you did:
 
 <!-- What you were doing -->

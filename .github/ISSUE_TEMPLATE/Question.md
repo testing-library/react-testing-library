@@ -16,5 +16,6 @@ and feature requests so we recommend not using this medium to ask them here 😁
 - Reactiflux on Discord https://www.reactiflux.com
 - Stack Overflow
   https://stackoverflow.com/questions/tagged/react-testing-library
+- Documentation: https://github.com/alexkrolick/testing-library-docs
 
 **ISSUES WHICH ARE QUESTIONS WILL BE CLOSED**
