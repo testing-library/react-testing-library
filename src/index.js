@@ -78,10 +78,10 @@ function cleanup() {
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
+  ReactDOM.unmountComponentAtNode(container)
   if (container.parentNode === document.body) {
     document.body.removeChild(container)
   }
-  ReactDOM.unmountComponentAtNode(container)
   mountedContainers.delete(container)
 }
 

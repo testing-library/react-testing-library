@@ -57,14 +57,16 @@ test('returns baseElement which defaults to document.body', () => {
 
 it('cleansup document', () => {
   const spy = jest.fn()
+  const divId = 'my-div';
 
   class Test extends React.Component {
     componentWillUnmount() {
+      expect(document.getElementById(divId)).toBeInTheDocument()
       spy()
     }
 
     render() {
-      return <div />
+      return <div id={divId}/>
     }
   }
 
