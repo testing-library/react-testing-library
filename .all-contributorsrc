@@ -698,6 +698,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "MarkFalconbridge",
+      "name": "MarkFalconbridge",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/20678943?v=4",
+      "profile": "https://github.com/MarkFalconbridge",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
