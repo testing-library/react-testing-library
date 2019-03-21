@@ -718,6 +718,15 @@
         "doc",
         "example"
       ]
+    },
+    {
+      "login": "pschyma",
+      "name": "Peter Schyma",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/2489928?v=4",
+      "profile": "https://github.com/pschyma",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7
