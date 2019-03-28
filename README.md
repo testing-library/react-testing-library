@@ -130,7 +130,7 @@ test('Fetch makes an API call and displays the greeting when load-greeting is cl
   expect(getByTestId('ok-button')).toHaveAttribute('disabled')
   // snapshots work great with regular DOM nodes!
   expect(container.firstChild).toMatchSnapshot()
-  // you can also use get a `DocumentFragment`, which is useful if you want to compare nodes across render
+  // you can also get a `DocumentFragment`, which is useful if you want to compare nodes across renders
   expect(asFragment()).toMatchSnapshot()
 })
 ```
