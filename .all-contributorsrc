@@ -727,7 +727,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "ianschmitz",
+      "name": "Ian Schmitz",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/6355370?v=4",
+      "profile": "https://github.com/ianschmitz",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "repoHost": "https://github.com"
 }
