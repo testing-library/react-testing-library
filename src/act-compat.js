@@ -1,6 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {act as reactAct} from 'react-dom/test-utils'
+
+let reactAct
+try {
+  reactAct = require('react-dom/test-utils').act
+} catch (error) {
+  // ignore, this is to support old versions of react
+}
 
 // act is supported react-dom@16.8.0
 // so for versions that don't have act from test utils
