@@ -23,3 +23,5 @@ export function useCall(callback, deps) {
     callback()
   }, deps)
 }
+
+/* eslint react-hooks/exhaustive-deps:0 */
