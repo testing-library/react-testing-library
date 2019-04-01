@@ -60,11 +60,11 @@ What happened:
 <!-- Please provide the full error message/screenshots/anything -->
 
 Reproduction repository:
-https://github.com/alexkrolick/dom-testing-library-template
 
 <!--
 If possible, please create a repository that reproduces the issue with the
-minimal amount of code possible.
+minimal amount of code possible. You may fork the template here:
+https://github.com/alexkrolick/dom-testing-library-template
 
 Or if you can, try to reproduce the issue in a codesandbox. You can fork the
 one here: https://codesandbox.io/s/5z6x4r7n0p
