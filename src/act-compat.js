@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {reactDomSixteenPointNineIsReleased} from './react-dom-16.9.0-is-released'
 
 let reactAct
 let actSupported = false
@@ -14,7 +15,9 @@ try {
     errorCalled = true
   }
   console.error.calls = []
-  reactAct(() => ({then: () => {}})).then(/* istanbul ignore next */ () => {})
+  /* istanbul ignore next */
+  reactAct(() => ({then: () => {}})).then(() => {})
+  /* istanbul ignore next */
   if (!errorCalled) {
     asyncActSupported = true
   }
@@ -39,7 +42,12 @@ let youHaveBeenWarned = false
 // state updates asynchronously, but at least we can tell people they need
 // to upgrade to avoid the warnings.
 async function asyncActPolyfill(cb) {
-  if (!youHaveBeenWarned && actSupported) {
+  // istanbul-ignore-next
+  if (
+    !youHaveBeenWarned &&
+    actSupported &&
+    reactDomSixteenPointNineIsReleased
+  ) {
     // if act is supported and async act isn't and they're trying to use async
     // act, then they need to upgrade from 16.8 to 16.9.
     // This is a seemless upgrade, so we'll add a warning
@@ -53,6 +61,7 @@ async function asyncActPolyfill(cb) {
   act(() => {})
 }
 
+// istanbul ignore next
 const asyncAct = asyncActSupported ? reactAct : asyncActPolyfill
 
 export default act

@@ -1,5 +1,9 @@
 import {asyncAct} from '../act-compat'
 
+jest.mock('../react-dom-16.9.0-is-released', () => ({
+  reactDomSixteenPointNineIsReleased: true,
+}))
+
 jest.mock('react-dom/test-utils', () => ({
   act: cb => {
     const promise = cb()
