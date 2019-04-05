@@ -4,8 +4,13 @@ import {
   getQueriesForElement,
   prettyDOM,
   fireEvent as dtlFireEvent,
+  configure as configureDTL,
 } from 'dom-testing-library'
-import act from './act-compat'
+import act, {asyncAct} from './act-compat'
+
+configureDTL({
+  asyncWrapper: asyncAct,
+})
 
 const mountedContainers = new Set()
 
@@ -132,5 +137,9 @@ fireEvent.select = (node, init) => {
 // just re-export everything from dom-testing-library
 export * from 'dom-testing-library'
 export {render, cleanup, fireEvent, act}
+
+// NOTE: we're not going to export asyncAct because that's our own compatibility
+// thing for people using react-dom@16.8.0. Anyone else doesn't need it and
+// people should just upgrade anyway.
 
 /* eslint func-name-matching:0 */

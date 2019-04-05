@@ -2,8 +2,23 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 let reactAct
+let actSupported = false
+let asyncActSupported = false
 try {
   reactAct = require('react-dom/test-utils').act
+  actSupported = reactAct !== undefined
+
+  const originalError = console.error
+  let errorCalled = false
+  console.error = () => {
+    errorCalled = true
+  }
+  console.error.calls = []
+  reactAct(() => ({then: () => {}})).then(/* istanbul ignore next */ () => {})
+  if (!errorCalled) {
+    asyncActSupported = true
+  }
+  console.error = originalError
 } catch (error) {
   // ignore, this is to support old versions of react
 }
@@ -19,8 +34,28 @@ function actPolyfill(cb) {
 
 const act = reactAct || actPolyfill
 
-function rtlAct(...args) {
-  return act(...args)
+let youHaveBeenWarned = false
+// this will not avoid warnings that react-dom 16.8.0 logs for triggering
+// state updates asynchronously, but at least we can tell people they need
+// to upgrade to avoid the warnings.
+async function asyncActPolyfill(cb) {
+  if (!youHaveBeenWarned && actSupported) {
+    // if act is supported and async act isn't and they're trying to use async
+    // act, then they need to upgrade from 16.8 to 16.9.
+    // This is a seemless upgrade, so we'll add a warning
+    console.error(
+      `It looks like you're using a version of react-dom that supports the "act" function, but not an awaitable version of "act" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.`,
+    )
+    youHaveBeenWarned = true
+  }
+  await cb()
+  // make all effects resolve after
+  act(() => {})
 }
 
-export default rtlAct
+const asyncAct = asyncActSupported ? reactAct : asyncActPolyfill
+
+export default act
+export {asyncAct}
+
+/* eslint no-console:0 */
