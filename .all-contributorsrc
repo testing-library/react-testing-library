@@ -747,6 +747,15 @@
         "test",
         "code"
       ]
+    },
+    {
+      "login": "aledustet",
+      "name": "Alejandro Dustet",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2413802?v=4",
+      "profile": "http://aledustet.com",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
