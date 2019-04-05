@@ -9,7 +9,6 @@
     "node": ">=8"
   },
   "scripts": {
-    "add-contributor": "kcd-scripts contributors add",
     "build": "kcd-scripts build && kcd-scripts build --bundle --no-clean",
     "lint": "kcd-scripts lint",
     "test": "kcd-scripts test --config=other/jest.config.js",
@@ -43,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.2",
-    "dom-testing-library": "^3.18.2"
+    "dom-testing-library": "^3.19.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
@@ -56,8 +55,8 @@
     "jest-dom": "3.1.3",
     "jest-in-case": "^1.0.2",
     "kcd-scripts": "1.1.2",
-    "react": "^16.8.5",
-    "react-dom": "^16.8.5",
+    "react": "16.9.0-alpha.0",
+    "react-dom": "16.9.0-alpha.0",
     "react-intl": "^2.8.0",
     "react-redux": "6.0.1",
     "react-router": "^5.0.0",
