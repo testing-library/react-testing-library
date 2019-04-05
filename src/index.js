@@ -9,7 +9,13 @@ import {
 import act, {asyncAct} from './act-compat'
 
 configureDTL({
-  asyncWrapper: asyncAct,
+  asyncWrapper: async cb => {
+    let result
+    await asyncAct(async () => {
+      result = await cb()
+    })
+    return result
+  },
 })
 
 const mountedContainers = new Set()

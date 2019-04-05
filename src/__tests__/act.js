@@ -16,10 +16,8 @@ test('render calls useEffect immediately', () => {
 
 test('findByTestId returns the element', async () => {
   const ref = React.createRef()
-  const {findByTestId, getByTestId} = render(
-    <div ref={ref} data-testid="foo" />,
-  )
-  await expect(findByTestId('foo')).resolves.toEqual(getByTestId('foo'))
+  const {findByTestId} = render(<div ref={ref} data-testid="foo" />)
+  expect(await findByTestId('foo')).toBe(ref.current)
 })
 
 test('fireEvent triggers useEffect calls', () => {

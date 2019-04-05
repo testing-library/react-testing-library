@@ -56,10 +56,9 @@ async function asyncActPolyfill(cb) {
     )
     youHaveBeenWarned = true
   }
-  const result = await cb()
+  await cb()
   // make all effects resolve after
   act(() => {})
-  return result
 }
 
 // istanbul ignore next
