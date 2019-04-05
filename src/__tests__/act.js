@@ -14,6 +14,12 @@ test('render calls useEffect immediately', () => {
   expect(effectCb).toHaveBeenCalledTimes(1)
 })
 
+test('findByTestId returns the element', async () => {
+  const ref = React.createRef()
+  const {findByTestId} = render(<div ref={ref} data-testid="foo" />)
+  expect(await findByTestId('foo')).toBe(ref.current)
+})
+
 test('fireEvent triggers useEffect calls', () => {
   const effectCb = jest.fn()
   function Counter() {
