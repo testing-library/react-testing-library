@@ -13,9 +13,12 @@
 <p>Simple and complete React DOM testing utilities that encourage good testing
 practices.</p>
 
+<br />
+
 [**Read The Docs**](https://testing-library.com/react) |
 [Edit the docs](https://github.com/alexkrolick/testing-library-docs)
 
+<br />
 </div>
 
 <hr />
@@ -59,6 +62,7 @@ practices.</p>
 - [Other Solutions](#other-solutions)
 - [Guiding Principles](#guiding-principles)
 - [Contributors](#contributors)
+- [Docs](#docs)
 - [Issues](#issues)
   - [🐛 Bugs](#-bugs)
   - [💡 Feature Requests](#-feature-requests)
@@ -216,6 +220,10 @@ Thanks goes to these people ([emoji key][emojis]):
 
 This project follows the [all-contributors][all-contributors] specification.
 Contributions of any kind welcome!
+
+## Docs
+
+[**Read The Docs**](https://testing-library.com/react) | [Edit the docs](https://github.com/alexkrolick/testing-library-docs)
 
 ## Issues
 
