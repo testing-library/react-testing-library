@@ -174,7 +174,7 @@ You can also find react-testing-library examples at
 ## Hooks
 
 If you are interested in testing a custom hook, check out
-[react-hooks-testing-library][react-hooks-testing-library]
+[react-hooks-testing-library][react-hooks-testing-library].
 
 ## Other Solutions
 
