@@ -27,5 +27,5 @@ specific example, you can run `npm test name-of-your-file`. This will put you
 into Jest's interactive watch mode with a filter based on the name you provided.
 
 [contributing]:
-  https://github.com/kentcdodds/react-testing-library/blob/master/CONTRIBUTING.md
+  https://github.com/testing-library/react-testing-library/blob/master/CONTRIBUTING.md
 [jest-dom]: https://github.com/gnapse/jest-dom
