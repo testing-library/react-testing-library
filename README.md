@@ -274,7 +274,7 @@ Links:
 [downloads-badge]: https://img.shields.io/npm/dm/react-testing-library.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/react-testing-library
 [spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
-[spectrum]: https://spectrum.chat/react-testing-library
+[spectrum]: https://spectrum.chat/testing-library
 [license-badge]: https://img.shields.io/npm/l/react-testing-library.svg?style=flat-square
 [license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
