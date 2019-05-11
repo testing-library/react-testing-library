@@ -14,7 +14,8 @@
     "test": "kcd-scripts test --config=other/jest.config.js",
     "test:update": "npm test -- --updateSnapshot --coverage",
     "validate": "kcd-scripts validate",
-    "setup": "npm install && npm run validate -s"
+    "setup": "npm install && npm run validate -s",
+    "postinstall": "opencollective-postinstall"
   },
   "husky": {
     "hooks": {
@@ -42,7 +43,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "dom-testing-library": "^4.0.0"
+    "dom-testing-library": "^4.0.0",
+    "opencollective-postinstall": "^2.0.2",
+    "opencollective": "^1.0.3"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
@@ -88,5 +91,9 @@
   "bugs": {
     "url": "https://github.com/testing-library/react-testing-library/issues"
   },
-  "homepage": "https://github.com/testing-library/react-testing-library#readme"
+  "homepage": "https://github.com/testing-library/react-testing-library#readme",
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/testing-library"
+  }
 }
