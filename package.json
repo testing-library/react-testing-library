@@ -42,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.3",
-    "dom-testing-library": "^4.0.0"
+    "dom-testing-library": "^4.1.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
