@@ -96,7 +96,12 @@ primary guiding principle is:
 ```javascript
 // __tests__/fetch.js
 import React from 'react'
-import {render, fireEvent, cleanup, waitForElement} from 'react-testing-library'
+import {
+  render,
+  fireEvent,
+  cleanup,
+  waitForElement,
+} from '@testing-library/react'
 // this adds custom jest matchers from jest-dom
 import 'jest-dom/extend-expect'
 
@@ -145,7 +150,7 @@ This module is distributed via [npm][npm] which is bundled with [node][node] and
 should be installed as one of your project's `devDependencies`:
 
 ```
-npm install --save-dev react-testing-library
+npm install --save-dev @testing-library/react
 ```
 
 This library has `peerDependencies` listings for `react` and `react-dom`.
@@ -269,17 +274,16 @@ Links:
 [build]: https://travis-ci.org/testing-library/react-testing-library
 [coverage-badge]: https://img.shields.io/codecov/c/github/testing-library/react-testing-library.svg?style=flat-square
 [coverage]: https://codecov.io/github/testing-library/react-testing-library
-[version-badge]: https://img.shields.io/npm/v/react-testing-library.svg?style=flat-square
-[package]: https://www.npmjs.com/package/react-testing-library
-[downloads-badge]: https://img.shields.io/npm/dm/react-testing-library.svg?style=flat-square
-[npmtrends]: http://www.npmtrends.com/react-testing-library
+[version-badge]: https://img.shields.io/npm/v/@testing-library/react.svg?style=flat-square
+[package]: https://www.npmjs.com/package/@testing-library/react
+[downloads-badge]: https://img.shields.io/npm/dm/@testing-library/react.svg?style=flat-square
+[npmtrends]: http://www.npmtrends.com/@testing-library/react
 [spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
 [spectrum]: https://spectrum.chat/testing-library
-[license-badge]: https://img.shields.io/npm/l/react-testing-library.svg?style=flat-square
+[license-badge]: https://img.shields.io/npm/l/@testing-library/react.svg?style=flat-square
 [license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
-[donate-badge]: https://img.shields.io/badge/$-support-green.svg?style=flat-square
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
 [coc]: https://github.com/testing-library/react-testing-library/blob/master/CODE_OF_CONDUCT.md
 [github-watch-badge]: https://img.shields.io/github/watchers/testing-library/react-testing-library.svg?style=social
@@ -290,7 +294,6 @@ Links:
 [twitter-badge]: https://img.shields.io/twitter/url/https/github.com/testing-library/react-testing-library.svg?style=social
 [emojis]: https://github.com/all-contributors/all-contributors#emoji-key
 [all-contributors]: https://github.com/all-contributors/all-contributors
-[set-immediate]: https://developer.mozilla.org/en-US/docs/Web/API/Window/setImmediate
 [guiding-principle]: https://twitter.com/kentcdodds/status/977018512689455106
 [bugs]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
