@@ -5,7 +5,7 @@ import {
   prettyDOM,
   fireEvent as dtlFireEvent,
   configure as configureDTL,
-} from 'dom-testing-library'
+} from '@testing-library/dom'
 import act, {asyncAct} from './act-compat'
 
 configureDTL({
@@ -141,7 +141,7 @@ fireEvent.select = (node, init) => {
 }
 
 // just re-export everything from dom-testing-library
-export * from 'dom-testing-library'
+export * from '@testing-library/dom'
 export {render, cleanup, fireEvent, act}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility

@@ -1,6 +1,6 @@
-import {queries, BoundFunction} from 'dom-testing-library'
+import {queries, BoundFunction} from '@testing-library/dom'
 
-export * from 'dom-testing-library'
+export * from '@testing-library/dom'
 
 interface Query extends Function {
   (container: HTMLElement, ...args: any[]):

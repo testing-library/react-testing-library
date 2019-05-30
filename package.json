@@ -1,9 +1,9 @@
 {
-  "name": "react-testing-library",
-  "version": "0.0.0-semantically-released",
+  "name": "@testing-library/react",
+  "version": "0.0.0",
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
-  "module": "dist/react-testing-library.esm.js",
+  "module": "dist/@testing-library/react.esm.js",
   "typings": "typings/index.d.ts",
   "engines": {
     "node": ">=8"
@@ -42,7 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "dom-testing-library": "^4.1.0"
+    "@testing-library/dom": "^5.0.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
@@ -79,7 +79,8 @@
   "eslintIgnore": [
     "node_modules",
     "coverage",
-    "dist"
+    "dist",
+    "*.d.ts"
   ],
   "repository": {
     "type": "git",
