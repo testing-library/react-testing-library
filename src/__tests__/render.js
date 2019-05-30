@@ -57,7 +57,7 @@ test('returns baseElement which defaults to document.body', () => {
 
 it('cleansup document', () => {
   const spy = jest.fn()
-  const divId = 'my-div';
+  const divId = 'my-div'
 
   class Test extends React.Component {
     componentWillUnmount() {
@@ -66,7 +66,7 @@ it('cleansup document', () => {
     }
 
     render() {
-      return <div id={divId}/>
+      return <div id={divId} />
     }
   }
 
