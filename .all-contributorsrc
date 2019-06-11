@@ -774,6 +774,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "pascalduez",
+      "name": "Pascal Duez",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/335467?v=4",
+      "profile": "http://pascalduez.me",
+      "contributions": [
+        "platform"
+      ]
     }
   ],
   "contributorsPerLine": 7,
