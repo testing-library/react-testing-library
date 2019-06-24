@@ -30,11 +30,13 @@ function render(
     wrapper: WrapperComponent,
   } = {},
 ) {
-  if (!container) {
+  if (!baseElement) {
     // default to document.body instead of documentElement to avoid output of potentially-large
     // head elements (such as JSS style blocks) in debug output
     baseElement = document.body
-    container = document.body.appendChild(document.createElement('div'))
+  }
+  if (!container) {
+    container = baseElement.appendChild(document.createElement('div'))
   }
 
   // we'll add it to the mounted containers regardless of whether it's actually
