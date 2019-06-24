@@ -3,8 +3,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {render, cleanup} from '../'
 
-afterEach(cleanup)
-
 test('renders div into document', () => {
   const ref = React.createRef()
   const {container} = render(<div ref={ref} />)
@@ -112,45 +110,4 @@ test('renders options.wrapper around node', () => {
   />
 </div>
 `)
-})
-
-describe('baseElement', () => {
-  let baseElement
-  beforeAll(() => {
-    baseElement = document.createElement('div')
-    document.body.appendChild(baseElement)
-  })
-
-  afterAll(() => {
-    baseElement.parentNode.removeChild(baseElement)
-  })
-
-  it('can take a custom element for isolation', () => {
-    function DescribedButton({title: description, ...buttonProps}) {
-      return (
-        <React.Fragment>
-          <button {...buttonProps} aria-describedby="tooltip" />
-          {ReactDOM.createPortal(
-            <div id="tooltip" role="tooltip">
-              {description}
-            </div>,
-            document.body,
-          )}
-        </React.Fragment>
-      )
-    }
-
-    const {getByRole, getByText} = render(
-      <DescribedButton description="this descripton is hidden from rtl">
-        Click me
-      </DescribedButton>,
-      {baseElement},
-    )
-
-    expect(getByText('Click me')).toBeTruthy()
-    expect(document.querySelector('[role="tooltip"]')).toBeTruthy()
-    expect(() => getByRole('tooltip')).toThrow(
-      'Unable to find an element by [role=tooltip]',
-    )
-  })
 })
