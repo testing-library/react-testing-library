@@ -12,7 +12,7 @@ interface Query extends Function {
     | null
 }
 
-interface Queries {
+export interface Queries {
   [T: string]: Query
 }
 
