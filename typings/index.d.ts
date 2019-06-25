@@ -1,20 +1,6 @@
-import {queries, BoundFunction} from '@testing-library/dom'
+import {queries, Queries, BoundFunction} from '@testing-library/dom'
 
 export * from '@testing-library/dom'
-
-interface Query extends Function {
-  (container: HTMLElement, ...args: any[]):
-    | Error
-    | Promise<HTMLElement[]>
-    | Promise<HTMLElement>
-    | HTMLElement[]
-    | HTMLElement
-    | null
-}
-
-export interface Queries {
-  [T: string]: Query
-}
 
 export type RenderResult<Q extends Queries = typeof queries> = {
   container: HTMLElement
