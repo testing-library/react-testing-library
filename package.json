@@ -42,7 +42,8 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@testing-library/dom": "^5.0.0"
+    "@testing-library/dom": "^5.0.0",
+    "react-i18next": "^10.11.2"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
@@ -52,6 +53,9 @@
     "eslint-import-resolver-jest": "^2.1.1",
     "history": "^4.9.0",
     "intl": "^1.2.5",
+    "i18next": "17.0.4",
+    "i18next-browser-languagedetector": "3.0.1",
+    "i18next-xhr-backend": "3.0.0",
     "jest-dom": "3.4.0",
     "jest-in-case": "^1.0.2",
     "kcd-scripts": "1.4.0",
