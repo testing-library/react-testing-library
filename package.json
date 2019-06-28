@@ -42,8 +42,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
-    "@testing-library/dom": "^5.0.0",
-    "react-i18next": "^10.11.2"
+    "@testing-library/dom": "^5.0.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
@@ -62,6 +61,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-intl": "^2.9.0",
+    "react-i18next": "^10.11.2",
     "react-redux": "7.0.3",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
