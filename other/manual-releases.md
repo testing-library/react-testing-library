@@ -41,4 +41,4 @@ change is to release a new patch version.
 Reference: #<the number of a relevant pull request, issue, or commit>
 ```
 
-The number of times we've had to do a manual release is: 2
+The number of times we've had to do a manual release is: 3
