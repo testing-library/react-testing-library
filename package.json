@@ -11,7 +11,7 @@
   "scripts": {
     "build": "kcd-scripts build && kcd-scripts build --bundle --no-clean",
     "lint": "kcd-scripts lint",
-    "test": "kcd-scripts test --config=other/jest.config.js",
+    "test": "kcd-scripts test",
     "test:update": "npm test -- --updateSnapshot --coverage",
     "validate": "kcd-scripts validate",
     "setup": "npm install && npm run validate -s"
@@ -41,28 +41,17 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.4.5",
-    "@testing-library/dom": "^5.0.0"
+    "@babel/runtime": "^7.5.4",
+    "@testing-library/dom": "^5.5.4"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
-    "@types/react": "^16.8.19",
+    "@testing-library/jest-dom": "^4.0.0",
+    "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
-    "axios": "^0.19.0",
-    "eslint-import-resolver-jest": "^2.1.1",
-    "history": "^4.9.0",
-    "intl": "^1.2.5",
-    "jest-dom": "3.4.0",
-    "jest-in-case": "^1.0.2",
-    "kcd-scripts": "1.4.0",
+    "kcd-scripts": "1.5.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-intl": "^2.9.0",
-    "react-redux": "7.0.3",
-    "react-router": "^5.0.0",
-    "react-router-dom": "^5.0.0",
-    "react-transition-group": "^4.1.0",
-    "redux": "^4.0.0"
+    "react-dom": "^16.8.6"
   },
   "peerDependencies": {
     "react": "*",

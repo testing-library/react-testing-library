@@ -1,4 +1,3 @@
-import 'jest-dom/extend-expect'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {render, cleanup} from '../'
