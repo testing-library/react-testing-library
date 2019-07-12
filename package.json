@@ -49,7 +49,7 @@
     "@testing-library/jest-dom": "^4.0.0",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
-    "kcd-scripts": "1.5.2",
+    "kcd-scripts": "^1.5.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
