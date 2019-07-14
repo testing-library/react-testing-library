@@ -251,7 +251,7 @@ test('allows the user to login successfully', async () => {
 
   // fill out the form
   fireEvent.change(getByLabelText(/username/i), {target: {value: 'chuck'}})
-  fireEvent.change(getBylabelText(/password/i), {target: {value: 'norris'}})
+  fireEvent.change(getByLabelText(/password/i), {target: {value: 'norris'}})
 
   fireEvent.click(getByText(/submit/i))
 
@@ -263,7 +263,7 @@ test('allows the user to login successfully', async () => {
   // otherwise you could use expect(alert.textContent).toMatch(/congrats/i)
   // but jest-dom will give you better error messages which is why it's recommended
   expect(alert).toHaveTextContent(/congrats/i)
-  expect(window.localStorage.getItem('token')).toEqual(fakeUserReponse.token)
+  expect(window.localStorage.getItem('token')).toEqual(fakeUserResponse.token)
 })
 ```
 
