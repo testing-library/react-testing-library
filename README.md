@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-81-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-82-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -459,6 +459,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/lucas0707"><img src="https://avatars1.githubusercontent.com/u/26284338?v=4" width="100px;" alt="Lucas Machado"/><br /><sub><b>Lucas Machado</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=lucas0707" title="Documentation">📖</a></td>
     <td align="center"><a href="http://pascalduez.me"><img src="https://avatars3.githubusercontent.com/u/335467?v=4" width="100px;" alt="Pascal Duez"/><br /><sub><b>Pascal Duez</b></sub></a><br /><a href="#platform-pascalduez" title="Packaging/porting to new platform">📦</a></td>
     <td align="center"><a href="https://twitter.com/minh_ngvyen"><img src="https://avatars3.githubusercontent.com/u/2852660?v=4" width="100px;" alt="Minh Nguyen"/><br /><sub><b>Minh Nguyen</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=NMinhNguyen" title="Code">💻</a></td>
+    <td align="center"><a href="http://iababy46.blogspot.tw/"><img src="https://avatars0.githubusercontent.com/u/11155585?v=4" width="100px;" alt="LiaoJimmy"/><br /><sub><b>LiaoJimmy</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=LiaoJimmy" title="Documentation">📖</a></td>
   </tr>
 </table>
 
