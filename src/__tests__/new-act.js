@@ -1,23 +1,19 @@
-let act, asyncAct
+let asyncAct
+
+jest.mock('react-dom/test-utils', () => ({
+  act: cb => {
+    return cb()
+  },
+}))
 
 beforeEach(() => {
   jest.resetModules()
-  act = require('..').act
   asyncAct = require('../act-compat').asyncAct
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 afterEach(() => {
   console.error.mockRestore()
-})
-
-jest.mock('react-dom/test-utils', () => ({}))
-
-test('act works even when there is no act from test utils', () => {
-  const callback = jest.fn()
-  act(callback)
-  expect(callback).toHaveBeenCalledTimes(1)
-  expect(console.error).toHaveBeenCalledTimes(0)
 })
 
 test('async act works when it does not exist (older versions of react)', async () => {
