@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-84-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-85-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -462,6 +462,9 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://iababy46.blogspot.tw/"><img src="https://avatars0.githubusercontent.com/u/11155585?v=4" width="100px;" alt="LiaoJimmy"/><br /><sub><b>LiaoJimmy</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=LiaoJimmy" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/threepointone"><img src="https://avatars2.githubusercontent.com/u/18808?v=4" width="100px;" alt="Sunil Pai"/><br /><sub><b>Sunil Pai</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=threepointone" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=threepointone" title="Tests">⚠️</a></td>
     <td align="center"><a href="http://twitter.com/dan_abramov"><img src="https://avatars0.githubusercontent.com/u/810438?v=4" width="100px;" alt="Dan Abramov"/><br /><sub><b>Dan Abramov</b></sub></a><br /><a href="#review-gaearon" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/ChristianMurphy"><img src="https://avatars3.githubusercontent.com/u/3107513?v=4" width="100px;" alt="Christian Murphy"/><br /><sub><b>Christian Murphy</b></sub></a><br /><a href="#infra-ChristianMurphy" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
   </tr>
 </table>
 
