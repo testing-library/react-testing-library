@@ -811,6 +811,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "gaearon",
+      "name": "Dan Abramov",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/810438?v=4",
+      "profile": "http://twitter.com/dan_abramov",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
