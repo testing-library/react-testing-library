@@ -5,7 +5,10 @@ cache:
     - ~/.npm
 notifications:
   email: false
-node_js: '8'
+node_js:
+  - '8'
+  - '10'
+  - '12'
 install: npm install
 script: npm run validate
 after_success: kcd-scripts travis-after-success
