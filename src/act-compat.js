@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import {reactDomSixteenPointNineIsReleased} from './react-dom-16.9.0-is-released'
+import * as testUtils from 'react-dom/test-utils'
 
-const reactAct = require('react-dom/test-utils').act
+const reactAct = testUtils.act
 const actSupported = reactAct !== undefined
 
 // act is supported react-dom@16.8.0
