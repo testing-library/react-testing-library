@@ -476,7 +476,7 @@ Contributions of any kind welcome!
 
 ## LICENSE
 
-MIT
+[MIT](LICENSE)
 
 <!-- prettier-ignore-start -->
 
