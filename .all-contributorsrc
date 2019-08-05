@@ -847,6 +847,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "JSFernandes",
+      "name": "João Fernandes",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1075053?v=4",
+      "profile": "https://joaofernandes.me/",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
