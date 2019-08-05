@@ -56,6 +56,7 @@ practices.</p>
 - [The problem](#the-problem)
 - [This solution](#this-solution)
 - [Installation](#installation)
+  - [Suppressing unnecessary warnings on React DOM 16.8](#suppressing-unnecessary-warnings-on-react-dom-168)
 - [Examples](#examples)
   - [Basic Example](#basic-example)
   - [Complex Example](#complex-example)
@@ -107,6 +108,37 @@ You may also be interested in installing `@testing-library/jest-dom` so you can
 use [the custom jest matchers](https://github.com/testing-library/jest-dom).
 
 > [**Docs**](https://testing-library.com/react)
+
+### Suppressing unnecessary warnings on React DOM 16.8
+
+There is a known compatibility issue with React DOM 16.8 where you will see the
+following warning:
+
+```
+Warning: An update to ComponentName inside a test was not wrapped in act(...).
+```
+
+If you cannot upgrade to React DOM 16.9, you may suppress the warnings by adding
+the following snippet to your test configuration
+([learn more](https://github.com/testing-library/react-testing-library/issues/281)):
+
+```js
+// this is just a little hack to silence a warning that we'll get until we
+// upgrade to 16.9: https://github.com/facebook/react/pull/14853
+const originalError = console.error
+beforeAll(() => {
+  console.error = (...args) => {
+    if (/Warning.*not wrapped in act/.test(args[0])) {
+      return
+    }
+    originalError.call(console, ...args)
+  }
+})
+
+afterAll(() => {
+  console.error = originalError
+})
+```
 
 ## Examples
 
