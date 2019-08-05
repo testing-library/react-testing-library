@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-88-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-89-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -500,6 +500,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://jeetiss.github.io/"><img src="https://avatars1.githubusercontent.com/u/6726016?v=4" width="100px;" alt="Ivakhnenko Dmitry"/><br /><sub><b>Ivakhnenko Dmitry</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=jeetiss" title="Code">💻</a></td>
     <td align="center"><a href="https://ghuser.io/jamesgeorge007"><img src="https://avatars2.githubusercontent.com/u/25279263?v=4" width="100px;" alt="James George"/><br /><sub><b>James George</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=jamesgeorge007" title="Documentation">📖</a></td>
     <td align="center"><a href="https://joaofernandes.me/"><img src="https://avatars1.githubusercontent.com/u/1075053?v=4" width="100px;" alt="João Fernandes"/><br /><sub><b>João Fernandes</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=JSFernandes" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/alejandroperea"><img src="https://avatars3.githubusercontent.com/u/6084749?v=4" width="100px;" alt="Alejandro Perea"/><br /><sub><b>Alejandro Perea</b></sub></a><br /><a href="#review-alejandroperea" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
