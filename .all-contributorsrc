@@ -856,6 +856,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "alejandroperea",
+      "name": "Alejandro Perea",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/6084749?v=4",
+      "profile": "https://github.com/alejandroperea",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
