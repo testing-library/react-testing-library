@@ -119,11 +119,12 @@ Warning: An update to ComponentName inside a test was not wrapped in act(...).
 ```
 
 If you cannot upgrade to React DOM 16.9, you may suppress the warnings by adding
-the following snippet to your test configuration:
+the following snippet to your test configuration
+([learn more](https://github.com/testing-library/react-testing-library/issues/281)):
 
 ```js
-// this is just a little hack to silence a warning that we'll get until react
-// fixes this: https://github.com/facebook/react/pull/14853
+// this is just a little hack to silence a warning that we'll get until we
+// upgrade to 16.9: https://github.com/facebook/react/pull/14853
 const originalError = console.error
 beforeAll(() => {
   console.error = (...args) => {
