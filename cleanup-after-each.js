@@ -1,1 +1,3 @@
-afterEach(require('./dist').cleanup)
+afterEach(() => {
+  return require('./dist/cleanup-async')()
+})
