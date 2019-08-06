@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {reactDomSixteenPointNineIsReleased} from './react-dom-16.9.0-is-released'
 import * as testUtils from 'react-dom/test-utils'
+import {reactDomSixteenPointNineIsReleased} from './react-dom-16.9.0-is-released'
 
 const reactAct = testUtils.act
 const actSupported = reactAct !== undefined
