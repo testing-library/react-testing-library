@@ -1,7 +1,5 @@
 import React from 'react'
-import {render, cleanup, fireEvent} from '../'
-
-afterEach(cleanup)
+import {render, fireEvent} from '../'
 
 test('render calls useEffect immediately', () => {
   const effectCb = jest.fn()

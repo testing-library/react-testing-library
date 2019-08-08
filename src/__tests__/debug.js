@@ -1,12 +1,11 @@
 import React from 'react'
-import {render, cleanup} from '../'
+import {render} from '../'
 
 beforeEach(() => {
   jest.spyOn(console, 'log').mockImplementation(() => {})
 })
 
 afterEach(() => {
-  cleanup()
   console.log.mockRestore()
 })
 

@@ -1,7 +1,5 @@
 import React from 'react'
-import {render, wait, cleanup} from '../'
-
-afterEach(cleanup)
+import {render, wait} from '../'
 
 const fetchAMessage = () =>
   new Promise(resolve => {

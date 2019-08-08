@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup} from '../'
+import {render} from '../'
 
 // these are created once per test suite and reused for each case
 let treeA, treeB
@@ -14,8 +14,6 @@ afterAll(() => {
   treeA.parentNode.removeChild(treeA)
   treeB.parentNode.removeChild(treeB)
 })
-
-afterEach(cleanup)
 
 test('baseElement isolates trees from one another', () => {
   const {getByText: getByTextInA} = render(<div>Jekyll</div>, {

@@ -1,7 +1,5 @@
 import React from 'react'
-import {render, cleanup, fireEvent} from '../'
-
-afterEach(cleanup)
+import {render, fireEvent} from '../'
 
 class StopWatch extends React.Component {
   state = {lapse: 0, running: false}

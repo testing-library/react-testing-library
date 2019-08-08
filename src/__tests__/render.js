@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {render, cleanup} from '../'
+import {render} from '../'
 
 test('renders div into document', () => {
   const ref = React.createRef()
@@ -52,28 +52,7 @@ test('returns baseElement which defaults to document.body', () => {
   expect(baseElement).toBe(document.body)
 })
 
-it('cleansup document', () => {
-  const spy = jest.fn()
-  const divId = 'my-div'
-
-  class Test extends React.Component {
-    componentWillUnmount() {
-      expect(document.getElementById(divId)).toBeInTheDocument()
-      spy()
-    }
-
-    render() {
-      return <div id={divId} />
-    }
-  }
-
-  render(<Test />)
-  cleanup()
-  expect(document.body.innerHTML).toBe('')
-  expect(spy).toHaveBeenCalledTimes(1)
-})
-
-it('supports fragments', () => {
+test('supports fragments', () => {
   class Test extends React.Component {
     render() {
       return (
@@ -86,8 +65,6 @@ it('supports fragments', () => {
 
   const {asFragment} = render(<Test />)
   expect(asFragment()).toMatchSnapshot()
-  cleanup()
-  expect(document.body.innerHTML).toBe('')
 })
 
 test('renders options.wrapper around node', () => {

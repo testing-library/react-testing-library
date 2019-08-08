@@ -20,13 +20,13 @@ function App() {
   return 123
 }
 
-it('cleanup-after-each does not leave any hanging microtasks: part 1', () => {
+test('does not leave any hanging microtasks: part 1', () => {
   render(<App />)
   expect(document.body.textContent).toBe('123')
   expect(log).toEqual([])
 })
 
-it('cleanup-after-each does not leave any hanging microtasks: part 2', () => {
+test('does not leave any hanging microtasks: part 2', () => {
   expect(log).toEqual([0])
   expect(document.body.innerHTML).toBe('')
 })
