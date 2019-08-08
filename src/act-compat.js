@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import * as testUtils from 'react-dom/test-utils'
-import {reactDomSixteenPointNineIsReleased} from './react-dom-16.9.0-is-released'
 
 const reactAct = testUtils.act
 const actSupported = reactAct !== undefined
@@ -28,6 +27,7 @@ function asyncAct(cb) {
         const originalConsoleError = console.error
         console.error = function error(...args) {
           /* if console.error fired *with that specific message* */
+          /* istanbul ignore next */
           if (
             args[0].indexOf(
               'Warning: Do not await the result of calling ReactTestUtils.act',
@@ -75,8 +75,8 @@ function asyncAct(cb) {
 
         if (isAsyncActSupported === false) {
           console.error = originalConsoleError
-          /* istanbul-ignore-next */
-          if (!youHaveBeenWarned && reactDomSixteenPointNineIsReleased) {
+          /* istanbul ignore next */
+          if (!youHaveBeenWarned) {
             // if act is supported and async act isn't and they're trying to use async
             // act, then they need to upgrade from 16.8 to 16.9.
             // This is a seemless upgrade, so we'll add a warning
