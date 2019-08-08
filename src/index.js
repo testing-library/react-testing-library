@@ -142,6 +142,16 @@ fireEvent.select = (node, init) => {
   fireEvent.keyUp(node, init)
 }
 
+// if we're running in a test runner that supports afterEach
+// then we'll automatically run cleanup afterEach test
+// this ensures that tests run in isolation from each other
+if (typeof afterEach === 'function' && !process.env.RTL_SKIP_CLEANUP) {
+  afterEach(async () => {
+    await asyncAct(async () => {})
+    cleanup()
+  })
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
 export {render, cleanup, fireEvent, act}
