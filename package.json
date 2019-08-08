@@ -24,7 +24,8 @@
   "files": [
     "dist",
     "typings",
-    "cleanup-after-each.js"
+    "cleanup-after-each.js",
+    "pure.js"
   ],
   "keywords": [
     "testing",
