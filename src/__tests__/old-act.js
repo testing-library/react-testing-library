@@ -10,10 +10,6 @@ afterEach(() => {
   console.error.mockRestore()
 })
 
-jest.mock('../react-dom-16.9.0-is-released', () => ({
-  reactDomSixteenPointNineIsReleased: true,
-}))
-
 jest.mock('react-dom/test-utils', () => ({
   act: cb => {
     cb()
