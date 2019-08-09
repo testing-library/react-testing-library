@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '../index'
+import {render} from '../'
 import cleanupAsync from '../cleanup-async'
 
 afterEach(() => {
