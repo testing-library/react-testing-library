@@ -8,7 +8,7 @@ beforeAll(() => {
 })
 
 // This one verifies that if RTL_SKIP_CLEANUP is set
-// that we DON'T auto-wire up the afterEach for folks
+// then we DON'T auto-wire up the afterEach for folks
 test('first', () => {
   render(<div>hi</div>)
 })
