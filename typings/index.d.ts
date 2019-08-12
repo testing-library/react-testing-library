@@ -1,4 +1,5 @@
 import {queries, Queries, BoundFunction} from '@testing-library/dom'
+import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
 
@@ -43,4 +44,6 @@ export function cleanup(): void
  * If that's not available (older version of react) then it
  * simply calls the given callback immediately
  */
-export function act(callback: () => void): void
+export const act: typeof reactAct extends () => any
+  ? typeof reactAct
+  : (callback: () => void) => void
