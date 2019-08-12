@@ -44,6 +44,6 @@ export function cleanup(): void
  * If that's not available (older version of react) then it
  * simply calls the given callback immediately
  */
-export const act: typeof reactAct extends () => any
-  ? typeof reactAct
-  : (callback: () => void) => void
+export const act: typeof reactAct extends undefined
+  ? (callback: () => void) => void
+  : typeof reactAct
