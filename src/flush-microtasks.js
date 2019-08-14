@@ -1,3 +1,7 @@
+/* istanbul ignore file */
+// the part of this file that we need tested is definitely being run
+// and the part that is not cannot easily have useful tests written
+// anyway. So we're just going to ignore coverage for this file
 /**
  * copied from React's enqueueTask.js
  */
