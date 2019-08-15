@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-90-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-91-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -502,6 +502,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://joaofernandes.me/"><img src="https://avatars1.githubusercontent.com/u/1075053?v=4" width="100px;" alt="João Fernandes"/><br /><sub><b>João Fernandes</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=JSFernandes" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/alejandroperea"><img src="https://avatars3.githubusercontent.com/u/6084749?v=4" width="100px;" alt="Alejandro Perea"/><br /><sub><b>Alejandro Perea</b></sub></a><br /><a href="#review-alejandroperea" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://nickmccurdy.com/"><img src="https://avatars0.githubusercontent.com/u/927220?v=4" width="100px;" alt="Nick McCurdy"/><br /><sub><b>Nick McCurdy</b></sub></a><br /><a href="#review-nickmccurdy" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://twitter.com/sebsilbermann"><img src="https://avatars3.githubusercontent.com/u/12292047?v=4" width="100px;" alt="Sebastian Silbermann"/><br /><sub><b>Sebastian Silbermann</b></sub></a><br /><a href="#review-eps1lon" title="Reviewed Pull Requests">👀</a></td>
   </tr>
 </table>
 
