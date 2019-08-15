@@ -910,6 +910,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "cimbul",
+      "name": "Tim Yates",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/927923?v=4",
+      "profile": "https://cimbul.com",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
