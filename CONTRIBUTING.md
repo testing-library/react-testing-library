@@ -26,45 +26,16 @@ series [How to Contribute to an Open Source Project on GitHub][egghead]
 > can make all of your pull request branches based on this `master` branch.
 > Whenever you want to update your version of `master`, do a regular `git pull`.
 
-## Add yourself as a contributor
-
-This project follows the [all contributors][all-contributors] specification. To
-add yourself to the table of contributors on the `README.md`, please use the
-automated script as part of your PR:
-
-```console
-npm run add-contributor
-```
-
-Follow the prompt and commit `.all-contributorsrc` and `README.md` in the PR. If
-you've already added yourself to the list and are making a new type of
-contribution, you can run it again and select the added contribution type.
-
 ## Committing and Pushing changes
 
 Please make sure to run the tests before you commit your changes. You can run
 `npm run test:update` which will update any snapshots that need updating. Make
 sure to include those changes (if they exist) in your commit.
 
-### opt into git hooks
+### Update Typings
 
-There are git hooks set up with this project that are automatically installed
-when you install dependencies. They're really handy, but are turned off by
-default (so as to not hinder new contributors). You can opt into these by
-creating a file called `.opt-in` at the root of the project and putting this
-inside:
-
-```
-pre-commit
-```
-
-### Add typings
-
-If your PR introduced some changes in the API, you are more than welcome to
-modify the Typescript type definition to reflect those changes. Just modify the
-`/typings/index.d.ts` file accordingly. If you have never seen Typescript
-definitions before, you can read more about it in its
-[documentation pages](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html)
+The TypeScript type definitions are in the
+[DefinitelyTyped repo](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/testing-library__react)
 
 ## Help needed
 
