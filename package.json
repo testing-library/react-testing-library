@@ -4,7 +4,6 @@
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
   "module": "dist/@testing-library/react.esm.js",
-  "typings": "typings/index.d.ts",
   "engines": {
     "node": ">=8"
   },
@@ -23,7 +22,6 @@
   },
   "files": [
     "dist",
-    "typings",
     "cleanup-after-each.js",
     "dont-cleanup-after-each.js",
     "pure.js"
@@ -45,13 +43,11 @@
   "dependencies": {
     "@babel/runtime": "^7.5.5",
     "@testing-library/dom": "^6.0.0",
-    "@types/react-dom": "*"
+    "@types/testing-library__react": "^9.1.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
     "@testing-library/jest-dom": "^4.0.0",
-    "@types/react": "^16.9.1",
-    "@types/react-dom": "^16.8.5",
     "kcd-scripts": "^1.5.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
