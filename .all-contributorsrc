@@ -892,6 +892,15 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "johnnyreilly",
+      "name": "John Reilly",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1010525?v=4",
+      "profile": "https://blog.johnnyreilly.com/",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
