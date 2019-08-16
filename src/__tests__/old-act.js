@@ -34,9 +34,7 @@ test('async act works even when the act is an old one', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
         Array [
           Array [
-            Array [
-              "sigil",
-            ],
+            "sigil",
           ],
           Array [
             "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
