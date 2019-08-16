@@ -42,7 +42,7 @@ function asyncAct(cb) {
           ) {
             // no-op
           } else {
-            originalConsoleError.call(console, args)
+            originalConsoleError.call(console, ...args)
           }
         }
         let cbReturn, result
