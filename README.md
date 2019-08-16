@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-95-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-96-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -509,6 +509,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://blog.johnnyreilly.com/"><img src="https://avatars0.githubusercontent.com/u/1010525?v=4" width="100px;" alt="John Reilly"/><br /><sub><b>John Reilly</b></sub></a><br /><a href="#review-johnnyreilly" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://michaeldeboey.be"><img src="https://avatars3.githubusercontent.com/u/6643991?v=4" width="100px;" alt="Michaël De Boey"/><br /><sub><b>Michaël De Boey</b></sub></a><br /><a href="#review-MichaelDeBoey" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://cimbul.com"><img src="https://avatars2.githubusercontent.com/u/927923?v=4" width="100px;" alt="Tim Yates"/><br /><sub><b>Tim Yates</b></sub></a><br /><a href="#review-cimbul" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/eventualbuddha"><img src="https://avatars3.githubusercontent.com/u/1938?v=4" width="100px;" alt="Brian Donovan"/><br /><sub><b>Brian Donovan</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=eventualbuddha" title="Code">💻</a></td>
   </tr>
 </table>
 
