@@ -1,5 +1,5 @@
 <div align="center">
-<h1>react-testing-library</h1>
+<h1>React Testing Library</h1>
 
 <a href="https://www.emojione.com/emoji/1f410">
   <img
@@ -16,7 +16,7 @@ practices.</p>
 <br />
 
 [**Read The Docs**](https://testing-library.com/react) |
-[Edit the docs](https://github.com/alexkrolick/testing-library-docs)
+[Edit the docs](https://github.com/testing-library/testing-library-docs)
 
 <br />
 </div>
@@ -85,7 +85,7 @@ your team down.
 
 ## This solution
 
-The `react-testing-library` is a very lightweight solution for testing React
+The `React Testing Library` is a very lightweight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
 `react-dom/test-utils`, in a way that encourages better testing practices. Its
 primary guiding principle is:
@@ -312,18 +312,18 @@ Some included are:
 - [`react-router`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-router.js&previewwindow=tests)
 - [`react-context`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-context.js&previewwindow=tests)
 
-You can also find react-testing-library examples at
+You can also find React Testing Library examples at
 [react-testing-examples.com](https://react-testing-examples.com/jest-rtl/).
 
 ## Hooks
 
 If you are interested in testing a custom hook, check out
-[react-hooks-testing-library][react-hooks-testing-library].
+[React Hooks Testing Library][react-hooks-testing-library].
 
 > NOTE it is not recommended to test single-use custom hooks in isolation from
 > the components where it's being used. It's better to test the component that's
-> using the hook rather than the hook itself. The react-hooks-testing-library is
-> intended to be used for reusable hooks/libraries.
+> using the hook rather than the hook itself. The `React Hooks Testing Library`
+> is intended to be used for reusable hooks/libraries.
 
 ## Guiding Principles
 
@@ -351,7 +351,7 @@ light-weight, simple, and understandable.
 ## Docs
 
 [**Read The Docs**](https://testing-library.com/react) |
-[Edit the docs](https://github.com/alexkrolick/testing-library-docs)
+[Edit the docs](https://github.com/testing-library/testing-library-docs)
 
 ## Issues
 
@@ -556,6 +556,6 @@ Contributions of any kind welcome!
 [good-first-issue]: https://github.com/testing-library/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
 [reactiflux]: https://www.reactiflux.com/
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
-[react-hooks-testing-library]: https://github.com/mpeyper/react-hooks-testing-library
+[react-hooks-testing-library]: https://github.com/testing-library/react-hooks-testing-library
 
 <!-- prettier-ignore-end -->
