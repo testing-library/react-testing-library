@@ -42,13 +42,13 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.5.5",
-    "@testing-library/dom": "^6.0.0",
+    "@testing-library/dom": "^6.1.0",
     "@types/testing-library__react": "^9.1.0"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
-    "@testing-library/jest-dom": "^4.0.0",
-    "kcd-scripts": "^1.5.2",
+    "@testing-library/jest-dom": "^4.1.0",
+    "kcd-scripts": "^1.7.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
