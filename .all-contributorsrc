@@ -939,6 +939,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "rvdkooy",
+      "name": "Ronald van der Kooij",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4119960?v=4",
+      "profile": "https://github.com/rvdkooy",
+      "contributions": [
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
