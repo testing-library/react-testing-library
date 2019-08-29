@@ -98,4 +98,22 @@ test('async act recovers from sync errors', async () => {
   `)
 })
 
+test('async act handles values that are not strings', async () => {
+  try {
+    await asyncAct(() => {
+      throw new Error({error: 'test error'})
+    })
+  } catch (err) {
+    console.error('call console.error')
+  }
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error.mock.calls).toMatchInlineSnapshot(`
+    Array [
+      Array [
+        "call console.error",
+      ],
+    ]
+  `)
+})
+
 /* eslint no-console:0 */
