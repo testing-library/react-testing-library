@@ -98,4 +98,28 @@ test('async act recovers from sync errors', async () => {
   `)
 })
 
+test('async act can handle any sort of console.error', async () => {
+  try {
+    await asyncAct(async () => {
+      console.error({error: 'some error'})
+      await null
+    })
+  } catch (err) {
+    console.log(err)
+  }
+  expect(console.error).toHaveBeenCalledTimes(2)
+  expect(console.error.mock.calls).toMatchInlineSnapshot(`
+    Array [
+      Array [
+        Object {
+          "error": "some error",
+        },
+      ],
+      Array [
+        "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
+      ],
+    ]
+  `)
+})
+
 /* eslint no-console:0 */
