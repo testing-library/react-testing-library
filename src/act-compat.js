@@ -42,9 +42,9 @@ function asyncAct(cb) {
               ) === 0
             ) {
               // no-op
-            } else {
-              originalConsoleError.apply(console, args)
             }
+          } else {
+            originalConsoleError.apply(console, args)
           }
         }
         let cbReturn, result
