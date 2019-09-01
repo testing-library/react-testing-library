@@ -99,14 +99,11 @@ test('async act recovers from sync errors', async () => {
 })
 
 test('async act can handle any sort of console.error', async () => {
-  try {
-    await asyncAct(async () => {
-      console.error({error: 'some error'})
-      await null
-    })
-  } catch (err) {
-    console.log(err)
-  }
+  await asyncAct(async () => {
+    console.error({error: 'some error'})
+    await null
+  })
+
   expect(console.error).toHaveBeenCalledTimes(2)
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
