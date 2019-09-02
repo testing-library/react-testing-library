@@ -97,13 +97,14 @@ test('async act recovers from sync errors', async () => {
 
 test('async act handles values that are not strings', async () => {
   try {
-    await asyncAct(() => {
+    await asyncAct(async () => {
       console.error({message: 'some message'})
+      await null
     })
   } catch (err) {
     console.error('call console.error')
   }
-  expect(console.error).toHaveBeenCalledTimes(3)
+  expect(console.error).toHaveBeenCalledTimes(2)
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
@@ -113,9 +114,6 @@ test('async act handles values that are not strings', async () => {
       ],
       Array [
         "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
-      ],
-      Array [
-        "call console.error",
       ],
     ]
   `)
