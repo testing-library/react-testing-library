@@ -948,6 +948,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "aayushrajvanshi",
+      "name": "Aayush Rajvanshi",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/14968551?v=4",
+      "profile": "https://github.com/aayushrajvanshi",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
