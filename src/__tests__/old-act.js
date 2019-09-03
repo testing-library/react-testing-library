@@ -119,4 +119,24 @@ test('async act can handle any sort of console.error', async () => {
   `)
 })
 
+test('async act should not show an error when ReactTestUtils.act returns something', async () => {
+  jest.resetModules()
+  jest.mock('react-dom/test-utils', () => ({
+    act: () => {
+      return new Promise(resolve => {
+        console.error(
+          'Warning: The callback passed to ReactTestUtils.act(...) function must not return anything',
+        )
+        resolve()
+      })
+    },
+  }))
+  asyncAct = require('../act-compat').asyncAct
+  await asyncAct(async () => {
+    await null
+  })
+
+  expect(console.error).toHaveBeenCalledTimes(0)
+})
+
 /* eslint no-console:0 */
