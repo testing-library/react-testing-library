@@ -251,7 +251,7 @@ function Login() {
         <button type="submit">Submit{state.loading ? '...' : null}</button>
       </form>
       {state.error ? <div role="alert">{state.error.message}</div> : null}
-      {state.success ? (
+      {state.resolved ? (
         <div role="alert">Congrats! You're signed in!</div>
       ) : null}
     </div>
