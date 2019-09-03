@@ -939,6 +939,24 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "rvdkooy",
+      "name": "Ronald van der Kooij",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/4119960?v=4",
+      "profile": "https://github.com/rvdkooy",
+      "contributions": [
+        "test"
+      ]
+    },
+    {
+      "login": "aayushrajvanshi",
+      "name": "Aayush Rajvanshi",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/14968551?v=4",
+      "profile": "https://github.com/aayushrajvanshi",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

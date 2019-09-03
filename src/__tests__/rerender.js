@@ -10,23 +10,22 @@ test('rerender will re-render the element', () => {
 })
 
 test('hydrate will not update props until next render', () => {
-  const initial = '<input />'
+  const initialInputElement = document.createElement('input')
+  const container = document.createElement('div')
+  container.appendChild(initialInputElement)
+  document.body.appendChild(container)
 
-  const container = document.body.appendChild(document.createElement('div'))
-  container.innerHTML = initial
-  const input = container.querySelector('input')
   const firstValue = 'hello'
+  initialInputElement.value = firstValue
 
-  if (!input) throw new Error('No element')
-  input.value = firstValue
   const {rerender} = render(<input value="" onChange={() => null} />, {
     container,
     hydrate: true,
   })
 
-  const secondValue = 'goodbye'
+  expect(initialInputElement.value).toBe(firstValue)
 
-  expect(input.value).toBe(firstValue)
+  const secondValue = 'goodbye'
   rerender(<input value={secondValue} onChange={() => null} />)
-  expect(input.value).toBe(secondValue)
+  expect(initialInputElement.value).toBe(secondValue)
 })
