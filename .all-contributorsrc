@@ -958,6 +958,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "ely-alamillo",
+      "name": "Ely Alamillo",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/24350492?v=4",
+      "profile": "https://elyalamillo.com",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
