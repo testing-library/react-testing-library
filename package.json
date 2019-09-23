@@ -41,8 +41,8 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.5.5",
-    "@testing-library/dom": "^6.1.0",
+    "@babel/runtime": "^7.6.0",
+    "@testing-library/dom": "^6.3.0",
     "@types/testing-library__react": "^9.1.0"
   },
   "devDependencies": {
