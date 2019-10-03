@@ -969,6 +969,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "danieljcafonso",
+      "name": "Daniel Afonso",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/35337607?v=4",
+      "profile": "https://github.com/danieljcafonso",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
