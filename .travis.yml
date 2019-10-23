@@ -9,7 +9,12 @@ node_js:
   - '8'
   - '10'
   - '12'
-install: npm install
+install:
+  - npm install
+  # as requested by the React team :)
+  # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
+  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then npm install react@next
+    react-dom@next; fi
 script: npm run validate
 after_success: kcd-scripts travis-after-success
 branches:
