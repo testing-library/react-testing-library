@@ -315,8 +315,8 @@ You can also find React Testing Library examples at
 
 ## Hooks
 
-If you are interested in testing a custom hook, check out
-[React Hooks Testing Library][react-hooks-testing-library].
+If you are interested in testing a custom hook, check out [React Hooks Testing
+Library][react-hooks-testing-library].
 
 > NOTE it is not recommended to test single-use custom hooks in isolation from
 > the components where it's being used. It's better to test the component that's
