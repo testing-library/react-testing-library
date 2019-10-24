@@ -19,6 +19,10 @@ configureDTL({
 })
 
 const mountedContainers = new Set()
+/**
+ * @type {WeakMap<Element, ReactRoot>}
+ */
+const mountedRoots = new WeakMap()
 
 function render(
   ui,
@@ -28,6 +32,7 @@ function render(
     queries,
     hydrate = false,
     wrapper: WrapperComponent,
+    root,
   } = {},
 ) {
   if (!baseElement) {
@@ -44,13 +49,21 @@ function render(
   // they're passing us a custom container or not.
   mountedContainers.add(container)
 
+  let reactRoot = null
+  if (root === 'concurrent') {
+    reactRoot = ReactDOM.createRoot(container, {hydrate})
+    mountedRoots.set(container, reactRoot)
+  }
+
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
       ? React.createElement(WrapperComponent, null, innerElement)
       : innerElement
 
   act(() => {
-    if (hydrate) {
+    if (reactRoot) {
+      reactRoot.render(wrapUiIfNeeded(ui))
+    } else if (hydrate) {
       ReactDOM.hydrate(wrapUiIfNeeded(ui), container)
     } else {
       ReactDOM.render(wrapUiIfNeeded(ui), container)
@@ -66,11 +79,21 @@ function render(
           el.forEach(e => console.log(prettyDOM(e)))
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el)),
-    unmount: () => ReactDOM.unmountComponentAtNode(container),
-    rerender: rerenderUi => {
-      render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
-      // Intentionally do not return anything to avoid unnecessarily complicating the API.
-      // folks can use all the same utilities we return in the first place that are bound to the container
+    unmount: callback => {
+      if (reactRoot) {
+        reactRoot.unmount(callback)
+      } else {
+        ReactDOM.unmountComponentAtNode(container)
+      }
+    },
+    rerender: (rerenderUi, callback) => {
+      if (reactRoot === null) {
+        render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
+        // Intentionally do not return anything to avoid unnecessarily complicating the API.
+        // folks can use all the same utilities we return in the first place that are bound to the container
+      } else {
+        reactRoot.render(wrapUiIfNeeded(rerenderUi), callback)
+      }
     },
     asFragment: () => {
       /* istanbul ignore if (jsdom limitation) */
@@ -95,7 +118,13 @@ function cleanup() {
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
-  ReactDOM.unmountComponentAtNode(container)
+  const reactRoot = mountedRoots.get(container)
+  if (reactRoot === undefined) {
+    ReactDOM.unmountComponentAtNode(container)
+  } else {
+    reactRoot.unmount()
+  }
+
   if (container.parentNode === document.body) {
     document.body.removeChild(container)
   }
