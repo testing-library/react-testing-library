@@ -79,20 +79,22 @@ function render(
           el.forEach(e => console.log(prettyDOM(e)))
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el)),
-    unmount: callback => {
+    unmount: () => {
       if (reactRoot) {
-        reactRoot.unmount(callback)
+        act(() => {
+          reactRoot.unmount()
+        })
       } else {
         ReactDOM.unmountComponentAtNode(container)
       }
     },
-    rerender: (rerenderUi, callback) => {
+    rerender: rerenderUi => {
       if (reactRoot === null) {
         render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
         // Intentionally do not return anything to avoid unnecessarily complicating the API.
         // folks can use all the same utilities we return in the first place that are bound to the container
       } else {
-        reactRoot.render(wrapUiIfNeeded(rerenderUi), callback)
+        reactRoot.render(wrapUiIfNeeded(rerenderUi))
       }
     },
     asFragment: () => {

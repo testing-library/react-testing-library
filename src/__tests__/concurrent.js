@@ -7,20 +7,18 @@ test('simple render works like legacy', () => {
   expect(container).toHaveTextContent('test')
 })
 
-test('unmount calls back  after commit', () => {
+test('unmounts are flushed in sync', () => {
   const {container, unmount} = render(<div>test</div>, {root: 'concurrent'})
 
-  unmount(() => {
-    expect(container.children).toHaveLength(0)
-  })
-  expect(container.children).toHaveLength(1)
+  unmount()
+
+  expect(container.children).toHaveLength(0)
 })
 
-test('rerender calls back after commit', () => {
+test('rerender are flushed in sync', () => {
   const {container, rerender} = render(<div>foo</div>, {root: 'concurrent'})
 
-  rerender(<div>bar</div>, () => {
-    expect(container).toHaveTextContent('bar')
-  })
+  rerender(<div>bar</div>)
+
   expect(container).toHaveTextContent('foo')
 })
