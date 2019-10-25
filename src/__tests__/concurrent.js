@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '../'
+import {render, cleanup} from '../'
 
 test('simple render works like legacy', () => {
   const {container} = render(<div>test</div>, {root: 'concurrent'})
@@ -21,4 +21,12 @@ test('rerender are flushed in sync', () => {
   rerender(<div>bar</div>)
 
   expect(container).toHaveTextContent('foo')
+})
+
+test('cleanup unmounts in sync', () => {
+  const {container} = render(<div>test</div>, {root: 'concurrent'})
+
+  cleanup()
+
+  expect(container.children).toHaveLength(0)
 })

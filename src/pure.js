@@ -124,7 +124,9 @@ function cleanupAtContainer(container) {
   if (reactRoot === undefined) {
     ReactDOM.unmountComponentAtNode(container)
   } else {
-    reactRoot.unmount()
+    act(() => {
+      reactRoot.unmount()
+    })
   }
 
   if (container.parentNode === document.body) {
