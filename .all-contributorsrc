@@ -979,6 +979,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "LaurensBosscher",
+      "name": "Laurens Bosscher",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/13363196?v=4",
+      "profile": "http://www.laurensbosscher.nl",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
