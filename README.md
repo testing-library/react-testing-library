@@ -29,7 +29,7 @@ practices.</p>
 [![version][version-badge]][package] [![downloads][downloads-badge]][npmtrends]
 [![MIT License][license-badge]][license]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-101-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
 [![Join the community on Spectrum][spectrum-badge]][spectrum]
 
@@ -515,6 +515,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/aayushrajvanshi"><img src="https://avatars0.githubusercontent.com/u/14968551?v=4" width="100px;" alt="Aayush Rajvanshi"/><br /><sub><b>Aayush Rajvanshi</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=aayushrajvanshi" title="Documentation">📖</a></td>
     <td align="center"><a href="https://elyalamillo.com"><img src="https://avatars2.githubusercontent.com/u/24350492?v=4" width="100px;" alt="Ely Alamillo"/><br /><sub><b>Ely Alamillo</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ely-alamillo" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=ely-alamillo" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/danieljcafonso"><img src="https://avatars3.githubusercontent.com/u/35337607?v=4" width="100px;" alt="Daniel Afonso"/><br /><sub><b>Daniel Afonso</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=danieljcafonso" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=danieljcafonso" title="Tests">⚠️</a></td>
+    <td align="center"><a href="http://www.laurensbosscher.nl"><img src="https://avatars0.githubusercontent.com/u/13363196?v=4" width="100px;" alt="Laurens Bosscher"/><br /><sub><b>Laurens Bosscher</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=LaurensBosscher" title="Code">💻</a></td>
   </tr>
 </table>
 
