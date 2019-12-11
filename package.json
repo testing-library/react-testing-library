@@ -45,15 +45,15 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
-    "@testing-library/dom": "^6.3.0",
-    "@types/testing-library__react": "^9.1.0"
+    "@babel/runtime": "^7.7.6",
+    "@testing-library/dom": "^6.10.1",
+    "@types/testing-library__react": "^9.1.2"
   },
   "devDependencies": {
     "@reach/router": "^1.2.1",
-    "@testing-library/jest-dom": "^4.1.0",
-    "cross-env": "^6.0.0",
-    "kcd-scripts": "^1.7.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "cross-env": "^6.0.3",
+    "kcd-scripts": "^1.12.1",
     "npm-run-all": "^4.1.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
