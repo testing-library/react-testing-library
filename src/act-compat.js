@@ -31,17 +31,13 @@ function asyncAct(cb) {
           const firstArgIsString = typeof args[0] === 'string'
           if (
             firstArgIsString &&
-            args[0].indexOf(
-              'Warning: Do not await the result of calling ReactTestUtils.act',
-            ) === 0
+            args[0].startsWith('Warning: Do not await the result of calling ReactTestUtils.act')
           ) {
             // v16.8.6
             isAsyncActSupported = false
           } else if (
             firstArgIsString &&
-            args[0].indexOf(
-              'Warning: The callback passed to ReactTestUtils.act(...) function must not return anything',
-            ) === 0
+            args[0].startsWith('Warning: The callback passed to ReactTestUtils.act(...) function must not return anything')
           ) {
             // no-op
           } else {
