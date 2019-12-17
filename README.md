@@ -175,25 +175,23 @@ import '@testing-library/jest-dom/extend-expect'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import HiddenMessage from '../hidden-message'
 
 test('shows the children when the checkbox is checked', () => {
   const testMessage = 'Test Message'
-  const {queryByText, getByLabelText, getByText} = render(
-    <HiddenMessage>{testMessage}</HiddenMessage>,
-  )
+  render(<HiddenMessage>{testMessage}</HiddenMessage>)
 
   // query* functions will return the element or null if it cannot be found
   // get* functions will return the element or throw an error if it cannot be found
-  expect(queryByText(testMessage)).toBeNull()
+  expect(screen.queryByText(testMessage)).toBeNull()
 
   // the queries can accept a regex to make your selectors more resilient to content tweaks and changes.
-  fireEvent.click(getByLabelText(/show/i))
+  fireEvent.click(screen.getByLabelText(/show/i))
 
   // .toBeInTheDocument() is an assertion that comes from jest-dom
   // otherwise you could use .toBeDefined()
-  expect(getByText(testMessage)).toBeInTheDocument()
+  expect(screen.getByText(testMessage)).toBeInTheDocument()
 })
 ```
 
@@ -265,7 +263,7 @@ export default Login
 // your testing framework configuration rather than importing them in every file.
 import '@testing-library/jest-dom/extend-expect'
 import React from 'react'
-import {render, fireEvent} from '@testing-library/react'
+import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
 
 test('allows the user to login successfully', async () => {
@@ -277,17 +275,21 @@ test('allows the user to login successfully', async () => {
     })
   })
 
-  const {getByLabelText, getByText, findByRole} = render(<Login />)
+  render(<Login />)
 
   // fill out the form
-  fireEvent.change(getByLabelText(/username/i), {target: {value: 'chuck'}})
-  fireEvent.change(getByLabelText(/password/i), {target: {value: 'norris'}})
+  fireEvent.change(screen.getByLabelText(/username/i), {
+    target: {value: 'chuck'},
+  })
+  fireEvent.change(screen.getByLabelText(/password/i), {
+    target: {value: 'norris'},
+  })
 
-  fireEvent.click(getByText(/submit/i))
+  fireEvent.click(screen.getByText(/submit/i))
 
   // just like a manual tester, we'll instruct our test to wait for the alert
   // to show up before continuing with our assertions.
-  const alert = await findByRole('alert')
+  const alert = await screen.findByRole('alert')
 
   // .toHaveTextContent() comes from jest-dom's assertions
   // otherwise you could use expect(alert.textContent).toMatch(/congrats/i)
