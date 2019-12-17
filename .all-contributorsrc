@@ -988,8 +988,18 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sakito21",
+      "name": "Sakito Mukai",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/15010907?v=4",
+      "profile": "https://twitter.com/__sakito__",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "skipCi": true
 }
