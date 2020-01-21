@@ -997,6 +997,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "tteke",
+      "name": "Türker Teke",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/12457162?v=4",
+      "profile": "http://turkerteke.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
