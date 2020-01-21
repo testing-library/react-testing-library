@@ -520,6 +520,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/danieljcafonso"><img src="https://avatars3.githubusercontent.com/u/35337607?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Afonso</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=danieljcafonso" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=danieljcafonso" title="Tests">⚠️</a></td>
     <td align="center"><a href="http://www.laurensbosscher.nl"><img src="https://avatars0.githubusercontent.com/u/13363196?v=4" width="100px;" alt=""/><br /><sub><b>Laurens Bosscher</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=LaurensBosscher" title="Code">💻</a></td>
     <td align="center"><a href="https://twitter.com/__sakito__"><img src="https://avatars1.githubusercontent.com/u/15010907?v=4" width="100px;" alt=""/><br /><sub><b>Sakito Mukai</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=sakito21" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://turkerteke.com"><img src="https://avatars3.githubusercontent.com/u/12457162?v=4" width="100px;" alt=""/><br /><sub><b>Türker Teke</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=tteke" title="Documentation">📖</a></td>
   </tr>
 </table>
 
