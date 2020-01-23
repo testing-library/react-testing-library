@@ -6,9 +6,9 @@ cache:
 notifications:
   email: false
 node_js:
-  - '8'
   - '10'
   - '12'
+  - '13'
 install:
   - npm install
   # as requested by the React team :)
