@@ -7,6 +7,7 @@
   ],
   "imageSize": 100,
   "commit": false,
+  "skipCi": false,
   "contributors": [
     {
       "login": "kentcdodds",
