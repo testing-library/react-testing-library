@@ -128,6 +128,9 @@ const eventTypes = [
   },
 ]
 
+// native select event isn't passing
+const nonNativeEvents = {doubleClick: 'dblclick', select: true}
+
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {
     events.forEach(eventName => {
@@ -145,6 +148,42 @@ eventTypes.forEach(({type, events, elementType, init}) => {
             ref,
           }),
         )
+
+        fireEvent[eventName](ref.current, init)
+        expect(spy).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
+})
+
+eventTypes.forEach(({type, events, elementType, init}) => {
+  describe(`Native ${type} Events`, () => {
+    events.forEach(eventName => {
+      let nativeEventName = eventName.toLowerCase()
+      if (nonNativeEvents[eventName]) {
+        if (nonNativeEvents[eventName] === true) {
+          return
+        }
+        nativeEventName = nonNativeEvents[eventName]
+      }
+
+      it(`triggers native ${nativeEventName}`, () => {
+        const ref = React.createRef()
+        const spy = jest.fn()
+        const Element = elementType
+
+        const NativeEventElement = () => {
+          React.useEffect(() => {
+            const element = ref.current
+            element.addEventListener(nativeEventName, spy)
+            return () => {
+              element.removeEventListener(nativeEventName, spy)
+            }
+          })
+          return <Element ref={ref} />
+        }
+
+        render(<NativeEventElement />)
 
         fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
