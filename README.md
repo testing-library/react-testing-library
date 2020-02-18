@@ -171,7 +171,7 @@ export default HiddenMessage
 // __tests__/hidden-message.js
 // these imports are something you'd normally configure Jest to import for you
 // automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
 import React from 'react'
@@ -261,7 +261,7 @@ export default Login
 // __tests__/login.js
 // again, these first two imports are something you'd normally handle in
 // your testing framework configuration rather than importing them in every file.
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
