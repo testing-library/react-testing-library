@@ -128,9 +128,6 @@ const eventTypes = [
   },
 ]
 
-// native select event isn't passing
-const nonNativeEvents = {doubleClick: 'dblclick', select: true}
-
 eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`${type} Events`, () => {
     events.forEach(eventName => {
@@ -160,11 +157,10 @@ eventTypes.forEach(({type, events, elementType, init}) => {
   describe(`Native ${type} Events`, () => {
     events.forEach(eventName => {
       let nativeEventName = eventName.toLowerCase()
-      if (nonNativeEvents[eventName]) {
-        if (nonNativeEvents[eventName] === true) {
-          return
-        }
-        nativeEventName = nonNativeEvents[eventName]
+
+      // The doubleClick synthetic event maps to the dblclick native event
+      if (nativeEventName === 'doubleclick') {
+        nativeEventName = 'dblclick'
       }
 
       it(`triggers native ${nativeEventName}`, () => {

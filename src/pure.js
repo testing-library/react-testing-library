@@ -139,7 +139,9 @@ fireEvent.mouseLeave = (...args) => {
   return fireEvent.mouseOut(...args)
 }
 
+const select = fireEvent.select
 fireEvent.select = (node, init) => {
+  select(node, init)
   // React tracks this event only on focused inputs
   node.focus()
 
