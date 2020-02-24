@@ -1007,9 +1007,18 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "zbrogz",
+      "name": "Zach Brogan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/319162?v=4",
+      "profile": "http://linkedin.com/in/zachbrogan",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "repoHost": "https://github.com",
-  "skipCi": true
+  "repoHost": "https://github.com"
 }
