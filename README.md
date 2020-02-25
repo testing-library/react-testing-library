@@ -523,6 +523,9 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://turkerteke.com"><img src="https://avatars3.githubusercontent.com/u/12457162?v=4" width="100px;" alt=""/><br /><sub><b>Türker Teke</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=tteke" title="Documentation">📖</a></td>
     <td align="center"><a href="http://linkedin.com/in/zachbrogan"><img src="https://avatars1.githubusercontent.com/u/319162?v=4" width="100px;" alt=""/><br /><sub><b>Zach Brogan</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=zbrogz" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=zbrogz" title="Tests">⚠️</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://ryota-murakami.github.io/"><img src="https://avatars2.githubusercontent.com/u/5501268?v=4" width="100px;" alt=""/><br /><sub><b>Ryota Murakami</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ryota-murakami" title="Documentation">📖</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
