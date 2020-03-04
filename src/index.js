@@ -1,4 +1,3 @@
-import flush from './flush-microtasks'
 import {cleanup} from './pure'
 
 // if we're running in a test runner that supports afterEach
@@ -8,8 +7,7 @@ import {cleanup} from './pure'
 // or set the RTL_SKIP_AUTO_CLEANUP env variable to 'true'.
 if (typeof afterEach === 'function' && !process.env.RTL_SKIP_AUTO_CLEANUP) {
   afterEach(async () => {
-    await flush()
-    cleanup()
+    await cleanup()
   })
 }
 
