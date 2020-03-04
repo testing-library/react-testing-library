@@ -1,7 +1,7 @@
 import React from 'react'
 import {render, cleanup} from '../'
 
-test('cleans up the document', () => {
+test('cleans up the document', async () => {
   const spy = jest.fn()
   const divId = 'my-div'
 
@@ -17,12 +17,12 @@ test('cleans up the document', () => {
   }
 
   render(<Test />)
-  cleanup()
+  await cleanup()
   expect(document.body.innerHTML).toBe('')
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
-test('cleanup does not error when an element is not a child', () => {
+test('cleanup does not error when an element is not a child', async () => {
   render(<div />, {container: document.createElement('div')})
-  cleanup()
+  await cleanup()
 })
