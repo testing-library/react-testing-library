@@ -46,7 +46,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
-    "@testing-library/dom": "^6.15.0",
+    "@testing-library/dom": "beta",
     "@types/testing-library__react": "^9.1.2"
   },
   "devDependencies": {
