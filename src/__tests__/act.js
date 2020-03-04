@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent} from '../'
+import {render, fireEvent, screen} from '../'
 
 test('render calls useEffect immediately', () => {
   const effectCb = jest.fn()
@@ -13,8 +13,8 @@ test('render calls useEffect immediately', () => {
 
 test('findByTestId returns the element', async () => {
   const ref = React.createRef()
-  const {findByTestId} = render(<div ref={ref} data-testid="foo" />)
-  expect(await findByTestId('foo')).toBe(ref.current)
+  render(<div ref={ref} data-testid="foo" />)
+  expect(await screen.findByTestId('foo')).toBe(ref.current)
 })
 
 test('fireEvent triggers useEffect calls', () => {

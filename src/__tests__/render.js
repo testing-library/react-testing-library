@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {render} from '../'
+import {render, screen} from '../'
 
 test('renders div into document', () => {
   const ref = React.createRef()
@@ -39,9 +39,9 @@ test('works great with react portals', () => {
     )
   }
 
-  const {unmount, getByTestId, getByText} = render(<MyPortal />)
-  expect(getByText('Hello World')).toBeInTheDocument()
-  const portalNode = getByTestId('my-portal')
+  const {unmount} = render(<MyPortal />)
+  expect(screen.getByText('Hello World')).toBeInTheDocument()
+  const portalNode = screen.getByTestId('my-portal')
   expect(portalNode).toBeInTheDocument()
   unmount()
   expect(portalNode).not.toBeInTheDocument()
@@ -72,11 +72,11 @@ test('renders options.wrapper around node', () => {
     <div data-testid="wrapper">{children}</div>
   )
 
-  const {container, getByTestId} = render(<div data-testid="inner" />, {
+  const {container} = render(<div data-testid="inner" />, {
     wrapper: WrapperComponent,
   })
 
-  expect(getByTestId('wrapper')).toBeInTheDocument()
+  expect(screen.getByTestId('wrapper')).toBeInTheDocument()
   expect(container.firstChild).toMatchInlineSnapshot(`
 <div
   data-testid="wrapper"
