@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, wait} from '../'
+import {render, waitForElementToBeRemoved, screen} from '../'
 
 const fetchAMessage = () =>
   new Promise(resolve => {
@@ -30,10 +30,8 @@ class ComponentWithLoader extends React.Component {
 }
 
 test('it waits for the data to be loaded', async () => {
-  const {queryByText, queryByTestId} = render(<ComponentWithLoader />)
-
-  expect(queryByText('Loading...')).toBeTruthy()
-
-  await wait(() => expect(queryByText('Loading...')).toBeNull())
-  expect(queryByTestId('message').textContent).toMatch(/Hello World/)
+  render(<ComponentWithLoader />)
+  const loading = () => screen.getByText('Loading...')
+  await waitForElementToBeRemoved(loading)
+  expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
 })

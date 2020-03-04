@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '../'
+import {render, screen} from '../'
 
 beforeEach(() => {
   jest.spyOn(console, 'log').mockImplementation(() => {})
@@ -26,8 +26,8 @@ test('debug pretty prints multiple containers', () => {
       <h1 data-testid="testId">Hello World</h1>
     </>
   )
-  const {getAllByTestId, debug} = render(<HelloWorld />)
-  const multipleElements = getAllByTestId('testId')
+  const {debug} = render(<HelloWorld />)
+  const multipleElements = screen.getAllByTestId('testId')
   debug(multipleElements)
 
   expect(console.log).toHaveBeenCalledTimes(2)
