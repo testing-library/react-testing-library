@@ -1,20 +1,27 @@
-sudo: false
 language: node_js
-cache:
-  directories:
-    - ~/.npm
+cache: npm
 notifications:
   email: false
 node_js:
-  - '8'
-  - '10'
-  - '12'
+  - 10.14
+  - 12
+  - node
 install:
   - npm install
   # as requested by the React team :)
   # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
-  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then npm install react@next react-dom@next; fi
-script: npm run validate
-after_success: kcd-scripts travis-after-success
+  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then npm install react@next
+    react-dom@next; fi
+script:
+  - npm run validate
+  - npx codecov@3
 branches:
-  only: master
+  only:
+    - master
+    - beta
+
+jobs:
+  include:
+    - stage: release
+      node_js: 12
+      script: kcd-scripts travis-release
