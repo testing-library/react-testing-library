@@ -26,7 +26,6 @@
   },
   "files": [
     "dist",
-    "cleanup-after-each.js",
     "dont-cleanup-after-each.js",
     "pure.js"
   ],
