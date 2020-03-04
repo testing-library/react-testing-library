@@ -153,6 +153,41 @@ eventTypes.forEach(({type, events, elementType, init}) => {
   })
 })
 
+eventTypes.forEach(({type, events, elementType, init}) => {
+  describe(`Native ${type} Events`, () => {
+    events.forEach(eventName => {
+      let nativeEventName = eventName.toLowerCase()
+
+      // The doubleClick synthetic event maps to the dblclick native event
+      if (nativeEventName === 'doubleclick') {
+        nativeEventName = 'dblclick'
+      }
+
+      it(`triggers native ${nativeEventName}`, () => {
+        const ref = React.createRef()
+        const spy = jest.fn()
+        const Element = elementType
+
+        const NativeEventElement = () => {
+          React.useEffect(() => {
+            const element = ref.current
+            element.addEventListener(nativeEventName, spy)
+            return () => {
+              element.removeEventListener(nativeEventName, spy)
+            }
+          })
+          return <Element ref={ref} />
+        }
+
+        render(<NativeEventElement />)
+
+        fireEvent[eventName](ref.current, init)
+        expect(spy).toHaveBeenCalledTimes(1)
+      })
+    })
+  })
+})
+
 test('onChange works', () => {
   const handleChange = jest.fn()
   const {

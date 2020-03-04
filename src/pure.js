@@ -60,12 +60,12 @@ function render(
   return {
     container,
     baseElement,
-    debug: (el = baseElement) =>
+    debug: (el = baseElement, maxLength, options) =>
       Array.isArray(el)
         ? // eslint-disable-next-line no-console
-          el.forEach(e => console.log(prettyDOM(e)))
+          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
         : // eslint-disable-next-line no-console,
-          console.log(prettyDOM(el)),
+          console.log(prettyDOM(el, maxLength, options)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
       render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
@@ -128,10 +128,20 @@ Object.keys(dtlFireEvent).forEach(key => {
 // React event system tracks native mouseOver/mouseOut events for
 // running onMouseEnter/onMouseLeave handlers
 // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/EnterLeaveEventPlugin.js#L24-L31
-fireEvent.mouseEnter = fireEvent.mouseOver
-fireEvent.mouseLeave = fireEvent.mouseOut
+const mouseEnter = fireEvent.mouseEnter
+const mouseLeave = fireEvent.mouseLeave
+fireEvent.mouseEnter = (...args) => {
+  mouseEnter(...args)
+  return fireEvent.mouseOver(...args)
+}
+fireEvent.mouseLeave = (...args) => {
+  mouseLeave(...args)
+  return fireEvent.mouseOut(...args)
+}
 
+const select = fireEvent.select
 fireEvent.select = (node, init) => {
+  select(node, init)
   // React tracks this event only on focused inputs
   node.focus()
 

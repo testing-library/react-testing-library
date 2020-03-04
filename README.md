@@ -171,7 +171,7 @@ export default HiddenMessage
 // __tests__/hidden-message.js
 // these imports are something you'd normally configure Jest to import for you
 // automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
 import React from 'react'
@@ -261,7 +261,7 @@ export default Login
 // __tests__/login.js
 // again, these first two imports are something you'd normally handle in
 // your testing framework configuration rather than importing them in every file.
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom'
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
@@ -521,6 +521,11 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://www.laurensbosscher.nl"><img src="https://avatars0.githubusercontent.com/u/13363196?v=4" width="100px;" alt=""/><br /><sub><b>Laurens Bosscher</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=LaurensBosscher" title="Code">💻</a></td>
     <td align="center"><a href="https://twitter.com/__sakito__"><img src="https://avatars1.githubusercontent.com/u/15010907?v=4" width="100px;" alt=""/><br /><sub><b>Sakito Mukai</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=sakito21" title="Documentation">📖</a></td>
     <td align="center"><a href="http://turkerteke.com"><img src="https://avatars3.githubusercontent.com/u/12457162?v=4" width="100px;" alt=""/><br /><sub><b>Türker Teke</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=tteke" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://linkedin.com/in/zachbrogan"><img src="https://avatars1.githubusercontent.com/u/319162?v=4" width="100px;" alt=""/><br /><sub><b>Zach Brogan</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=zbrogz" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=zbrogz" title="Tests">⚠️</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://ryota-murakami.github.io/"><img src="https://avatars2.githubusercontent.com/u/5501268?v=4" width="100px;" alt=""/><br /><sub><b>Ryota Murakami</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ryota-murakami" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/hottmanmichael"><img src="https://avatars3.githubusercontent.com/u/10534502?v=4" width="100px;" alt=""/><br /><sub><b>Michael Hottman</b></sub></a><br /><a href="#ideas-hottmanmichael" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 

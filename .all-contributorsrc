@@ -7,6 +7,7 @@
   ],
   "imageSize": 100,
   "commit": false,
+  "skipCi": false,
   "contributors": [
     {
       "login": "kentcdodds",
@@ -1006,9 +1007,36 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "zbrogz",
+      "name": "Zach Brogan",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/319162?v=4",
+      "profile": "http://linkedin.com/in/zachbrogan",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "ryota-murakami",
+      "name": "Ryota Murakami",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/5501268?v=4",
+      "profile": "https://ryota-murakami.github.io/",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "hottmanmichael",
+      "name": "Michael Hottman",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/10534502?v=4",
+      "profile": "https://github.com/hottmanmichael",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "repoHost": "https://github.com",
-  "skipCi": true
+  "repoHost": "https://github.com"
 }

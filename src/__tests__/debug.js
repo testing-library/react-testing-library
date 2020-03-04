@@ -36,4 +36,17 @@ test('debug pretty prints multiple containers', () => {
   )
 })
 
+test('allows same arguments as prettyDOM', () => {
+  const HelloWorld = () => <h1>Hello World</h1>
+  const {debug, container} = render(<HelloWorld />)
+  debug(container, 6, {highlight: false})
+  expect(console.log).toHaveBeenCalledTimes(1)
+  expect(console.log.mock.calls[0]).toMatchInlineSnapshot(`
+    Array [
+      "<div>
+    ...",
+    ]
+  `)
+})
+
 /* eslint no-console:0 */

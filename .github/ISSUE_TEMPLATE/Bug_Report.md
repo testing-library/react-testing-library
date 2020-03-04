@@ -22,7 +22,7 @@ tutorial to learn how: http://kcd.im/pull-request
 
 -->
 
-- `react-testing-library` version:
+- `@testing-library/react` version:
 - `react` version:
 - `node` version:
 - `npm` (or `yarn`) version:

@@ -20,9 +20,10 @@ Thanks for your interest in the project. We appreciate bugs filed and PRs submit
 
   ❓ Questions:
   For questions related to using the library, please visit a support community
-  instead of filing an issue on GitHub.
+  instead of filing an issue on GitHub. You can follow the instructions in this
+  codesandbox to make a reproduction of your issue: https://kcd.im/rtl-help
   * React Spectrum
-    https://spectrum.chat/react-testing-library
+    https://spectrum.chat/testing-library
   * Reactiflux on Discord
     https://www.reactiflux.com
   * Stack Overflow
@@ -43,7 +44,7 @@ tutorial to learn how: http://kcd.im/pull-request
 
 -->
 
-- `react-testing-library` version:
+- `@testing-library/react` version:
 - `react` version:
 - `node` version:
 - `npm` (or `yarn`) version:
