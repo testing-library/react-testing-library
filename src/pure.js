@@ -60,12 +60,12 @@ function render(
   return {
     container,
     baseElement,
-    debug: (el = baseElement) =>
+    debug: (el = baseElement, maxLength, options) =>
       Array.isArray(el)
         ? // eslint-disable-next-line no-console
-          el.forEach(e => console.log(prettyDOM(e)))
+          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
         : // eslint-disable-next-line no-console,
-          console.log(prettyDOM(el)),
+          console.log(prettyDOM(el, maxLength, options)),
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
       render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
