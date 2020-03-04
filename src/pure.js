@@ -7,6 +7,7 @@ import {
   configure as configureDTL,
 } from '@testing-library/dom'
 import act, {asyncAct} from './act-compat'
+import flush from './flush-microtasks'
 
 configureDTL({
   asyncWrapper: async cb => {
@@ -88,7 +89,8 @@ function render(
   }
 }
 
-function cleanup() {
+async function cleanup() {
+  await flush()
   mountedContainers.forEach(cleanupAtContainer)
 }
 
