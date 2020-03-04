@@ -525,6 +525,7 @@ Thanks goes to these people ([emoji key][emojis]):
   </tr>
   <tr>
     <td align="center"><a href="https://ryota-murakami.github.io/"><img src="https://avatars2.githubusercontent.com/u/5501268?v=4" width="100px;" alt=""/><br /><sub><b>Ryota Murakami</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ryota-murakami" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/hottmanmichael"><img src="https://avatars3.githubusercontent.com/u/10534502?v=4" width="100px;" alt=""/><br /><sub><b>Michael Hottman</b></sub></a><br /><a href="#ideas-hottmanmichael" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
