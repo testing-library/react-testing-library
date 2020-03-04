@@ -1026,6 +1026,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "hottmanmichael",
+      "name": "Michael Hottman",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/10534502?v=4",
+      "profile": "https://github.com/hottmanmichael",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
