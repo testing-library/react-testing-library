@@ -1045,6 +1045,15 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "juangl",
+      "name": "Juan Je García",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/1887029?v=4",
+      "profile": "https://github.com/juangl",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
