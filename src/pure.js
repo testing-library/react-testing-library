@@ -105,8 +105,8 @@ function cleanupAtContainer(container) {
 // react-testing-library's version of fireEvent will call
 // dom-testing-library's version of fireEvent wrapped inside
 // an "act" call so that after all event callbacks have been
-// been called, the resulting useEffect callbacks will also
-// be called.
+// called, the resulting useEffect callbacks will also be
+// called.
 function fireEvent(...args) {
   let returnValue
   act(() => {
