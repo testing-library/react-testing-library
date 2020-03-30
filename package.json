@@ -41,7 +41,7 @@
   "dependencies": {
     "@babel/runtime": "^7.9.2",
     "@testing-library/dom": "^7.1.0",
-    "@types/testing-library__react": "^9.1.3"
+    "@types/testing-library__react": "^10.0.0"
   },
   "devDependencies": {
     "@reach/router": "^1.3.3",
