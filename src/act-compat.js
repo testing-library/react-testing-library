@@ -82,7 +82,7 @@ function asyncAct(cb) {
           if (!youHaveBeenWarned) {
             // if act is supported and async act isn't and they're trying to use async
             // act, then they need to upgrade from 16.8 to 16.9.
-            // This is a seemless upgrade, so we'll add a warning
+            // This is a seamless upgrade, so we'll add a warning
             console.error(
               `It looks like you're using a version of react-dom that supports the "act" function, but not an awaitable version of "act" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.`,
             )
