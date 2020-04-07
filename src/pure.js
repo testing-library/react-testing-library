@@ -90,8 +90,8 @@ function render(
 }
 
 async function cleanup() {
-  await flush()
   mountedContainers.forEach(cleanupAtContainer)
+  await flush()
 }
 
 // maybe one day we'll expose this (perhaps even as a utility returned by render).

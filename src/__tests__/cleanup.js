@@ -26,3 +26,17 @@ test('cleanup does not error when an element is not a child', async () => {
   render(<div />, {container: document.createElement('div')})
   await cleanup()
 })
+
+test('cleanup waits for queued microtasks during unmount sequence', async () => {
+  const spy = jest.fn()
+
+  const Test = () => {
+    React.useEffect(() => () => setImmediate(spy))
+
+    return null
+  }
+
+  render(<Test />)
+  await cleanup()
+  expect(spy).toHaveBeenCalledTimes(1)
+})
