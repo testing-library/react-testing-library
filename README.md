@@ -103,7 +103,7 @@ npm install --save-dev @testing-library/react
 ```
 or
 
-This module is distributed via [yarn](https://classic.yarnpkg.com/en/)
+for installation via [yarn](https://classic.yarnpkg.com/en/)
 ```
 yarn add --dev jest @testing-library/react @testing-library/user-event jest-dom nock
 ```
