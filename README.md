@@ -105,7 +105,7 @@ or
 
 for installation via [yarn](https://classic.yarnpkg.com/en/)
 ```
-yarn add --dev jest @testing-library/react @testing-library/user-event jest-dom nock
+yarn add --dev @testing-library/react
 ```
 
 This library has `peerDependencies` listings for `react` and `react-dom`.
