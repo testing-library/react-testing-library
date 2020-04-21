@@ -101,6 +101,12 @@ should be installed as one of your project's `devDependencies`:
 ```
 npm install --save-dev @testing-library/react
 ```
+or
+
+This module is distributed via [yarn](https://classic.yarnpkg.com/en/)
+```
+yarn add --dev jest @testing-library/react @testing-library/user-event jest-dom nock
+```
 
 This library has `peerDependencies` listings for `react` and `react-dom`.
 
