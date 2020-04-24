@@ -101,6 +101,12 @@ should be installed as one of your project's `devDependencies`:
 ```
 npm install --save-dev @testing-library/react
 ```
+or
+
+for installation via [yarn](https://classic.yarnpkg.com/en/)
+```
+yarn add --dev @testing-library/react
+```
 
 This library has `peerDependencies` listings for `react` and `react-dom`.
 
