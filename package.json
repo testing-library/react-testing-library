@@ -10,8 +10,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "npm-run-all --parallel build:main build:bundle:main build:bundle:pure",
-    "build:bundle:main": "kcd-scripts build --bundle --no-clean",
-    "build:bundle:pure": "cross-env BUILD_FILENAME_SUFFIX=.pure BUILD_INPUT=src/pure.js kcd-scripts build --bundle --no-clean",
+    "build:bundle:main": "dotenv -e .bundle.main.env kcd-scripts build -- --bundle --no-clean",
+    "build:bundle:pure": "dotenv -e .bundle.main.env -e .bundle.pure.env kcd-scripts build -- --bundle --no-clean",
     "build:main": "kcd-scripts build --no-clean",
     "lint": "kcd-scripts lint",
     "setup": "npm install && npm run validate -s",
@@ -39,15 +39,15 @@
   "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
-    "@testing-library/dom": "^7.1.0",
-    "@types/testing-library__react": "^10.0.0"
+    "@babel/runtime": "^7.9.6",
+    "@testing-library/dom": "^7.2.2",
+    "@types/testing-library__react": "^10.0.1"
   },
   "devDependencies": {
     "@reach/router": "^1.3.3",
-    "@testing-library/jest-dom": "^5.1.1",
-    "cross-env": "^7.0.2",
-    "kcd-scripts": "^5.6.0",
+    "@testing-library/jest-dom": "^5.5.0",
+    "dotenv-cli": "^3.1.0",
+    "kcd-scripts": "^5.11.1",
     "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
