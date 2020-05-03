@@ -61,12 +61,21 @@ function render(
   return {
     container,
     baseElement,
-    debug: (el = baseElement, maxLength, options) =>
-      Array.isArray(el)
-        ? // eslint-disable-next-line no-console
-          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
-        : // eslint-disable-next-line no-console,
-          console.log(prettyDOM(el, maxLength, options)),
+    debug: (el = baseElement, maxLength, options) => {
+      if (Array.isArray(el)) {
+        return el.map(e => {
+          const items = prettyDOM(e, maxLength, options)
+          // eslint-disable-next-line no-console
+          console.log(items)
+          return items
+        })
+      }
+
+      const item = prettyDOM(el, maxLength, options)
+      // eslint-disable-next-line no-console
+      console.log(item)
+      return item
+    },
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
       render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
