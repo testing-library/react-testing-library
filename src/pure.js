@@ -64,17 +64,15 @@ function render(
     debug: (el = baseElement, maxLength, options) => {
       if (Array.isArray(el)) {
         return el.map(e => {
-          const items = prettyDOM(e, maxLength, options)
           // eslint-disable-next-line no-console
-          console.log(items)
-          return items
+          console.log(prettyDOM(e, maxLength, options))
+          return prettyDOM(e, maxLength, { ...options, highlight: false })
         })
       }
 
-      const item = prettyDOM(el, maxLength, options)
       // eslint-disable-next-line no-console
-      console.log(item)
-      return item
+      console.log(prettyDOM(el, maxLength, options))
+      return prettyDOM(el, maxLength, { ...options, highlight: false })
     },
     unmount: () => ReactDOM.unmountComponentAtNode(container),
     rerender: rerenderUi => {
