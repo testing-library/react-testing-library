@@ -23,13 +23,13 @@ test('debug returns the container', () => {
   const HelloWorld = () => <h1>Hello World</h1>
   const {debug} = render(<HelloWorld />)
   expect(debug()).toMatchInlineSnapshot(`
-    "[36m<body>[39m
-      [36m<div>[39m
-        [36m<h1>[39m
-          [0mHello World[0m
-        [36m</h1>[39m
-      [36m</div>[39m
-    [36m</body>[39m"
+    "<body>
+      <div>
+        <h1>
+          Hello World
+        </h1>
+      </div>
+    </body>"
   `)
 })
 
@@ -62,16 +62,16 @@ test('debug returns multiple containers', () => {
 
   expect(debug(multipleElements)).toMatchInlineSnapshot(`
     Array [
-      "[36m<h1[39m
-      [33mdata-testid[39m=[32m\\"testId\\"[39m
-    [36m>[39m
-      [0mHello World[0m
-    [36m</h1>[39m",
-      "[36m<h1[39m
-      [33mdata-testid[39m=[32m\\"testId\\"[39m
-    [36m>[39m
-      [0mHello World[0m
-    [36m</h1>[39m",
+      "<h1
+      data-testid=\\"testId\\"
+    >
+      Hello World
+    </h1>",
+      "<h1
+      data-testid=\\"testId\\"
+    >
+      Hello World
+    </h1>",
     ]
   `)
 })
