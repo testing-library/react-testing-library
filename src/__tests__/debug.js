@@ -19,6 +19,20 @@ test('debug pretty prints the container', () => {
   )
 })
 
+test('debug returns the container', () => {
+  const HelloWorld = () => <h1>Hello World</h1>
+  const {debug} = render(<HelloWorld />)
+  expect(debug()).toMatchInlineSnapshot(`
+    "[36m<body>[39m
+      [36m<div>[39m
+        [36m<h1>[39m
+          [0mHello World[0m
+        [36m</h1>[39m
+      [36m</div>[39m
+    [36m</body>[39m"
+  `)
+})
+
 test('debug pretty prints multiple containers', () => {
   const HelloWorld = () => (
     <>
@@ -34,6 +48,32 @@ test('debug pretty prints multiple containers', () => {
   expect(console.log).toHaveBeenCalledWith(
     expect.stringContaining('Hello World'),
   )
+})
+
+test('debug returns multiple containers', () => {
+  const HelloWorld = () => (
+    <>
+      <h1 data-testid="testId">Hello World</h1>
+      <h1 data-testid="testId">Hello World</h1>
+    </>
+  )
+  const {debug} = render(<HelloWorld />)
+  const multipleElements = screen.getAllByTestId('testId')
+
+  expect(debug(multipleElements)).toMatchInlineSnapshot(`
+    Array [
+      "[36m<h1[39m
+      [33mdata-testid[39m=[32m\\"testId\\"[39m
+    [36m>[39m
+      [0mHello World[0m
+    [36m</h1>[39m",
+      "[36m<h1[39m
+      [33mdata-testid[39m=[32m\\"testId\\"[39m
+    [36m>[39m
+      [0mHello World[0m
+    [36m</h1>[39m",
+    ]
+  `)
 })
 
 test('allows same arguments as prettyDOM', () => {
