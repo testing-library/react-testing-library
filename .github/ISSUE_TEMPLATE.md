@@ -45,9 +45,20 @@ tutorial to learn how: http://kcd.im/pull-request
 -->
 
 - `@testing-library/react` version:
-- `react` version:
-- `node` version:
-- `npm` (or `yarn`) version:
+- Testing Framework and version:
+  <!-- are you using jest, mocha, puppeteer, ava? And what version? -->
+- DOM Environment:
+  <!-- If you're using jsdom (the default with jest), what version? Otherwise, what browser and version are you running tests in? -->
+
+<!--
+Keep in mind that if you're using a version of node we don't support that
+could also be an issue. Check our package.json file "engines" config for the
+supported version.
+
+Also keep in mind that if you're using a version of react we don't support
+that could be an issue. Check our package.json file "peerDependencies" config
+for the supported version.
+-->
 
 Relevant code or config
 
