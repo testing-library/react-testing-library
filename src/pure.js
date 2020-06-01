@@ -74,16 +74,16 @@ function render(
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
     asFragment: () => {
-      /* istanbul ignore if (jsdom limitation) */
+      /* istanbul ignore else (old jsdom limitation) */
       if (typeof document.createRange === 'function') {
         return document
           .createRange()
           .createContextualFragment(container.innerHTML)
+      } else {
+        const template = document.createElement('template')
+        template.innerHTML = container.innerHTML
+        return template.content
       }
-
-      const template = document.createElement('template')
-      template.innerHTML = container.innerHTML
-      return template.content
     },
     ...getQueriesForElement(baseElement, queries),
   }
