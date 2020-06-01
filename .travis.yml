@@ -3,7 +3,8 @@ cache: npm
 notifications:
   email: false
 node_js:
-  - 10.0.0
+  # technically we support 10.0.0, but some of our tooling doesn't
+  - 10.14.2
   - 12
   - 14
   - node
