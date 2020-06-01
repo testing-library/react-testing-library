@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom'
 import {
   getQueriesForElement,
   prettyDOM,
-  fireEvent as dtlFireEvent,
   configure as configureDTL,
 } from '@testing-library/dom'
 import act, {asyncAct} from './act-compat'
+import {fireEvent} from './fire-event'
 import flush from './flush-microtasks'
 
 configureDTL({
@@ -14,6 +14,13 @@ configureDTL({
     let result
     await asyncAct(async () => {
       result = await cb()
+    })
+    return result
+  },
+  eventWrapper: cb => {
+    let result
+    act(() => {
+      result = cb()
     })
     return result
   },
@@ -104,63 +111,9 @@ function cleanupAtContainer(container) {
   mountedContainers.delete(container)
 }
 
-// react-testing-library's version of fireEvent will call
-// dom-testing-library's version of fireEvent wrapped inside
-// an "act" call so that after all event callbacks have been
-// called, the resulting useEffect callbacks will also be
-// called.
-function fireEvent(...args) {
-  let returnValue
-  act(() => {
-    returnValue = dtlFireEvent(...args)
-  })
-  return returnValue
-}
-
-Object.keys(dtlFireEvent).forEach(key => {
-  fireEvent[key] = (...args) => {
-    let returnValue
-    act(() => {
-      returnValue = dtlFireEvent[key](...args)
-    })
-    return returnValue
-  }
-})
-
-// React event system tracks native mouseOver/mouseOut events for
-// running onMouseEnter/onMouseLeave handlers
-// @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/EnterLeaveEventPlugin.js#L24-L31
-const mouseEnter = fireEvent.mouseEnter
-const mouseLeave = fireEvent.mouseLeave
-fireEvent.mouseEnter = (...args) => {
-  mouseEnter(...args)
-  return fireEvent.mouseOver(...args)
-}
-fireEvent.mouseLeave = (...args) => {
-  mouseLeave(...args)
-  return fireEvent.mouseOut(...args)
-}
-
-const select = fireEvent.select
-fireEvent.select = (node, init) => {
-  select(node, init)
-  // React tracks this event only on focused inputs
-  node.focus()
-
-  // React creates this event when one of the following native events happens
-  // - contextMenu
-  // - mouseUp
-  // - dragEnd
-  // - keyUp
-  // - keyDown
-  // so we can use any here
-  // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/SelectEventPlugin.js#L203-L224
-  fireEvent.keyUp(node, init)
-}
-
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, fireEvent, act}
+export {render, cleanup, act, fireEvent}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility
 // thing for people using react-dom@16.8.0. Anyone else doesn't need it and
