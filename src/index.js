@@ -11,6 +11,9 @@ if (!process.env.RTL_SKIP_AUTO_CLEANUP) {
       await cleanup()
     })
   } else if (typeof teardown === 'function') {
+    // Block is guarded by `typeof` check.
+    // eslint does not support `typeof` guards.
+    // eslint-disable-next-line no-undef
     teardown(async () => {
       await cleanup()
     })
