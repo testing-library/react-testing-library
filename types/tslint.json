@@ -3,6 +3,7 @@
   "rules": {
     "no-useless-files": false,
     "no-relative-import-in-test": false,
-    "semicolon": false
+    "semicolon": false,
+    "whitespace": false
   }
 }
