@@ -6,6 +6,8 @@ import {cleanup} from './pure'
 // if you don't like this then either import the `pure` module
 // or set the RTL_SKIP_AUTO_CLEANUP env variable to 'true'.
 if (!process.env.RTL_SKIP_AUTO_CLEANUP) {
+  // ignore teardown() in code coverage because Jest does not support it
+  /* istanbul ignore else */
   if (typeof afterEach === 'function') {
     afterEach(async () => {
       await cleanup()
