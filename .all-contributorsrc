@@ -1063,6 +1063,16 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "samtsai",
+      "name": "Sam Tsai",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/225526?v=4",
+      "profile": "https://github.com/samtsai",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
