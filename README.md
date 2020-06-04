@@ -536,6 +536,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/juangl"><img src="https://avatars0.githubusercontent.com/u/1887029?v=4" width="100px;" alt=""/><br /><sub><b>Juan Je García</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=juangl" title="Documentation">📖</a></td>
     <td align="center"><a href="https://ghuser.io/Ishaan28malik"><img src="https://avatars3.githubusercontent.com/u/27343592?v=4" width="100px;" alt=""/><br /><sub><b>Championrunner</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=Ishaan28malik" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/samtsai"><img src="https://avatars0.githubusercontent.com/u/225526?v=4" width="100px;" alt=""/><br /><sub><b>Sam Tsai</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=samtsai" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=samtsai" title="Tests">⚠️</a></td>
+    <td align="center"><a href="https://www.echooff.dev"><img src="https://avatars0.githubusercontent.com/u/149248?v=4" width="100px;" alt=""/><br /><sub><b>Christian Rackerseder</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=screendriver" title="Code">💻</a></td>
   </tr>
 </table>
 
