@@ -1082,6 +1082,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "NiGhTTraX",
+      "name": "Andrei Picus",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/485061?v=4",
+      "profile": "https://github.com/NiGhTTraX",
+      "contributions": [
+        "bug",
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
