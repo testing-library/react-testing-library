@@ -1,1 +1,1 @@
-export * from './types/pure.d.ts'
+export * from './types/pure'
