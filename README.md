@@ -263,24 +263,32 @@ function Login() {
 }
 
 export default Login
+```
 
+```jsx
 // __tests__/login.js
 // again, these first two imports are something you'd normally handle in
 // your testing framework configuration rather than importing them in every file.
 import '@testing-library/jest-dom'
 import React from 'react'
+// import API mocking utilities from Mock Service Worker.
+import {rest} from 'msw'
+import {setupServer} from 'msw/node'
+// import testing utilities
 import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
 
-test('allows the user to login successfully', async () => {
-  // mock out window.fetch for the test
-  const fakeUserResponse = {token: 'fake_user_token'}
-  jest.spyOn(window, 'fetch').mockImplementationOnce(() => {
-    return Promise.resolve({
-      json: () => Promise.resolve(fakeUserResponse),
-    })
+const server = setupServer(
+  rest.post('/api/login', (req, res, ctx) => {
+    return res(ctx.json({token: 'fake_user_token'}))
   })
+)
 
+beforeAll(() => server.listen())
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())
+
+test('allows the user to login successfully', async () => {
   render(<Login />)
 
   // fill out the form
@@ -303,7 +311,41 @@ test('allows the user to login successfully', async () => {
   expect(alert).toHaveTextContent(/congrats/i)
   expect(window.localStorage.getItem('token')).toEqual(fakeUserResponse.token)
 })
+
+test('handles server exceptions', async () => {
+  // mock the server error response for this test suite only.
+  server.use(
+    rest.post('/', (req, res, ctx) => {
+      return res(
+        ctx.status(500),
+        ctx.json({message: 'Internal server error'}),
+      )
+    })
+  )
+
+  render(<Login />)
+
+  // fill out the form
+  fireEvent.change(screen.getByLabelText(/username/i), {
+    target: {value: 'chuck'},
+  })
+  fireEvent.change(screen.getByLabelText(/password/i), {
+    target: {value: 'norris'},
+  })
+
+  fireEvent.click(screen.getByText(/submit/i))
+
+  // wait for the error message
+  const alert = await screen.findByRole('alert')
+
+  expect(alert).toHaveTextContent(/internal server error/i)
+  expect(window.localStorage.getItem('token')).toBeNull()
+})
 ```
+
+> We recommend using [Mock Service Worker](https://github.com/mswjs/msw) library
+> to declaratively mock API communication in your tests instead of stubbing
+> `window.fetch`, or relying on third-party adapters.
 
 ### More Examples
 
