@@ -582,6 +582,7 @@ Thanks goes to these people ([emoji key][emojis]):
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/NiGhTTraX"><img src="https://avatars0.githubusercontent.com/u/485061?v=4" width="100px;" alt=""/><br /><sub><b>Andrei Picus</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3ANiGhTTraX" title="Bug reports">🐛</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3ANiGhTTraX" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://redd.one"><img src="https://avatars3.githubusercontent.com/u/14984911?v=4" width="100px;" alt=""/><br /><sub><b>Artem Zakharchenko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=kettanaito" title="Documentation">📖</a></td>
   </tr>
 </table>
 
