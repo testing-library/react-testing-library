@@ -35,7 +35,7 @@ merge of your pull request!
 <!-- to check an item, place an "x" in the box like so: "- [x] Documentation" -->
 
 - [ ] Documentation added to the
-      [docs site](https://github.com/alexkrolick/testing-library-docs)
+      [docs site](https://github.com/testing-library/testing-library-docs)
 - [ ] Tests
 - [ ] Typescript definitions updated
 - [ ] Ready to be merged
