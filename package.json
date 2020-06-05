@@ -25,6 +25,7 @@
     "dist",
     "dont-cleanup-after-each.js",
     "pure.js",
+    "pure.d.ts",
     "types"
   ],
   "keywords": [
