@@ -538,6 +538,9 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/samtsai"><img src="https://avatars0.githubusercontent.com/u/225526?v=4" width="100px;" alt=""/><br /><sub><b>Sam Tsai</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=samtsai" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=samtsai" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://www.echooff.dev"><img src="https://avatars0.githubusercontent.com/u/149248?v=4" width="100px;" alt=""/><br /><sub><b>Christian Rackerseder</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=screendriver" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/NiGhTTraX"><img src="https://avatars0.githubusercontent.com/u/485061?v=4" width="100px;" alt=""/><br /><sub><b>Andrei Picus</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3ANiGhTTraX" title="Bug reports">🐛</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3ANiGhTTraX" title="Reviewed Pull Requests">👀</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->
