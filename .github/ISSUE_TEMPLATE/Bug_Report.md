@@ -46,7 +46,7 @@ var your => (code) => here;
 
 <!--
 If this is an issue with documentation, please file an issue on the docs repo:
-https://github.com/alexkrolick/testing-library-docs
+https://github.com/testing-library/testing-library-docs
 -->
 
 ### What you did:
@@ -63,7 +63,7 @@ https://github.com/alexkrolick/testing-library-docs
 If possible, please create a repository that reproduces the issue with the
 minimal amount of code possible.
 
-Template repo: https://github.com/alexkrolick/dom-testing-library-template
+Template repo: https://github.com/testing-library/dom-testing-library-template
 
 Or if you can, try to reproduce the issue in a Codesandbox. You can fork the one
 here: https://codesandbox.io/s/5z6x4r7n0p
