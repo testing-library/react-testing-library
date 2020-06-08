@@ -206,13 +206,14 @@ test('shows the children when the checkbox is checked', () => {
 ```jsx
 // login.js
 import React from 'react'
+import axios from 'axios'
 
 function Login() {
-  const [state, setState] = React.useReducer((s, a) => ({...s, ...a}), {
+  const [state, setState] = React.useState({
     resolved: false,
     loading: false,
-    error: null,
-  })
+    error: null
+  });
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -220,25 +221,29 @@ function Login() {
 
     setState({loading: true, resolved: false, error: null})
 
-    window
-      .fetch('/api/login', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: usernameInput.value,
-          password: passwordInput.value,
-        }),
-      })
-      .then(r => r.json())
-      .then(
-        user => {
-          setState({loading: false, resolved: true, error: null})
-          window.localStorage.setItem('token', user.token)
-        },
-        error => {
-          setState({loading: false, resolved: false, error: error.message})
-        },
+    axios
+      .post(
+        "/api/login",
+        { username: usernameInput.value, password: passwordInput.value },
+        {
+          headers: { "Content-Type": "application/json" }
+        }
       )
+      .then(response => {
+        setState({
+          loading: false,
+          resolved: true,
+          error: null
+        });
+        window.localStorage.setItem("token", response.data.token)
+      })
+      .catch(error => {
+        setState({
+          loading: false,
+          resolved: false,
+          error: error.message
+        });
+      });
   }
 
   return (
@@ -275,7 +280,7 @@ import React from 'react'
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
 // import testing utilities
-import {render, fireEvent, screen} from '@testing-library/react'
+import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import Login from '../login'
 
 const server = setupServer(
@@ -285,6 +290,7 @@ const server = setupServer(
 )
 
 beforeAll(() => server.listen())
+beforeEach(() => window.localStorage.clear())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
@@ -303,7 +309,9 @@ test('allows the user to login successfully', async () => {
 
   // just like a manual tester, we'll instruct our test to wait for the alert
   // to show up before continuing with our assertions.
-  const alert = await screen.findByRole('alert')
+  const alert = await waitFor(() => screen.findByRole("alert"))
+
+  let fakeUserResponse = { token: "fake_user_token" }
 
   // .toHaveTextContent() comes from jest-dom's assertions
   // otherwise you could use expect(alert.textContent).toMatch(/congrats/i)
@@ -336,9 +344,9 @@ test('handles server exceptions', async () => {
   fireEvent.click(screen.getByText(/submit/i))
 
   // wait for the error message
-  const alert = await screen.findByRole('alert')
+  const alert = await waitFor(() => screen.findByRole("alert"))
 
-  expect(alert).toHaveTextContent(/internal server error/i)
+  expect(alert).toHaveTextContent(/Request failed/i)
   expect(window.localStorage.getItem('token')).toBeNull()
 })
 ```
