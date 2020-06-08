@@ -1102,6 +1102,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "michael-siek",
+      "name": "Michael",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/45568605?v=4",
+      "profile": "http://michaelsiek.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
