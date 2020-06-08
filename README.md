@@ -173,7 +173,9 @@ function HiddenMessage({children}) {
 }
 
 export default HiddenMessage
+```
 
+```jsx
 // __tests__/hidden-message.js
 // these imports are something you'd normally configure Jest to import for you
 // automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
