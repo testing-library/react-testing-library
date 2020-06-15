@@ -101,9 +101,11 @@ should be installed as one of your project's `devDependencies`:
 ```
 npm install --save-dev @testing-library/react
 ```
+
 or
 
 for installation via [yarn](https://classic.yarnpkg.com/en/)
+
 ```
 yarn add --dev @testing-library/react
 ```
@@ -283,11 +285,14 @@ import Login from '../login'
 const server = setupServer(
   rest.post('/api/login', (req, res, ctx) => {
     return res(ctx.json({token: 'fake_user_token'}))
-  })
+  }),
 )
 
 beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
+afterEach(() => {
+  server.resetHandlers()
+  window.localStorage.removeItem('token')
+})
 afterAll(() => server.close())
 
 test('allows the user to login successfully', async () => {
@@ -318,11 +323,8 @@ test('handles server exceptions', async () => {
   // mock the server error response for this test suite only.
   server.use(
     rest.post('/', (req, res, ctx) => {
-      return res(
-        ctx.status(500),
-        ctx.json({message: 'Internal server error'}),
-      )
-    })
+      return res(ctx.status(500), ctx.json({message: 'Internal server error'}))
+    }),
   )
 
   render(<Login />)
@@ -591,6 +593,7 @@ Thanks goes to these people ([emoji key][emojis]):
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
