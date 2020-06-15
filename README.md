@@ -588,12 +588,12 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/NiGhTTraX"><img src="https://avatars0.githubusercontent.com/u/485061?v=4" width="100px;" alt=""/><br /><sub><b>Andrei Picus</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3ANiGhTTraX" title="Bug reports">🐛</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3ANiGhTTraX" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://redd.one"><img src="https://avatars3.githubusercontent.com/u/14984911?v=4" width="100px;" alt=""/><br /><sub><b>Artem Zakharchenko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=kettanaito" title="Documentation">📖</a></td>
     <td align="center"><a href="http://michaelsiek.com"><img src="https://avatars0.githubusercontent.com/u/45568605?v=4" width="100px;" alt=""/><br /><sub><b>Michael</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=michael-siek" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://2dubbing.tistory.com"><img src="https://avatars2.githubusercontent.com/u/15885679?v=4" width="100px;" alt=""/><br /><sub><b>Braden Lee</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=2dubbing" title="Documentation">📖</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
