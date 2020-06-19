@@ -87,3 +87,30 @@ test('renders options.wrapper around node', () => {
 </div>
 `)
 })
+
+test('passes options.wrapperProps to wrapper', () => {
+  const WrapperComponent = ({divClass, children}) => (
+    <div className={divClass} data-testid="wrapper-with-prop">
+      {children}
+    </div>
+  )
+
+  const {container} = render(<div data-testid="inner" />, {
+    wrapper: WrapperComponent,
+    wrapperProps: {
+      divClass: 'passed-by-prop',
+    },
+  })
+
+  expect(screen.getByTestId('wrapper-with-prop')).toBeInTheDocument()
+  expect(container.firstChild).toMatchInlineSnapshot(`
+<div
+  class="passed-by-prop"
+  data-testid="wrapper-with-prop"
+>
+  <div
+    data-testid="inner"
+  />
+</div>
+`)
+})

@@ -28,6 +28,7 @@ export interface RenderOptions<Q extends Queries = typeof queries> {
   hydrate?: boolean
   queries?: Q
   wrapper?: React.ComponentType
+  wrapperProps?: object | null
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>

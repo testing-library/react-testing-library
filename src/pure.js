@@ -36,6 +36,7 @@ function render(
     queries,
     hydrate = false,
     wrapper: WrapperComponent,
+    wrapperProps = null,
   } = {},
 ) {
   if (!baseElement) {
@@ -54,7 +55,7 @@ function render(
 
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
-      ? React.createElement(WrapperComponent, null, innerElement)
+      ? React.createElement(WrapperComponent, wrapperProps, innerElement)
       : innerElement
 
   act(() => {
