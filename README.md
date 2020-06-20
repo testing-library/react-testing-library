@@ -428,7 +428,6 @@ a 👍. This helps maintainers prioritize what to work on.
 For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
-- [Spectrum][spectrum]
 - [Discord][discord]
 - [Stack Overflow][stackoverflow]
 
