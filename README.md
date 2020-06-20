@@ -429,7 +429,7 @@ For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
 - [Spectrum][spectrum]
-- [Reactiflux on Discord][reactiflux]
+- [Discord][discord]
 - [Stack Overflow][stackoverflow]
 
 ## Contributors
@@ -635,7 +635,7 @@ Contributions of any kind welcome!
 [bugs]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/testing-library/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
-[reactiflux]: https://www.reactiflux.com/
+[discord]: https://discord.gg/c6JN9fM
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
 [react-hooks-testing-library]: https://github.com/testing-library/react-hooks-testing-library
 
