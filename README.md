@@ -31,7 +31,7 @@ practices.</p>
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
-[![Join the community on Spectrum][spectrum-badge]][spectrum]
+[![Discord][discord-badge]][discord]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
@@ -428,8 +428,7 @@ a 👍. This helps maintainers prioritize what to work on.
 For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
-- [Spectrum][spectrum]
-- [Reactiflux on Discord][reactiflux]
+- [Discord][discord]
 - [Stack Overflow][stackoverflow]
 
 ## Contributors
@@ -615,8 +614,6 @@ Contributions of any kind welcome!
 [package]: https://www.npmjs.com/package/@testing-library/react
 [downloads-badge]: https://img.shields.io/npm/dm/@testing-library/react.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/@testing-library/react
-[spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
-[spectrum]: https://spectrum.chat/testing-library
 [license-badge]: https://img.shields.io/npm/l/@testing-library/react.svg?style=flat-square
 [license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
@@ -635,7 +632,8 @@ Contributions of any kind welcome!
 [bugs]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/testing-library/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
-[reactiflux]: https://www.reactiflux.com/
+[discord-badge]: https://img.shields.io/discord/723559267868737556.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[discord]: https://discord.gg/c6JN9fM
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
 [react-hooks-testing-library]: https://github.com/testing-library/react-hooks-testing-library
 
