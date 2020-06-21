@@ -17,7 +17,7 @@ instead of filing an issue on GitHub. You can follow the instructions in this
 codesandbox to make a reproduction of your issue: https://kcd.im/rtl-help
 
 - React Spectrum https://spectrum.chat/react-testing-library
-- Reactiflux on Discord https://www.reactiflux.com
+- Discord https://discord.gg/c6JN9fM
 - Stack Overflow
   https://stackoverflow.com/questions/tagged/react-testing-library
 - Documentation: https://github.com/testing-library/testing-library-docs
