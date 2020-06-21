@@ -31,7 +31,6 @@ practices.</p>
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
-[![Join the community on Spectrum][spectrum-badge]][spectrum]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
@@ -614,8 +613,6 @@ Contributions of any kind welcome!
 [package]: https://www.npmjs.com/package/@testing-library/react
 [downloads-badge]: https://img.shields.io/npm/dm/@testing-library/react.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/@testing-library/react
-[spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
-[spectrum]: https://spectrum.chat/testing-library
 [license-badge]: https://img.shields.io/npm/l/@testing-library/react.svg?style=flat-square
 [license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
