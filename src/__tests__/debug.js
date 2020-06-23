@@ -49,4 +49,8 @@ test('allows same arguments as prettyDOM', () => {
   `)
 })
 
-/* eslint no-console:0 */
+/*
+eslint
+  no-console: "off",
+  testing-library/no-debug: "off",
+*/

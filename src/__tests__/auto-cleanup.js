@@ -9,5 +9,5 @@ test('first', () => {
 })
 
 test('second', () => {
-  expect(document.body.innerHTML).toEqual('')
+  expect(document.body).toBeEmpty()
 })

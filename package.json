@@ -69,7 +69,8 @@
       "react/prop-types": "off",
       "react/no-adjacent-inline-elements": "off",
       "import/no-unassigned-import": "off",
-      "import/named": "off"
+      "import/named": "off",
+      "testing-library/no-dom-import": "off"
     }
   },
   "eslintIgnore": [

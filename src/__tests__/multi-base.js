@@ -37,3 +37,9 @@ test('baseElement isolates trees from one another', () => {
     'Unable to find an element with the text: Hyde.',
   )
 })
+
+// https://github.com/testing-library/eslint-plugin-testing-library/issues/188
+/*
+eslint
+  testing-library/prefer-screen-queries: "off",
+*/
