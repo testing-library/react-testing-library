@@ -9,5 +9,5 @@ test('first', () => {
 })
 
 test('second', () => {
-  expect(document.body).toBeEmpty()
+  expect(document.body).toBeEmptyDOMElement()
 })

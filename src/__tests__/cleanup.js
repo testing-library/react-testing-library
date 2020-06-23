@@ -18,7 +18,7 @@ test('cleans up the document', async () => {
 
   render(<Test />)
   await cleanup()
-  expect(document.body).toBeEmpty()
+  expect(document.body).toBeEmptyDOMElement()
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
