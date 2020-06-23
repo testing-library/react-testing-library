@@ -576,7 +576,8 @@
       "profile": "https://github.com/weyert",
       "contributions": [
         "ideas",
-        "review"
+        "review",
+        "design"
       ]
     },
     {
@@ -1099,6 +1100,24 @@
       "name": "Artem Zakharchenko",
       "avatar_url": "https://avatars3.githubusercontent.com/u/14984911?v=4",
       "profile": "https://redd.one",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "michael-siek",
+      "name": "Michael",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/45568605?v=4",
+      "profile": "http://michaelsiek.com",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "2dubbing",
+      "name": "Braden Lee",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/15885679?v=4",
+      "profile": "http://2dubbing.tistory.com",
       "contributions": [
         "doc"
       ]

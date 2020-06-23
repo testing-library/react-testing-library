@@ -31,7 +31,7 @@ practices.</p>
 
 [![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs] [![Code of Conduct][coc-badge]][coc]
-[![Join the community on Spectrum][spectrum-badge]][spectrum]
+[![Discord][discord-badge]][discord]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
@@ -101,9 +101,11 @@ should be installed as one of your project's `devDependencies`:
 ```
 npm install --save-dev @testing-library/react
 ```
+
 or
 
 for installation via [yarn](https://classic.yarnpkg.com/en/)
+
 ```
 yarn add --dev @testing-library/react
 ```
@@ -173,7 +175,9 @@ function HiddenMessage({children}) {
 }
 
 export default HiddenMessage
+```
 
+```jsx
 // __tests__/hidden-message.js
 // these imports are something you'd normally configure Jest to import for you
 // automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
@@ -281,11 +285,14 @@ import Login from '../login'
 const server = setupServer(
   rest.post('/api/login', (req, res, ctx) => {
     return res(ctx.json({token: 'fake_user_token'}))
-  })
+  }),
 )
 
 beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
+afterEach(() => {
+  server.resetHandlers()
+  window.localStorage.removeItem('token')
+})
 afterAll(() => server.close())
 
 test('allows the user to login successfully', async () => {
@@ -316,11 +323,8 @@ test('handles server exceptions', async () => {
   // mock the server error response for this test suite only.
   server.use(
     rest.post('/', (req, res, ctx) => {
-      return res(
-        ctx.status(500),
-        ctx.json({message: 'Internal server error'}),
-      )
-    })
+      return res(ctx.status(500), ctx.json({message: 'Internal server error'}))
+    }),
   )
 
   render(<Login />)
@@ -424,8 +428,7 @@ a 👍. This helps maintainers prioritize what to work on.
 For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub.
 
-- [Spectrum][spectrum]
-- [Reactiflux on Discord][reactiflux]
+- [Discord][discord]
 - [Stack Overflow][stackoverflow]
 
 ## Contributors
@@ -511,7 +514,7 @@ Thanks goes to these people ([emoji key][emojis]):
   <tr>
     <td align="center"><a href="http://www.aboutmonica.com"><img src="https://avatars0.githubusercontent.com/u/6998954?v=4" width="100px;" alt=""/><br /><sub><b>Monica Powell</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=M0nica" title="Documentation">📖</a></td>
     <td align="center"><a href="http://sivkoff.com"><img src="https://avatars1.githubusercontent.com/u/2699953?v=4" width="100px;" alt=""/><br /><sub><b>Vitaly Sivkov</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=sivkoff" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/weyert"><img src="https://avatars3.githubusercontent.com/u/7049?v=4" width="100px;" alt=""/><br /><sub><b>Weyert de Boer</b></sub></a><br /><a href="#ideas-weyert" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3Aweyert" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/weyert"><img src="https://avatars3.githubusercontent.com/u/7049?v=4" width="100px;" alt=""/><br /><sub><b>Weyert de Boer</b></sub></a><br /><a href="#ideas-weyert" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3Aweyert" title="Reviewed Pull Requests">👀</a> <a href="#design-weyert" title="Design">🎨</a></td>
     <td align="center"><a href="https://github.com/EstebanMarin"><img src="https://avatars3.githubusercontent.com/u/13613037?v=4" width="100px;" alt=""/><br /><sub><b>EstebanMarin</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=EstebanMarin" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/vctormb"><img src="https://avatars2.githubusercontent.com/u/13953703?v=4" width="100px;" alt=""/><br /><sub><b>Victor Martins</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=vctormb" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/RoystonS"><img src="https://avatars0.githubusercontent.com/u/19773?v=4" width="100px;" alt=""/><br /><sub><b>Royston Shufflebotham</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3ARoystonS" title="Bug reports">🐛</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=RoystonS" title="Documentation">📖</a> <a href="#example-RoystonS" title="Examples">💡</a></td>
@@ -583,6 +586,8 @@ Thanks goes to these people ([emoji key][emojis]):
   <tr>
     <td align="center"><a href="https://github.com/NiGhTTraX"><img src="https://avatars0.githubusercontent.com/u/485061?v=4" width="100px;" alt=""/><br /><sub><b>Andrei Picus</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3ANiGhTTraX" title="Bug reports">🐛</a> <a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3ANiGhTTraX" title="Reviewed Pull Requests">👀</a></td>
     <td align="center"><a href="https://redd.one"><img src="https://avatars3.githubusercontent.com/u/14984911?v=4" width="100px;" alt=""/><br /><sub><b>Artem Zakharchenko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=kettanaito" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://michaelsiek.com"><img src="https://avatars0.githubusercontent.com/u/45568605?v=4" width="100px;" alt=""/><br /><sub><b>Michael</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=michael-siek" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://2dubbing.tistory.com"><img src="https://avatars2.githubusercontent.com/u/15885679?v=4" width="100px;" alt=""/><br /><sub><b>Braden Lee</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=2dubbing" title="Documentation">📖</a></td>
   </tr>
 </table>
 
@@ -609,8 +614,6 @@ Contributions of any kind welcome!
 [package]: https://www.npmjs.com/package/@testing-library/react
 [downloads-badge]: https://img.shields.io/npm/dm/@testing-library/react.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/@testing-library/react
-[spectrum-badge]: https://withspectrum.github.io/badge/badge.svg
-[spectrum]: https://spectrum.chat/testing-library
 [license-badge]: https://img.shields.io/npm/l/@testing-library/react.svg?style=flat-square
 [license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
@@ -629,7 +632,8 @@ Contributions of any kind welcome!
 [bugs]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Acreated-desc
 [requests]: https://github.com/testing-library/react-testing-library/issues?q=is%3Aissue+sort%3Areactions-%2B1-desc+label%3Aenhancement+is%3Aopen
 [good-first-issue]: https://github.com/testing-library/react-testing-library/issues?utf8=✓&q=is%3Aissue+is%3Aopen+sort%3Areactions-%2B1-desc+label%3A"good+first+issue"+
-[reactiflux]: https://www.reactiflux.com/
+[discord-badge]: https://img.shields.io/discord/723559267868737556.svg?color=7389D8&labelColor=6A7EC2&logo=discord&logoColor=ffffff&style=flat-square
+[discord]: https://discord.gg/c6JN9fM
 [stackoverflow]: https://stackoverflow.com/questions/tagged/react-testing-library
 [react-hooks-testing-library]: https://github.com/testing-library/react-hooks-testing-library
 
