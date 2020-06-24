@@ -3,8 +3,17 @@
 // and the part that is not cannot easily have useful tests written
 // anyway. So we're just going to ignore coverage for this file
 /**
- * copied from React's enqueueTask.js
+ * copied and modified from React's enqueueTask.js
  */
+
+function getIsUsingFakeTimers() {
+  return (
+    typeof jest !== 'undefined' &&
+    typeof setTimeout !== 'undefined' &&
+    (setTimeout.hasOwnProperty('_isMockFunction') ||
+      setTimeout.hasOwnProperty('clock'))
+  )
+}
 
 let didWarnAboutMessageChannel = false
 let enqueueTask
@@ -43,7 +52,15 @@ try {
 export default function flushMicroTasks() {
   return {
     then(resolve) {
-      enqueueTask(resolve)
+      if (getIsUsingFakeTimers()) {
+        // without this, a test using fake timers would never get microtasks
+        // actually flushed. I spent several days on this... Really hard to
+        // reproduce the problem, so there's no test for it. But it works!
+        jest.advanceTimersByTime(0)
+        resolve()
+      } else {
+        enqueueTask(resolve)
+      }
     },
   }
 }
