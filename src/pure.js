@@ -97,8 +97,10 @@ function render(
 }
 
 async function cleanup() {
-  await flush()
   mountedContainers.forEach(cleanupAtContainer)
+  // flush microtask queue after unmounting in case
+  // unmount sequence generates new microtasks
+  await flush()
 }
 
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
