@@ -588,6 +588,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://redd.one"><img src="https://avatars3.githubusercontent.com/u/14984911?v=4" width="100px;" alt=""/><br /><sub><b>Artem Zakharchenko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=kettanaito" title="Documentation">📖</a></td>
     <td align="center"><a href="http://michaelsiek.com"><img src="https://avatars0.githubusercontent.com/u/45568605?v=4" width="100px;" alt=""/><br /><sub><b>Michael</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=michael-siek" title="Documentation">📖</a></td>
     <td align="center"><a href="http://2dubbing.tistory.com"><img src="https://avatars2.githubusercontent.com/u/15885679?v=4" width="100px;" alt=""/><br /><sub><b>Braden Lee</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=2dubbing" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://kamranicus.com/"><img src="https://avatars1.githubusercontent.com/u/563819?v=4" width="100px;" alt=""/><br /><sub><b>Kamran Ayub</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=kamranayub" title="Code">💻</a> <a href="https://github.com/testing-library/react-testing-library/commits?author=kamranayub" title="Tests">⚠️</a></td>
   </tr>
 </table>
 
