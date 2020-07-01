@@ -8,11 +8,14 @@ node_js:
   - 12
   - 14
   - node
+env:
+  - REACT_NEXT=false
+  - REACT_NEXT=true
 install:
   - npm install
   # as requested by the React team :)
   # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
-  - if [ "$TRAVIS_EVENT_TYPE" = "cron" ]; then npm install react@next
+  - if [ "$REACT_NEXT" = true ]; then npm install react@next
     react-dom@next; fi
 script:
   - npm run validate
@@ -23,6 +26,8 @@ branches:
     - beta
 
 jobs:
+  allow_failures:
+    - env: REACT_NEXT=true
   include:
     - stage: release
       node_js: 14
