@@ -1,3 +1,7 @@
+import {
+  unstable_scheduleCallback as scheduleCallback,
+  unstable_NormalPriority as normalPriority,
+} from 'scheduler'
 /* istanbul ignore file */
 // the part of this file that we need tested is definitely being run
 // and the part that is not cannot easily have useful tests written
@@ -59,7 +63,11 @@ export default function flushMicroTasks() {
         jest.advanceTimersByTime(0)
         resolve()
       } else {
-        enqueueTask(resolve)
+        scheduleCallback(normalPriority, () => {
+          enqueueTask(() => {
+            resolve()
+          })
+        })
       }
     },
   }
