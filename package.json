@@ -50,7 +50,6 @@
     "@reach/router": "^1.3.3",
     "@testing-library/jest-dom": "^5.10.1",
     "@types/react-dom": "^16.9.8",
-    "@types/scheduler": "^0.16.1",
     "dotenv-cli": "^3.1.0",
     "dtslint": "3.6.12",
     "kcd-scripts": "^6.2.3",
@@ -62,8 +61,7 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-dom": "*",
-    "scheduler": "*"
+    "react-dom": "*"
   },
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",
