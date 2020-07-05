@@ -1,3 +1,5 @@
+import scheduleCallback from './scheduler-compat'
+
 /* istanbul ignore file */
 // the part of this file that we need tested is definitely being run
 // and the part that is not cannot easily have useful tests written
@@ -17,9 +19,6 @@ function getIsUsingFakeTimers() {
 
 let didWarnAboutMessageChannel = false
 let enqueueTask
-const globalObj = typeof window === 'undefined' ? global : window
-
-let Scheduler = globalObj.Scheduler
 
 try {
   // read require off the module object to get around the bundlers.
@@ -29,8 +28,6 @@ try {
   // assuming we're in node, let's try to get node's
   // version of setImmediate, bypassing fake timers if any.
   enqueueTask = nodeRequire.call(module, 'timers').setImmediate
-  // import React's scheduler so we'll be able to schedule our tasks later on.
-  Scheduler = nodeRequire.call(module, 'scheduler')
 } catch (_err) {
   // we're in a browser
   // we can't use regular timers because they may still be faked
@@ -55,15 +52,6 @@ try {
   }
 }
 
-// in case this react version has a Scheduler implementation, we use it,
-// if not, we just create a function calling our callback
-const scheduleCallback = Scheduler
-  ? Scheduler.scheduleCallback || Scheduler.unstable_scheduleCallback
-  : (_, cb) => cb()
-const NormalPriority = Scheduler
-  ? Scheduler.NormalPriority || Scheduler.unstable_NormalPriority
-  : null
-
 export default function flushMicroTasks() {
   return {
     then(resolve) {
@@ -74,7 +62,7 @@ export default function flushMicroTasks() {
         jest.advanceTimersByTime(0)
         resolve()
       } else {
-        scheduleCallback(NormalPriority, () => {
+        scheduleCallback(null, () => {
           enqueueTask(() => {
             resolve()
           })
