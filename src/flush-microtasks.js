@@ -1,5 +1,5 @@
 import React from 'react'
-import semver from 'semver'
+import satisfies from 'semver/functions/satisfies'
 
 /* istanbul ignore file */
 // the part of this file that we need tested is definitely being run
@@ -20,11 +20,9 @@ function getIsUsingFakeTimers() {
 
 const globalObj = typeof window === 'undefined' ? global : window
 let Scheduler = globalObj.Scheduler
-const isModernScheduleCallbackSupported = semver.satisfies(
-  React.version,
-  '>16.8.6',
-  {includePrerelease: true},
-)
+const isModernScheduleCallbackSupported = satisfies(React.version, '>16.8.6', {
+  includePrerelease: true,
+})
 
 let didWarnAboutMessageChannel = false
 let enqueueTask
