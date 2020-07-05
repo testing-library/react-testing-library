@@ -1,4 +1,5 @@
-import scheduleCallback from './scheduler-compat'
+import React from 'react'
+import semver from 'semver'
 
 /* istanbul ignore file */
 // the part of this file that we need tested is definitely being run
@@ -17,6 +18,14 @@ function getIsUsingFakeTimers() {
   )
 }
 
+const globalObj = typeof window === 'undefined' ? global : window
+let Scheduler = globalObj.Scheduler
+const isModernScheduleCallbackSupported = semver.satisfies(
+  React.version,
+  '>16.8.6',
+  {includePrerelease: true},
+)
+
 let didWarnAboutMessageChannel = false
 let enqueueTask
 
@@ -28,6 +37,8 @@ try {
   // assuming we're in node, let's try to get node's
   // version of setImmediate, bypassing fake timers if any.
   enqueueTask = nodeRequire.call(module, 'timers').setImmediate
+  // import React's scheduler so we'll be able to schedule our tasks later on.
+  Scheduler = nodeRequire.call(module, 'scheduler')
 } catch (_err) {
   // we're in a browser
   // we can't use regular timers because they may still be faked
@@ -52,6 +63,20 @@ try {
   }
 }
 
+function scheduleCallback(cb) {
+  const NormalPriority = Scheduler
+    ? Scheduler.NormalPriority || Scheduler.unstable_NormalPriority
+    : null
+
+  const scheduleFn = Scheduler
+    ? Scheduler.scheduleCallback || Scheduler.unstable_scheduleCallback
+    : callback => callback()
+
+  return isModernScheduleCallbackSupported
+    ? scheduleFn(NormalPriority, cb)
+    : scheduleFn(cb)
+}
+
 export default function flushMicroTasks() {
   return {
     then(resolve) {
@@ -62,7 +87,7 @@ export default function flushMicroTasks() {
         jest.advanceTimersByTime(0)
         resolve()
       } else {
-        scheduleCallback(null, () => {
+        scheduleCallback(() => {
           enqueueTask(() => {
             resolve()
           })
