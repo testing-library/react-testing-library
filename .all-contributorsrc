@@ -1131,6 +1131,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "MatanBobi",
+      "name": "Matan Borenkraout",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/12711091?v=4",
+      "profile": "https://twitter.com/matanbobi",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
