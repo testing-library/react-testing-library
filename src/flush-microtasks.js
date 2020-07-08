@@ -20,9 +20,6 @@ function getIsUsingFakeTimers() {
 
 const globalObj = typeof window === 'undefined' ? global : window
 let Scheduler = globalObj.Scheduler
-const isModernScheduleCallbackSupported = satisfies(React.version, '>16.8.6', {
-  includePrerelease: true,
-})
 
 let didWarnAboutMessageChannel = false
 let enqueueTask
@@ -58,8 +55,13 @@ try {
           'if you encounter this warning.',
       )
     }
+
   }
 }
+
+const isModernScheduleCallbackSupported = Scheduler && satisfies(React.version, '>16.8.6', {
+  includePrerelease: true,
+})
 
 function scheduleCallback(cb) {
   const NormalPriority = Scheduler
