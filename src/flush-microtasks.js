@@ -59,18 +59,12 @@ try {
       )
     }
 
-    if (isModernScheduleCallbackSupported) {
-      // eslint-disable-next-line no-console
-      console.error(
-        'This environment does not support module requiring, so we cannot require the Scheduler. ' +
-          'To fix this you can require the Scheduler in your test setup file.',
-      )
-
-      // Fallback to no scheduleCallback Supported.
-      isModernScheduleCallbackSupported = false
-    }
   }
 }
+
+const isModernScheduleCallbackSupported = Scheduler && satisfies(React.version, '>16.8.6', {
+  includePrerelease: true,
+})
 
 function scheduleCallback(cb) {
   const NormalPriority = Scheduler
