@@ -96,11 +96,7 @@ export default function flushMicroTasks() {
         jest.advanceTimersByTime(0)
         resolve()
       } else {
-        scheduleCallback(() => {
-          enqueueTask(() => {
-            resolve()
-          })
-        })
+        scheduleCallback(() => enqueueTask(resolve))
       }
     },
   }
