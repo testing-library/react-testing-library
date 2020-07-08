@@ -20,7 +20,7 @@ function getIsUsingFakeTimers() {
 
 const globalObj = typeof window === 'undefined' ? global : window
 let Scheduler = globalObj.Scheduler
-const isModernScheduleCallbackSupported = satisfies(React.version, '>16.8.6', {
+let isModernScheduleCallbackSupported = satisfies(React.version, '>16.8.6', {
   includePrerelease: true,
 })
 
@@ -57,6 +57,17 @@ try {
           'Please file an issue at https://github.com/facebook/react/issues ' +
           'if you encounter this warning.',
       )
+    }
+
+    if (isModernScheduleCallbackSupported) {
+      // eslint-disable-next-line no-console
+      console.error(
+        'This environment does not support module requiring, so we cannot require the Scheduler. ' +
+          'To fix this you can require the Scheduler in your test setup file.',
+      )
+
+      // Fallback to no scheduleCallback Supported.
+      isModernScheduleCallbackSupported = false
     }
   }
 }
