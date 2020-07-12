@@ -55,13 +55,14 @@ try {
           'if you encounter this warning.',
       )
     }
-
   }
 }
 
-const isModernScheduleCallbackSupported = Scheduler && satisfies(React.version, '>16.8.6', {
-  includePrerelease: true,
-})
+const isModernScheduleCallbackSupported =
+  Scheduler &&
+  satisfies(React.version, '>16.8.6', {
+    includePrerelease: true,
+  })
 
 function scheduleCallback(cb) {
   const NormalPriority = Scheduler
@@ -86,6 +87,9 @@ export default function flushMicroTasks() {
         // reproduce the problem, so there's no test for it. But it works!
         jest.advanceTimersByTime(0)
         resolve()
+      } else if (Scheduler && Scheduler.unstable_flushAll) {
+        Scheduler.unstable_flushAll()
+        enqueueTask(resolve)
       } else {
         scheduleCallback(() => enqueueTask(resolve))
       }
