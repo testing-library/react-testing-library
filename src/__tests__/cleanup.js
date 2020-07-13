@@ -31,7 +31,7 @@ test('cleanup waits for queued microtasks during unmount sequence', async () => 
   const spy = jest.fn()
 
   const Test = () => {
-    React.useEffect(() => () => setImmediate(spy))
+    React.useEffect(() => () => setTimeout(spy, 200))
 
     return null
   }
