@@ -87,3 +87,17 @@ test('renders options.wrapper around node', () => {
 </div>
 `)
 })
+
+test('flushes useEffect cleanup functions sync on unmount()', () => {
+  const spy = jest.fn()
+  function Component() {
+    React.useEffect(() => spy, [])
+    return null
+  }
+  const {unmount} = render(<Component />)
+  expect(spy).toHaveBeenCalledTimes(0)
+
+  unmount()
+
+  expect(spy).toHaveBeenCalledTimes(1)
+})
