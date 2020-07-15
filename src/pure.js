@@ -74,7 +74,11 @@ function render(
           el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el, maxLength, options)),
-    unmount: () => ReactDOM.unmountComponentAtNode(container),
+    unmount: () => {
+      act(() => {
+        ReactDOM.unmountComponentAtNode(container)
+      })
+    },
     rerender: rerenderUi => {
       render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
