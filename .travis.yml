@@ -9,7 +9,7 @@ node_js:
   - 14
   - node
 env:
-  - REACT_DIST=stable
+  - REACT_DIST=latest
   - REACT_DIST=next
   - REACT_DIST=experimental
 install:
