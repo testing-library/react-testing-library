@@ -28,6 +28,7 @@ const select = fireEvent.select
 fireEvent.select = (node, init) => {
   select(node, init)
   // React tracks this event only on focused inputs
+  // TODO probably need to fire focusin for JSDOM compat
   node.focus()
 
   // React creates this event when one of the following native events happens
@@ -39,6 +40,20 @@ fireEvent.select = (node, init) => {
   // so we can use any here
   // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/SelectEventPlugin.js#L203-L224
   fireEvent.keyUp(node, init)
+}
+
+// React event system tracks native focusout/focusin events for
+// running blur/focus handlers
+// @link https://github.com/facebook/react/pull/19186
+const blur = fireEvent.blur
+const focus = fireEvent.focus
+fireEvent.blur = (...args) => {
+  fireEvent.focusOut(...args)
+  return blur(...args)
+}
+fireEvent.focus = (...args) => {
+  fireEvent.focusIn(...args)
+  return focus(...args)
 }
 
 export {fireEvent}
