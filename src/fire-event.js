@@ -28,7 +28,6 @@ const select = fireEvent.select
 fireEvent.select = (node, init) => {
   select(node, init)
   // React tracks this event only on focused inputs
-  // TODO probably need to fire focusin for JSDOM compat
   node.focus()
 
   // React creates this event when one of the following native events happens
