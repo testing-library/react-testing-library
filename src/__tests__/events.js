@@ -211,3 +211,30 @@ test('calling `fireEvent` directly works too', () => {
     }),
   )
 })
+
+test('blur/foucs bubbles in react', () => {
+  const handleBlur = jest.fn()
+  const handleBubbledBlur = jest.fn()
+  const handleFocus = jest.fn()
+  const handleBubbledFocus = jest.fn()
+  const {container} = render(
+    <div onBlur={handleBubbledBlur} onFocus={handleBubbledFocus}>
+      <button onBlur={handleBlur} onFocus={handleFocus} />
+    </div>,
+  )
+  const button = container.firstChild.firstChild
+
+  fireEvent.focus(button)
+
+  expect(handleBlur).toHaveBeenCalledTimes(0)
+  expect(handleBubbledBlur).toHaveBeenCalledTimes(0)
+  expect(handleFocus).toHaveBeenCalledTimes(1)
+  expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
+
+  fireEvent.blur(button)
+
+  expect(handleBlur).toHaveBeenCalledTimes(1)
+  expect(handleBubbledBlur).toHaveBeenCalledTimes(1)
+  expect(handleFocus).toHaveBeenCalledTimes(1)
+  expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
+})
