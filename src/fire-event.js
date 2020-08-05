@@ -41,4 +41,18 @@ fireEvent.select = (node, init) => {
   fireEvent.keyUp(node, init)
 }
 
+// React event system tracks native focusout/focusin events for
+// running blur/focus handlers
+// @link https://github.com/facebook/react/pull/19186
+const blur = fireEvent.blur
+const focus = fireEvent.focus
+fireEvent.blur = (...args) => {
+  fireEvent.focusOut(...args)
+  return blur(...args)
+}
+fireEvent.focus = (...args) => {
+  fireEvent.focusIn(...args)
+  return focus(...args)
+}
+
 export {fireEvent}

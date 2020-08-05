@@ -9,14 +9,14 @@ node_js:
   - 14
   - node
 env:
-  - REACT_NEXT=false
-  - REACT_NEXT=true
+  - REACT_DIST=latest
+  - REACT_DIST=next
+  - REACT_DIST=experimental
 install:
   - npm install
   # as requested by the React team :)
   # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
-  - if [ "$REACT_NEXT" = true ]; then npm install react@next
-    react-dom@next; fi
+  - npm install react@$REACT_DIST react-dom@$REACT_DIST
 script:
   - npm run validate
   - npx codecov@3
@@ -27,7 +27,8 @@ branches:
 
 jobs:
   allow_failures:
-    - env: REACT_NEXT=true
+    - REACT_DIST=next
+    - REACT_DIST=experimental
   include:
     - stage: release
       node_js: 14
