@@ -1140,6 +1140,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "radar",
+      "name": "Ryan Bigg",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2687?v=4",
+      "profile": "http://ryanbigg.com",
+      "contributions": [
+        "maintenance"
+      ]
     }
   ],
   "contributorsPerLine": 7,
