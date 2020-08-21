@@ -1,7 +1,7 @@
 import React from 'react'
-import {render, cleanup, act} from '../'
+import {render, cleanup} from '../'
 
-test('cleans up the document', async () => {
+test('cleans up the document', () => {
   const spy = jest.fn()
   const divId = 'my-div'
 
@@ -17,17 +17,17 @@ test('cleans up the document', async () => {
   }
 
   render(<Test />)
-  await cleanup()
+  cleanup()
   expect(document.body).toBeEmptyDOMElement()
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
-test('cleanup does not error when an element is not a child', async () => {
+test('cleanup does not error when an element is not a child', () => {
   render(<div />, {container: document.createElement('div')})
-  await cleanup()
+  cleanup()
 })
 
-test('cleanup runs effect cleanup functions', async () => {
+test('cleanup runs effect cleanup functions', () => {
   const spy = jest.fn()
 
   const Test = () => {
@@ -37,7 +37,7 @@ test('cleanup runs effect cleanup functions', async () => {
   }
 
   render(<Test />)
-  await cleanup()
+  cleanup()
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
@@ -54,7 +54,7 @@ describe('fake timers and missing act warnings', () => {
     jest.useRealTimers()
   })
 
-  test('cleanup does not flush immediates', async () => {
+  test('cleanup does not flush immediates', () => {
     const microTaskSpy = jest.fn()
     function Test() {
       const counter = 1
@@ -77,7 +77,7 @@ describe('fake timers and missing act warnings', () => {
     }
     render(<Test />)
 
-    await cleanup()
+    cleanup()
 
     expect(microTaskSpy).toHaveBeenCalledTimes(0)
     // console.error is mocked
@@ -85,7 +85,7 @@ describe('fake timers and missing act warnings', () => {
     expect(console.error).toHaveBeenCalledTimes(0)
   })
 
-  test('cleanup does not swallow missing act warnings', async () => {
+  test('cleanup does not swallow missing act warnings', () => {
     const deferredStateUpdateSpy = jest.fn()
     function Test() {
       const counter = 1
@@ -109,7 +109,7 @@ describe('fake timers and missing act warnings', () => {
     render(<Test />)
 
     jest.runAllImmediates()
-    await cleanup()
+    cleanup()
 
     expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)
     // console.error is mocked
