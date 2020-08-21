@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, cleanup} from '../'
+import {render, cleanup, act} from '../'
 
 test('cleans up the document', async () => {
   const spy = jest.fn()
@@ -39,4 +39,85 @@ test('cleanup runs effect cleanup functions', async () => {
   render(<Test />)
   await cleanup()
   expect(spy).toHaveBeenCalledTimes(1)
+})
+
+describe('fake timers and missing act warnings', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+    jest.spyOn(console, 'error').mockImplementation(() => {
+      // assert messages aexplicitly
+    })
+    jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  test('cleanup does not flush immediates', async () => {
+    const microTaskSpy = jest.fn()
+    function Test() {
+      const counter = 1
+      const [, setDeferredCounter] = React.useState(null)
+      React.useEffect(() => {
+        let cancelled = false
+        setImmediate(() => {
+          microTaskSpy()
+          if (!cancelled) {
+            setDeferredCounter(counter)
+          }
+        })
+
+        return () => {
+          cancelled = true
+        }
+      }, [counter])
+
+      return null
+    }
+    render(<Test />)
+
+    await cleanup()
+
+    expect(microTaskSpy).toHaveBeenCalledTimes(0)
+    // console.error is mocked
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledTimes(0)
+  })
+
+  test('cleanup does not swallow missing act warnings', async () => {
+    const deferredStateUpdateSpy = jest.fn()
+    function Test() {
+      const counter = 1
+      const [, setDeferredCounter] = React.useState(null)
+      React.useEffect(() => {
+        let cancelled = false
+        setImmediate(() => {
+          deferredStateUpdateSpy()
+          if (!cancelled) {
+            setDeferredCounter(counter)
+          }
+        })
+
+        return () => {
+          cancelled = true
+        }
+      }, [counter])
+
+      return null
+    }
+    render(<Test />)
+
+    jest.runAllImmediates()
+    await cleanup()
+
+    expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)
+    // console.error is mocked
+    // eslint-disable-next-line no-console
+    expect(console.error).toHaveBeenCalledTimes(1)
+    // eslint-disable-next-line no-console
+    expect(console.error.mock.calls[0][0]).toMatch(
+      'a test was not wrapped in act(...)',
+    )
+  })
 })
