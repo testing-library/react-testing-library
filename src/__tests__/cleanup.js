@@ -45,7 +45,7 @@ describe('fake timers and missing act warnings', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     jest.spyOn(console, 'error').mockImplementation(() => {
-      // assert messages aexplicitly
+      // assert messages explicitly
     })
     jest.useFakeTimers()
   })
