@@ -7,7 +7,6 @@ import {
 } from '@testing-library/dom'
 import act, {asyncAct} from './act-compat'
 import {fireEvent} from './fire-event'
-import flush from './flush-microtasks'
 
 configureDTL({
   asyncWrapper: async cb => {
@@ -100,17 +99,16 @@ function render(
   }
 }
 
-async function cleanup() {
+function cleanup() {
   mountedContainers.forEach(cleanupAtContainer)
-  // flush microtask queue after unmounting in case
-  // unmount sequence generates new microtasks
-  await flush()
 }
 
 // maybe one day we'll expose this (perhaps even as a utility returned by render).
 // but let's wait until someone asks for it.
 function cleanupAtContainer(container) {
-  ReactDOM.unmountComponentAtNode(container)
+  act(() => {
+    ReactDOM.unmountComponentAtNode(container)
+  })
   if (container.parentNode === document.body) {
     document.body.removeChild(container)
   }
