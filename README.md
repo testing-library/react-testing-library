@@ -54,7 +54,7 @@ practices.</p>
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [The problem](#the-problem)
-- [This solution](#this-solution)
+- [The solution](#the-solution)
 - [Installation](#installation)
   - [Suppressing unnecessary warnings on React DOM 16.8](#suppressing-unnecessary-warnings-on-react-dom-168)
 - [Examples](#examples)
@@ -83,7 +83,7 @@ maintainable in the long run so refactors of your components (changes to
 implementation but not functionality) don't break your tests and slow you and
 your team down.
 
-## This solution
+## The solution
 
 The `React Testing Library` is a very lightweight solution for testing React
 components. It provides light utility functions on top of `react-dom` and
@@ -104,7 +104,7 @@ npm install --save-dev @testing-library/react
 
 or
 
-for installation via [yarn](https://classic.yarnpkg.com/en/)
+for installation via [yarn][yarn]
 
 ```
 yarn add --dev @testing-library/react
@@ -132,7 +132,7 @@ the following snippet to your test configuration
 
 ```js
 // this is just a little hack to silence a warning that we'll get until we
-// upgrade to 16.9: https://github.com/facebook/react/pull/14853
+// upgrade to 16.9. See also: https://github.com/facebook/react/pull/14853
 const originalError = console.error
 beforeAll(() => {
   console.error = (...args) => {
@@ -156,8 +156,8 @@ afterAll(() => {
 // hidden-message.js
 import React from 'react'
 
-// NOTE: React Testing Library works with React Hooks _and_ classes just as well
-// and your tests will be the same however you write your components.
+// NOTE: React Testing Library works well with React Hooks and classes.
+// Your tests will be the same regardless of how you write your components.
 function HiddenMessage({children}) {
   const [showMessage, setShowMessage] = React.useState(false)
   return (
@@ -372,7 +372,7 @@ You can also find React Testing Library examples at
 If you are interested in testing a custom hook, check out [React Hooks Testing
 Library][react-hooks-testing-library].
 
-> NOTE it is not recommended to test single-use custom hooks in isolation from
+> NOTE: it is not recommended to test single-use custom hooks in isolation from
 > the components where it's being used. It's better to test the component that's
 > using the hook rather than the hook itself. The `React Hooks Testing Library`
 > is intended to be used for reusable hooks/libraries.
@@ -383,7 +383,7 @@ Library][react-hooks-testing-library].
 > confidence they can give you.][guiding-principle]
 
 We try to only expose methods and utilities that encourage you to write tests
-that closely resemble how your react components are used.
+that closely resemble how your React components are used.
 
 Utilities are included in this project based on the following guiding
 principles:
@@ -397,8 +397,8 @@ principles:
     `react-dom`.
 3.  Utility implementations and APIs should be simple and flexible.
 
-At the end of the day, what we want is for this library to be pretty
-light-weight, simple, and understandable.
+Most importantly, we want React Testing Library to be pretty
+light-weight, simple, and easy to understand.
 
 ## Docs
 
@@ -407,8 +407,8 @@ light-weight, simple, and understandable.
 
 ## Issues
 
-_Looking to contribute? Look for the [Good First Issue][good-first-issue]
-label._
+Looking to contribute? Look for the [Good First Issue][good-first-issue]
+label.
 
 ### 🐛 Bugs
 
@@ -608,6 +608,7 @@ Contributions of any kind welcome!
 <!-- prettier-ignore-start -->
 
 [npm]: https://www.npmjs.com/
+[yarn]: https://classic.yarnpkg.com
 [node]: https://nodejs.org
 [build-badge]: https://img.shields.io/travis/testing-library/react-testing-library.svg?style=flat-square
 [build]: https://travis-ci.org/testing-library/react-testing-library
