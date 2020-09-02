@@ -1149,6 +1149,15 @@
       "contributions": [
         "maintenance"
       ]
+    },
+    {
+      "login": "antonhalim",
+      "name": "Anton Halim",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/10498035?v=4",
+      "profile": "https://antonhalim.com",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
