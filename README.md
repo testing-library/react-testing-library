@@ -594,6 +594,7 @@ Thanks goes to these people ([emoji key][emojis]):
   </tr>
   <tr>
     <td align="center"><a href="https://antonhalim.com"><img src="https://avatars1.githubusercontent.com/u/10498035?v=4" width="100px;" alt=""/><br /><sub><b>Anton Halim</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=antonhalim" title="Documentation">📖</a></td>
+    <td align="center"><a href="http://artmalko.ru"><img src="https://avatars0.githubusercontent.com/u/1823689?v=4" width="100px;" alt=""/><br /><sub><b>Artem Malko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=artem-malko" title="Code">💻</a></td>
   </tr>
 </table>
 
