@@ -47,7 +47,7 @@ export function render<Q extends Queries>(
 /**
  * Unmounts React trees that were mounted with render.
  */
-export function cleanup(): Promise<void>
+export function cleanup(): void
 
 /**
  * Simply calls ReactDOMTestUtils.act(cb)
