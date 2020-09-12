@@ -24,6 +24,17 @@ fireEvent.mouseLeave = (...args) => {
   return fireEvent.mouseOut(...args)
 }
 
+const pointerEnter = fireEvent.pointerEnter
+const pointerLeave = fireEvent.pointerLeave
+fireEvent.pointerEnter = (...args) => {
+  pointerEnter(...args)
+  return fireEvent.pointerOver(...args)
+}
+fireEvent.pointerLeave = (...args) => {
+  pointerLeave(...args)
+  return fireEvent.pointerOut(...args)
+}
+
 const select = fireEvent.select
 fireEvent.select = (node, init) => {
   select(node, init)
