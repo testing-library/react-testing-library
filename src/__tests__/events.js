@@ -76,9 +76,8 @@ const eventTypes = [
       'pointerCancel',
       'pointerOut',
       'pointerLeave',
-      // FIXME: Issue in dtl? Manual dispatch works in test "gotPointerCapture"
-      // 'gotPointerCapture',
-      // 'lostPointerCapture',
+      'gotPointerCapture',
+      'lostPointerCapture',
     ],
     elementType: 'button',
   },
@@ -257,22 +256,4 @@ test('blur/foucs bubbles in react', () => {
   expect(handleBubbledBlur).toHaveBeenCalledTimes(1)
   expect(handleFocus).toHaveBeenCalledTimes(1)
   expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
-})
-
-test('gotPointerCapture', () => {
-  const handlePointerCapture = jest.fn()
-  const {container} = render(
-    <button onGotPointerCapture={handlePointerCapture}>Button</button>,
-  )
-  const button = container.querySelector('button')
-
-  fireEvent(
-    button,
-    new MouseEvent('gotpointercapture', {
-      cancelable: true,
-      bubbles: true,
-    }),
-  )
-
-  expect(handlePointerCapture).toHaveBeenCalledTimes(1)
 })
