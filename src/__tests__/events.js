@@ -216,7 +216,7 @@ test('calling `fireEvent` directly works too', () => {
   const {
     container: {firstChild: button},
   } = render(<button onClick={handleEvent} />)
-  fireEvent.pointerEnter(
+  fireEvent(
     button,
     new Event('MouseEvent', {
       bubbles: true,
