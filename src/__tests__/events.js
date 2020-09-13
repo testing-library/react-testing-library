@@ -63,6 +63,22 @@ const eventTypes = [
     elementType: 'button',
   },
   {
+    type: 'Pointer',
+    events: [
+      'pointerOver',
+      'pointerEnter',
+      'pointerDown',
+      'pointerMove',
+      'pointerUp',
+      'pointerCancel',
+      'pointerOut',
+      'pointerLeave',
+      'gotPointerCapture',
+      'lostPointerCapture',
+    ],
+    elementType: 'button',
+  },
+  {
     type: 'Selection',
     events: ['select'],
     elementType: 'input',
@@ -195,26 +211,6 @@ test('onChange works', () => {
   } = render(<input onChange={handleChange} />)
   fireEvent.change(input, {target: {value: 'a'}})
   expect(handleChange).toHaveBeenCalledTimes(1)
-})
-
-test('calling `onPointerEnter` directly works too', () => {
-  const handlePointerEnter = jest.fn()
-  const handlePointerLeave = jest.fn()
-  const {container} = render(
-    <div>
-      <button
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
-      />
-    </div>,
-  )
-  const button = container.firstChild.firstChild
-
-  fireEvent.pointerEnter(button)
-  expect(handlePointerEnter).toHaveBeenCalledTimes(1)
-
-  fireEvent.pointerLeave(button)
-  expect(handlePointerLeave).toHaveBeenCalledTimes(1)
 })
 
 test('calling `fireEvent` directly works too', () => {
