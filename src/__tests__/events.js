@@ -63,10 +63,7 @@ const eventTypes = [
     elementType: 'button',
   },
   {
-    // PointerEvent isn't supported in JSDOM.
-    // We're using MouseEvent since PointerEvent extends it.
-    // type: 'Pointer',
-    type: 'Mouse',
+    type: 'Pointer',
     events: [
       'pointerOver',
       'pointerEnter',
