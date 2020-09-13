@@ -197,12 +197,26 @@ test('onChange works', () => {
   expect(handleChange).toHaveBeenCalledTimes(1)
 })
 
+test('calling `onPointerEnter` directly works too', () => {
+  const handleBlur = jest.fn()
+  const {container} = render(
+    <div>
+      <button onPointerEnter={handleBlur} />
+    </div>,
+  )
+  const button = container.firstChild.firstChild
+
+  fireEvent.pointerEnter(button)
+
+  expect(handleBlur).toHaveBeenCalledTimes(1)
+})
+
 test('calling `fireEvent` directly works too', () => {
   const handleEvent = jest.fn()
   const {
     container: {firstChild: button},
   } = render(<button onClick={handleEvent} />)
-  fireEvent(
+  fireEvent.pointerEnter(
     button,
     new Event('MouseEvent', {
       bubbles: true,
