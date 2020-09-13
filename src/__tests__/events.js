@@ -199,16 +199,22 @@ test('onChange works', () => {
 
 test('calling `onPointerEnter` directly works too', () => {
   const handlePointerEnter = jest.fn()
+  const handlePointerLeave = jest.fn()
   const {container} = render(
     <div>
-      <button onPointerEnter={handlePointerEnter} />
+      <button
+        onPointerEnter={handlePointerEnter}
+        onPointerLeave={handlePointerLeave}
+      />
     </div>,
   )
   const button = container.firstChild.firstChild
 
   fireEvent.pointerEnter(button)
-
   expect(handlePointerEnter).toHaveBeenCalledTimes(1)
+
+  fireEvent.pointerLeave(button)
+  expect(handlePointerLeave).toHaveBeenCalledTimes(1)
 })
 
 test('calling `fireEvent` directly works too', () => {
