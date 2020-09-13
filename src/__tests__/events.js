@@ -63,6 +63,26 @@ const eventTypes = [
     elementType: 'button',
   },
   {
+    // PointerEvent isn't supported in JSDOM.
+    // We're using MouseEvent since PointerEvent extends it.
+    // type: 'Pointer',
+    type: 'Mouse',
+    events: [
+      'pointerOver',
+      'pointerEnter',
+      'pointerDown',
+      'pointerMove',
+      'pointerUp',
+      'pointerCancel',
+      'pointerOut',
+      'pointerLeave',
+      // FIXME: Issue in dtl? Manual dispatch works in test "gotPointerCapture"
+      // 'gotPointerCapture',
+      // 'lostPointerCapture',
+    ],
+    elementType: 'button',
+  },
+  {
     type: 'Selection',
     events: ['select'],
     elementType: 'input',
@@ -197,26 +217,6 @@ test('onChange works', () => {
   expect(handleChange).toHaveBeenCalledTimes(1)
 })
 
-test('calling `onPointerEnter` directly works too', () => {
-  const handlePointerEnter = jest.fn()
-  const handlePointerLeave = jest.fn()
-  const {container} = render(
-    <div>
-      <button
-        onPointerEnter={handlePointerEnter}
-        onPointerLeave={handlePointerLeave}
-      />
-    </div>,
-  )
-  const button = container.firstChild.firstChild
-
-  fireEvent.pointerEnter(button)
-  expect(handlePointerEnter).toHaveBeenCalledTimes(1)
-
-  fireEvent.pointerLeave(button)
-  expect(handlePointerLeave).toHaveBeenCalledTimes(1)
-})
-
 test('calling `fireEvent` directly works too', () => {
   const handleEvent = jest.fn()
   const {
@@ -257,4 +257,22 @@ test('blur/foucs bubbles in react', () => {
   expect(handleBubbledBlur).toHaveBeenCalledTimes(1)
   expect(handleFocus).toHaveBeenCalledTimes(1)
   expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
+})
+
+test('gotPointerCapture', () => {
+  const handlePointerCapture = jest.fn()
+  const {container} = render(
+    <button onGotPointerCapture={handlePointerCapture}>Button</button>,
+  )
+  const button = container.querySelector('button')
+
+  fireEvent(
+    button,
+    new MouseEvent('gotpointercapture', {
+      cancelable: true,
+      bubbles: true,
+    }),
+  )
+
+  expect(handlePointerCapture).toHaveBeenCalledTimes(1)
 })
