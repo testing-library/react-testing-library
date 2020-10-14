@@ -597,6 +597,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://artmalko.ru"><img src="https://avatars0.githubusercontent.com/u/1823689?v=4" width="100px;" alt=""/><br /><sub><b>Artem Malko</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=artem-malko" title="Code">💻</a></td>
     <td align="center"><a href="http://gerritalex.de"><img src="https://avatars1.githubusercontent.com/u/29307652?v=4" width="100px;" alt=""/><br /><sub><b>Gerrit Alex</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ljosberinn" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/karthick3018"><img src="https://avatars1.githubusercontent.com/u/47154512?v=4" width="100px;" alt=""/><br /><sub><b>Karthick Raja</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=karthick3018" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/theashraf"><img src="https://avatars1.githubusercontent.com/u/39750790?v=4" width="100px;" alt=""/><br /><sub><b>Abdelrahman Ashraf</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=theashraf" title="Code">💻</a></td>
   </tr>
 </table>
 
