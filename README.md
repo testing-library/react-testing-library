@@ -233,7 +233,9 @@ function Login() {
           password: passwordInput.value,
         }),
       })
-      .then(r => r.json())
+      .then((r) =>
+        r.json().then((data) => (r.ok ? data : Promise.reject(data)))
+      )
       .then(
         user => {
           setState({loading: false, resolved: true, error: null})
@@ -282,9 +284,10 @@ import {setupServer} from 'msw/node'
 import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
 
+const fakeUserResponse = { token: 'fake_user_token' }
 const server = setupServer(
   rest.post('/api/login', (req, res, ctx) => {
-    return res(ctx.json({token: 'fake_user_token'}))
+    return res(ctx.json(fakeUserResponse))
   }),
 )
 
@@ -322,7 +325,7 @@ test('allows the user to login successfully', async () => {
 test('handles server exceptions', async () => {
   // mock the server error response for this test suite only.
   server.use(
-    rest.post('/', (req, res, ctx) => {
+    rest.post('/api/login', (req, res, ctx) => {
       return res(ctx.status(500), ctx.json({message: 'Internal server error'}))
     }),
   )
