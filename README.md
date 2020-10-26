@@ -601,6 +601,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://gerritalex.de"><img src="https://avatars1.githubusercontent.com/u/29307652?v=4" width="100px;" alt=""/><br /><sub><b>Gerrit Alex</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ljosberinn" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/karthick3018"><img src="https://avatars1.githubusercontent.com/u/47154512?v=4" width="100px;" alt=""/><br /><sub><b>Karthick Raja</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=karthick3018" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/theashraf"><img src="https://avatars1.githubusercontent.com/u/39750790?v=4" width="100px;" alt=""/><br /><sub><b>Abdelrahman Ashraf</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=theashraf" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lidoravitan"><img src="https://avatars0.githubusercontent.com/u/35113398?v=4" width="100px;" alt=""/><br /><sub><b>Lidor Avitan</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=lidoravitan" title="Documentation">📖</a></td>
   </tr>
 </table>
 
