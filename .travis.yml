@@ -7,6 +7,14 @@ node_js:
   - 10.14.2
   - 12
   - 14
+  - 15
+env:
+  - REACT_DIST=latest
+  - REACT_DIST=next
+  - REACT_DIST=experimental
+  # node15 compat
+  # Revisit once https://github.com/npm/cli/pull/2047 is released.
+  - npm_config_yes=true
 env:
   - REACT_DIST=latest
   - REACT_DIST=next
