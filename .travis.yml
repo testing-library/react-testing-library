@@ -29,6 +29,7 @@ jobs:
   allow_failures:
     - REACT_DIST=next
     - REACT_DIST=experimental
+    - node_js: node
   include:
     - stage: release
       node_js: 14
