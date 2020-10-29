@@ -7,12 +7,15 @@ node_js:
   - 10.14.2
   - 12
   - 14
-  - node
+  - 15
 env:
   - REACT_DIST=latest
   - REACT_DIST=next
   - REACT_DIST=experimental
 install:
+  # 7.0.6 fixed CI environments prompting user input.
+  # Can be removed once node15 bumps the shipped npm version.
+  - npm install --global npm@>=7.0.6
   - npm install
   # as requested by the React team :)
   # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
