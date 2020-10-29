@@ -154,7 +154,7 @@ afterAll(() => {
 
 ```jsx
 // hidden-message.js
-import React from 'react'
+import * as React from 'react'
 
 // NOTE: React Testing Library works well with React Hooks and classes.
 // Your tests will be the same regardless of how you write your components.
@@ -184,7 +184,7 @@ export default HiddenMessage
 import '@testing-library/jest-dom'
 // NOTE: jest-dom adds handy assertions to Jest and is recommended, but not required
 
-import React from 'react'
+import * as React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 import HiddenMessage from '../hidden-message'
 
@@ -209,7 +209,7 @@ test('shows the children when the checkbox is checked', () => {
 
 ```jsx
 // login.js
-import React from 'react'
+import * as React from 'react'
 
 function Login() {
   const [state, setState] = React.useReducer((s, a) => ({...s, ...a}), {
@@ -233,9 +233,7 @@ function Login() {
           password: passwordInput.value,
         }),
       })
-      .then((r) =>
-        r.json().then((data) => (r.ok ? data : Promise.reject(data)))
-      )
+      .then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
       .then(
         user => {
           setState({loading: false, resolved: true, error: null})
@@ -276,7 +274,7 @@ export default Login
 // again, these first two imports are something you'd normally handle in
 // your testing framework configuration rather than importing them in every file.
 import '@testing-library/jest-dom'
-import React from 'react'
+import * as React from 'react'
 // import API mocking utilities from Mock Service Worker.
 import {rest} from 'msw'
 import {setupServer} from 'msw/node'
@@ -284,7 +282,7 @@ import {setupServer} from 'msw/node'
 import {render, fireEvent, screen} from '@testing-library/react'
 import Login from '../login'
 
-const fakeUserResponse = { token: 'fake_user_token' }
+const fakeUserResponse = {token: 'fake_user_token'}
 const server = setupServer(
   rest.post('/api/login', (req, res, ctx) => {
     return res(ctx.json(fakeUserResponse))
@@ -400,8 +398,8 @@ principles:
     `react-dom`.
 3.  Utility implementations and APIs should be simple and flexible.
 
-Most importantly, we want React Testing Library to be pretty
-light-weight, simple, and easy to understand.
+Most importantly, we want React Testing Library to be pretty light-weight,
+simple, and easy to understand.
 
 ## Docs
 
@@ -410,8 +408,7 @@ light-weight, simple, and easy to understand.
 
 ## Issues
 
-Looking to contribute? Look for the [Good First Issue][good-first-issue]
-label.
+Looking to contribute? Look for the [Good First Issue][good-first-issue] label.
 
 ### 🐛 Bugs
 
@@ -607,6 +604,7 @@ Thanks goes to these people ([emoji key][emojis]):
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.

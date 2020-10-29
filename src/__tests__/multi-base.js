@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {render} from '../'
 
 // these are created once per test suite and reused for each case

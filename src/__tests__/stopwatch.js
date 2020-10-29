@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {render, fireEvent, screen} from '../'
 
 class StopWatch extends React.Component {
