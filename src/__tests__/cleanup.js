@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import {render, cleanup} from '../'
 
 test('cleans up the document', () => {
