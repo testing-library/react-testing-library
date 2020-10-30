@@ -599,12 +599,12 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/karthick3018"><img src="https://avatars1.githubusercontent.com/u/47154512?v=4" width="100px;" alt=""/><br /><sub><b>Karthick Raja</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=karthick3018" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/theashraf"><img src="https://avatars1.githubusercontent.com/u/39750790?v=4" width="100px;" alt=""/><br /><sub><b>Abdelrahman Ashraf</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=theashraf" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/lidoravitan"><img src="https://avatars0.githubusercontent.com/u/35113398?v=4" width="100px;" alt=""/><br /><sub><b>Lidor Avitan</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=lidoravitan" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/ljharb"><img src="https://avatars1.githubusercontent.com/u/45469?v=4" width="100px;" alt=""/><br /><sub><b>Jordan Harband</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/pulls?q=is%3Apr+reviewed-by%3Aljharb" title="Reviewed Pull Requests">👀</a> <a href="#ideas-ljharb" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
-
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification.
