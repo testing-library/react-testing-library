@@ -1,7 +1,11 @@
 // TypeScript Version: 3.8
 
-import {OptionsReceived as PrettyFormatOptions} from 'pretty-format'
-import {queries, Queries, BoundFunction} from '@testing-library/dom'
+import {
+  queries,
+  Queries,
+  BoundFunction,
+  prettyFormat,
+} from '@testing-library/dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
@@ -15,7 +19,7 @@ export type RenderResult<Q extends Queries = typeof queries> = {
       | DocumentFragment
       | Array<HTMLElement | DocumentFragment>,
     maxLength?: number,
-    options?: PrettyFormatOptions,
+    options?: prettyFormat.OptionsReceived,
   ) => void
   rerender: (ui: React.ReactElement) => void
   unmount: () => boolean
