@@ -2,7 +2,7 @@ import * as React from 'react'
 import {render, fireEvent, screen, waitFor} from '@testing-library/react'
 import * as pure from '@testing-library/react/pure'
 
-async function testRender() {
+export async function testRender() {
   const page = render(<div />)
 
   // single queries
@@ -17,9 +17,10 @@ async function testRender() {
 
   // helpers
   const {container, rerender, debug} = page
+  return {container, rerender, debug}
 }
 
-async function testPureRender() {
+export async function testPureRender() {
   const page = pure.render(<div />)
 
   // single queries
@@ -34,20 +35,21 @@ async function testPureRender() {
 
   // helpers
   const {container, rerender, debug} = page
+  return {container, rerender, debug}
 }
 
-async function testRenderOptions() {
+export function testRenderOptions() {
   const container = document.createElement('div')
   const options = {container}
   render(<div />, options)
 }
 
-async function testFireEvent() {
+export function testFireEvent() {
   const {container} = render(<button />)
   fireEvent.click(container)
 }
 
-async function testDebug() {
+export function testDebug() {
   const {debug, getAllByTestId} = render(
     <>
       <h2 data-testid="testid">Hello World</h2>
@@ -57,14 +59,22 @@ async function testDebug() {
   debug(getAllByTestId('testid'))
 }
 
-async function testScreen() {
+export async function testScreen() {
   render(<button />)
 
-  screen.findByRole('button')
+  await screen.findByRole('button')
 }
 
-async function testWaitFor() {
+export async function testWaitFor() {
   const {container} = render(<button />)
   fireEvent.click(container)
   await waitFor(() => {})
 }
+
+/*
+eslint
+  testing-library/prefer-explicit-assert: "off",
+  testing-library/no-wait-for-empty-callback: "off",
+  testing-library/no-debug: "off",
+  testing-library/prefer-screen-queries: "off"
+*/
