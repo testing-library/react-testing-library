@@ -48,7 +48,6 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.6",
-    "@types/estree": "0.0.45",
     "@types/react-dom": "^16.9.9",
     "dotenv-cli": "^4.0.0",
     "dtslint": "4.0.5",
