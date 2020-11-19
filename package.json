@@ -43,18 +43,18 @@
   "author": "Kent C. Dodds <me@kentcdodds.com> (https://kentcdodds.com)",
   "license": "MIT",
   "dependencies": {
-    "@babel/runtime": "^7.12.1",
-    "@testing-library/dom": "^7.26.6"
+    "@babel/runtime": "^7.12.5",
+    "@testing-library/dom": "^7.27.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.5",
-    "@types/react-dom": "^16.9.8",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@types/react-dom": "^16.9.9",
     "dotenv-cli": "^4.0.0",
-    "dtslint": "4.0.4",
-    "kcd-scripts": "^6.6.0",
+    "dtslint": "4.0.5",
+    "kcd-scripts": "^7.0.3",
     "npm-run-all": "^4.1.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "rimraf": "^3.0.2",
     "typescript": "^4.0.5"
   },

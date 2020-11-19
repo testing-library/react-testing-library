@@ -11,6 +11,7 @@
     "strictFunctionTypes": true,
     "noEmit": true,
     "baseUrl": ".",
+    "skipLibCheck": true,
     "paths": {
       "@testing-library/react": ["."],
       "@testing-library/react/pure": ["."]
