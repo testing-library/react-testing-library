@@ -11,13 +11,13 @@ import {act as reactAct} from 'react-dom/test-utils'
 export * from '@testing-library/dom'
 
 export type RenderResult<Q extends Queries = typeof queries> = {
-  container: HTMLElement
-  baseElement: HTMLElement
+  container: Element
+  baseElement: Element
   debug: (
     baseElement?:
-      | HTMLElement
+      | Element
       | DocumentFragment
-      | Array<HTMLElement | DocumentFragment>,
+      | Array<Element | DocumentFragment>,
     maxLength?: number,
     options?: prettyFormat.OptionsReceived,
   ) => void
@@ -27,8 +27,8 @@ export type RenderResult<Q extends Queries = typeof queries> = {
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
 export interface RenderOptions<Q extends Queries = typeof queries> {
-  container?: HTMLElement
-  baseElement?: HTMLElement
+  container?: Element
+  baseElement?: Element
   hydrate?: boolean
   queries?: Q
   wrapper?: React.ComponentType
