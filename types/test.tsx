@@ -44,6 +44,15 @@ export function testRenderOptions() {
   render(<div />, options)
 }
 
+export function testSVGRenderOptions() {
+  const container = document.createElementNS(
+    'http://www.w3.org/2000/svg',
+    'svg',
+  )
+  const options = {container}
+  render(<svg />, options)
+}
+
 export function testFireEvent() {
   const {container} = render(<button />)
   fireEvent.click(container)
