@@ -1,6 +1,6 @@
 import * as React from 'react'
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
-import * as pure from '@testing-library/react/pure'
+import {render, fireEvent, screen, waitFor} from '.'
+import * as pure from './pure'
 
 export async function testRender() {
   const page = render(<div />)
