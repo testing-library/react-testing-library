@@ -23,9 +23,9 @@ test('hydrate will not update props until next render', () => {
     hydrate: true,
   })
 
-  expect(initialInputElement.value).toBe(firstValue)
+  expect(initialInputElement).toHaveValue(firstValue)
 
   const secondValue = 'goodbye'
   rerender(<input value={secondValue} onChange={() => null} />)
-  expect(initialInputElement.value).toBe(secondValue)
+  expect(initialInputElement).toHaveValue(secondValue)
 })
