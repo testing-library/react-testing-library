@@ -100,10 +100,7 @@ function render(
   
   return {
     ...response,
-    then: async (callback) => {
-      await act(async () => {});
-      callback(response);
-    }
+    then: (resolve, reject) => act(async () => {}).then(resolve, reject),
   }
 }
 
