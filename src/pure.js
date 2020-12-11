@@ -96,6 +96,10 @@ function render(
       }
     },
     ...getQueriesForElement(baseElement, queries),
+    then: async (callback) => {
+      await act(async () => {});
+      callback();
+    }
   }
 }
 
