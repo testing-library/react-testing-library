@@ -64,7 +64,7 @@ function render(
     }
   })
 
-  return {
+  const response = {
     container,
     baseElement,
     debug: (el = baseElement, maxLength, options) =>
@@ -96,9 +96,13 @@ function render(
       }
     },
     ...getQueriesForElement(baseElement, queries),
+  }
+  
+  return {
+    ...response,
     then: async (callback) => {
       await act(async () => {});
-      callback();
+      callback(response);
     }
   }
 }
