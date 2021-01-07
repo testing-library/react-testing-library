@@ -22,7 +22,7 @@ export type RenderResult<Q extends Queries = typeof queries> = {
     options?: prettyFormat.OptionsReceived,
   ) => void
   rerender: (ui: React.ReactElement) => void
-  unmount: () => boolean
+  unmount: () => void
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
