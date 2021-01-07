@@ -1222,6 +1222,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "sanchit121",
+      "name": "sanchit121",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/30828115?v=4",
+      "profile": "https://github.com/sanchit121",
+      "contributions": [
+        "bug",
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
