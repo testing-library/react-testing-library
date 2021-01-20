@@ -23,7 +23,7 @@ Thanks for your interest in the project. We appreciate bugs filed and PRs submit
   instead of filing an issue on GitHub. You can follow the instructions in this
   codesandbox to make a reproduction of your issue: https://kcd.im/rtl-help
   * Discord
-    https://discord.gg/c6JN9fM
+    https://discord.gg/testing-library
   * Stack Overflow
     https://stackoverflow.com/questions/tagged/react-testing-library
 
@@ -61,6 +61,7 @@ for the supported version.
 Relevant code or config
 
 ```javascript
+
 ```
 
 What you did:

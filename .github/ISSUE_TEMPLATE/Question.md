@@ -16,7 +16,7 @@ For questions related to using the library, please visit a support community
 instead of filing an issue on GitHub. You can follow the instructions in this
 codesandbox to make a reproduction of your issue: https://kcd.im/rtl-help
 
-- Discord https://discord.gg/c6JN9fM
+- Discord https://discord.gg/testing-library
 - Stack Overflow
   https://stackoverflow.com/questions/tagged/react-testing-library
 - Documentation: https://github.com/testing-library/testing-library-docs
