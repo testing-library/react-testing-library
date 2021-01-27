@@ -3,7 +3,7 @@ import {render, fireEvent, screen, waitFor} from '.'
 import * as pure from './pure'
 
 export async function testRender() {
-  const page = render(<div />)
+  const page = render(<button />)
 
   // single queries
   page.getByText('foo')
@@ -22,7 +22,7 @@ export async function testRender() {
 }
 
 export async function testPureRender() {
-  const page = pure.render(<div />)
+  const page = pure.render(<button />)
 
   // single queries
   page.getByText('foo')
@@ -43,8 +43,9 @@ export async function testPureRender() {
 export function testRenderOptions() {
   const container = document.createElement('div')
   const options = {container}
-  const {container: returnedContainer} = render(<div />, options)
-  // Unclear why TypeScript infers `HTMLElement` here when the the input `container` is `HTMLDivElement`
+  const {container: returnedContainer} = render(<button />, options)
+  // Unclear why TypeScript infers `HTMLElement` here when the the input `container` is `HTMLDivElement`.
+  // It's working for `testSVGRenderOptions`. 
   // Hopefully this breaks someday and we can switch to
   // expectType<HTMLDivElement, typeof returnedContainer>(returnedContainer)
   expectType<HTMLElement, typeof returnedContainer>(returnedContainer)
@@ -56,7 +57,7 @@ export function testSVGRenderOptions() {
     'svg',
   )
   const options = {container}
-  const {container: returnedContainer} = render(<svg />, options)
+  const {container: returnedContainer} = render(<path />, options)
   expectType<SVGSVGElement, typeof returnedContainer>(returnedContainer)
 }
 
