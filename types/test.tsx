@@ -44,11 +44,7 @@ export function testRenderOptions() {
   const container = document.createElement('div')
   const options = {container}
   const {container: returnedContainer} = render(<button />, options)
-  // Unclear why TypeScript infers `HTMLElement` here when the the input `container` is `HTMLDivElement`.
-  // It's working for `testSVGRenderOptions`. 
-  // Hopefully this breaks someday and we can switch to
-  // expectType<HTMLDivElement, typeof returnedContainer>(returnedContainer)
-  expectType<HTMLElement, typeof returnedContainer>(returnedContainer)
+  expectType<HTMLDivElement, typeof returnedContainer>(returnedContainer)
 }
 
 export function testSVGRenderOptions() {

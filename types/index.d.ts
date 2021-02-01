@@ -46,10 +46,6 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /**
  * Render into a container which is appended to document.body. It should be used with cleanup.
  */
-export function render(
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'queries'>,
-): RenderResult
 export function render<
   Q extends Queries,
   Container extends Element | DocumentFragment = HTMLElement
@@ -57,6 +53,10 @@ export function render<
   ui: React.ReactElement,
   options: RenderOptions<Q, Container>,
 ): RenderResult<Q, Container>
+export function render(
+  ui: React.ReactElement,
+  options?: Omit<RenderOptions, 'queries'>,
+): RenderResult
 
 /**
  * Unmounts React trees that were mounted with render.
