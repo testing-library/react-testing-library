@@ -84,6 +84,22 @@ export async function testWaitFor() {
   await waitFor(() => {})
 }
 
+export function testQueries() {
+  const {getByLabelText} = render(
+    <label htmlFor="usernameInput">Username</label>,
+  )
+  expectType<HTMLElement, ReturnType<typeof getByText>>(
+    getByLabelText('Username'),
+  )
+
+  const container = document.createElement('div')
+  const options = {container}
+  const {getByText} = render(<div>Hello World</div>, options)
+  expectType<HTMLElement, ReturnType<typeof getByText>>(
+    getByText('Hello World'),
+  )
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
