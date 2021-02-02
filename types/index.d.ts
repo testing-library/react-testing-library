@@ -6,12 +6,16 @@ import {
   BoundFunction,
   prettyFormat,
 } from '@testing-library/dom'
+import {Renderer} from 'react-dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
 
-export type RenderResult<Q extends Queries = typeof queries> = {
-  container: Element
+export type RenderResult<
+  Q extends Queries = typeof queries,
+  Container extends Element | DocumentFragment = HTMLElement
+> = {
+  container: Container
   baseElement: Element
   debug: (
     baseElement?:
@@ -26,8 +30,11 @@ export type RenderResult<Q extends Queries = typeof queries> = {
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
-export interface RenderOptions<Q extends Queries = typeof queries> {
-  container?: Element
+export interface RenderOptions<
+  Q extends Queries = typeof queries,
+  Container extends Element | DocumentFragment = HTMLElement
+> {
+  container?: Container
   baseElement?: Element
   hydrate?: boolean
   queries?: Q
@@ -39,14 +46,17 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 /**
  * Render into a container which is appended to document.body. It should be used with cleanup.
  */
+export function render<
+  Q extends Queries,
+  Container extends Element | DocumentFragment = HTMLElement
+>(
+  ui: React.ReactElement,
+  options: RenderOptions<Q, Container>,
+): RenderResult<Q, Container>
 export function render(
   ui: React.ReactElement,
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
-export function render<Q extends Queries>(
-  ui: React.ReactElement,
-  options: RenderOptions<Q>,
-): RenderResult<Q>
 
 /**
  * Unmounts React trees that were mounted with render.
