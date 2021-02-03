@@ -88,7 +88,7 @@ export function testQueries() {
   const {getByLabelText} = render(
     <label htmlFor="usernameInput">Username</label>,
   )
-  expectType<HTMLElement, ReturnType<typeof getByText>>(
+  expectType<HTMLElement, ReturnType<typeof getByLabelText>>(
     getByLabelText('Username'),
   )
 
