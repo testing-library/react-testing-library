@@ -228,7 +228,7 @@ test('calling `fireEvent` directly works too', () => {
   )
 })
 
-test('blur/foucs bubbles in react', () => {
+test('blur/focus bubbles in react', () => {
   const handleBlur = jest.fn()
   const handleBubbledBlur = jest.fn()
   const handleFocus = jest.fn()
