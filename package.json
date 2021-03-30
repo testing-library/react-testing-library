@@ -26,7 +26,7 @@
     "dont-cleanup-after-each.js",
     "pure.js",
     "pure.d.ts",
-    "types"
+    "types/*.d.ts"
   ],
   "keywords": [
     "testing",
