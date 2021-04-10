@@ -58,9 +58,9 @@ function isDiscreteEvent(type) {
   return discreteEvents.has(type)
 }
 
-function noAct(cb) {
-  // Don't alter semantics of `cb`.
-  cb()
+function noAct(callback) {
+  // Don't alter semantics of `callback`.
+  callback()
   // But make sure updates are flushed before returning.
   act(() => {})
 }
