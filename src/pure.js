@@ -16,13 +16,6 @@ configureDTL({
     })
     return result
   },
-  eventWrapper: cb => {
-    let result
-    act(() => {
-      result = cb()
-    })
-    return result
-  },
 })
 
 const mountedContainers = new Set()

@@ -1,13 +1,39 @@
 import {fireEvent as dtlFireEvent} from '@testing-library/dom'
+import act from './act-compat'
+
+const discreteEvents = new Set()
+function isDiscreteEvent(type) {
+  return discreteEvents.has(type)
+}
+
+function noAct(cb) {
+  cb()
+}
 
 // react-testing-library's version of fireEvent will call
 // dom-testing-library's version of fireEvent. The reason
 // we make this distinction however is because we have
 // a few extra events that work a bit differently
-const fireEvent = (...args) => dtlFireEvent(...args)
+function fireEvent(element, event, ...args) {
+  const eventWrapper = isDiscreteEvent(event.type) ? noAct : act
+
+  let fireEventReturnValue
+  eventWrapper(() => {
+    fireEventReturnValue = dtlFireEvent(element, event, ...args)
+  })
+  return fireEventReturnValue
+}
 
 Object.keys(dtlFireEvent).forEach(key => {
-  fireEvent[key] = (...args) => dtlFireEvent[key](...args)
+  fireEvent[key] = (element, ...args) => {
+    const eventWrapper = isDiscreteEvent(key.toLowerCase()) ? noAct : act
+
+    let fireEventReturnValue
+    eventWrapper(() => {
+      fireEventReturnValue = dtlFireEvent[key](element, ...args)
+    })
+    return fireEventReturnValue
+  }
 })
 
 // React event system tracks native mouseOver/mouseOut events for
