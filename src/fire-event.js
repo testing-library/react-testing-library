@@ -1,7 +1,59 @@
 import {fireEvent as dtlFireEvent} from '@testing-library/dom'
 import act from './act-compat'
 
-const discreteEvents = new Set()
+// https://github.com/facebook/react/blob/b48b38af68c27fd401fe4b923a8fa0b229693cd4/packages/react-dom/src/events/ReactDOMEventListener.js#L310-L366
+const discreteEvents = new Set([
+  'cancel',
+  'click',
+  'close',
+  'contextmenu',
+  'copy',
+  'cut',
+  'auxclick',
+  'dblclick',
+  'dragend',
+  'dragstart',
+  'drop',
+  'focusin',
+  'focusout',
+  'input',
+  'invalid',
+  'keydown',
+  'keypress',
+  'keyup',
+  'mousedown',
+  'mouseup',
+  'paste',
+  'pause',
+  'play',
+  'pointercancel',
+  'pointerdown',
+  'pointerup',
+  'ratechange',
+  'reset',
+  'seeked',
+  'submit',
+  'touchcancel',
+  'touchend',
+  'touchstart',
+  'volumechange',
+  'change',
+  'selectionchange',
+  'textInput',
+  'compositionstart',
+  'compositionend',
+  'compositionupdate',
+  'beforeblur',
+  'afterblur',
+  'beforeinput',
+  'blur',
+  'fullscreenchange',
+  'focus',
+  'hashchange',
+  'popstate',
+  'select',
+  'selectstart',
+])
 function isDiscreteEvent(type) {
   return discreteEvents.has(type)
 }
@@ -15,6 +67,9 @@ function noAct(cb) {
 // we make this distinction however is because we have
 // a few extra events that work a bit differently
 function fireEvent(element, event, ...args) {
+  // `act` would simulate how this event would behave if dispatched from a React event listener.
+  // In almost all cases we want to simulate how this event behaves in response to a user interaction.
+  // See discussion in https://github.com/facebook/react/pull/21202
   const eventWrapper = isDiscreteEvent(event.type) ? noAct : act
 
   let fireEventReturnValue
@@ -26,6 +81,9 @@ function fireEvent(element, event, ...args) {
 
 Object.keys(dtlFireEvent).forEach(key => {
   fireEvent[key] = (element, ...args) => {
+    // `act` would simulate how this event would behave if dispatched from a React event listener.
+    // In almost all cases we want to simulate how this event behaves in response to a user interaction.
+    // See discussion in https://github.com/facebook/react/pull/21202
     const eventWrapper = isDiscreteEvent(key.toLowerCase()) ? noAct : act
 
     let fireEventReturnValue
