@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import {render, fireEvent} from '../'
 
 const eventTypes = [
@@ -253,4 +254,51 @@ test('blur/focus bubbles in react', () => {
   expect(handleBubbledBlur).toHaveBeenCalledTimes(1)
   expect(handleFocus).toHaveBeenCalledTimes(1)
   expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
+})
+
+test('discrete events are not wrapped in act', () => {
+  function AddDocumentClickListener({onClick}) {
+    React.useEffect(() => {
+      document.addEventListener('click', onClick)
+      return () => {
+        document.removeEventListener('click', onClick)
+      }
+    }, [onClick])
+    return null
+  }
+  function Component({onDocumentClick}) {
+    const [open, setOpen] = React.useState(false)
+
+    return (
+      <React.Fragment>
+        <button onClick={() => setOpen(true)} />
+        {open &&
+          ReactDOM.createPortal(
+            <AddDocumentClickListener onClick={onDocumentClick} />,
+            document.body,
+          )}
+      </React.Fragment>
+    )
+  }
+  const onDocumentClick = jest.fn()
+  render(<Component onDocumentClick={onDocumentClick} />)
+
+  const button = document.querySelector('button')
+  fireEvent.click(button)
+
+  // We added a native click listener from an effect.
+  // There are two possible scenarios:
+  // 1. If that effect is flushed during the click the native click listener would still receive the event that caused the native listener to be added.
+  // 2. If that effect is flushed before we return from fireEvent.click the native click listener would not receive the event that caused the native listener to be added.
+  // React flushes effects scheduled from an update by a "discrete" event immediately.
+  // but not effects in a batched context (e.g. act(() => {}))
+  // So if we were in act(() => {}), we would see scenario 2 i.e. `onDocumentClick` would not be called
+  // If we were not in `act(() => {})`, we would see scenario 1 i.e. `onDocumentClick` would already be called
+  expect(onDocumentClick).toHaveBeenCalledTimes(1)
+
+  // verify we did actually flush the effect before we returned from `fireEvent.click` i.e. the native click listener is mounted.
+  document.dispatchEvent(
+    new MouseEvent('click', {bubbles: true, cancelable: true}),
+  )
+  expect(onDocumentClick).toHaveBeenCalledTimes(2)
 })
