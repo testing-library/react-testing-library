@@ -295,7 +295,7 @@ test.each([
     // There are two possible scenarios:
     // 1. If that effect is flushed during the click the native click listener would still receive the event that caused the native listener to be added.
     // 2. If that effect is flushed before we return from fireEvent.click the native click listener would not receive the event that caused the native listener to be added.
-    // React flushes effects scheduled from an update by a "discrete" event immediately.
+    // React flushes effects scheduled from an update by a "discrete" event immediately if that effect was scheduled from a portaled component.
     // but not effects in a batched context (e.g. act(() => {}))
     // So if we were in act(() => {}), we would see scenario 2 i.e. `onDocumentClick` would not be called
     // If we were not in `act(() => {})`, we would see scenario 1 i.e. `onDocumentClick` would already be called

@@ -59,7 +59,10 @@ function isDiscreteEvent(type) {
 }
 
 function noAct(cb) {
+  // Don't alter semantics of `cb`.
   cb()
+  // But make sure updates are flushed before returning.
+  act(() => {})
 }
 
 // react-testing-library's version of fireEvent will call
