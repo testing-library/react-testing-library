@@ -6,7 +6,7 @@
     height="80"
     width="80"
     alt="goat"
-    src="https://raw.githubusercontent.com/testing-library/react-testing-library/master/other/goat.png"
+    src="https://raw.githubusercontent.com/testing-library/react-testing-library/main/other/goat.png"
   />
 </a>
 
@@ -44,7 +44,7 @@ practices.</p>
     <img
       width="500"
       alt="TestingJavaScript.com Learn the smart, efficient way to test any JavaScript application."
-      src="https://raw.githubusercontent.com/testing-library/react-testing-library/master/other/testingjavascript.jpg"
+      src="https://raw.githubusercontent.com/testing-library/react-testing-library/main/other/testingjavascript.jpg"
     />
   </a>
 </div>
@@ -362,9 +362,9 @@ You'll find runnable examples of testing with different libraries in
 [the `react-testing-library-examples` codesandbox](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples).
 Some included are:
 
-- [`react-redux`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-redux.js&previewwindow=tests)
-- [`react-router`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-router.js&previewwindow=tests)
-- [`react-context`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/master/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-context.js&previewwindow=tests)
+- [`react-redux`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/main/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-redux.js&previewwindow=tests)
+- [`react-router`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/main/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-router.js&previewwindow=tests)
+- [`react-context`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/main/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-context.js&previewwindow=tests)
 
 You can also find React Testing Library examples at
 [react-testing-examples.com](https://react-testing-examples.com/jest-rtl/).
@@ -636,11 +636,11 @@ Contributions of any kind welcome!
 [downloads-badge]: https://img.shields.io/npm/dm/@testing-library/react.svg?style=flat-square
 [npmtrends]: http://www.npmtrends.com/@testing-library/react
 [license-badge]: https://img.shields.io/npm/l/@testing-library/react.svg?style=flat-square
-[license]: https://github.com/testing-library/react-testing-library/blob/master/LICENSE
+[license]: https://github.com/testing-library/react-testing-library/blob/main/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]: https://github.com/testing-library/react-testing-library/blob/master/CODE_OF_CONDUCT.md
+[coc]: https://github.com/testing-library/react-testing-library/blob/main/CODE_OF_CONDUCT.md
 [github-watch-badge]: https://img.shields.io/github/watchers/testing-library/react-testing-library.svg?style=social
 [github-watch]: https://github.com/testing-library/react-testing-library/watchers
 [github-star-badge]: https://img.shields.io/github/stars/testing-library/react-testing-library.svg?style=social
