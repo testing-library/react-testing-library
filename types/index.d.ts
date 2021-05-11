@@ -34,10 +34,38 @@ export interface RenderOptions<
   Q extends Queries = typeof queries,
   Container extends Element | DocumentFragment = HTMLElement
 > {
+  /** By default, React Testing Library will create a div and append that div to the document.body and this is 
+   *  where your React component will be rendered. If you provide your own HTMLElement container via this option,
+   *  it will not be appended to the document.body automatically.
+   *
+   *  For example: If you are unit testing a tablebody element, it cannot be a child of a div. In this case, you can
+   *  specify a table as the render container.
+   * 
+   *  @link https://testing-library.com/docs/react-testing-library/api/#container
+   */
   container?: Container
+  /** If the container is specified, then this defaults to that, otherwise this defaults to document.body. This is used as 
+   *  the base element for the queries as well as what is printed when you use debug().
+   *  
+   *  @link https://testing-library.com/docs/react-testing-library/api/#baseelement
+   */
   baseElement?: Element
+  /** If hydrate is set to true, then it will render with ReactDOM.hydrate. This may be useful if you are using server-side
+   *  rendering and use ReactDOM.hydrate to mount your components.
+   * 
+   *  @link https://testing-library.com/docs/react-testing-library/api/#hydrate)
+   */
   hydrate?: boolean
+  /** Queries to bind. Overrides the default set from DOM Testing Library unless merged. 
+   * 
+   *  @link https://testing-library.com/docs/react-testing-library/api/#queries
+   */
   queries?: Q
+  /** Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for creating
+   *  reusable custom render functions for common data providers. See setup for examples.
+   * 
+   *  @link https://testing-library.com/docs/react-testing-library/api/#wrapper
+   */
   wrapper?: React.ComponentType
 }
 
