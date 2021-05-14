@@ -1252,6 +1252,15 @@
       "contributions": [
         "test"
       ]
+    },
+    {
+      "login": "jhnns",
+      "name": "Johannes Ewald",
+      "avatar_url": "https://avatars.githubusercontent.com/u/781746?v=4",
+      "profile": "https://github.com/jhnns",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
