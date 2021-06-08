@@ -1,3 +1,5 @@
+jest.mock('scheduler', () => require('scheduler/unstable_mock'))
+jest.mock('../src/pure')
 import '@testing-library/jest-dom/extend-expect'
 
 let consoleErrorMock
