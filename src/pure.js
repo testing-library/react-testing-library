@@ -4,18 +4,13 @@ import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
+  waitFor as waitForDTL,
+  waitForElementToBeRemoved as waitForElementToBeRemovedDTL,
 } from '@testing-library/dom'
 import act, {asyncAct} from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
-  asyncWrapper: async cb => {
-    let result
-    await asyncAct(async () => {
-      result = await cb()
-    })
-    return result
-  },
   eventWrapper: cb => {
     let result
     act(() => {
@@ -197,9 +192,29 @@ function cleanup() {
   mountedContainers.clear()
 }
 
+function waitFor(callback, options) {
+  return waitForDTL(() => {
+    let result
+    act(() => {
+      result = callback()
+    })
+    return result
+  }, options)
+}
+
+function waitForElementToBeRemoved(callback, options) {
+  return waitForElementToBeRemovedDTL(() => {
+    let result
+    act(() => {
+      result = callback()
+    })
+    return result
+  }, options)
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, act, fireEvent}
+export {render, cleanup, act, fireEvent, waitFor, waitForElementToBeRemoved}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility
 // thing for people using react-dom@16.8.0. Anyone else doesn't need it and
