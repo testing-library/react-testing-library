@@ -54,15 +54,16 @@ describe('fake timers and missing act warnings', () => {
     jest.useRealTimers()
   })
 
-  test('cleanup does not flush immediates', () => {
+  test('cleanup does not flush microtasks', () => {
     const microTaskSpy = jest.fn()
     function Test() {
       const counter = 1
       const [, setDeferredCounter] = React.useState(null)
       React.useEffect(() => {
         let cancelled = false
-        setImmediate(() => {
+        Promise.resolve().then(() => {
           microTaskSpy()
+          // eslint-disable-next-line jest/no-if -- false positive
           if (!cancelled) {
             setDeferredCounter(counter)
           }
@@ -92,12 +93,12 @@ describe('fake timers and missing act warnings', () => {
       const [, setDeferredCounter] = React.useState(null)
       React.useEffect(() => {
         let cancelled = false
-        setImmediate(() => {
+        setTimeout(() => {
           deferredStateUpdateSpy()
           if (!cancelled) {
             setDeferredCounter(counter)
           }
-        })
+        }, 0)
 
         return () => {
           cancelled = true
@@ -108,7 +109,7 @@ describe('fake timers and missing act warnings', () => {
     }
     render(<Test />)
 
-    jest.runAllImmediates()
+    jest.runAllTimers()
     cleanup()
 
     expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)

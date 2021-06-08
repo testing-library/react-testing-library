@@ -49,7 +49,7 @@ test('async act recovers from errors', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
-        "call console.error",
+        call console.error,
       ],
     ]
   `)
@@ -67,7 +67,7 @@ test('async act recovers from sync errors', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
-        "call console.error",
+        call console.error,
       ],
     ]
   `)

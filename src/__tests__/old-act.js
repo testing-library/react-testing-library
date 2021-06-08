@@ -32,18 +32,18 @@ test('async act works even when the act is an old one', async () => {
     console.error('sigil')
   })
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
-        Array [
-          Array [
-            "sigil",
-          ],
-          Array [
-            "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
-          ],
-          Array [
-            "sigil",
-          ],
-        ]
-    `)
+    Array [
+      Array [
+        sigil,
+      ],
+      Array [
+        It looks like you're using a version of react-dom that supports the "act" function, but not an awaitable version of "act" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.,
+      ],
+      Array [
+        sigil,
+      ],
+    ]
+  `)
   expect(callback).toHaveBeenCalledTimes(1)
 
   // and it doesn't warn you twice
@@ -71,10 +71,10 @@ test('async act recovers from async errors', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
-        "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
+        It looks like you're using a version of react-dom that supports the "act" function, but not an awaitable version of "act" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.,
       ],
       Array [
-        "call console.error",
+        call console.error,
       ],
     ]
   `)
@@ -92,7 +92,7 @@ test('async act recovers from sync errors', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
-        "call console.error",
+        call console.error,
       ],
     ]
   `)
@@ -109,11 +109,11 @@ test('async act can handle any sort of console.error', async () => {
     Array [
       Array [
         Object {
-          "error": "some error",
+          error: some error,
         },
       ],
       Array [
-        "It looks like you're using a version of react-dom that supports the \\"act\\" function, but not an awaitable version of \\"act\\" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.",
+        It looks like you're using a version of react-dom that supports the "act" function, but not an awaitable version of "act" which you will need. Please upgrade to at least react-dom@16.9.0 to remove this warning.,
       ],
     ]
   `)

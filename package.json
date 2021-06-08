@@ -50,7 +50,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@types/react-dom": "^17.0.0",
     "dotenv-cli": "^4.0.0",
-    "kcd-scripts": "^7.5.1",
+    "kcd-scripts": "^11.1.0",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -68,7 +68,10 @@
       "react/no-adjacent-inline-elements": "off",
       "import/no-unassigned-import": "off",
       "import/named": "off",
-      "testing-library/no-dom-import": "off"
+      "testing-library/no-container": "off",
+      "testing-library/no-dom-import": "off",
+      "testing-library/no-unnecessary-act": "off",
+      "testing-library/prefer-user-event": "off"
     }
   },
   "eslintIgnore": [

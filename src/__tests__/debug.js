@@ -43,8 +43,8 @@ test('allows same arguments as prettyDOM', () => {
   expect(console.log).toHaveBeenCalledTimes(1)
   expect(console.log.mock.calls[0]).toMatchInlineSnapshot(`
     Array [
-      "<div>
-    ...",
+      <div>
+    ...,
     ]
   `)
 })

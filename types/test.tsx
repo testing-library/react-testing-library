@@ -3,39 +3,39 @@ import {render, fireEvent, screen, waitFor} from '.'
 import * as pure from './pure'
 
 export async function testRender() {
-  const page = render(<button />)
+  const view = render(<button />)
 
   // single queries
-  page.getByText('foo')
-  page.queryByText('foo')
-  await page.findByText('foo')
+  view.getByText('foo')
+  view.queryByText('foo')
+  await view.findByText('foo')
 
   // multiple queries
-  page.getAllByText('bar')
-  page.queryAllByText('bar')
-  await page.findAllByText('bar')
+  view.getAllByText('bar')
+  view.queryAllByText('bar')
+  await view.findAllByText('bar')
 
   // helpers
-  const {container, rerender, debug} = page
+  const {container, rerender, debug} = view
   expectType<HTMLElement, typeof container>(container)
   return {container, rerender, debug}
 }
 
 export async function testPureRender() {
-  const page = pure.render(<button />)
+  const view = pure.render(<button />)
 
   // single queries
-  page.getByText('foo')
-  page.queryByText('foo')
-  await page.findByText('foo')
+  view.getByText('foo')
+  view.queryByText('foo')
+  await view.findByText('foo')
 
   // multiple queries
-  page.getAllByText('bar')
-  page.queryAllByText('bar')
-  await page.findAllByText('bar')
+  view.getAllByText('bar')
+  view.queryAllByText('bar')
+  await view.findAllByText('bar')
 
   // helpers
-  const {container, rerender, debug} = page
+  const {container, rerender, debug} = view
   expectType<HTMLElement, typeof container>(container)
   return {container, rerender, debug}
 }
