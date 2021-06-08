@@ -102,10 +102,10 @@ test('flushes useEffect cleanup functions sync on unmount()', () => {
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
-test('throws if `concurrent` is used with an incomaptible version', () => {
+test('throws if `legacyRoot: false` is used with an incomaptible version', () => {
   const isConcurrentReact = typeof ReactDOM.createRoot === 'function'
 
-  const performConcurrentRender = () => render(<div />, {concurrent: true})
+  const performConcurrentRender = () => render(<div />, {legacyRoot: false})
 
   // eslint-disable-next-line jest/no-if -- jest doesn't support conditional tests
   if (isConcurrentReact) {
