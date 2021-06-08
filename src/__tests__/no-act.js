@@ -2,7 +2,7 @@ let act, asyncAct
 
 beforeEach(() => {
   jest.resetModules()
-  act = require('..').act
+  act = require('../pure').act
   asyncAct = require('../act-compat').asyncAct
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
