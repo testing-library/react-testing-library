@@ -139,7 +139,7 @@ function render(
   {
     container,
     baseElement = container,
-    legacyRoot,
+    legacyRoot = typeof ReactDOM.createRoot !== 'function',
     queries,
     hydrate = false,
     wrapper,
@@ -157,10 +157,7 @@ function render(
   let root
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
-    const createRootImpl =
-      legacyRoot === true || typeof ReactDOM.createRoot !== 'function'
-        ? createLegacyRoot
-        : createConcurrentRoot
+    const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
     root = createRootImpl(container, {hydrate})
 
     mountedRootEntries.push({container, root})

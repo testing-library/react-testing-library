@@ -114,7 +114,7 @@ test('throws if `legacyRoot: false` is used with an incomaptible version', () =>
   } else {
     // eslint-disable-next-line jest/no-conditional-expect -- yes, jest still doesn't support conditional tests
     expect(performConcurrentRender).toThrowError(
-      `"Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html)."`,
+      `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).`,
     )
   }
 })
