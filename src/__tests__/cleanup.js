@@ -63,6 +63,7 @@ describe('fake timers and missing act warnings', () => {
         let cancelled = false
         setImmediate(() => {
           microTaskSpy()
+          // eslint-disable-next-line jest/no-if -- false positive
           if (!cancelled) {
             setDeferredCounter(counter)
           }
