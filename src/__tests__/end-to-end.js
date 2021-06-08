@@ -30,9 +30,6 @@ class ComponentWithLoader extends React.Component {
 }
 
 test('it waits for the data to be loaded', async () => {
-  // TODO: https://github.com/reactwg/react-18/discussions/23#discussioncomment-812450
-  jest.useFakeTimers()
-
   render(<ComponentWithLoader />)
   const loading = () => screen.getByText('Loading...')
   await waitForElementToBeRemoved(loading)
