@@ -21,6 +21,7 @@ configureDTL({
     act(() => {
       // TODO: Remove ReactDOM.flushSync once `act` flushes the microtask queue.
       // Otherwise `act` wrapping updates that schedule microtask would need to be followed with `await null` to flush the microtask queue manually
+      // See https://github.com/reactwg/react-18/discussions/21#discussioncomment-796755
       result = ReactDOM.flushSync(cb)
     })
     return result
