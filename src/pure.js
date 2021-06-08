@@ -7,7 +7,7 @@ import {
   waitFor as waitForDTL,
   waitForElementToBeRemoved as waitForElementToBeRemovedDTL,
 } from '@testing-library/dom'
-import act, {asyncAct} from './act-compat'
+import act from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({

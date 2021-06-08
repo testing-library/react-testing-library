@@ -1,5 +1,3 @@
-jest.mock('scheduler', () => require('scheduler/unstable_mock'))
-jest.mock('../src/pure')
 import '@testing-library/jest-dom/extend-expect'
 
 let consoleErrorMock
@@ -20,3 +18,6 @@ beforeEach(() => {
 afterEach(() => {
   consoleErrorMock.mockRestore()
 })
+
+// eslint-disable-next-line import/no-extraneous-dependencies -- need the version from React not an explicitly declared one
+jest.mock('scheduler', () => require('scheduler/unstable_mock'))
