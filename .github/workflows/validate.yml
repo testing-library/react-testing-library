@@ -48,6 +48,8 @@ jobs:
 
       - name: ⬆️ Upload coverage report
         uses: codecov/codecov-action@v1
+        with:
+          flags: ${{ matrix.react }}
 
   release:
     needs: main
