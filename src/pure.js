@@ -44,6 +44,7 @@ function createConcurrentRoot(container, options) {
 
   return {
     hydrate(element) {
+      /* istanbul ignore if */
       if (!options.hydrate) {
         throw new Error(
           'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
