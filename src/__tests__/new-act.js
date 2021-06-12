@@ -1,4 +1,4 @@
-let asyncAct
+let asyncAct, consoleErrorMock
 
 jest.mock('react-dom/test-utils', () => ({
   act: cb => {
@@ -9,11 +9,11 @@ jest.mock('react-dom/test-utils', () => ({
 beforeEach(() => {
   jest.resetModules()
   asyncAct = require('../act-compat').asyncAct
-  jest.spyOn(console, 'error').mockImplementation(() => {})
+  consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 afterEach(() => {
-  console.error.mockRestore()
+  consoleErrorMock.mockRestore()
 })
 
 test('async act works when it does not exist (older versions of react)', async () => {
