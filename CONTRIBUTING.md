@@ -50,6 +50,5 @@ Also, please watch the repo and respond to questions/bug reports/feature
 requests! Thanks!
 
 [egghead]:
-  https://app.egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
-[all-contributors]: https://github.com/all-contributors/all-contributors
+  https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
 [issues]: https://github.com/testing-library/react-testing-library/issues
