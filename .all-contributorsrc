@@ -1261,6 +1261,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "anpaopao",
+      "name": "Angus J. Pope",
+      "avatar_url": "https://avatars.githubusercontent.com/u/44686792?v=4",
+      "profile": "https://github.com/anpaopao",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
