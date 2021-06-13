@@ -37,7 +37,7 @@ merge of your pull request!
 - [ ] Documentation added to the
       [docs site](https://github.com/testing-library/testing-library-docs)
 - [ ] Tests
-- [ ] Typescript definitions updated
+- [ ] TypeScript definitions updated
 - [ ] Ready to be merged
       <!-- In your opinion, is this ready to be merged as soon as it's reviewed? -->
 
