@@ -83,10 +83,7 @@ describe('fake timers and missing act warnings', () => {
     expect(microTaskSpy).toHaveBeenCalledTimes(0)
     // console.error is mocked
     // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledTimes(
-      // ReactDOM.render is deprecated in React 18
-      React.version.startsWith('18') ? 1 : 0,
-    )
+    expect(console.error).toHaveBeenCalledTimes(0)
   })
 
   test('cleanup does not swallow missing act warnings', () => {
@@ -118,16 +115,10 @@ describe('fake timers and missing act warnings', () => {
     expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)
     // console.error is mocked
     // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledTimes(
-      // ReactDOM.render is deprecated in React 18
-      React.version.startsWith('18') ? 2 : 1,
-    )
+    expect(console.error).toHaveBeenCalledTimes(1)
     // eslint-disable-next-line no-console
-    expect(
-      console.error.mock.calls[
-        // ReactDOM.render is deprecated in React 18
-        React.version.startsWith('18') ? 1 : 0
-      ][0],
-    ).toMatch('a test was not wrapped in act(...)')
+    expect(console.error.mock.calls[0][0]).toMatch(
+      'a test was not wrapped in act(...)',
+    )
   })
 })
