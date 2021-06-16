@@ -1,13 +1,13 @@
-let asyncAct, consoleErrorMock
+let asyncAct
 
 beforeEach(() => {
   jest.resetModules()
   asyncAct = require('../act-compat').asyncAct
-  consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {})
+  jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 afterEach(() => {
-  consoleErrorMock.mockRestore()
+  console.error.mockRestore()
 })
 
 jest.mock('react-dom/test-utils', () => ({
