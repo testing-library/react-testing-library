@@ -40,7 +40,9 @@ function createConcurrentRoot(container, options) {
       `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).'`,
     )
   }
-  const root = ReactDOM.createRoot(container, options)
+  const root = options.hydrate
+    ? ReactDOM.hydrateRoot(container)
+    : ReactDOM.createRoot(container)
 
   return {
     hydrate(element) {
