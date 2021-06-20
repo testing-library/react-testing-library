@@ -44,7 +44,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@testing-library/dom": "^8.0.0-alpha.6"
+    "@testing-library/dom": "^8.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.6",
