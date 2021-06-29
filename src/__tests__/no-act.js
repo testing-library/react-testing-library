@@ -12,7 +12,15 @@ afterEach(() => {
   consoleErrorMock.mockRestore()
 })
 
+// no react-dom/test-utils also means no isomorphic act since isomorphic act got released after test-utils act
 jest.mock('react-dom/test-utils', () => ({}))
+jest.mock('react', () => {
+  const ReactActual = jest.requireActual('react')
+
+  delete ReactActual.unstable_act
+
+  return ReactActual
+})
 
 test('act works even when there is no act from test utils', () => {
   const callback = jest.fn()
