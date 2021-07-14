@@ -1,15 +1,15 @@
-let act, asyncAct, React
+let act, asyncAct, React, consoleErrorMock
 
 beforeEach(() => {
   jest.resetModules()
-  act = require('..').act
+  act = require('../pure').act
   asyncAct = require('../act-compat').asyncAct
   React = require('react')
-  jest.spyOn(console, 'error').mockImplementation(() => {})
+  consoleErrorMock = jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 afterEach(() => {
-  console.error.mockRestore()
+  consoleErrorMock.mockRestore()
 })
 
 jest.mock('react-dom/test-utils', () => ({}))
@@ -83,7 +83,7 @@ test('async act recovers from sync errors', async () => {
   expect(console.error.mock.calls).toMatchInlineSnapshot(`
     Array [
       Array [
-        "call console.error",
+        call console.error,
       ],
     ]
   `)

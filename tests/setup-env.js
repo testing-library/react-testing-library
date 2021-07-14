@@ -1,8 +1,10 @@
 import '@testing-library/jest-dom/extend-expect'
 
+let consoleErrorMock
+
 beforeEach(() => {
   const originalConsoleError = console.error
-  jest
+  consoleErrorMock = jest
     .spyOn(console, 'error')
     .mockImplementation((message, ...optionalParams) => {
       // Ignore ReactDOM.render/ReactDOM.hydrate deprecation warning
@@ -14,8 +16,5 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  // maybe another test already restore console error mocks
-  if (typeof console.error.mockRestore === 'function') {
-    console.error.mockRestore()
-  }
+  consoleErrorMock.mockRestore()
 })

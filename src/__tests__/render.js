@@ -78,14 +78,14 @@ test('renders options.wrapper around node', () => {
 
   expect(screen.getByTestId('wrapper')).toBeInTheDocument()
   expect(container.firstChild).toMatchInlineSnapshot(`
-<div
-  data-testid="wrapper"
->
-  <div
-    data-testid="inner"
-  />
-</div>
-`)
+    <div
+      data-testid=wrapper
+    >
+      <div
+        data-testid=inner
+      />
+    </div>
+  `)
 })
 
 test('flushes useEffect cleanup functions sync on unmount()', () => {
