@@ -37,6 +37,11 @@ export interface RenderOptions<
   container?: Container
   baseElement?: Element
   hydrate?: boolean
+  /**
+   * Set to `true` if you want to force synchronous `ReactDOM.render`.
+   * Otherwise `render` will default to concurrent React if available.
+   */
+  legacyRoot?: boolean
   queries?: Q
   wrapper?: React.ComponentType
 }

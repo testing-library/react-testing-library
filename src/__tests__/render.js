@@ -101,3 +101,36 @@ test('flushes useEffect cleanup functions sync on unmount()', () => {
 
   expect(spy).toHaveBeenCalledTimes(1)
 })
+
+test('throws if `legacyRoot: false` is used with an incomaptible version', () => {
+  const isConcurrentReact = typeof ReactDOM.createRoot === 'function'
+
+  const performConcurrentRender = () => render(<div />, {legacyRoot: false})
+
+  // eslint-disable-next-line jest/no-if -- jest doesn't support conditional tests
+  if (isConcurrentReact) {
+    // eslint-disable-next-line jest/no-conditional-expect -- yes, jest still doesn't support conditional tests
+    expect(performConcurrentRender).not.toThrow()
+  } else {
+    // eslint-disable-next-line jest/no-conditional-expect -- yes, jest still doesn't support conditional tests
+    expect(performConcurrentRender).toThrowError(
+      `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).`,
+    )
+  }
+})
+
+test('can be called multiple times on the same container', () => {
+  const container = document.createElement('div')
+
+  const {unmount} = render(<strong />, {container})
+
+  expect(container).toContainHTML('<strong></strong>')
+
+  render(<em />, {container})
+
+  expect(container).toContainHTML('<em></em>')
+
+  unmount()
+
+  expect(container).toBeEmptyDOMElement()
+})

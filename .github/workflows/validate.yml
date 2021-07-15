@@ -16,6 +16,7 @@ jobs:
     # ignore all-contributors PRs
     if: ${{ !contains(github.head_ref, 'all-contributors') }}
     strategy:
+      fail-fast: false
       matrix:
         node: [12, 14, 16]
         react: [latest, next, experimental]
@@ -47,6 +48,8 @@ jobs:
 
       - name: ⬆️ Upload coverage report
         uses: codecov/codecov-action@v1
+        with:
+          flags: ${{ matrix.react }}
 
   release:
     needs: main

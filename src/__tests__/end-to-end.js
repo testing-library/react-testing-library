@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {render, waitForElementToBeRemoved, screen} from '../'
+import {render, waitForElementToBeRemoved, screen, waitFor} from '../'
 
 const fetchAMessage = () =>
   new Promise(resolve => {
@@ -29,9 +29,37 @@ class ComponentWithLoader extends React.Component {
   }
 }
 
-test('it waits for the data to be loaded', async () => {
-  render(<ComponentWithLoader />)
-  const loading = () => screen.getByText('Loading...')
-  await waitForElementToBeRemoved(loading)
-  expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
+describe.each([
+  ['real timers', () => jest.useRealTimers()],
+  ['fake legacy timers', () => jest.useFakeTimers('legacy')],
+  ['fake modern timers', () => jest.useFakeTimers('modern')],
+])('it waits for the data to be loaded using %s', (label, useTimers) => {
+  beforeEach(() => {
+    useTimers()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  test('waitForElementToBeRemoved', async () => {
+    render(<ComponentWithLoader />)
+    const loading = () => screen.getByText('Loading...')
+    await waitForElementToBeRemoved(loading)
+    expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
+  })
+
+  test('waitFor', async () => {
+    render(<ComponentWithLoader />)
+    const message = () => screen.getByText(/Loaded this message:/)
+    await waitFor(message)
+    expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
+  })
+
+  test('findBy', async () => {
+    render(<ComponentWithLoader />)
+    await expect(screen.findByTestId('message')).resolves.toHaveTextContent(
+      /Hello World/,
+    )
+  })
 })

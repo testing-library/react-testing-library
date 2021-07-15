@@ -53,8 +53,5 @@ test('unmounts a component', async () => {
   // and get an error.
   await sleep(5)
   // eslint-disable-next-line no-console
-  expect(console.error).toHaveBeenCalledTimes(
-    // ReactDOM.render is deprecated in React 18
-    React.version.startsWith('18') ? 1 : 0,
-  )
+  expect(console.error).not.toHaveBeenCalled()
 })

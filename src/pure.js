@@ -4,18 +4,13 @@ import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
+  waitFor as waitForDTL,
+  waitForElementToBeRemoved as waitForElementToBeRemovedDTL,
 } from '@testing-library/dom'
-import act, {asyncAct} from './act-compat'
+import act from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
-  asyncWrapper: async cb => {
-    let result
-    await asyncAct(async () => {
-      result = await cb()
-    })
-    return result
-  },
   eventWrapper: cb => {
     let result
     act(() => {
@@ -25,32 +20,64 @@ configureDTL({
   },
 })
 
+// Ideally we'd just use a WeakMap where containers are keys and roots are values.
+// We use two variables so that we can bail out in constant time when we render with a new container (most common use case)
+/**
+ * @type {Set<import('react-dom').Container>}
+ */
 const mountedContainers = new Set()
+/**
+ * @type Array<{container: import('react-dom').Container, root: ReturnType<typeof createConcurrentRoot>}>
+ */
+const mountedRootEntries = []
 
-function render(
+function createConcurrentRoot(container, options) {
+  if (typeof ReactDOM.createRoot !== 'function') {
+    throw new TypeError(
+      `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).'`,
+    )
+  }
+  const root = options.hydrate
+    ? ReactDOM.hydrateRoot(container)
+    : ReactDOM.createRoot(container)
+
+  return {
+    hydrate(element) {
+      /* istanbul ignore if */
+      if (!options.hydrate) {
+        throw new Error(
+          'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
+        )
+      }
+      root.render(element)
+    },
+    render(element) {
+      root.render(element)
+    },
+    unmount() {
+      root.unmount()
+    },
+  }
+}
+
+function createLegacyRoot(container) {
+  return {
+    hydrate(element) {
+      ReactDOM.hydrate(element, container)
+    },
+    render(element) {
+      ReactDOM.render(element, container)
+    },
+    unmount() {
+      ReactDOM.unmountComponentAtNode(container)
+    },
+  }
+}
+
+function renderRoot(
   ui,
-  {
-    container,
-    baseElement = container,
-    queries,
-    hydrate = false,
-    wrapper: WrapperComponent,
-  } = {},
+  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
 ) {
-  if (!baseElement) {
-    // default to document.body instead of documentElement to avoid output of potentially-large
-    // head elements (such as JSS style blocks) in debug output
-    baseElement = document.body
-  }
-  if (!container) {
-    container = baseElement.appendChild(document.createElement('div'))
-  }
-
-  // we'll add it to the mounted containers regardless of whether it's actually
-  // added to document.body so the cleanup method works regardless of whether
-  // they're passing us a custom container or not.
-  mountedContainers.add(container)
-
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
       ? React.createElement(WrapperComponent, null, innerElement)
@@ -58,9 +85,9 @@ function render(
 
   act(() => {
     if (hydrate) {
-      ReactDOM.hydrate(wrapUiIfNeeded(ui), container)
+      root.hydrate(wrapUiIfNeeded(ui), container)
     } else {
-      ReactDOM.render(wrapUiIfNeeded(ui), container)
+      root.render(wrapUiIfNeeded(ui), container)
     }
   })
 
@@ -75,11 +102,15 @@ function render(
           console.log(prettyDOM(el, maxLength, options)),
     unmount: () => {
       act(() => {
-        ReactDOM.unmountComponentAtNode(container)
+        root.unmount()
       })
     },
     rerender: rerenderUi => {
-      render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
+      renderRoot(wrapUiIfNeeded(rerenderUi), {
+        container,
+        baseElement,
+        root,
+      })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
@@ -99,25 +130,91 @@ function render(
   }
 }
 
-function cleanup() {
-  mountedContainers.forEach(cleanupAtContainer)
+function render(
+  ui,
+  {
+    container,
+    baseElement = container,
+    legacyRoot = typeof ReactDOM.createRoot !== 'function',
+    queries,
+    hydrate = false,
+    wrapper,
+  } = {},
+) {
+  if (!baseElement) {
+    // default to document.body instead of documentElement to avoid output of potentially-large
+    // head elements (such as JSS style blocks) in debug output
+    baseElement = document.body
+  }
+  if (!container) {
+    container = baseElement.appendChild(document.createElement('div'))
+  }
+
+  let root
+  // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
+  if (!mountedContainers.has(container)) {
+    const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
+    root = createRootImpl(container, {hydrate})
+
+    mountedRootEntries.push({container, root})
+    // we'll add it to the mounted containers regardless of whether it's actually
+    // added to document.body so the cleanup method works regardless of whether
+    // they're passing us a custom container or not.
+    mountedContainers.add(container)
+  } else {
+    mountedRootEntries.forEach(rootEntry => {
+      if (rootEntry.container === container) {
+        root = rootEntry.root
+      }
+    })
+  }
+
+  return renderRoot(ui, {
+    container,
+    baseElement,
+    queries,
+    hydrate,
+    wrapper,
+    root,
+  })
 }
 
-// maybe one day we'll expose this (perhaps even as a utility returned by render).
-// but let's wait until someone asks for it.
-function cleanupAtContainer(container) {
-  act(() => {
-    ReactDOM.unmountComponentAtNode(container)
+function cleanup() {
+  mountedRootEntries.forEach(({root, container}) => {
+    act(() => {
+      root.unmount()
+    })
+    if (container.parentNode === document.body) {
+      document.body.removeChild(container)
+    }
   })
-  if (container.parentNode === document.body) {
-    document.body.removeChild(container)
-  }
-  mountedContainers.delete(container)
+  mountedRootEntries.length = 0
+  mountedContainers.clear()
+}
+
+function waitFor(callback, options) {
+  return waitForDTL(() => {
+    let result
+    act(() => {
+      result = callback()
+    })
+    return result
+  }, options)
+}
+
+function waitForElementToBeRemoved(callback, options) {
+  return waitForElementToBeRemovedDTL(() => {
+    let result
+    act(() => {
+      result = callback()
+    })
+    return result
+  }, options)
 }
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, act, fireEvent}
+export {render, cleanup, act, fireEvent, waitFor, waitForElementToBeRemoved}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility
 // thing for people using react-dom@16.8.0. Anyone else doesn't need it and
