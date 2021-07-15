@@ -35,11 +35,11 @@ sure to include those changes (if they exist) in your commit.
 ### Update Typings
 
 If your PR introduced some changes in the API, you are more than welcome to
-modify the Typescript type definition to reflect those changes. Just modify the
-`/types/index.d.ts` file accordingly. If you have never seen Typescript
+modify the TypeScript type definition to reflect those changes. Just modify the
+`/types/index.d.ts` file accordingly. If you have never seen TypeScript
 definitions before, you can read more about it in its
 [documentation pages](https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html).
-Though this library itself is not written in Typescript we use
+Though this library itself is not written in TypeScript we use
 [dtslint](https://github.com/microsoft/dtslint) to lint our typings.
 
 ## Help needed
@@ -50,6 +50,5 @@ Also, please watch the repo and respond to questions/bug reports/feature
 requests! Thanks!
 
 [egghead]:
-  https://app.egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
-[all-contributors]: https://github.com/all-contributors/all-contributors
+  https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github
 [issues]: https://github.com/testing-library/react-testing-library/issues
