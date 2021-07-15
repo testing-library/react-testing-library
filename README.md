@@ -609,6 +609,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://codepen.io/ariperkkio/"><img src="https://avatars.githubusercontent.com/u/14806298?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ari Perkkiö</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=AriPerkkio" title="Tests">⚠️</a></td>
     <td align="center"><a href="https://github.com/jhnns"><img src="https://avatars.githubusercontent.com/u/781746?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Johannes Ewald</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=jhnns" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/anpaopao"><img src="https://avatars.githubusercontent.com/u/44686792?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Angus J. Pope</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=anpaopao" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/leschdom"><img src="https://avatars.githubusercontent.com/u/62334278?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik Lesch</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=leschdom" title="Documentation">📖</a></td>
   </tr>
 </table>
 
