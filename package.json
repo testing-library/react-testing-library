@@ -24,6 +24,7 @@
   "files": [
     "dist",
     "dont-cleanup-after-each.js",
+    "mocha-cleanup-after-each.js",
     "pure.js",
     "pure.d.ts",
     "types/*.d.ts"
