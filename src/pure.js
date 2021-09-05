@@ -4,11 +4,9 @@ import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
-  waitForElementToBeRemoved as waitForElementToBeRemovedDTL,
 } from '@testing-library/dom'
 import act from './act-compat'
 import {fireEvent} from './fire-event'
-import {waitFor} from './wait-for'
 
 configureDTL({
   eventWrapper: cb => {
@@ -19,6 +17,15 @@ configureDTL({
     return result
   },
 })
+
+if (typeof React.startTransition !== undefined) {
+  configureDTL({
+    unstable_advanceTimersWrapper: cb => {
+      return act(cb)
+    },
+    asyncWrapper: cb => cb(),
+  })
+}
 
 // Ideally we'd just use a WeakMap where containers are keys and roots are values.
 // We use two variables so that we can bail out in constant time when we render with a new container (most common use case)
@@ -192,19 +199,9 @@ function cleanup() {
   mountedContainers.clear()
 }
 
-function waitForElementToBeRemoved(callback, options) {
-  return waitForElementToBeRemovedDTL(() => {
-    let result
-    act(() => {
-      result = callback()
-    })
-    return result
-  }, options)
-}
-
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, act, fireEvent, waitFor, waitForElementToBeRemoved}
+export {render, cleanup, act, fireEvent}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility
 // thing for people using react-dom@16.8.0. Anyone else doesn't need it and
