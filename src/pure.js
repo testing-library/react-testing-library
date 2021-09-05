@@ -4,11 +4,11 @@ import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
-  waitFor as waitForDTL,
   waitForElementToBeRemoved as waitForElementToBeRemovedDTL,
 } from '@testing-library/dom'
 import act from './act-compat'
 import {fireEvent} from './fire-event'
+import {waitFor} from './wait-for'
 
 configureDTL({
   eventWrapper: cb => {
@@ -190,16 +190,6 @@ function cleanup() {
   })
   mountedRootEntries.length = 0
   mountedContainers.clear()
-}
-
-function waitFor(callback, options) {
-  return waitForDTL(() => {
-    let result
-    act(() => {
-      result = callback()
-    })
-    return result
-  }, options)
 }
 
 function waitForElementToBeRemoved(callback, options) {
