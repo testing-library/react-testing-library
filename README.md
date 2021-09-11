@@ -611,6 +611,9 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="https://github.com/anpaopao"><img src="https://avatars.githubusercontent.com/u/44686792?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Angus J. Pope</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=anpaopao" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/leschdom"><img src="https://avatars.githubusercontent.com/u/62334278?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Dominik Lesch</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=leschdom" title="Documentation">📖</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/ImADrafter"><img src="https://avatars.githubusercontent.com/u/44379989?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Marcos Gómez</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ImADrafter" title="Documentation">📖</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-restore -->
