@@ -17,7 +17,8 @@ jobs:
     if: ${{ !contains(github.head_ref, 'all-contributors') }}
     strategy:
       matrix:
-        node: [12, 14, 16]
+        # TODO: relax `'16.9.1'` to `16` once GitHub has 16.9.1 cached. 16.9.0 is broken due to https://github.com/nodejs/node/issues/40030
+        node: [12, 14, '16.9.1']
         react: [latest, next, experimental]
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +37,10 @@ jobs:
         uses: bahmutov/npm-install@v1
         with:
           useLockFile: false
+
+      # TODO: Can be removed if https://github.com/kentcdodds/kcd-scripts/pull/146 is released
+      - name: Verify format (`npm run format` committed?)
+        run: npm run format -- --check --no-write
 
       # as requested by the React team :)
       # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
