@@ -13,7 +13,7 @@ export * from '@testing-library/dom'
 
 export type RenderResult<
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement
+  Container extends Element | DocumentFragment = HTMLElement,
 > = {
   container: Container
   baseElement: Element
@@ -32,7 +32,7 @@ export type RenderResult<
 
 export interface RenderOptions<
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement
+  Container extends Element | DocumentFragment = HTMLElement,
 > {
   container?: Container
   baseElement?: Element
@@ -48,7 +48,7 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
  */
 export function render<
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement
+  Container extends Element | DocumentFragment = HTMLElement,
 >(
   ui: React.ReactElement,
   options: RenderOptions<Q, Container>,
