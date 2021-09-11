@@ -54,15 +54,16 @@ describe('fake timers and missing act warnings', () => {
     jest.useRealTimers()
   })
 
-  test('cleanup does not flush immediates', () => {
+  test('cleanup does not flush microtasks', () => {
     const microTaskSpy = jest.fn()
     function Test() {
       const counter = 1
       const [, setDeferredCounter] = React.useState(null)
       React.useEffect(() => {
         let cancelled = false
-        setImmediate(() => {
+        Promise.resolve().then(() => {
           microTaskSpy()
+          // eslint-disable-next-line jest/no-if -- false positive
           if (!cancelled) {
             setDeferredCounter(counter)
           }
@@ -82,7 +83,10 @@ describe('fake timers and missing act warnings', () => {
     expect(microTaskSpy).toHaveBeenCalledTimes(0)
     // console.error is mocked
     // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledTimes(0)
+    expect(console.error).toHaveBeenCalledTimes(
+      // ReactDOM.render is deprecated in React 18
+      React.version.startsWith('18') ? 1 : 0,
+    )
   })
 
   test('cleanup does not swallow missing act warnings', () => {
@@ -92,12 +96,12 @@ describe('fake timers and missing act warnings', () => {
       const [, setDeferredCounter] = React.useState(null)
       React.useEffect(() => {
         let cancelled = false
-        setImmediate(() => {
+        setTimeout(() => {
           deferredStateUpdateSpy()
           if (!cancelled) {
             setDeferredCounter(counter)
           }
-        })
+        }, 0)
 
         return () => {
           cancelled = true
@@ -108,16 +112,22 @@ describe('fake timers and missing act warnings', () => {
     }
     render(<Test />)
 
-    jest.runAllImmediates()
+    jest.runAllTimers()
     cleanup()
 
     expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)
     // console.error is mocked
     // eslint-disable-next-line no-console
-    expect(console.error).toHaveBeenCalledTimes(1)
-    // eslint-disable-next-line no-console
-    expect(console.error.mock.calls[0][0]).toMatch(
-      'a test was not wrapped in act(...)',
+    expect(console.error).toHaveBeenCalledTimes(
+      // ReactDOM.render is deprecated in React 18
+      React.version.startsWith('18') ? 2 : 1,
     )
+    // eslint-disable-next-line no-console
+    expect(
+      console.error.mock.calls[
+        // ReactDOM.render is deprecated in React 18
+        React.version.startsWith('18') ? 1 : 0
+      ][0],
+    ).toMatch('a test was not wrapped in act(...)')
   })
 })

@@ -17,7 +17,7 @@ jobs:
     if: ${{ !contains(github.head_ref, 'all-contributors') }}
     strategy:
       matrix:
-        node: [10.13, 12, 14, 15, 16]
+        node: [12, 14, 16]
         react: [latest, next, experimental]
     runs-on: ubuntu-latest
     steps:
