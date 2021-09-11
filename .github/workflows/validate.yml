@@ -38,6 +38,10 @@ jobs:
         with:
           useLockFile: false
 
+      # TODO: Can be removed if https://github.com/kentcdodds/kcd-scripts/pull/146 is released
+      - name: Verify format (`npm run format` committed?)
+        run: npm run format -- --check --no-write
+
       # as requested by the React team :)
       # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
       - name: ⚛️ Setup react
