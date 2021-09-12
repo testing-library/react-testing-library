@@ -17,6 +17,8 @@ function ComponentWithLoader() {
     let cancelled = false
     fetchAMessage().then(data => {
       if (!cancelled) {
+        // Will trigger "missing act" warnings in React 18 with real timers
+        // Need to wait for an action on https://github.com/reactwg/react-18/discussions/23#discussioncomment-1087897
         setState({data, loading: false})
       }
     })
