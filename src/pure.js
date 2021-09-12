@@ -5,10 +5,17 @@ import {
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act from './act-compat'
+import act, {asyncAct} from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
+  asyncWrapper: async cb => {
+    let result
+    await asyncAct(async () => {
+      result = await cb()
+    })
+    return result
+  },
   eventWrapper: cb => {
     let result
     act(() => {
@@ -18,7 +25,7 @@ configureDTL({
   },
 })
 
-if (typeof React.startTransition !== undefined) {
+if (React.startTransition !== undefined) {
   configureDTL({
     unstable_advanceTimersWrapper: cb => {
       return act(cb)

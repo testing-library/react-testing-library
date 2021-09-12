@@ -7,9 +7,9 @@ module.exports = Object.assign(jestConfig, {
     './src/pure': {
       // minimum coverage of jobs using React 17 and 18
       branches: 80,
-      functions: 84,
-      lines: 89,
-      statements: 89,
+      functions: 78,
+      lines: 84,
+      statements: 84,
     },
   },
 })

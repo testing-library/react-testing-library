@@ -11,22 +11,30 @@ const fetchAMessage = () =>
     }, randomTimeout)
   })
 
-class ComponentWithLoader extends React.Component {
-  state = {loading: true}
-  async componentDidMount() {
-    const data = await fetchAMessage()
-    this.setState({data, loading: false}) // eslint-disable-line
-  }
-  render() {
-    if (this.state.loading) {
-      return <div>Loading...</div>
+function ComponentWithLoader() {
+  const [state, setState] = React.useState({data: undefined, loading: true})
+  React.useEffect(() => {
+    let cancelled = false
+    fetchAMessage().then(data => {
+      if (!cancelled) {
+        setState({data, loading: false})
+      }
+    })
+
+    return () => {
+      cancelled = true
     }
-    return (
-      <div data-testid="message">
-        Loaded this message: {this.state.data.returnedMessage}!
-      </div>
-    )
+  }, [])
+
+  if (state.loading) {
+    return <div>Loading...</div>
   }
+
+  return (
+    <div data-testid="message">
+      Loaded this message: {state.data.returnedMessage}!
+    </div>
+  )
 }
 
 describe.each([
