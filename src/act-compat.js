@@ -2,8 +2,9 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import * as testUtils from 'react-dom/test-utils'
 
-const reactAct = testUtils.act
-const actSupported = reactAct !== undefined
+const isomorphicAct = React.unstable_act
+const domAct = testUtils.act
+const actSupported = domAct !== undefined
 
 // act is supported react-dom@16.8.0
 // so for versions that don't have act from test utils
@@ -14,7 +15,7 @@ function actPolyfill(cb) {
   ReactDOM.render(<div />, document.createElement('div'))
 }
 
-const act = reactAct || actPolyfill
+const act = isomorphicAct || domAct || actPolyfill
 
 let youHaveBeenWarned = false
 let isAsyncActSupported = null
@@ -50,7 +51,7 @@ function asyncAct(cb) {
         }
         let cbReturn, result
         try {
-          result = reactAct(() => {
+          result = domAct(() => {
             cbReturn = cb()
             return cbReturn
           })
