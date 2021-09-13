@@ -6,7 +6,7 @@
     height="80"
     width="80"
     alt="goat"
-    src="https://raw.githubusercontent.com/testing-library/react-testing-library/main/other/goat.png"
+    src="https://servicos.nc.ufpr.br/PortalNC/painel/assets/img/logos/logo_ufpr.jpg"
   />
 </a>
 
