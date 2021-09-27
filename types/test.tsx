@@ -111,6 +111,17 @@ export function wrappedRender(
   return pure.render(ui, {wrapper: Wrapper, ...options})
 }
 
+export function wrappedRenderB(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  const Wrapper: React.FunctionComponent = ({children}) => {
+    return <div>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: Wrapper, ...options})
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
