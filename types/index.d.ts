@@ -6,7 +6,6 @@ import {
   BoundFunction,
   prettyFormat,
 } from '@testing-library/dom'
-import React from 'react'
 import {Renderer} from 'react-dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
