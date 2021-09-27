@@ -613,6 +613,7 @@ Thanks goes to these people ([emoji key][emojis]):
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/ImADrafter"><img src="https://avatars.githubusercontent.com/u/44379989?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Marcos Gómez</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=ImADrafter" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://www.akashshyam.online/"><img src="https://avatars.githubusercontent.com/u/56759828?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Akash Shyam</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/issues?q=author%3Aakashshyamdev" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

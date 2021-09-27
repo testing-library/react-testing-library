@@ -1288,6 +1288,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "akashshyamdev",
+      "name": "Akash Shyam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56759828?v=4",
+      "profile": "https://www.akashshyam.online/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
