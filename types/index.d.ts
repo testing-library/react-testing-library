@@ -70,7 +70,7 @@ export interface RenderOptions<
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
-  wrapper?: React.ComponentType
+  wrapper?: React.ComponentType<{children: React.ReactElement}>
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
