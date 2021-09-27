@@ -100,6 +100,17 @@ export function testQueries() {
   )
 }
 
+export function wrappedRender(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  const Wrapper = ({children}: {children: React.ReactElement}): JSX.Element => {
+    return <div>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: Wrapper, ...options})
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
