@@ -124,6 +124,23 @@ export function wrappedRenderB(
   return pure.render(ui, {wrapper: Wrapper, ...options})
 }
 
+export function wrappedRenderC(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  interface AppWrapperProps {
+    userProviderProps?: {user: string}
+  }
+  const AppWrapperProps: React.FunctionComponent<AppWrapperProps> = ({
+    children,
+    userProviderProps = {user: 'TypeScript'},
+  }) => {
+    return <div data-testid={userProviderProps.user}>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: AppWrapperProps, ...options})
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
