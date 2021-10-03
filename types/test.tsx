@@ -115,7 +115,9 @@ export function wrappedRenderB(
   ui: React.ReactElement,
   options?: pure.RenderOptions,
 ) {
-  const Wrapper: React.FunctionComponent = ({children}) => {
+  const Wrapper: React.FunctionComponent<{children?: React.ReactNode}> = ({
+    children,
+  }) => {
     return <div>{children}</div>
   }
 
