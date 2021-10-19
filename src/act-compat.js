@@ -79,6 +79,8 @@ function withGlobalActEnvironment(actImplementation) {
         return actResult
       }
     } catch (error) {
+      // Can't be a `finally {}` block since we don't know if we have to immediately restore IS_REACT_ACT_ENVIRONMENT
+      // or if we have to await the callback first.
       setReactActEnvironment(previousActEnvironment)
       throw error
     }
