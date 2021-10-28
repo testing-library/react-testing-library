@@ -5,7 +5,11 @@ import {
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {asyncAct} from './act-compat'
+import act, {
+  asyncAct,
+  getIsReactActEnvironment,
+  setReactActEnvironment,
+} from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
@@ -30,7 +34,18 @@ if (React.startTransition !== undefined) {
     unstable_advanceTimersWrapper: cb => {
       return act(cb)
     },
-    asyncWrapper: cb => cb(),
+    // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
+    // But that's not necessarily how `asyncWrapper` is used since it's a public method.
+    // Let's just hope nobody else is using it.
+    asyncWrapper: async cb => {
+      const previousActEnvironment = getIsReactActEnvironment()
+      setReactActEnvironment(false)
+      try {
+        return await cb()
+      } finally {
+        setReactActEnvironment(previousActEnvironment)
+      }
+    },
   })
 }
 

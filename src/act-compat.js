@@ -15,7 +15,79 @@ function actPolyfill(cb) {
   ReactDOM.render(<div />, document.createElement('div'))
 }
 
-const act = isomorphicAct || domAct || actPolyfill
+function getGlobalThis() {
+  /* istanbul ignore else */
+  if (typeof self !== 'undefined') {
+    return self
+  }
+  /* istanbul ignore next */
+  if (typeof window !== 'undefined') {
+    return window
+  }
+  /* istanbul ignore next */
+  if (typeof global !== 'undefined') {
+    return global
+  }
+  /* istanbul ignore next */
+  throw new Error('unable to locate global object')
+}
+
+function setReactActEnvironment(isReactActEnvironment) {
+  getGlobalThis().IS_REACT_ACT_ENVIRONMENT = isReactActEnvironment
+}
+
+function getIsReactActEnvironment() {
+  return getGlobalThis().IS_REACT_ACT_ENVIRONMENT
+}
+
+function withGlobalActEnvironment(actImplementation) {
+  return callback => {
+    const previousActEnvironment = getIsReactActEnvironment()
+    setReactActEnvironment(true)
+    try {
+      // The return value of `act` is always a thenable.
+      let callbackNeedsToBeAwaited = false
+      const actResult = actImplementation(() => {
+        const result = callback()
+        if (
+          result !== null &&
+          typeof result === 'object' &&
+          typeof result.then === 'function'
+        ) {
+          callbackNeedsToBeAwaited = true
+        }
+        return result
+      })
+      if (callbackNeedsToBeAwaited) {
+        const thenable = actResult
+        return {
+          then: (resolve, reject) => {
+            thenable.then(
+              returnValue => {
+                setReactActEnvironment(previousActEnvironment)
+                resolve(returnValue)
+              },
+              error => {
+                setReactActEnvironment(previousActEnvironment)
+                reject(error)
+              },
+            )
+          },
+        }
+      } else {
+        setReactActEnvironment(previousActEnvironment)
+        return actResult
+      }
+    } catch (error) {
+      // Can't be a `finally {}` block since we don't know if we have to immediately restore IS_REACT_ACT_ENVIRONMENT
+      // or if we have to await the callback first.
+      setReactActEnvironment(previousActEnvironment)
+      throw error
+    }
+  }
+}
+
+const act = withGlobalActEnvironment(isomorphicAct || domAct || actPolyfill)
 
 let youHaveBeenWarned = false
 let isAsyncActSupported = null
@@ -131,6 +203,6 @@ function asyncAct(cb) {
 }
 
 export default act
-export {asyncAct}
+export {asyncAct, setReactActEnvironment, getIsReactActEnvironment}
 
 /* eslint no-console:0 */
