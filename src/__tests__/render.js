@@ -1,6 +1,13 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import {render, screen} from '../'
+import ReactDOMServer from 'react-dom/server'
+import {fireEvent, render, screen} from '../'
+
+afterEach(() => {
+  if (console.error.mockRestore !== undefined) {
+    console.error.mockRestore()
+  }
+})
 
 test('renders div into document', () => {
   const ref = React.createRef()
@@ -133,4 +140,31 @@ test('can be called multiple times on the same container', () => {
   unmount()
 
   expect(container).toBeEmptyDOMElement()
+})
+
+test('hydrate will make the UI interactive', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  function App() {
+    const [clicked, handleClick] = React.useReducer(n => n + 1, 0)
+
+    return (
+      <button type="button" onClick={handleClick}>
+        clicked:{clicked}
+      </button>
+    )
+  }
+  const ui = <App />
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+
+  expect(container).toHaveTextContent('clicked:0')
+
+  render(ui, {container, hydrate: true})
+
+  expect(console.error).not.toHaveBeenCalled()
+
+  fireEvent.click(container.querySelector('button'))
+
+  expect(container).toHaveTextContent('clicked:1')
 })
