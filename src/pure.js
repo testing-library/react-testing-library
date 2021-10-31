@@ -60,25 +60,36 @@ const mountedContainers = new Set()
  */
 const mountedRootEntries = []
 
-function createConcurrentRoot(container, options) {
+function createConcurrentRoot(
+  container,
+  {hydrate, ui, wrapper: WrapperComponent},
+) {
   if (typeof ReactDOM.createRoot !== 'function') {
     throw new TypeError(
       `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).'`,
     )
   }
-  const root = options.hydrate
-    ? ReactDOM.hydrateRoot(container)
-    : ReactDOM.createRoot(container)
+  let root
+  if (hydrate) {
+    act(() => {
+      root = ReactDOM.hydrateRoot(
+        container,
+        WrapperComponent ? React.createElement(WrapperComponent, null, ui) : ui,
+      )
+    })
+  } else {
+    root = ReactDOM.createRoot(container)
+  }
 
   return {
-    hydrate(element) {
+    hydrate() {
       /* istanbul ignore if */
-      if (!options.hydrate) {
+      if (!hydrate) {
         throw new Error(
           'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
         )
       }
-      root.render(element)
+      // Nothing to do since hydration happens when creating the root object.
     },
     render(element) {
       root.render(element)
@@ -183,7 +194,7 @@ function render(
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {hydrate})
+    root = createRootImpl(container, {hydrate, ui, wrapper})
 
     mountedRootEntries.push({container, root})
     // we'll add it to the mounted containers regardless of whether it's actually
