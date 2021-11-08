@@ -115,9 +115,37 @@ function cleanupAtContainer(container) {
   mountedContainers.delete(container)
 }
 
+function renderHook(renderCallback, options = {}) {
+  const {initialProps, wrapper} = options
+  const result = React.createRef()
+
+  function TestComponent({renderCallbackProps}) {
+    const renderResult = renderCallback(renderCallbackProps)
+
+    React.useEffect(() => {
+      result.current = renderResult
+    })
+
+    return null
+  }
+
+  const {rerender: baseRerender, unmount} = render(
+    <TestComponent renderCallbackProps={initialProps} />,
+    {wrapper},
+  )
+
+  function rerender(rerenderCallbackProps) {
+    return baseRerender(
+      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+    )
+  }
+
+  return {result, rerender, unmount}
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, act, fireEvent}
+export {render, renderHook, cleanup, act, fireEvent}
 
 // NOTE: we're not going to export asyncAct because that's our own compatibility
 // thing for people using react-dom@16.8.0. Anyone else doesn't need it and
