@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {render, fireEvent, screen, waitFor} from '.'
+import {render, fireEvent, screen, waitFor, renderHook} from '.'
 import * as pure from './pure'
 
 export async function testRender() {
@@ -139,6 +139,16 @@ export function wrappedRenderC(
   }
 
   return pure.render(ui, {wrapper: AppWrapperProps, ...options})
+}
+
+export function testRenderHook() {
+  const {result, rerender, unmount} = renderHook(() => React.useState(2)[0])
+
+  expectType<number, typeof result.current>(result.current)
+
+  rerender()
+
+  unmount()
 }
 
 /*

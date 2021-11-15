@@ -90,6 +90,25 @@ export function render(
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
 
+// TODO JSDOC
+interface RenderHookResult<Result, Props> {
+  rerender: (props?: Props) => void
+  result: {current: Result}
+  unmount: () => void
+}
+
+// TODO JSDOC
+interface RenderHookOptions<Props> {
+  initialProps?: Props
+  wrapper?: React.ComponentType
+}
+
+// TODO JSDOC
+export function renderHook<Result, Props>(
+  render: (initialProps?: Props) => Result,
+  options?: RenderHookOptions<Props>,
+): RenderHookResult<Result, Props>
+
 /**
  * Unmounts React trees that were mounted with render.
  */
