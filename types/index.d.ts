@@ -105,7 +105,7 @@ interface RenderHookOptions<Props> {
 
 // TODO JSDOC
 export function renderHook<Result, Props>(
-  render: (initialProps?: Props) => Result,
+  render: (initialProps: Props) => Result,
   options?: RenderHookOptions<Props>,
 ): RenderHookResult<Result, Props>
 

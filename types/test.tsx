@@ -151,6 +151,19 @@ export function testRenderHook() {
   unmount()
 }
 
+export function testRenderHookProps() {
+  const {result, rerender, unmount} = renderHook(
+    ({defaultValue}) => React.useState(defaultValue)[0],
+    {initialProps: {defaultValue: 2}},
+  )
+
+  expectType<number, typeof result.current>(result.current)
+
+  rerender()
+
+  unmount()
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
