@@ -120,10 +120,10 @@ function renderHook(renderCallback, options = {}) {
   const result = React.createRef()
 
   function TestComponent({renderCallbackProps}) {
-    const renderResult = renderCallback(renderCallbackProps)
+    const pendingResult = renderCallback(renderCallbackProps)
 
     React.useEffect(() => {
-      result.current = renderResult
+      result.current = pendingResult
     })
 
     return null
