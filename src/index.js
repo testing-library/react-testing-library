@@ -1,3 +1,4 @@
+import {getIsReactActEnvironment, setReactActEnvironment} from './act-compat'
 import {cleanup} from './pure'
 
 // if we're running in a test runner that supports afterEach
@@ -18,6 +19,21 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     // eslint-disable-next-line no-undef
     teardown(() => {
       cleanup()
+    })
+  }
+
+  // No test setup with other test runners available
+  /* istanbul ignore else */
+  if (typeof beforeAll === 'function' && typeof afterAll === 'function') {
+    // This matches the behavior of React < 18.
+    let previousIsReactActEnvironment = getIsReactActEnvironment()
+    beforeAll(() => {
+      previousIsReactActEnvironment = getIsReactActEnvironment()
+      setReactActEnvironment(true)
+    })
+
+    afterAll(() => {
+      setReactActEnvironment(previousIsReactActEnvironment)
     })
   }
 }

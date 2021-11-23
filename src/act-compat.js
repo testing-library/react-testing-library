@@ -32,7 +32,7 @@ function getGlobalThis() {
   throw new Error('unable to locate global object')
 }
 
-function setReactActEnvironment(isReactActEnvironment) {
+function setIsReactActEnvironment(isReactActEnvironment) {
   getGlobalThis().IS_REACT_ACT_ENVIRONMENT = isReactActEnvironment
 }
 
@@ -43,7 +43,7 @@ function getIsReactActEnvironment() {
 function withGlobalActEnvironment(actImplementation) {
   return callback => {
     const previousActEnvironment = getIsReactActEnvironment()
-    setReactActEnvironment(true)
+    setIsReactActEnvironment(true)
     try {
       // The return value of `act` is always a thenable.
       let callbackNeedsToBeAwaited = false
@@ -64,24 +64,24 @@ function withGlobalActEnvironment(actImplementation) {
           then: (resolve, reject) => {
             thenable.then(
               returnValue => {
-                setReactActEnvironment(previousActEnvironment)
+                setIsReactActEnvironment(previousActEnvironment)
                 resolve(returnValue)
               },
               error => {
-                setReactActEnvironment(previousActEnvironment)
+                setIsReactActEnvironment(previousActEnvironment)
                 reject(error)
               },
             )
           },
         }
       } else {
-        setReactActEnvironment(previousActEnvironment)
+        setIsReactActEnvironment(previousActEnvironment)
         return actResult
       }
     } catch (error) {
       // Can't be a `finally {}` block since we don't know if we have to immediately restore IS_REACT_ACT_ENVIRONMENT
       // or if we have to await the callback first.
-      setReactActEnvironment(previousActEnvironment)
+      setIsReactActEnvironment(previousActEnvironment)
       throw error
     }
   }
@@ -203,6 +203,10 @@ function asyncAct(cb) {
 }
 
 export default act
-export {asyncAct, setReactActEnvironment, getIsReactActEnvironment}
+export {
+  asyncAct,
+  setIsReactActEnvironment as setReactActEnvironment,
+  getIsReactActEnvironment,
+}
 
 /* eslint no-console:0 */
