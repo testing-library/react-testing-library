@@ -1,5 +1,6 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import ReactDOMClient from 'react-dom/client'
 import ReactDOMServer from 'react-dom/server'
 import {fireEvent, render, screen} from '../'
 
@@ -110,7 +111,7 @@ test('flushes useEffect cleanup functions sync on unmount()', () => {
 })
 
 test('throws if `legacyRoot: false` is used with an incomaptible version', () => {
-  const isConcurrentReact = typeof ReactDOM.createRoot === 'function'
+  const isConcurrentReact = typeof ReactDOMClient.createRoot === 'function'
 
   const performConcurrentRender = () => render(<div />, {legacyRoot: false})
 

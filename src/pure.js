@@ -1,5 +1,6 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import * as ReactDOMClient from 'react-dom/client'
 import {
   getQueriesForElement,
   prettyDOM,
@@ -64,7 +65,7 @@ function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
 ) {
-  if (typeof ReactDOM.createRoot !== 'function') {
+  if (typeof ReactDOMClient.createRoot !== 'function') {
     throw new TypeError(
       `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).'`,
     )
@@ -72,13 +73,13 @@ function createConcurrentRoot(
   let root
   if (hydrate) {
     act(() => {
-      root = ReactDOM.hydrateRoot(
+      root = ReactDOMClient.hydrateRoot(
         container,
         WrapperComponent ? React.createElement(WrapperComponent, null, ui) : ui,
       )
     })
   } else {
-    root = ReactDOM.createRoot(container)
+    root = ReactDOMClient.createRoot(container)
   }
 
   return {
@@ -175,7 +176,7 @@ function render(
   {
     container,
     baseElement = container,
-    legacyRoot = typeof ReactDOM.createRoot !== 'function',
+    legacyRoot = typeof ReactDOMClient.createRoot !== 'function',
     queries,
     hydrate = false,
     wrapper,

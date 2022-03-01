@@ -70,6 +70,12 @@
       "react/no-adjacent-inline-elements": "off",
       "import/no-unassigned-import": "off",
       "import/named": "off",
+      "import/no-unresolved": [
+        "error",
+        {
+          "ignore": "react-dom/client"
+        }
+      ],
       "testing-library/no-container": "off",
       "testing-library/no-dom-import": "off",
       "testing-library/no-unnecessary-act": "off",
