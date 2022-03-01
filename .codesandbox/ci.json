@@ -1,4 +1,5 @@
 {
+  "install": "install --force --no-lockfile",
   "sandboxes": ["new", "github/kentcdodds/react-testing-library-examples"],
   "node": "12"
 }
