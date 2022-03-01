@@ -73,7 +73,9 @@
       "import/no-unresolved": [
         "error",
         {
-          "ignore": "react-dom/client"
+          "ignore": [
+            "react-dom/client"
+          ]
         }
       ],
       "testing-library/no-container": "off",
