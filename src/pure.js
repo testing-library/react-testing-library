@@ -7,19 +7,26 @@ import {
   configure as configureDTL,
 } from '@testing-library/dom'
 import act, {
-  asyncAct,
   getIsReactActEnvironment,
   setReactActEnvironment,
 } from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
+  unstable_advanceTimersWrapper: cb => {
+    return act(cb)
+  },
+  // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
+  // But that's not necessarily how `asyncWrapper` is used since it's a public method.
+  // Let's just hope nobody else is using it.
   asyncWrapper: async cb => {
-    let result
-    await asyncAct(async () => {
-      result = await cb()
-    })
-    return result
+    const previousActEnvironment = getIsReactActEnvironment()
+    setReactActEnvironment(false)
+    try {
+      return await cb()
+    } finally {
+      setReactActEnvironment(previousActEnvironment)
+    }
   },
   eventWrapper: cb => {
     let result
@@ -29,26 +36,6 @@ configureDTL({
     return result
   },
 })
-
-if (React.startTransition !== undefined) {
-  configureDTL({
-    unstable_advanceTimersWrapper: cb => {
-      return act(cb)
-    },
-    // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
-    // But that's not necessarily how `asyncWrapper` is used since it's a public method.
-    // Let's just hope nobody else is using it.
-    asyncWrapper: async cb => {
-      const previousActEnvironment = getIsReactActEnvironment()
-      setReactActEnvironment(false)
-      try {
-        return await cb()
-      } finally {
-        setReactActEnvironment(previousActEnvironment)
-      }
-    },
-  })
-}
 
 // Ideally we'd just use a WeakMap where containers are keys and roots are values.
 // We use two variables so that we can bail out in constant time when we render with a new container (most common use case)
@@ -65,11 +52,6 @@ function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
 ) {
-  if (typeof ReactDOMClient.createRoot !== 'function') {
-    throw new TypeError(
-      `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).'`,
-    )
-  }
   let root
   if (hydrate) {
     act(() => {
@@ -176,7 +158,7 @@ function render(
   {
     container,
     baseElement = container,
-    legacyRoot = typeof ReactDOMClient.createRoot !== 'function',
+    legacyRoot = false,
     queries,
     hydrate = false,
     wrapper,
@@ -204,6 +186,9 @@ function render(
     mountedContainers.add(container)
   } else {
     mountedRootEntries.forEach(rootEntry => {
+      // Else is unreachable since `mountedContainers` has the `container`.
+      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+      /* istanbul ignore else */
       if (rootEntry.container === container) {
         root = rootEntry.root
       }
@@ -236,9 +221,5 @@ function cleanup() {
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
 export {render, cleanup, act, fireEvent}
-
-// NOTE: we're not going to export asyncAct because that's our own compatibility
-// thing for people using react-dom@16.8.0. Anyone else doesn't need it and
-// people should just upgrade anyway.
 
 /* eslint func-name-matching:0 */

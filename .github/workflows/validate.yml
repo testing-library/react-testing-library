@@ -12,7 +12,7 @@ on:
   pull_request: {}
 jobs:
   main:
-    continue-on-error: ${{ matrix.react != 'latest' }}
+    continue-on-error: ${{ matrix.react != 'current' }}
     # ignore all-contributors PRs
     if: ${{ !contains(github.head_ref, 'all-contributors') }}
     strategy:
@@ -20,7 +20,7 @@ jobs:
       matrix:
         # TODO: relax `'16.9.1'` to `16` once GitHub has 16.9.1 cached. 16.9.0 is broken due to https://github.com/nodejs/node/issues/40030
         node: [12, 14, '16.9.1']
-        react: [latest, next, experimental]
+        react: [current, next, experimental]
     runs-on: ubuntu-latest
     steps:
       - name: 🛑 Cancel Previous Runs
@@ -47,6 +47,7 @@ jobs:
       # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
       - name: ⚛️ Setup react
         run: npm install react@${{ matrix.react }} react-dom@${{ matrix.react }}
+        if: ${{ matrix.react != 'current' }}
 
       - name: ▶️ Run validate script
         run: npm run validate

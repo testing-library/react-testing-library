@@ -8,7 +8,7 @@ jest.mock('react-dom/test-utils', () => ({
 
 beforeEach(() => {
   jest.resetModules()
-  asyncAct = require('../act-compat').asyncAct
+  asyncAct = require('../act-compat').default
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
