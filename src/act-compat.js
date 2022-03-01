@@ -2,7 +2,6 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import * as testUtils from 'react-dom/test-utils'
 
-const isomorphicAct = React.unstable_act
 const domAct = testUtils.act
 const actSupported = domAct !== undefined
 
@@ -87,7 +86,7 @@ function withGlobalActEnvironment(actImplementation) {
   }
 }
 
-const act = withGlobalActEnvironment(isomorphicAct || domAct || actPolyfill)
+const act = withGlobalActEnvironment(domAct || actPolyfill)
 
 let youHaveBeenWarned = false
 let isAsyncActSupported = null
