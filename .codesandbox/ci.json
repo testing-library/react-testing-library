@@ -1,4 +1,5 @@
 {
   "sandboxes": ["new", "github/kentcdodds/react-testing-library-examples"],
+  "install": "npm install",
   "node": "16"
 }
