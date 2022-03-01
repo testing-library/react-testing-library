@@ -15,6 +15,7 @@
     "build:bundle:pure": "dotenv -e .bundle.main.env -e .bundle.pure.env kcd-scripts build -- --bundle --no-clean",
     "build:main": "kcd-scripts build --no-clean",
     "format": "kcd-scripts format",
+    "install:csb": "npm install",
     "lint": "kcd-scripts lint",
     "setup": "npm install && npm run validate -s",
     "test": "kcd-scripts test",
