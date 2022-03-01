@@ -1,5 +1,5 @@
 {
-  "installCommand": "npm install --force --no-lockfile",
+  "installCommand": "install --force --no-lockfile",
   "sandboxes": ["new", "github/kentcdodds/react-testing-library-examples"],
   "node": "12"
 }
