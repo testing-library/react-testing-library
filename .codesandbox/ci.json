@@ -1,4 +1,4 @@
 {
   "sandboxes": ["new", "github/kentcdodds/react-testing-library-examples"],
-  "node": "12"
+  "node": "16"
 }
