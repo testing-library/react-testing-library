@@ -14,9 +14,10 @@ export * from '@testing-library/dom'
 export type RenderResult<
   Q extends Queries = typeof queries,
   Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
 > = {
   container: Container
-  baseElement: Element
+  baseElement: BaseElement
   debug: (
     baseElement?:
       | Element
@@ -33,6 +34,7 @@ export type RenderResult<
 export interface RenderOptions<
   Q extends Queries = typeof queries,
   Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
 > {
   /**
    * By default, React Testing Library will create a div and append that div to the document.body. Your React component will be rendered in the created div. If you provide your own HTMLElement container via this option,
@@ -50,7 +52,7 @@ export interface RenderOptions<
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#baseelement
    */
-  baseElement?: Element
+  baseElement?: BaseElement
   /**
    * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
    *  rendering and use ReactDOM.hydrate to mount your components.
@@ -81,10 +83,11 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export function render<
   Q extends Queries = typeof queries,
   Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
 >(
   ui: React.ReactElement,
-  options: RenderOptions<Q, Container>,
-): RenderResult<Q, Container>
+  options: RenderOptions<Q, Container, BaseElement>,
+): RenderResult<Q, Container, BaseElement>
 export function render(
   ui: React.ReactElement,
   options?: Omit<RenderOptions, 'queries'>,
