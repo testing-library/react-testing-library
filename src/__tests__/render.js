@@ -109,23 +109,6 @@ test('flushes useEffect cleanup functions sync on unmount()', () => {
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
-test('throws if `legacyRoot: false` is used with an incomaptible version', () => {
-  const isConcurrentReact = typeof ReactDOM.createRoot === 'function'
-
-  const performConcurrentRender = () => render(<div />, {legacyRoot: false})
-
-  // eslint-disable-next-line jest/no-if -- jest doesn't support conditional tests
-  if (isConcurrentReact) {
-    // eslint-disable-next-line jest/no-conditional-expect -- yes, jest still doesn't support conditional tests
-    expect(performConcurrentRender).not.toThrow()
-  } else {
-    // eslint-disable-next-line jest/no-conditional-expect -- yes, jest still doesn't support conditional tests
-    expect(performConcurrentRender).toThrowError(
-      `Attempted to use concurrent React with \`react-dom@${ReactDOM.version}\`. Be sure to use the \`next\` or \`experimental\` release channel (https://reactjs.org/docs/release-channels.html).`,
-    )
-  }
-})
-
 test('can be called multiple times on the same container', () => {
   const container = document.createElement('div')
 
@@ -167,4 +150,48 @@ test('hydrate will make the UI interactive', () => {
   fireEvent.click(container.querySelector('button'))
 
   expect(container).toHaveTextContent('clicked:1')
+})
+
+test('hydrate can have a wrapper', () => {
+  const wrapperComponentMountEffect = jest.fn()
+  function WrapperComponent({children}) {
+    React.useEffect(() => {
+      wrapperComponentMountEffect()
+    })
+
+    return children
+  }
+  const ui = <div />
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+
+  render(ui, {container, hydrate: true, wrapper: WrapperComponent})
+
+  expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(1)
+})
+
+test('legacyRoot uses legacy ReactDOM.render', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  render(<div />, {legacyRoot: true})
+
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error).toHaveBeenNthCalledWith(
+    1,
+    "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  )
+})
+
+test('legacyRoot uses legacy ReactDOM.hydrate', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  const ui = <div />
+  const container = document.createElement('div')
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+  render(ui, {container, hydrate: true, legacyRoot: true})
+
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error).toHaveBeenNthCalledWith(
+    1,
+    "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  )
 })
