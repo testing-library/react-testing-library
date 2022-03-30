@@ -100,6 +100,66 @@ export function testQueries() {
   )
 }
 
+export function wrappedRender(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  const Wrapper = ({children}: {children: React.ReactElement}): JSX.Element => {
+    return <div>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: Wrapper, ...options})
+}
+
+export function wrappedRenderB(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  const Wrapper: React.FunctionComponent<{children?: React.ReactNode}> = ({
+    children,
+  }) => {
+    return <div>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: Wrapper, ...options})
+}
+
+export function wrappedRenderC(
+  ui: React.ReactElement,
+  options?: pure.RenderOptions,
+) {
+  interface AppWrapperProps {
+    userProviderProps?: {user: string}
+  }
+  const AppWrapperProps: React.FunctionComponent<AppWrapperProps> = ({
+    children,
+    userProviderProps = {user: 'TypeScript'},
+  }) => {
+    return <div data-testid={userProviderProps.user}>{children}</div>
+  }
+
+  return pure.render(ui, {wrapper: AppWrapperProps, ...options})
+}
+
+export function testBaseElement() {
+  const {baseElement: baseDefaultElement} = render(<div />)
+  expectType<HTMLElement, typeof baseDefaultElement>(baseDefaultElement)
+
+  const container = document.createElement('input')
+  const {baseElement: baseElementFromContainer} = render(<div />, {container})
+  expectType<typeof container, typeof baseElementFromContainer>(
+    baseElementFromContainer,
+  )
+
+  const baseElementOption = document.createElement('input')
+  const {baseElement: baseElementFromOption} = render(<div />, {
+    baseElement: baseElementOption,
+  })
+  expectType<typeof baseElementOption, typeof baseElementFromOption>(
+    baseElementFromOption,
+  )
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",

@@ -1288,6 +1288,25 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "akashshyamdev",
+      "name": "Akash Shyam",
+      "avatar_url": "https://avatars.githubusercontent.com/u/56759828?v=4",
+      "profile": "https://www.akashshyam.online/",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "fmeum",
+      "name": "Fabian Meumertzheim",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4312191?v=4",
+      "profile": "https://hen.ne.ke",
+      "contributions": [
+        "code",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
