@@ -61,6 +61,11 @@ export interface RenderOptions<
    */
   hydrate?: boolean
   /**
+   * Set to `true` if you want to force synchronous `ReactDOM.render`.
+   * Otherwise `render` will default to concurrent React if available.
+   */
+  legacyRoot?: boolean
+  /**
    * Queries to bind. Overrides the default set from DOM Testing Library unless merged.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#queries

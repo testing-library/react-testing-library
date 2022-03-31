@@ -1,20 +1,32 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import * as ReactDOMClient from 'react-dom/client'
 import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {asyncAct} from './act-compat'
+import act, {
+  getIsReactActEnvironment,
+  setReactActEnvironment,
+} from './act-compat'
 import {fireEvent} from './fire-event'
 
 configureDTL({
+  unstable_advanceTimersWrapper: cb => {
+    return act(cb)
+  },
+  // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
+  // But that's not necessarily how `asyncWrapper` is used since it's a public method.
+  // Let's just hope nobody else is using it.
   asyncWrapper: async cb => {
-    let result
-    await asyncAct(async () => {
-      result = await cb()
-    })
-    return result
+    const previousActEnvironment = getIsReactActEnvironment()
+    setReactActEnvironment(false)
+    try {
+      return await cb()
+    } finally {
+      setReactActEnvironment(previousActEnvironment)
+    }
   },
   eventWrapper: cb => {
     let result
@@ -25,32 +37,70 @@ configureDTL({
   },
 })
 
+// Ideally we'd just use a WeakMap where containers are keys and roots are values.
+// We use two variables so that we can bail out in constant time when we render with a new container (most common use case)
+/**
+ * @type {Set<import('react-dom').Container>}
+ */
 const mountedContainers = new Set()
+/**
+ * @type Array<{container: import('react-dom').Container, root: ReturnType<typeof createConcurrentRoot>}>
+ */
+const mountedRootEntries = []
 
-function render(
-  ui,
-  {
-    container,
-    baseElement = container,
-    queries,
-    hydrate = false,
-    wrapper: WrapperComponent,
-  } = {},
+function createConcurrentRoot(
+  container,
+  {hydrate, ui, wrapper: WrapperComponent},
 ) {
-  if (!baseElement) {
-    // default to document.body instead of documentElement to avoid output of potentially-large
-    // head elements (such as JSS style blocks) in debug output
-    baseElement = document.body
-  }
-  if (!container) {
-    container = baseElement.appendChild(document.createElement('div'))
+  let root
+  if (hydrate) {
+    act(() => {
+      root = ReactDOMClient.hydrateRoot(
+        container,
+        WrapperComponent ? React.createElement(WrapperComponent, null, ui) : ui,
+      )
+    })
+  } else {
+    root = ReactDOMClient.createRoot(container)
   }
 
-  // we'll add it to the mounted containers regardless of whether it's actually
-  // added to document.body so the cleanup method works regardless of whether
-  // they're passing us a custom container or not.
-  mountedContainers.add(container)
+  return {
+    hydrate() {
+      /* istanbul ignore if */
+      if (!hydrate) {
+        throw new Error(
+          'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
+        )
+      }
+      // Nothing to do since hydration happens when creating the root object.
+    },
+    render(element) {
+      root.render(element)
+    },
+    unmount() {
+      root.unmount()
+    },
+  }
+}
 
+function createLegacyRoot(container) {
+  return {
+    hydrate(element) {
+      ReactDOM.hydrate(element, container)
+    },
+    render(element) {
+      ReactDOM.render(element, container)
+    },
+    unmount() {
+      ReactDOM.unmountComponentAtNode(container)
+    },
+  }
+}
+
+function renderRoot(
+  ui,
+  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
+) {
   const wrapUiIfNeeded = innerElement =>
     WrapperComponent
       ? React.createElement(WrapperComponent, null, innerElement)
@@ -58,9 +108,9 @@ function render(
 
   act(() => {
     if (hydrate) {
-      ReactDOM.hydrate(wrapUiIfNeeded(ui), container)
+      root.hydrate(wrapUiIfNeeded(ui), container)
     } else {
-      ReactDOM.render(wrapUiIfNeeded(ui), container)
+      root.render(wrapUiIfNeeded(ui), container)
     }
   })
 
@@ -75,11 +125,15 @@ function render(
           console.log(prettyDOM(el, maxLength, options)),
     unmount: () => {
       act(() => {
-        ReactDOM.unmountComponentAtNode(container)
+        root.unmount()
       })
     },
     rerender: rerenderUi => {
-      render(wrapUiIfNeeded(rerenderUi), {container, baseElement})
+      renderRoot(wrapUiIfNeeded(rerenderUi), {
+        container,
+        baseElement,
+        root,
+      })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
@@ -99,28 +153,73 @@ function render(
   }
 }
 
-function cleanup() {
-  mountedContainers.forEach(cleanupAtContainer)
+function render(
+  ui,
+  {
+    container,
+    baseElement = container,
+    legacyRoot = false,
+    queries,
+    hydrate = false,
+    wrapper,
+  } = {},
+) {
+  if (!baseElement) {
+    // default to document.body instead of documentElement to avoid output of potentially-large
+    // head elements (such as JSS style blocks) in debug output
+    baseElement = document.body
+  }
+  if (!container) {
+    container = baseElement.appendChild(document.createElement('div'))
+  }
+
+  let root
+  // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
+  if (!mountedContainers.has(container)) {
+    const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
+    root = createRootImpl(container, {hydrate, ui, wrapper})
+
+    mountedRootEntries.push({container, root})
+    // we'll add it to the mounted containers regardless of whether it's actually
+    // added to document.body so the cleanup method works regardless of whether
+    // they're passing us a custom container or not.
+    mountedContainers.add(container)
+  } else {
+    mountedRootEntries.forEach(rootEntry => {
+      // Else is unreachable since `mountedContainers` has the `container`.
+      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+      /* istanbul ignore else */
+      if (rootEntry.container === container) {
+        root = rootEntry.root
+      }
+    })
+  }
+
+  return renderRoot(ui, {
+    container,
+    baseElement,
+    queries,
+    hydrate,
+    wrapper,
+    root,
+  })
 }
 
-// maybe one day we'll expose this (perhaps even as a utility returned by render).
-// but let's wait until someone asks for it.
-function cleanupAtContainer(container) {
-  act(() => {
-    ReactDOM.unmountComponentAtNode(container)
+function cleanup() {
+  mountedRootEntries.forEach(({root, container}) => {
+    act(() => {
+      root.unmount()
+    })
+    if (container.parentNode === document.body) {
+      document.body.removeChild(container)
+    }
   })
-  if (container.parentNode === document.body) {
-    document.body.removeChild(container)
-  }
-  mountedContainers.delete(container)
+  mountedRootEntries.length = 0
+  mountedContainers.clear()
 }
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
 export {render, cleanup, act, fireEvent}
-
-// NOTE: we're not going to export asyncAct because that's our own compatibility
-// thing for people using react-dom@16.8.0. Anyone else doesn't need it and
-// people should just upgrade anyway.
 
 /* eslint func-name-matching:0 */
