@@ -130,6 +130,7 @@ export function wrappedRenderC(
 ) {
   interface AppWrapperProps {
     userProviderProps?: {user: string}
+    children: React.ReactNode
   }
   const AppWrapperProps: React.FunctionComponent<AppWrapperProps> = ({
     children,
