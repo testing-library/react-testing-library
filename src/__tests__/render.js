@@ -1,6 +1,13 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import {render, screen} from '../'
+import ReactDOMServer from 'react-dom/server'
+import {fireEvent, render, screen} from '../'
+
+afterEach(() => {
+  if (console.error.mockRestore !== undefined) {
+    console.error.mockRestore()
+  }
+})
 
 test('renders div into document', () => {
   const ref = React.createRef()
@@ -100,4 +107,91 @@ test('flushes useEffect cleanup functions sync on unmount()', () => {
   unmount()
 
   expect(spy).toHaveBeenCalledTimes(1)
+})
+
+test('can be called multiple times on the same container', () => {
+  const container = document.createElement('div')
+
+  const {unmount} = render(<strong />, {container})
+
+  expect(container).toContainHTML('<strong></strong>')
+
+  render(<em />, {container})
+
+  expect(container).toContainHTML('<em></em>')
+
+  unmount()
+
+  expect(container).toBeEmptyDOMElement()
+})
+
+test('hydrate will make the UI interactive', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  function App() {
+    const [clicked, handleClick] = React.useReducer(n => n + 1, 0)
+
+    return (
+      <button type="button" onClick={handleClick}>
+        clicked:{clicked}
+      </button>
+    )
+  }
+  const ui = <App />
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+
+  expect(container).toHaveTextContent('clicked:0')
+
+  render(ui, {container, hydrate: true})
+
+  expect(console.error).not.toHaveBeenCalled()
+
+  fireEvent.click(container.querySelector('button'))
+
+  expect(container).toHaveTextContent('clicked:1')
+})
+
+test('hydrate can have a wrapper', () => {
+  const wrapperComponentMountEffect = jest.fn()
+  function WrapperComponent({children}) {
+    React.useEffect(() => {
+      wrapperComponentMountEffect()
+    })
+
+    return children
+  }
+  const ui = <div />
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+
+  render(ui, {container, hydrate: true, wrapper: WrapperComponent})
+
+  expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(1)
+})
+
+test('legacyRoot uses legacy ReactDOM.render', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  render(<div />, {legacyRoot: true})
+
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error).toHaveBeenNthCalledWith(
+    1,
+    "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  )
+})
+
+test('legacyRoot uses legacy ReactDOM.hydrate', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+  const ui = <div />
+  const container = document.createElement('div')
+  container.innerHTML = ReactDOMServer.renderToString(ui)
+  render(ui, {container, hydrate: true, legacyRoot: true})
+
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error).toHaveBeenNthCalledWith(
+    1,
+    "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  )
 })

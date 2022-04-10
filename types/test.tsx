@@ -141,6 +141,25 @@ export function wrappedRenderC(
   return pure.render(ui, {wrapper: AppWrapperProps, ...options})
 }
 
+export function testBaseElement() {
+  const {baseElement: baseDefaultElement} = render(<div />)
+  expectType<HTMLElement, typeof baseDefaultElement>(baseDefaultElement)
+
+  const container = document.createElement('input')
+  const {baseElement: baseElementFromContainer} = render(<div />, {container})
+  expectType<typeof container, typeof baseElementFromContainer>(
+    baseElementFromContainer,
+  )
+
+  const baseElementOption = document.createElement('input')
+  const {baseElement: baseElementFromOption} = render(<div />, {
+    baseElement: baseElementOption,
+  })
+  expectType<typeof baseElementOption, typeof baseElementFromOption>(
+    baseElementFromOption,
+  )
+}
+
 export function testRenderHook() {
   const {result, rerender, unmount} = renderHook(() => React.useState(2)[0])
 
