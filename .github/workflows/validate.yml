@@ -2,7 +2,9 @@ name: validate
 on:
   push:
     branches:
-      - '+([0-9])?(.{+([0-9]),x}).x'
+      # Match SemVer major release branches
+      # e.g. "12.x" or "8.x"
+      - '[0-9]+.x'
       - 'main'
       - 'next'
       - 'next-major'
@@ -61,8 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     if:
       ${{ github.repository == 'testing-library/react-testing-library' &&
-      contains('refs/heads/main,refs/heads/beta,refs/heads/next,refs/heads/alpha',
-      github.ref) && github.event_name == 'push' }}
+      github.event_name == 'push' }}
     steps:
       - name: 🛑 Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.0
