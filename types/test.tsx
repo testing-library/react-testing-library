@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {render, fireEvent, screen, waitFor} from '.'
+import {render, fireEvent, screen, waitFor, renderHook} from '.'
 import * as pure from './pure'
 
 export async function testRender() {
@@ -159,6 +159,29 @@ export function testBaseElement() {
   expectType<typeof baseElementOption, typeof baseElementFromOption>(
     baseElementFromOption,
   )
+}
+
+export function testRenderHook() {
+  const {result, rerender, unmount} = renderHook(() => React.useState(2)[0])
+
+  expectType<number, typeof result.current>(result.current)
+
+  rerender()
+
+  unmount()
+}
+
+export function testRenderHookProps() {
+  const {result, rerender, unmount} = renderHook(
+    ({defaultValue}) => React.useState(defaultValue)[0],
+    {initialProps: {defaultValue: 2}},
+  )
+
+  expectType<number, typeof result.current>(result.current)
+
+  rerender()
+
+  unmount()
 }
 
 /*

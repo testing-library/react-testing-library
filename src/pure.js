@@ -218,8 +218,36 @@ function cleanup() {
   mountedContainers.clear()
 }
 
+function renderHook(renderCallback, options = {}) {
+  const {initialProps, wrapper} = options
+  const result = React.createRef()
+
+  function TestComponent({renderCallbackProps}) {
+    const pendingResult = renderCallback(renderCallbackProps)
+
+    React.useEffect(() => {
+      result.current = pendingResult
+    })
+
+    return null
+  }
+
+  const {rerender: baseRerender, unmount} = render(
+    <TestComponent renderCallbackProps={initialProps} />,
+    {wrapper},
+  )
+
+  function rerender(rerenderCallbackProps) {
+    return baseRerender(
+      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+    )
+  }
+
+  return {result, rerender, unmount}
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, cleanup, act, fireEvent}
+export {render, renderHook, cleanup, act, fireEvent}
 
 /* eslint func-name-matching:0 */
