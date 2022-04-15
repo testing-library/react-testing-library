@@ -98,20 +98,47 @@ export function render(
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
 
-// TODO JSDOC
 interface RenderHookResult<Result, Props> {
+  /**
+   * Triggers a re-render. The props will be passed to your renderHook callback.
+   */
   rerender: (props?: Props) => void
-  result: {current: Result}
+  /**
+   * This is a stable reference to the latest value returned by your renderHook
+   * callback
+   */
+  result: {
+    /**
+     * The value returned by your renderHook callback
+     */
+    current: Result
+  }
+  /**
+   * Unmounts the test component. This is useful for when you need to test
+   * any cleanup your useEffects have.
+   */
   unmount: () => void
 }
 
-// TODO JSDOC
 interface RenderHookOptions<Props> {
+  /**
+   * The argument passed to the renderHook callback. Can be useful if you plan
+   * to use the rerender utility to change the values passed to your hook.
+   */
   initialProps?: Props
-  wrapper?: React.ComponentType
+  /**
+   * Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for creating
+   *  reusable custom render functions for common data providers. See setup for examples.
+   *
+   *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
+   */
+  wrapper?: React.JSXElementConstructor<{children: React.ReactElement}>
 }
 
-// TODO JSDOC
+/**
+ * Allows you to render a hook within a test React component without having to
+ * create that component yourself.
+ */
 export function renderHook<Result, Props>(
   render: (initialProps: Props) => Result,
   options?: RenderHookOptions<Props>,
