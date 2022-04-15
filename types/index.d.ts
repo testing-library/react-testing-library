@@ -98,7 +98,7 @@ export function render(
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
 
-interface RenderHookResult<Result, Props> {
+export interface RenderHookResult<Result, Props> {
   /**
    * Triggers a re-render. The props will be passed to your renderHook callback.
    */
