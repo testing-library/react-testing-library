@@ -120,7 +120,7 @@ export interface RenderHookResult<Result, Props> {
   unmount: () => void
 }
 
-interface RenderHookOptions<Props> {
+export interface RenderHookOptions<Props> {
   /**
    * The argument passed to the renderHook callback. Can be useful if you plan
    * to use the rerender utility to change the values passed to your hook.
