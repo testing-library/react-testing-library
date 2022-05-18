@@ -1,0 +1,40 @@
+---
+kind: pipeline
+type: docker
+name: test
+
+concurrency:
+  limit: 1
+
+steps:
+  - name: test
+    image: node:lts-slim
+    commands:
+      - ./scripts/setup-test.sh
+      - yarn test
+
+  - name: test-integration
+    image: node:lts-slim
+    commands:
+      - ./scripts/setup-test.sh
+      - yarn migrate
+      - yarn seed
+      - yarn test-integration-ci
+
+services:
+  - name: db
+    image: yobasystems/alpine-mariadb
+
+trigger:
+  event:
+    - pull_request
+    - rollback
+
+environment:
+  DB_HOST: db
+  DB_NAME: db
+  DB_USER: db
+  DB_PASS: TEST_PASS
+  MYSQL_DATABASE: db
+  MYSQL_USER: db
+  MYSQL_PASSWORD: TEST_PASS
