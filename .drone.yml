@@ -17,4 +17,3 @@ steps:
 #     - pull_request
 #     - rollback
 #     - merge
-#     - push
