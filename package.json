@@ -18,8 +18,8 @@
     "install:csb": "npm install",
     "lint": "kcd-scripts lint",
     "setup": "npm install && npm run validate -s",
-    "test:regression": "kcd-scripts test",
-    "test:update": "npm test -- --updateSnapshot --coverage",
+    "test": "kcd-scripts test",
+    "test:update": "npm run test -- --updateSnapshot --coverage",
     "typecheck": "kcd-scripts typecheck --build types",
     "validate": "kcd-scripts validate"
   },
