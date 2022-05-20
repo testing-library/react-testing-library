@@ -19,7 +19,7 @@
     "lint": "kcd-scripts lint",
     "setup": "npm install && npm run validate -s",
     "test:regression": "kcd-scripts test",
-    "test:update": "npm test -- --updateSnapshot --coverage",
+    "test:update": "npm run test:regression -- --updateSnapshot --coverage",
     "typecheck": "kcd-scripts typecheck --build types",
     "validate": "kcd-scripts validate"
   },
