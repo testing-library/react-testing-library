@@ -1,1 +1,7 @@
-module.exports = require('kcd-scripts/husky')
+module.exports = {
+    "husky": {
+      "hooks": {
+        "pre-push": "yarn test"
+      }
+    }
+  }

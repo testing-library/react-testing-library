@@ -11,9 +11,9 @@ steps:
     image: node:lts-slim
     commands:
       - npm run setup
-      - npm run test:regression
-# trigger:
-#   event:
-#     - pull_request
-#     - rollback
-#     - merge
+      - npm run test
+trigger:
+  event:
+    - pull_request
+    - rollback
+    - merge
