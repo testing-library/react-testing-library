@@ -65,6 +65,9 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",
+    "globals": {
+      "globalThis": "readonly"
+    },
     "rules": {
       "react/prop-types": "off",
       "react/no-adjacent-inline-elements": "off",

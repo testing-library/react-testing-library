@@ -4,6 +4,10 @@ const domAct = testUtils.act
 
 function getGlobalThis() {
   /* istanbul ignore else */
+  if (typeof globalThis !== 'undefined') {
+    return globalThis
+  }
+  /* istanbul ignore next */
   if (typeof self !== 'undefined') {
     return self
   }
