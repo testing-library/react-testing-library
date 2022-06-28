@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "types": "types/index.d.ts",
   "module": "dist/@testing-library/react.esm.js",
+  "sideEffects": false,
   "engines": {
     "node": ">=12"
   },
