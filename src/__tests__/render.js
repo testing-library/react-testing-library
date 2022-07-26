@@ -59,6 +59,13 @@ test('returns baseElement which defaults to document.body', () => {
   expect(baseElement).toBe(document.body)
 })
 
+test('runs queries only on its container', () => {
+  render(<p>Hello</p>)
+  const {getByText, queryByText} = render(<p>Goodbye</p>)
+  expect(queryByText('Hello')).not.toBeInTheDocument() // eslint-disable-line testing-library/prefer-screen-queries
+  expect(getByText('Goodbye')).toBeInTheDocument() // eslint-disable-line testing-library/prefer-screen-queries
+})
+
 test('supports fragments', () => {
   class Test extends React.Component {
     render() {

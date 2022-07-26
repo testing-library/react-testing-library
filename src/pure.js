@@ -149,7 +149,7 @@ function renderRoot(
         return template.content
       }
     },
-    ...getQueriesForElement(baseElement, queries),
+    ...getQueriesForElement(container, queries),
   }
 }
 
