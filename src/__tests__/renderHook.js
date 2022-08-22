@@ -1,7 +1,7 @@
 import React from 'react'
 import {renderHook} from '../pure'
 
-test('gives comitted result', () => {
+test('gives committed result', () => {
   const {result} = renderHook(() => {
     const [state, setState] = React.useState(1)
 
