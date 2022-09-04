@@ -234,7 +234,7 @@ function renderHook(renderCallback, options = {}) {
 
   const {rerender: baseRerender, unmount} = render(
     <TestComponent renderCallbackProps={initialProps} />,
-      renderOptions,
+    renderOptions,
   )
 
   function rerender(rerenderCallbackProps) {
