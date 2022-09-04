@@ -120,28 +120,32 @@ export interface RenderHookResult<Result, Props> {
   unmount: () => void
 }
 
-export interface RenderHookOptions<Props> {
+export interface RenderHookOptions<
+  Props,
+  Q extends Queries = typeof queries,
+  Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+> extends RenderOptions<Q, Container, BaseElement> {
   /**
    * The argument passed to the renderHook callback. Can be useful if you plan
    * to use the rerender utility to change the values passed to your hook.
    */
   initialProps?: Props
-  /**
-   * Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for creating
-   *  reusable custom render functions for common data providers. See setup for examples.
-   *
-   *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
-   */
-  wrapper?: React.JSXElementConstructor<{children: React.ReactElement}>
 }
 
 /**
  * Allows you to render a hook within a test React component without having to
  * create that component yourself.
  */
-export function renderHook<Result, Props>(
+export function renderHook<
+  Result,
+  Props,
+  Q extends Queries = typeof queries,
+  Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+>(
   render: (initialProps: Props) => Result,
-  options?: RenderHookOptions<Props>,
+  options?: RenderHookOptions<Props, Q, Container, BaseElement>,
 ): RenderHookResult<Result, Props>
 
 /**

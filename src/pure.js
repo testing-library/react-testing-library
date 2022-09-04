@@ -219,7 +219,7 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, wrapper} = options
+  const {initialProps, ...renderOptions} = options
   const result = React.createRef()
 
   function TestComponent({renderCallbackProps}) {
@@ -234,7 +234,7 @@ function renderHook(renderCallback, options = {}) {
 
   const {rerender: baseRerender, unmount} = render(
     <TestComponent renderCallbackProps={initialProps} />,
-    {wrapper},
+    renderOptions,
   )
 
   function rerender(rerenderCallbackProps) {
