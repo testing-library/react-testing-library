@@ -113,6 +113,16 @@ yarn add --dev @testing-library/react
 
 This library has `peerDependencies` listings for `react` and `react-dom`.
 
+_React Testing Library versions 13+ require React v18. If your project uses an
+older version of React, be sure to install version 12:_
+
+```
+npm install --save-dev @testing-library/react@12
+
+
+yarn add --dev @testing-library/react@12
+```
+
 You may also be interested in installing `@testing-library/jest-dom` so you can
 use [the custom jest matchers](https://github.com/testing-library/jest-dom).
 
