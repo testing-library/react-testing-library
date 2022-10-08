@@ -12,6 +12,19 @@ import act, {
 } from './act-compat'
 import {fireEvent} from './fire-event'
 
+function jestFakeTimersAreEnabled() {
+  /* istanbul ignore else */
+  if (typeof jest !== 'undefined' && jest !== null) {
+    return (
+      // legacy timers
+      setTimeout._isMockFunction === true || // modern timers
+      Object.prototype.hasOwnProperty.call(setTimeout, 'clock')
+    )
+  } // istanbul ignore next
+
+  return false
+}
+
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
     return act(cb)
@@ -23,7 +36,21 @@ configureDTL({
     const previousActEnvironment = getIsReactActEnvironment()
     setReactActEnvironment(false)
     try {
-      return await cb()
+      const result = await cb()
+      // Drain microtask queue.
+      // Otherwise we'll restore the previous act() environment, before we resolve the `waitFor` call.
+      // The caller would have no chance to wrap the in-flight Promises in `act()`
+      await new Promise(resolve => {
+        setTimeout(() => {
+          resolve()
+        }, 0)
+
+        if (jestFakeTimersAreEnabled()) {
+          jest.advanceTimersByTime(0)
+        }
+      })
+
+      return result
     } finally {
       setReactActEnvironment(previousActEnvironment)
     }
