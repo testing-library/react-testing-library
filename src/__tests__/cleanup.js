@@ -51,6 +51,7 @@ describe('fake timers and missing act warnings', () => {
   })
 
   afterEach(() => {
+    jest.restoreAllMocks()
     jest.useRealTimers()
   })
 

@@ -13,7 +13,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  console.error.mockRestore()
+  jest.restoreAllMocks()
 })
 
 test('async act works when it does not exist (older versions of react)', async () => {
