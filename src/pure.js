@@ -232,18 +232,25 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  let component = <TestComponent renderCallbackProps={initialProps} />
-
-  if (WrapperComponent) {
-    component = (
-      <WrapperComponent {...initialProps}>{component}</WrapperComponent>
+  const wrapUiIfNeeded = (innerElement, props) =>
+    WrapperComponent ? (
+      <WrapperComponent {...props}>{innerElement}</WrapperComponent>
+    ) : (
+      innerElement
     )
-  }
+
+  const component = wrapUiIfNeeded(
+    <TestComponent renderCallbackProps={initialProps} />,
+    initialProps,
+  )
   const {rerender: baseRerender, unmount} = render(component, renderOptions)
 
   function rerender(rerenderCallbackProps) {
     return baseRerender(
-      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+      wrapUiIfNeeded(
+        <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+        rerenderCallbackProps,
+      ),
     )
   }
 
