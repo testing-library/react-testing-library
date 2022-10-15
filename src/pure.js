@@ -219,7 +219,7 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, ...renderOptions} = options
+  const {initialProps, wrapper: WrapperComponent, ...renderOptions} = options
   const result = React.createRef()
 
   function TestComponent({renderCallbackProps}) {
@@ -232,10 +232,14 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  const {rerender: baseRerender, unmount} = render(
-    <TestComponent renderCallbackProps={initialProps} />,
-    renderOptions,
-  )
+  let component = <TestComponent renderCallbackProps={initialProps} />
+
+  if (WrapperComponent) {
+    component = (
+      <WrapperComponent {...initialProps}>{component}</WrapperComponent>
+    )
+  }
+  const {rerender: baseRerender, unmount} = render(component, renderOptions)
 
   function rerender(rerenderCallbackProps) {
     return baseRerender(
