@@ -80,6 +80,29 @@ test('passes initialProps to a wrapper component', async () => {
   expect(result.current).toEqual('provided')
 })
 
+test('rerenders wrapper with given props', async () => {
+  const Context = React.createContext('default')
+  function Wrapper({value, children}) {
+    return <Context.Provider value={value}>{children}</Context.Provider>
+  }
+  const initialProps = {value: 'initial'}
+  const {result, rerender} = renderHook(
+    () => {
+      return React.useContext(Context)
+    },
+    {
+      wrapper: Wrapper,
+      initialProps,
+    },
+  )
+
+  expect(result.current).toEqual('initial')
+
+  rerender({value: 'updated'})
+
+  expect(result.current).toEqual('updated')
+})
+
 test('legacyRoot uses legacy ReactDOM.render', () => {
   jest.spyOn(console, 'error').mockImplementation(() => {})
 
