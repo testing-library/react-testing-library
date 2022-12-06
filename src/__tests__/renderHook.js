@@ -62,27 +62,26 @@ test('allows wrapper components', async () => {
 })
 
 test('legacyRoot uses legacy ReactDOM.render', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-
   const Context = React.createContext('default')
   function Wrapper({children}) {
     return <Context.Provider value="provided">{children}</Context.Provider>
   }
-  const {result} = renderHook(
-    () => {
-      return React.useContext(Context)
-    },
-    {
-      wrapper: Wrapper,
-      legacyRoot: true,
-    },
+  let result
+  expect(() => {
+    result = renderHook(
+      () => {
+        return React.useContext(Context)
+      },
+      {
+        wrapper: Wrapper,
+        legacyRoot: true,
+      },
+    ).result
+  }).toErrorDev(
+    [
+      "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+    ],
+    {withoutStack: true},
   )
-
   expect(result.current).toEqual('provided')
-
-  expect(console.error).toHaveBeenCalledTimes(1)
-  expect(console.error).toHaveBeenNthCalledWith(
-    1,
-    "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
-  )
 })

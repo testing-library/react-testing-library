@@ -3,12 +3,6 @@ import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
 import {fireEvent, render, screen} from '../'
 
-afterEach(() => {
-  if (console.error.mockRestore !== undefined) {
-    console.error.mockRestore()
-  }
-})
-
 test('renders div into document', () => {
   const ref = React.createRef()
   const {container} = render(<div ref={ref} />)
@@ -126,7 +120,6 @@ test('can be called multiple times on the same container', () => {
 })
 
 test('hydrate will make the UI interactive', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
   function App() {
     const [clicked, handleClick] = React.useReducer(n => n + 1, 0)
 
@@ -144,8 +137,6 @@ test('hydrate will make the UI interactive', () => {
   expect(container).toHaveTextContent('clicked:0')
 
   render(ui, {container, hydrate: true})
-
-  expect(console.error).not.toHaveBeenCalled()
 
   fireEvent.click(container.querySelector('button'))
 
@@ -172,26 +163,26 @@ test('hydrate can have a wrapper', () => {
 })
 
 test('legacyRoot uses legacy ReactDOM.render', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-  render(<div />, {legacyRoot: true})
-
-  expect(console.error).toHaveBeenCalledTimes(1)
-  expect(console.error).toHaveBeenNthCalledWith(
-    1,
-    "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  expect(() => {
+    render(<div />, {legacyRoot: true})
+  }).toErrorDev(
+    [
+      "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+    ],
+    {withoutStack: true},
   )
 })
 
 test('legacyRoot uses legacy ReactDOM.hydrate', () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
   const ui = <div />
   const container = document.createElement('div')
   container.innerHTML = ReactDOMServer.renderToString(ui)
-  render(ui, {container, hydrate: true, legacyRoot: true})
-
-  expect(console.error).toHaveBeenCalledTimes(1)
-  expect(console.error).toHaveBeenNthCalledWith(
-    1,
-    "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+  expect(() => {
+    render(ui, {container, hydrate: true, legacyRoot: true})
+  }).toErrorDev(
+    [
+      "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+    ],
+    {withoutStack: true},
   )
 })
