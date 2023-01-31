@@ -188,7 +188,6 @@ export function testRenderHookProps() {
 eslint
   testing-library/prefer-explicit-assert: "off",
   testing-library/no-wait-for-empty-callback: "off",
-  testing-library/no-debug: "off",
   testing-library/prefer-screen-queries: "off"
 */
 

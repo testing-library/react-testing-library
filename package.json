@@ -67,6 +67,9 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",
+    "parserOptions": {
+      "ecmaVersion": 2022
+    },
     "globals": {
       "globalThis": "readonly"
     },
@@ -76,6 +79,7 @@
       "import/no-unassigned-import": "off",
       "import/named": "off",
       "testing-library/no-container": "off",
+      "testing-library/no-debugging-utils": "off",
       "testing-library/no-dom-import": "off",
       "testing-library/no-unnecessary-act": "off",
       "testing-library/prefer-user-event": "off"

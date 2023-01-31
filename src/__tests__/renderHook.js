@@ -21,7 +21,7 @@ test('allows rerendering', () => {
       const [left, setLeft] = React.useState('left')
       const [right, setRight] = React.useState('right')
 
-      // eslint-disable-next-line jest/no-if
+      // eslint-disable-next-line jest/no-if, jest/no-conditional-in-test -- false-positive
       switch (branch) {
         case 'left':
           return [left, setLeft]
