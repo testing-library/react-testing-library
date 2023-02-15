@@ -24,7 +24,7 @@ SOFTWARE.
  */
 /* eslint-disable no-unsafe-finally */
 /* eslint-disable no-negated-condition */
-/* eslint-disable @babel/no-invalid-this */
+/* eslint-disable no-invalid-this */
 /* eslint-disable prefer-template */
 /* eslint-disable func-names */
 /* eslint-disable complexity */

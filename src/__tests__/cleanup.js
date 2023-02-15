@@ -64,7 +64,7 @@ describe('fake timers and missing act warnings', () => {
         let cancelled = false
         Promise.resolve().then(() => {
           microTaskSpy()
-          // eslint-disable-next-line jest/no-if -- false positive
+          // eslint-disable-next-line jest/no-if, jest/no-conditional-in-test -- false positive
           if (!cancelled) {
             setDeferredCounter(counter)
           }
@@ -96,6 +96,7 @@ describe('fake timers and missing act warnings', () => {
         let cancelled = false
         setTimeout(() => {
           deferredStateUpdateSpy()
+          // eslint-disable-next-line jest/no-conditional-in-test -- false-positive
           if (!cancelled) {
             setDeferredCounter(counter)
           }
