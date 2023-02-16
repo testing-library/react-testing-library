@@ -61,9 +61,7 @@ describe.each([
 
     test('waitFor', async () => {
       render(<ComponentWithMacrotaskLoader />)
-      // eslint-disable-next-line testing-library/prefer-find-by -- Sir, this is a test.
       await waitFor(() => screen.getByText(/Loading../))
-      // eslint-disable-next-line testing-library/prefer-find-by -- Sir, this is a test.
       await waitFor(() => screen.getByText(/Loaded this message:/))
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
@@ -130,11 +128,9 @@ describe.each([
     test('waitFor', async () => {
       render(<ComponentWithMicrotaskLoader />)
       await waitFor(() => {
-        // eslint-disable-next-line testing-library/prefer-explicit-assert -- Sir, this is a test.
         screen.getByText('Loading..')
       })
       await waitFor(() => {
-        // eslint-disable-next-line testing-library/prefer-explicit-assert -- Sir, this is a test.
         screen.getByText(/Loaded this message:/)
       })
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)

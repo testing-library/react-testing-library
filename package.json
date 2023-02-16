@@ -82,6 +82,8 @@
       "testing-library/no-debugging-utils": "off",
       "testing-library/no-dom-import": "off",
       "testing-library/no-unnecessary-act": "off",
+      "testing-library/prefer-explicit-assert": "off",
+      "testing-library/prefer-find-by": "off",
       "testing-library/prefer-user-event": "off"
     }
   },
