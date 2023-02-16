@@ -65,6 +65,7 @@ jobs:
     permissions:
       actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
       contents: write #  to create release tags (cycjimmy/semantic-release-action)
+      issues: write # to post release that resolves an issue (cycjimmy/semantic-release-action)
 
     needs: main
     runs-on: ubuntu-latest
