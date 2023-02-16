@@ -102,9 +102,27 @@ describe.each([
       React.useEffect(() => {
         if (fetchState.fetching) {
           fetchAMessageInAMicrotask().then(res => {
-            return res.json().then(data => {
-              setFetchState({todo: data.title, fetching: false})
-            })
+            return (
+              res
+                .json()
+                // By spec, the runtime can only yield back to the event loop once
+                // the microtask queue is empty.
+                // So we ensure that we actually wait for that as well before yielding back from `waitFor`.
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => data)
+                .then(data => {
+                  setFetchState({todo: data.title, fetching: false})
+                })
+            )
           })
         }
       }, [fetchState])
