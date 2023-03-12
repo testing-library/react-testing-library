@@ -219,65 +219,91 @@ test('shows the children when the checkbox is checked', () => {
 ### Complex Example
 
 ```jsx
-// login.js
-import * as React from 'react'
+import * as React from 'react';
 
 function Login() {
-  const [state, setState] = React.useReducer((s, a) => ({...s, ...a}), {
-    resolved: false,
-    loading: false,
-    error: null,
-  })
+  const [state, setState] = React.useReducer(
+    (s, a) => ({ ...s, ...a }),
+    {
+      resolved: false,
+      loading: false,
+      error: null,
+      username: '',
+      password: '',
+    }
+  );
 
   function handleSubmit(event) {
-    event.preventDefault()
-    const {usernameInput, passwordInput} = event.target.elements
+    event.preventDefault();
+    setState({ loading: true, resolved: false, error: null });
 
-    setState({loading: true, resolved: false, error: null})
+    const { username, password } = state;
 
     window
       .fetch('/api/login', {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          username: usernameInput.value,
-          password: passwordInput.value,
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
       })
-      .then(r => r.json().then(data => (r.ok ? data : Promise.reject(data))))
-      .then(
-        user => {
-          setState({loading: false, resolved: true, error: null})
-          window.localStorage.setItem('token', user.token)
-        },
-        error => {
-          setState({loading: false, resolved: false, error: error.message})
-        },
-      )
+      .then(async (r) => {
+        const data = await r.json();
+
+        if (r.ok) {
+          setState({
+            loading: false,
+            resolved: true,
+            error: null,
+            username: '',
+            password: '',
+          });
+          window.localStorage.setItem('token', data.token);
+        } else {
+          setState({ loading: false, resolved: false, error: data.message });
+        }
+      });
   }
+
+  function handleInputChange(event) {
+    const { name, value } = event.target;
+
+    setState({ [name]: value });
+  }
+
+  const { username, password, loading, resolved, error } = state;
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="usernameInput">Username</label>
-          <input id="usernameInput" />
+          <input
+            id="usernameInput"
+            name="username"
+            value={username}
+            onChange={handleInputChange}
+          />
         </div>
         <div>
           <label htmlFor="passwordInput">Password</label>
-          <input id="passwordInput" type="password" />
+          <input
+            id="passwordInput"
+            name="password"
+            type="password"
+            value={password}
+            onChange={handleInputChange}
+          />
         </div>
-        <button type="submit">Submit{state.loading ? '...' : null}</button>
+        <button type="submit">Submit{loading ? '...' : null}</button>
       </form>
-      {state.error ? <div role="alert">{state.error}</div> : null}
-      {state.resolved ? (
+      {error ? <div role="alert">{error}</div> : null}
+      {resolved ? (
         <div role="alert">Congrats! You're signed in!</div>
       ) : null}
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;
 ```
 
 ```jsx
