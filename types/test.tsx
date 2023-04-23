@@ -1,9 +1,9 @@
 import * as React from 'react'
-import {render, fireEvent, screen, waitFor, renderHook} from '.'
+import {act, render, fireEvent, screen, waitFor, renderHook} from '.'
 import * as pure from './pure'
 
 export async function testRender() {
-  const view = render(<button />)
+  const view = await render(<button />)
 
   // single queries
   view.getByText('foo')
@@ -22,7 +22,7 @@ export async function testRender() {
 }
 
 export async function testPureRender() {
-  const view = pure.render(<button />)
+  const view = await pure.render(<button />)
 
   // single queries
   view.getByText('foo')
@@ -40,28 +40,28 @@ export async function testPureRender() {
   return {container, rerender, debug}
 }
 
-export function testRenderOptions() {
+export async function testRenderOptions() {
   const container = document.createElement('div')
   const options = {container}
-  const {container: returnedContainer} = render(<button />, options)
+  const {container: returnedContainer} = await render(<button />, options)
   expectType<HTMLDivElement, typeof returnedContainer>(returnedContainer)
 
-  render(<div />, {wrapper: () => null})
+  await render(<div />, {wrapper: () => null})
 }
 
-export function testSVGRenderOptions() {
+export async function testSVGRenderOptions() {
   const container = document.createElementNS(
     'http://www.w3.org/2000/svg',
     'svg',
   )
   const options = {container}
-  const {container: returnedContainer} = render(<path />, options)
+  const {container: returnedContainer} = await render(<path />, options)
   expectType<SVGSVGElement, typeof returnedContainer>(returnedContainer)
 }
 
-export function testFireEvent() {
-  const {container} = render(<button />)
-  fireEvent.click(container)
+export async function testFireEvent() {
+  const {container} = await render(<button />)
+  await fireEvent.click(container)
 }
 
 export function testConfigure() {
@@ -86,8 +86,8 @@ export function testGetConfig() {
   pure.getConfig().reactStrictMode
 }
 
-export function testDebug() {
-  const {debug, getAllByTestId} = render(
+export async function testDebug() {
+  const {debug, getAllByTestId} = await render(
     <>
       <h2 data-testid="testid">Hello World</h2>
       <h2 data-testid="testid">Hello World</h2>
@@ -97,19 +97,19 @@ export function testDebug() {
 }
 
 export async function testScreen() {
-  render(<button />)
+  await render(<button />)
 
   await screen.findByRole('button')
 }
 
 export async function testWaitFor() {
-  const {container} = render(<button />)
-  fireEvent.click(container)
+  const {container} = await render(<button />)
+  await fireEvent.click(container)
   await waitFor(() => {})
 }
 
-export function testQueries() {
-  const {getByLabelText} = render(
+export async function testQueries() {
+  const {getByLabelText} = await render(
     <label htmlFor="usernameInput">Username</label>,
   )
   expectType<HTMLElement, ReturnType<typeof getByLabelText>>(
@@ -118,7 +118,7 @@ export function testQueries() {
 
   const container = document.createElement('div')
   const options = {container}
-  const {getByText} = render(<div>Hello World</div>, options)
+  const {getByText} = await render(<div>Hello World</div>, options)
   expectType<HTMLElement, ReturnType<typeof getByText>>(
     getByText('Hello World'),
   )
@@ -193,18 +193,20 @@ export function wrappedRenderHook<Props>(
   return pure.renderHook(hook, {...options})
 }
 
-export function testBaseElement() {
-  const {baseElement: baseDefaultElement} = render(<div />)
+export async function testBaseElement() {
+  const {baseElement: baseDefaultElement} = await render(<div />)
   expectType<HTMLElement, typeof baseDefaultElement>(baseDefaultElement)
 
   const container = document.createElement('input')
-  const {baseElement: baseElementFromContainer} = render(<div />, {container})
+  const {baseElement: baseElementFromContainer} = await render(<div />, {
+    container,
+  })
   expectType<typeof container, typeof baseElementFromContainer>(
     baseElementFromContainer,
   )
 
   const baseElementOption = document.createElement('input')
-  const {baseElement: baseElementFromOption} = render(<div />, {
+  const {baseElement: baseElementFromOption} = await render(<div />, {
     baseElement: baseElementOption,
   })
   expectType<typeof baseElementOption, typeof baseElementFromOption>(
@@ -212,77 +214,93 @@ export function testBaseElement() {
   )
 }
 
-export function testRenderHook() {
-  const {result, rerender, unmount} = renderHook(() => React.useState(2)[0])
+export async function testRenderHook() {
+  const {result, rerender, unmount} = await renderHook(
+    () => React.useState(2)[0],
+  )
 
   expectType<number, typeof result.current>(result.current)
 
-  rerender()
+  await rerender()
 
-  unmount()
+  await unmount()
 
-  renderHook(() => null, {wrapper: () => null})
+  await renderHook(() => null, {wrapper: () => null})
 }
 
-export function testRenderHookProps() {
-  const {result, rerender, unmount} = renderHook(
+export async function testRenderHookProps() {
+  const {result, rerender, unmount} = await renderHook(
     ({defaultValue}) => React.useState(defaultValue)[0],
     {initialProps: {defaultValue: 2}},
   )
 
   expectType<number, typeof result.current>(result.current)
 
-  rerender()
+  await rerender()
 
-  unmount()
+  await unmount()
 }
 
-export function testContainer() {
-  render('a', {container: document.createElement('div')})
-  render('a', {container: document.createDocumentFragment()})
+export async function testContainer() {
+  await render('a', {container: document.createElement('div')})
+  await render('a', {container: document.createDocumentFragment()})
   //  Only allowed in React 19
-  render('a', {container: document})
-  render('a', {container: document.createElement('div'), hydrate: true})
+  await render('a', {container: document})
+  await render('a', {container: document.createElement('div'), hydrate: true})
   // Only allowed for createRoot but typing `render` appropriately makes it harder to compose.
-  render('a', {container: document.createDocumentFragment(), hydrate: true})
-  render('a', {container: document, hydrate: true})
+  await render('a', {
+    container: document.createDocumentFragment(),
+    hydrate: true,
+  })
+  await render('a', {container: document, hydrate: true})
 
-  renderHook(() => null, {container: document.createElement('div')})
-  renderHook(() => null, {container: document.createDocumentFragment()})
+  await renderHook(() => null, {container: document.createElement('div')})
+  await renderHook(() => null, {container: document.createDocumentFragment()})
   //  Only allowed in React 19
-  renderHook(() => null, {container: document})
-  renderHook(() => null, {
+  await renderHook(() => null, {container: document})
+  await renderHook(() => null, {
     container: document.createElement('div'),
     hydrate: true,
   })
   // Only allowed for createRoot but typing `render` appropriately makes it harder to compose.
-  renderHook(() => null, {
+  await renderHook(() => null, {
     container: document.createDocumentFragment(),
     hydrate: true,
   })
-  renderHook(() => null, {container: document, hydrate: true})
+  await renderHook(() => null, {container: document, hydrate: true})
 }
 
-export function testErrorHandlers() {
+export async function testErrorHandlers() {
   // React 19 types are not used in tests. Verify manually if this works with `"@types/react": "npm:types-react@rc"`
-  render(null, {
+  await render(null, {
     // Should work with React 19 types
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     onCaughtError: () => {},
   })
-  render(null, {
+  await render(null, {
     // Should never work as it's not supported yet.
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     onUncaughtError: () => {},
   })
-  render(null, {
+  await render(null, {
     onRecoverableError: (error, errorInfo) => {
       console.error(error)
       console.log(errorInfo.componentStack)
     },
   })
+}
+
+export async function actTest() {
+  function actWrapper<T>(scope: () => T | Promise<T>): Promise<T> {
+    return act(async () => {
+      return scope()
+    })
+  }
+
+  await actWrapper(() => {})
+  await actWrapper(async () => {})
 }
 
 /*

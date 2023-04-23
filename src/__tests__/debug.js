@@ -9,9 +9,9 @@ afterEach(() => {
   console.log.mockRestore()
 })
 
-test('debug pretty prints the container', () => {
+test('debug pretty prints the container', async () => {
   const HelloWorld = () => <h1>Hello World</h1>
-  const {debug} = render(<HelloWorld />)
+  const {debug} = await render(<HelloWorld />)
   debug()
   expect(console.log).toHaveBeenCalledTimes(1)
   expect(console.log).toHaveBeenCalledWith(
@@ -19,14 +19,14 @@ test('debug pretty prints the container', () => {
   )
 })
 
-test('debug pretty prints multiple containers', () => {
+test('debug pretty prints multiple containers', async () => {
   const HelloWorld = () => (
     <>
       <h1 data-testid="testId">Hello World</h1>
       <h1 data-testid="testId">Hello World</h1>
     </>
   )
-  const {debug} = render(<HelloWorld />)
+  const {debug} = await render(<HelloWorld />)
   const multipleElements = screen.getAllByTestId('testId')
   debug(multipleElements)
 
@@ -36,9 +36,9 @@ test('debug pretty prints multiple containers', () => {
   )
 })
 
-test('allows same arguments as prettyDOM', () => {
+test('allows same arguments as prettyDOM', async () => {
   const HelloWorld = () => <h1>Hello World</h1>
-  const {debug, container} = render(<HelloWorld />)
+  const {debug, container} = await render(<HelloWorld />)
   debug(container, 6, {highlight: false})
   expect(console.log).toHaveBeenCalledTimes(1)
   expect(console.log.mock.calls[0]).toMatchInlineSnapshot(`

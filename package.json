@@ -90,6 +90,7 @@
       "react/no-adjacent-inline-elements": "off",
       "import/no-unassigned-import": "off",
       "import/named": "off",
+      "testing-library/no-await-sync-events": "off",
       "testing-library/no-container": "off",
       "testing-library/no-debugging-utils": "off",
       "testing-library/no-dom-import": "off",

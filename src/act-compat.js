@@ -33,59 +33,21 @@ function getIsReactActEnvironment() {
   return getGlobalThis().IS_REACT_ACT_ENVIRONMENT
 }
 
-function withGlobalActEnvironment(actImplementation) {
-  return callback => {
-    const previousActEnvironment = getIsReactActEnvironment()
-    setIsReactActEnvironment(true)
-    try {
-      // The return value of `act` is always a thenable.
-      let callbackNeedsToBeAwaited = false
-      const actResult = actImplementation(() => {
-        const result = callback()
-        if (
-          result !== null &&
-          typeof result === 'object' &&
-          typeof result.then === 'function'
-        ) {
-          callbackNeedsToBeAwaited = true
-        }
-        return result
-      })
-      if (callbackNeedsToBeAwaited) {
-        const thenable = actResult
-        return {
-          then: (resolve, reject) => {
-            thenable.then(
-              returnValue => {
-                setIsReactActEnvironment(previousActEnvironment)
-                resolve(returnValue)
-              },
-              error => {
-                setIsReactActEnvironment(previousActEnvironment)
-                reject(error)
-              },
-            )
-          },
-        }
-      } else {
-        setIsReactActEnvironment(previousActEnvironment)
-        return actResult
-      }
-    } catch (error) {
-      // Can't be a `finally {}` block since we don't know if we have to immediately restore IS_REACT_ACT_ENVIRONMENT
-      // or if we have to await the callback first.
-      setIsReactActEnvironment(previousActEnvironment)
-      throw error
-    }
+async function actIfEnabled(scope) {
+  if (getIsReactActEnvironment()) {
+    // scope passed to domAct needs to be `async` until React.act treats every scope as async.
+    // We already enforce `await act()` (regardless of scope) to flush microtasks
+    // inside the act scope.
+    return reactAct(async () => {
+      return scope()
+    })
+  } else {
+    // We wrap everything in act internally.
+    // But a userspace call might not want that so we respect global config here.
+    return scope()
   }
 }
 
-const act = withGlobalActEnvironment(reactAct)
-
-export default act
-export {
-  setIsReactActEnvironment as setReactActEnvironment,
-  getIsReactActEnvironment,
-}
+export {actIfEnabled, setIsReactActEnvironment, getIsReactActEnvironment}
 
 /* eslint no-console:0 */
