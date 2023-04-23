@@ -1,6 +1,10 @@
 import * as React from 'react'
 import {act, render, fireEvent, screen} from '../'
 
+beforeEach(() => {
+  global.IS_REACT_ACT_ENVIRONMENT = true
+})
+
 test('render calls useEffect immediately', () => {
   const effectCb = jest.fn()
   function MyUselessComponent() {
@@ -66,4 +70,28 @@ test('cleans up IS_REACT_ACT_ENVIRONMENT if its async callback throws', async ()
   ).rejects.toThrow('thenable threw')
 
   expect(global.IS_REACT_ACT_ENVIRONMENT).toEqual(false)
+})
+
+test('state update from microtask does not trigger "missing act" warning', async () => {
+  let triggerStateUpdateFromMicrotask
+  function App() {
+    const [state, setState] = React.useState(0)
+    triggerStateUpdateFromMicrotask = () => setState(1)
+    React.useEffect(() => {
+      // eslint-disable-next-line jest/no-conditional-in-test
+      if (state === 1) {
+        Promise.resolve().then(() => {
+          setState(2)
+        })
+      }
+    }, [state])
+    return state
+  }
+  const {container} = await render(<App />)
+
+  await act(() => {
+    triggerStateUpdateFromMicrotask()
+  })
+
+  expect(container).toHaveTextContent('2')
 })
