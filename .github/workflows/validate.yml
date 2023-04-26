@@ -11,7 +11,12 @@ on:
       - 'beta'
       - 'alpha'
       - '!all-contributors/**'
-  pull_request: {}
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
   contents: read #  to fetch code (actions/checkout)
@@ -28,9 +33,6 @@ jobs:
         react: [latest, next, experimental]
     runs-on: ubuntu-latest
     steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
-
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
 
@@ -73,9 +75,6 @@ jobs:
       ${{ github.repository == 'testing-library/react-testing-library' &&
       github.event_name == 'push' }}
     steps:
-      - name: 🛑 Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
-
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
 
