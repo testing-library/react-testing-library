@@ -29,6 +29,12 @@ function jestFakeTimersAreEnabled() {
 
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
+    // Only needed to support test environments that enable fake timers after modules are loaded.
+    // React's scheduler will detect fake timers when it's initialized and use them.
+    // So if we change the timers after that, we need to re-initialize the scheduler.
+    // But not every test runner supports module reset.
+    // It's not even clear how modules should be reset in ESM.
+    // So for this brief period we go back to using the act queue.
     return act(cb)
   },
   // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT

@@ -139,18 +139,14 @@ describe.each([
     test('waitForElementToBeRemoved', async () => {
       await render(<ComponentWithMicrotaskLoader />)
       const loading = () => screen.getByText('Loading..')
-      await waitForElementToBeRemoved(loading)
+      // Already flushed microtasks so we'll never see the loading state in a test.
+      expect(loading).toThrowError(/Unable to find an element with the text/)
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
-    test('waitFor', async () => {
+    test('waitFor is not needed since microtasks are flushed', async () => {
       await render(<ComponentWithMicrotaskLoader />)
-      await waitFor(() => {
-        screen.getByText('Loading..')
-      })
-      await waitFor(() => {
-        screen.getByText(/Loaded this message:/)
-      })
+
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
