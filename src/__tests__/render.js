@@ -219,9 +219,9 @@ describe('render API', () => {
     expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(1)
   })
 
-  testGateReact18('legacyRoot uses legacy ReactDOM.render', () => {
-    expect(() => {
-      render(<div />, {legacyRoot: true})
+  testGateReact18('legacyRoot uses legacy ReactDOM.render', async () => {
+    await expect(async () => {
+      await render(<div />, {legacyRoot: true})
     }).toErrorDev(
       [
         "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
@@ -238,12 +238,12 @@ describe('render API', () => {
     )
   })
 
-  testGateReact18('legacyRoot uses legacy ReactDOM.hydrate', () => {
+  testGateReact18('legacyRoot uses legacy ReactDOM.hydrate', async () => {
     const ui = <div />
     const container = document.createElement('div')
     container.innerHTML = ReactDOMServer.renderToString(ui)
-    expect(() => {
-      render(ui, {container, hydrate: true, legacyRoot: true})
+    await expect(async () => {
+      await render(ui, {container, hydrate: true, legacyRoot: true})
     }).toErrorDev(
       [
         "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",

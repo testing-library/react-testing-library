@@ -67,13 +67,13 @@ test('allows wrapper components', async () => {
   expect(result.current).toEqual('provided')
 })
 
-testGateReact18('legacyRoot uses legacy ReactDOM.render', () => {
+testGateReact18('legacyRoot uses legacy ReactDOM.render', async () => {
   const Context = React.createContext('default')
   function Wrapper({children}) {
     return <Context.Provider value="provided">{children}</Context.Provider>
   }
   let result
-  expect(async () => {
+  await expect(async () => {
     result = (
       await renderHook(
         () => {
