@@ -55,7 +55,7 @@ describe('fake timers and missing act warnings', () => {
     jest.useRealTimers()
   })
 
-  test('cleanup does not flush microtasks', async () => {
+  test('cleanup does flush microtasks', async () => {
     const microTaskSpy = jest.fn()
     function Test() {
       const counter = 1
@@ -72,16 +72,19 @@ describe('fake timers and missing act warnings', () => {
 
         return () => {
           cancelled = true
+          Promise.resolve().then(() => {
+            microTaskSpy()
+          })
         }
       }, [counter])
 
       return null
     }
     await render(<Test />)
+    expect(microTaskSpy).toHaveBeenCalledTimes(1)
 
     await cleanup()
-
-    expect(microTaskSpy).toHaveBeenCalledTimes(0)
+    expect(microTaskSpy).toHaveBeenCalledTimes(2)
     // console.error is mocked
     // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(0)
