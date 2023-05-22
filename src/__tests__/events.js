@@ -155,10 +155,12 @@ eventTypes.forEach(({type, events, elementType, init}) => {
         const ref = React.createRef()
         const spy = jest.fn()
 
-        await render(React.createElement(elementType, {
-          [propName]: spy,
-          ref,
-        }))
+        await render(
+          React.createElement(elementType, {
+            [propName]: spy,
+            ref,
+          }),
+        )
 
         await fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
@@ -216,11 +218,14 @@ test('calling `fireEvent` directly works too', async () => {
   const {
     container: {firstChild: button},
   } = await render(<button onClick={handleEvent} />)
-  await fireEvent(button, new Event('MouseEvent', {
-    bubbles: true,
-    cancelable: true,
-    button: 0,
-  }))
+  await fireEvent(
+    button,
+    new Event('MouseEvent', {
+      bubbles: true,
+      cancelable: true,
+      button: 0,
+    }),
+  )
 })
 
 test('blur/focus bubbles in react', async () => {
@@ -228,9 +233,11 @@ test('blur/focus bubbles in react', async () => {
   const handleBubbledBlur = jest.fn()
   const handleFocus = jest.fn()
   const handleBubbledFocus = jest.fn()
-  const {container} = await render(<div onBlur={handleBubbledBlur} onFocus={handleBubbledFocus}>
-    <button onBlur={handleBlur} onFocus={handleFocus} />
-  </div>)
+  const {container} = await render(
+    <div onBlur={handleBubbledBlur} onFocus={handleBubbledFocus}>
+      <button onBlur={handleBlur} onFocus={handleFocus} />
+    </div>,
+  )
   const button = container.firstChild.firstChild
 
   await fireEvent.focus(button)
