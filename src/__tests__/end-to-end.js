@@ -2,8 +2,8 @@ import * as React from 'react'
 import {render, waitForElementToBeRemoved, screen, waitFor} from '../'
 
 describe.each([
-  // ['real timers', () => jest.useRealTimers()],
-  // ['fake legacy timers', () => jest.useFakeTimers('legacy')],
+  ['real timers', () => jest.useRealTimers()],
+  ['fake legacy timers', () => jest.useFakeTimers('legacy')],
   ['fake modern timers', () => jest.useFakeTimers('modern')],
 ])(
   'it waits for the data to be loaded in a macrotask using %s',
