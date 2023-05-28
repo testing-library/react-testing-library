@@ -202,26 +202,16 @@ describe.each([
       )
     }
 
-    test('waitForElementToBeRemoved', async () => {
-      render(<ComponentWithMicrotaskLoader />)
-      const loading = () => screen.getByText('Loading..')
-      await waitForElementToBeRemoved(loading)
-      expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
-    })
-
     test('waitFor', async () => {
-      render(<ComponentWithMicrotaskLoader />)
-      await waitFor(() => {
-        screen.getByText('Loading..')
-      })
-      await waitFor(() => {
-        screen.getByText(/Loaded this message:/)
-      })
+      await render(<ComponentWithMicrotaskLoader />)
+      // Already flushed microtasks from `ComponentWithMicrotaskLoader` here.
+      expect(screen.queryByText('Loading..')).not.toBeInTheDocument()
+      expect(screen.getByText(/Loaded this message:/)).toBeInTheDocument()
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
     test('findBy', async () => {
-      render(<ComponentWithMicrotaskLoader />)
+      await render(<ComponentWithMicrotaskLoader />)
       await expect(screen.findByTestId('message')).resolves.toHaveTextContent(
         /Hello World/,
       )
