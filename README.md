@@ -376,9 +376,6 @@ Some included are:
 - [`react-router`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/main/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-router.js&previewwindow=tests)
 - [`react-context`](https://codesandbox.io/s/github/kentcdodds/react-testing-library-examples/tree/main/?fontsize=14&module=%2Fsrc%2F__tests__%2Freact-context.js&previewwindow=tests)
 
-You can also find React Testing Library examples at
-[react-testing-examples.com](https://react-testing-examples.com/jest-rtl/).
-
 ## Hooks
 
 If you are interested in testing a custom hook, check out [React Hooks Testing
