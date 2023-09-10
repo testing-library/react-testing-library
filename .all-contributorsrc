@@ -1344,8 +1344,19 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "cmdcolin",
+      "name": "Colin Diesh",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6511937?v=4",
+      "profile": "http://cmdcolin.github.io",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "repoHost": "https://github.com"
+  "repoHost": "https://github.com",
+  "commitType": "docs",
+  "commitConvention": "angular"
 }
