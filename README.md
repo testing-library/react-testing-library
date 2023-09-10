@@ -651,7 +651,7 @@ Contributions of any kind welcome!
 [npm]: https://www.npmjs.com/
 [yarn]: https://classic.yarnpkg.com
 [node]: https://nodejs.org
-[build-badge]: https://img.shields.io/github/workflow/status/testing-library/react-testing-library/validate?logo=github&style=flat-square
+[build-badge]: https://img.shields.io/github/actions/workflow/status/testing-library/react-testing-library/validate.yml?branch=main&logo=github
 [build]: https://github.com/testing-library/react-testing-library/actions?query=workflow%3Avalidate
 [coverage-badge]: https://img.shields.io/codecov/c/github/testing-library/react-testing-library.svg?style=flat-square
 [coverage]: https://codecov.io/github/testing-library/react-testing-library
