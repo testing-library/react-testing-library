@@ -13,8 +13,6 @@ import {act as reactDeprecatedAct} from 'react-dom/test-utils'
 //@ts-ignore
 import {act as reactAct} from 'react'
 
-export * from '@testing-library/dom'
-
 export interface Config extends ConfigDTL {
   reactStrictMode: boolean
 }
@@ -265,3 +263,5 @@ export function cleanup(): Promise<void>
  * `act` for the DOM renderer
  */
 export function act<T>(scope: () => T): Promise<T>
+
+export * from '@testing-library/dom'
