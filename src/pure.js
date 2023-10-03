@@ -239,16 +239,14 @@ async function render(
 }
 
 async function cleanup() {
-  await Promise.all(
-    mountedRootEntries.map(async ({root, container}) => {
-      await act(() => {
-        root.unmount()
-      })
-      if (container.parentNode === document.body) {
-        document.body.removeChild(container)
-      }
-    }),
-  )
+  for (const {container, root} of mountedRootEntries) {
+    // eslint-disable-next-line no-await-in-loop -- Overlapping act calls are not allowed.
+    await root.unmount()
+    if (container.parentNode === document.body) {
+      document.body.removeChild(container)
+    }
+  }
+
   mountedRootEntries.length = 0
   mountedContainers.clear()
 }

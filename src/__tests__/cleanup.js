@@ -41,6 +41,18 @@ test('cleanup runs effect cleanup functions', async () => {
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
+test('cleanup cleans up every root and disconnects containers', async () => {
+  const {container: container1} = await render(<div />)
+  const {container: container2} = await render(<span />)
+
+  await cleanup()
+
+  expect(container1).toBeEmptyDOMElement()
+  expect(container1.isConnected).toBe(false)
+  expect(container2).toBeEmptyDOMElement()
+  expect(container2.isConnected).toBe(false)
+})
+
 describe('fake timers and missing act warnings', () => {
   beforeEach(() => {
     jest.resetAllMocks()
