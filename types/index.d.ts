@@ -25,6 +25,8 @@ export function configure(configDelta: ConfigFn | Partial<Config>): void
 
 export function getConfig(): Config
 
+export * from '@testing-library/dom'
+
 export type FireFunction = (
   ...parameters: Parameters<DTLFireFunction>
 ) => Promise<ReturnType<DTLFireFunction>>
@@ -263,5 +265,3 @@ export function cleanup(): Promise<void>
  * `act` for the DOM renderer
  */
 export function act<T>(scope: () => T): Promise<T>
-
-export * from '@testing-library/dom'
