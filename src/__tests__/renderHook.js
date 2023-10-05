@@ -1,5 +1,5 @@
 import React from 'react'
-import {renderHook} from '../pure'
+import {renderHook} from '../'
 
 const isReact18 = React.version.startsWith('18.')
 const isReact19 = React.version.startsWith('19.')

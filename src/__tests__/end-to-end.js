@@ -1,5 +1,4 @@
-import * as React from 'react'
-import {render, waitForElementToBeRemoved, screen, waitFor} from '../'
+let React, cleanup, render, screen, waitFor, waitForElementToBeRemoved
 
 describe.each([
   ['real timers', () => jest.useRealTimers()],
@@ -9,10 +8,25 @@ describe.each([
   'it waits for the data to be loaded in a macrotask using %s',
   (label, useTimers) => {
     beforeEach(() => {
+      jest.resetModules()
+      global.IS_REACT_ACT_ENVIRONMENT = true
+      process.env.RTL_SKIP_AUTO_CLEANUP = '0'
+
       useTimers()
+
+      React = require('react')
+      ;({
+        cleanup,
+        render,
+        screen,
+        waitFor,
+        waitForElementToBeRemoved,
+      } = require('..'))
     })
 
-    afterEach(() => {
+    afterEach(async () => {
+      await cleanup()
+      global.IS_REACT_ACT_ENVIRONMENT = false
       jest.useRealTimers()
     })
 
@@ -83,10 +97,25 @@ describe.each([
   'it waits for the data to be loaded in many microtask using %s',
   (label, useTimers) => {
     beforeEach(() => {
+      jest.resetModules()
+      global.IS_REACT_ACT_ENVIRONMENT = true
+      process.env.RTL_SKIP_AUTO_CLEANUP = '0'
+
       useTimers()
+
+      React = require('react')
+      ;({
+        cleanup,
+        render,
+        screen,
+        waitFor,
+        waitForElementToBeRemoved,
+      } = require('..'))
     })
 
-    afterEach(() => {
+    afterEach(async () => {
+      await cleanup()
+      global.IS_REACT_ACT_ENVIRONMENT = false
       jest.useRealTimers()
     })
 
@@ -167,10 +196,25 @@ describe.each([
   'it waits for the data to be loaded in a microtask using %s',
   (label, useTimers) => {
     beforeEach(() => {
+      jest.resetModules()
+      global.IS_REACT_ACT_ENVIRONMENT = true
+      process.env.RTL_SKIP_AUTO_CLEANUP = '0'
+
       useTimers()
+
+      React = require('react')
+      ;({
+        cleanup,
+        render,
+        screen,
+        waitFor,
+        waitForElementToBeRemoved,
+      } = require('..'))
     })
 
-    afterEach(() => {
+    afterEach(async () => {
+      await cleanup()
+      global.IS_REACT_ACT_ENVIRONMENT = false
       jest.useRealTimers()
     })
 
@@ -218,3 +262,84 @@ describe.each([
     })
   },
 )
+
+describe.each([
+  // ['real timers', () => jest.useRealTimers()],
+  ['fake legacy timers', () => jest.useFakeTimers('legacy')],
+  // ['fake modern timers', () => jest.useFakeTimers('modern')],
+])('testing intermediate states using %s', (label, useTimers) => {
+  beforeEach(() => {
+    jest.resetModules()
+    global.IS_REACT_ACT_ENVIRONMENT = false
+    process.env.RTL_SKIP_AUTO_CLEANUP = '0'
+
+    useTimers()
+
+    React = require('react')
+    ;({
+      cleanup,
+      render,
+      screen,
+      waitFor,
+      waitForElementToBeRemoved,
+    } = require('..'))
+  })
+
+  afterEach(async () => {
+    await cleanup()
+    jest.useRealTimers()
+    global.IS_REACT_ACT_ENVIRONMENT = true
+  })
+
+  const fetchAMessageInAMicrotask = () =>
+    Promise.resolve({
+      status: 200,
+      json: () => Promise.resolve({title: 'Hello World'}),
+    })
+
+  function ComponentWithMicrotaskLoader() {
+    const [fetchState, setFetchState] = React.useState({fetching: true})
+
+    React.useEffect(() => {
+      if (fetchState.fetching) {
+        fetchAMessageInAMicrotask().then(res => {
+          return res.json().then(data => {
+            setFetchState({todo: data.title, fetching: false})
+          })
+        })
+      }
+    }, [fetchState])
+
+    if (fetchState.fetching) {
+      return <p>Loading..</p>
+    }
+
+    return (
+      <div data-testid="message">Loaded this message: {fetchState.todo}</div>
+    )
+  }
+
+  test('waitFor', async () => {
+    await render(<ComponentWithMicrotaskLoader />)
+
+    // TODO: How to assert on the intermediate state?
+    await expect(
+      waitFor(() => {
+        expect(screen.getByText('Loading..')).toBeInTheDocument()
+      }),
+    ).rejects.toThrowError(/Unable to find an element/)
+
+    expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
+  })
+
+  test('findBy', async () => {
+    await render(<ComponentWithMicrotaskLoader />)
+
+    // TODO: How to assert on the intermediate state?
+    await expect(screen.findByText('Loading..')).rejects.toThrowError(
+      /Unable to find an element/,
+    )
+
+    expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
+  })
+})

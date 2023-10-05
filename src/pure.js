@@ -1,43 +1,58 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import {act as domAct} from 'react-dom/test-utils'
 import * as ReactDOMClient from 'react-dom/client'
 import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {
+import {
+  actIfEnabled,
   getIsReactActEnvironment,
-  setReactActEnvironment,
+  setIsReactActEnvironment,
 } from './act-compat'
 import {fireEvent} from './fire-event'
 import {getConfig, configure} from './config'
 
+function enqueueTask(task) {
+  const channel = new MessageChannel()
+  channel.port1.onmessage = () => {
+    channel.port1.close()
+    task()
+  }
+  channel.port2.postMessage(undefined)
+}
+
+async function waitForMicrotasks() {
+  return new Promise(resolve => {
+    enqueueTask(() => resolve())
+  })
+}
+
 configureDTL({
-  unstable_advanceTimersWrapper: cb => {
-    // Only needed to support test environments that enable fake timers after modules are loaded.
-    // React's scheduler will detect fake timers when it's initialized and use them.
-    // So if we change the timers after that, we need to re-initialize the scheduler.
-    // But not every test runner supports module reset.
-    // It's not even clear how modules should be reset in ESM.
-    // So for this brief period we go back to using the act queue.
-    return act(cb)
+  unstable_advanceTimersWrapper: async scope => {
+    if (getIsReactActEnvironment()) {
+      return actIfEnabled(scope)
+    } else {
+      const result = await scope()
+      await waitForMicrotasks()
+      return result
+    }
   },
   // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
   // But that's not necessarily how `asyncWrapper` is used since it's a public method.
   // Let's just hope nobody else is using it.
   asyncWrapper: async cb => {
     const previousActEnvironment = getIsReactActEnvironment()
-    setReactActEnvironment(false)
+    setIsReactActEnvironment(false)
     try {
       return await cb()
     } finally {
-      setReactActEnvironment(previousActEnvironment)
+      setIsReactActEnvironment(previousActEnvironment)
     }
   },
-  eventWrapper: cb => {
-    return act(cb)
-  },
+  eventWrapper: actIfEnabled,
 })
 
 // Ideally we'd just use a WeakMap where containers are keys and roots are values.
@@ -69,7 +84,7 @@ async function createConcurrentRoot(
 ) {
   let root
   if (hydrate) {
-    await act(() => {
+    await actIfEnabled(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
         strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
@@ -90,12 +105,12 @@ async function createConcurrentRoot(
       // Nothing to do since hydration happens when creating the root object.
     },
     render(element) {
-      return act(() => {
+      return actIfEnabled(() => {
         root.render(element)
       })
     },
     unmount() {
-      return act(() => {
+      return actIfEnabled(() => {
         root.unmount()
       })
     },
@@ -105,17 +120,17 @@ async function createConcurrentRoot(
 async function createLegacyRoot(container) {
   return {
     hydrate(element) {
-      return act(() => {
+      return actIfEnabled(() => {
         ReactDOM.hydrate(element, container)
       })
     },
     render(element) {
-      return act(() => {
+      return actIfEnabled(() => {
         ReactDOM.render(element, container)
       })
     },
     unmount() {
-      return act(() => {
+      return actIfEnabled(() => {
         ReactDOM.unmountComponentAtNode(container)
       })
     },
@@ -290,8 +305,25 @@ async function renderHook(renderCallback, options = {}) {
   return {result, rerender, unmount}
 }
 
+function compatAct(scope) {
+  // scope passed to domAct needs to be `async` until React.act treats every scope as async.
+  // We already enforce `await act()` (regardless of scope) to flush microtasks
+  // inside the act scope.
+  return domAct(async () => {
+    return scope()
+  })
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
+export {
+  render,
+  renderHook,
+  cleanup,
+  compatAct as act,
+  fireEvent,
+  getConfig,
+  configure,
+}
 
 /* eslint func-name-matching:0 */

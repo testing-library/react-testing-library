@@ -33,26 +33,21 @@ function getIsReactActEnvironment() {
   return getGlobalThis().IS_REACT_ACT_ENVIRONMENT
 }
 
-async function act(scope) {
-  const previousActEnvironment = getIsReactActEnvironment()
-  setIsReactActEnvironment(true)
-  try {
+async function actIfEnabled(scope) {
+  if (getIsReactActEnvironment()) {
     // scope passed to domAct needs to be `async` until React.act treats every scope as async.
     // We already enforce `await act()` (regardless of scope) to flush microtasks
     // inside the act scope.
-    const result = await reactAct(async () => {
+    return reactAct(async () => {
       return scope()
     })
-    return result
-  } finally {
-    setIsReactActEnvironment(previousActEnvironment)
+  } else {
+    // We wrap everything in act internally.
+    // But a userspace call might not want that so we respect global config here.
+    return scope()
   }
 }
 
-export default act
-export {
-  setIsReactActEnvironment as setReactActEnvironment,
-  getIsReactActEnvironment,
-}
+export {actIfEnabled, setIsReactActEnvironment, getIsReactActEnvironment}
 
 /* eslint no-console:0 */

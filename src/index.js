@@ -1,4 +1,4 @@
-import {getIsReactActEnvironment, setReactActEnvironment} from './act-compat'
+import {getIsReactActEnvironment, setIsReactActEnvironment} from './act-compat'
 import {cleanup} from './pure'
 
 // if we're running in a test runner that supports afterEach
@@ -29,11 +29,11 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     let previousIsReactActEnvironment = getIsReactActEnvironment()
     beforeAll(() => {
       previousIsReactActEnvironment = getIsReactActEnvironment()
-      setReactActEnvironment(true)
+      setIsReactActEnvironment(true)
     })
 
     afterAll(() => {
-      setReactActEnvironment(previousIsReactActEnvironment)
+      setIsReactActEnvironment(previousIsReactActEnvironment)
     })
   }
 }
