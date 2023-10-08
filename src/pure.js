@@ -77,6 +77,12 @@ const mountedContainers = new Set()
  */
 const mountedRootEntries = []
 
+function wrapUiIfNeeded(innerElement, wrapperComponent) {
+  return wrapperComponent
+    ? React.createElement(wrapperComponent, null, innerElement)
+    : innerElement
+}
+
 function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
@@ -86,7 +92,7 @@ function createConcurrentRoot(
     act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
-        WrapperComponent ? React.createElement(WrapperComponent, null, ui) : ui,
+        wrapUiIfNeeded(ui, WrapperComponent),
       )
     })
   } else {
@@ -130,16 +136,11 @@ function renderRoot(
   ui,
   {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
 ) {
-  const wrapUiIfNeeded = innerElement =>
-    WrapperComponent
-      ? React.createElement(WrapperComponent, null, innerElement)
-      : innerElement
-
   act(() => {
     if (hydrate) {
-      root.hydrate(wrapUiIfNeeded(ui), container)
+      root.hydrate(wrapUiIfNeeded(ui, WrapperComponent), container)
     } else {
-      root.render(wrapUiIfNeeded(ui), container)
+      root.render(wrapUiIfNeeded(ui, WrapperComponent), container)
     }
   })
 
