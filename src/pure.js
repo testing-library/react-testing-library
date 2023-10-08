@@ -11,6 +11,7 @@ import act, {
   setReactActEnvironment,
 } from './act-compat'
 import {fireEvent} from './fire-event'
+import {getConfig, configure} from './config'
 
 function jestFakeTimersAreEnabled() {
   /* istanbul ignore else */
@@ -276,6 +277,6 @@ function renderHook(renderCallback, options = {}) {
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent}
+export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
 
 /* eslint func-name-matching:0 */
