@@ -77,6 +77,12 @@ const mountedContainers = new Set()
  */
 const mountedRootEntries = []
 
+function strictModeIfNeeded(innerElement) {
+  return getConfig().reactStrictMode
+    ? React.createElement(React.StrictMode, null, innerElement)
+    : innerElement
+}
+
 function wrapUiIfNeeded(innerElement, wrapperComponent) {
   return wrapperComponent
     ? React.createElement(wrapperComponent, null, innerElement)
@@ -92,7 +98,7 @@ function createConcurrentRoot(
     act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
-        wrapUiIfNeeded(ui, WrapperComponent),
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
       )
     })
   } else {
@@ -138,9 +144,15 @@ function renderRoot(
 ) {
   act(() => {
     if (hydrate) {
-      root.hydrate(wrapUiIfNeeded(ui, WrapperComponent), container)
+      root.hydrate(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
     } else {
-      root.render(wrapUiIfNeeded(ui, WrapperComponent), container)
+      root.render(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
     }
   })
 
