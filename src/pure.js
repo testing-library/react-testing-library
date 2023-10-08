@@ -158,10 +158,11 @@ function renderRoot(
       })
     },
     rerender: rerenderUi => {
-      renderRoot(wrapUiIfNeeded(rerenderUi), {
+      renderRoot(rerenderUi, {
         container,
         baseElement,
         root,
+        wrapper: WrapperComponent,
       })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
