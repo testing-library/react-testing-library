@@ -191,7 +191,7 @@ eventTypes.forEach(({type, events, elementType, init}) => {
             return () => {
               element.removeEventListener(nativeEventName, spy)
             }
-          })
+          }, [])
           return <Element ref={ref} />
         }
 
