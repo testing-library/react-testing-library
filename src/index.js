@@ -20,10 +20,13 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     teardown(() => {
       cleanup()
     })
+  } else {
+    console.warn(
+      `The current test runner does not support afterEach/teardown. This means won't be able to run automatic cleanup and you should be callin cleanup() manually.`,
+    )
   }
 
   // No test setup with other test runners available
-  /* istanbul ignore else */
   if (typeof beforeAll === 'function' && typeof afterAll === 'function') {
     // This matches the behavior of React < 18.
     let previousIsReactActEnvironment = getIsReactActEnvironment()
@@ -35,6 +38,10 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     afterAll(() => {
       setReactActEnvironment(previousIsReactActEnvironment)
     })
+  } else {
+    console.warn(
+      'The current test runner does not support beforeAll/afterAll. This means you should be setting IS_REACT_ACT_ENVIRONMENT manually.',
+    )
   }
 }
 
