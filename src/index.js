@@ -27,6 +27,7 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
   }
 
   // No test setup with other test runners available
+  /* istanbul ignore else */
   if (typeof beforeAll === 'function' && typeof afterAll === 'function') {
     // This matches the behavior of React < 18.
     let previousIsReactActEnvironment = getIsReactActEnvironment()
