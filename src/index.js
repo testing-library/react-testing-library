@@ -22,7 +22,7 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     })
   } else {
     console.warn(
-      `The current test runner does not support afterEach/teardown. This means won't be able to run automatic cleanup and you should be callin cleanup() manually.`,
+      `The current test runner does not support afterEach/teardown. This means we won't be able to run automatic cleanup and you should be calling cleanup() manually.`,
     )
   }
 
