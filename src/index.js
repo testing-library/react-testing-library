@@ -20,7 +20,8 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     teardown(() => {
       cleanup()
     })
-  } else {
+  } else if (!process.env.RTL_AFTEREACH_WARNING_LOGGED) {
+    process.env.RTL_AFTEREACH_WARNING_LOGGED = true
     console.warn(
       `The current test runner does not support afterEach/teardown hooks. This means we won't be able to run automatic cleanup and you should be calling cleanup() manually.`,
     )
@@ -39,7 +40,8 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
     afterAll(() => {
       setReactActEnvironment(previousIsReactActEnvironment)
     })
-  } else {
+  } else if (!process.env.RTL_AFTERALL_WARNING_LOGGED) {
+    process.env.RTL_AFTERALL_WARNING_LOGGED = true
     console.warn(
       'The current test runner does not support beforeAll/afterAll hooks. This means you should be setting IS_REACT_ACT_ENVIRONMENT manually.',
     )
