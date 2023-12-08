@@ -31,7 +31,7 @@ test('cleanup runs effect cleanup functions', () => {
   const spy = jest.fn()
 
   const Test = () => {
-    React.useEffect(() => spy)
+    React.useEffect(() => spy, [])
 
     return null
   }

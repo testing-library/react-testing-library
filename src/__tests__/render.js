@@ -148,7 +148,7 @@ test('hydrate can have a wrapper', () => {
   function WrapperComponent({children}) {
     React.useEffect(() => {
       wrapperComponentMountEffect()
-    })
+    }, [])
 
     return children
   }

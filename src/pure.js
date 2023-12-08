@@ -255,7 +255,7 @@ function renderHook(renderCallback, options = {}) {
 
     React.useEffect(() => {
       result.current = pendingResult
-    })
+    }, [pendingResult])
 
     return null
   }
