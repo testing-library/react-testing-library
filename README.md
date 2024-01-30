@@ -630,6 +630,7 @@ Thanks goes to these people ([emoji key][emojis]):
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://cmdcolin.github.io"><img src="https://avatars.githubusercontent.com/u/6511937?v=4?s=100" width="100px;" alt="Colin Diesh"/><br /><sub><b>Colin Diesh</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=cmdcolin" title="Documentation">📖</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://yinm.info"><img src="https://avatars.githubusercontent.com/u/13295106?v=4?s=100" width="100px;" alt="Yusuke Iinuma"/><br /><sub><b>Yusuke Iinuma</b></sub></a><br /><a href="https://github.com/testing-library/react-testing-library/commits?author=yinm" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
