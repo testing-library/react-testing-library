@@ -1353,6 +1353,15 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "yinm",
+      "name": "Yusuke Iinuma",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13295106?v=4",
+      "profile": "http://yinm.info",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
