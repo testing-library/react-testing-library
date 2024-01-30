@@ -62,6 +62,28 @@ export function testFireEvent() {
   fireEvent.click(container)
 }
 
+export function testConfigure() {
+  // test for DTL's config
+  pure.configure({testIdAttribute: 'foobar'})
+  pure.configure(existingConfig => ({
+    testIdAttribute: `modified-${existingConfig.testIdAttribute}`,
+  }))
+
+  // test for RTL's config
+  pure.configure({reactStrictMode: true})
+  pure.configure(existingConfig => ({
+    reactStrictMode: !existingConfig.reactStrictMode,
+  }))
+}
+
+export function testGetConfig() {
+  // test for DTL's config
+  pure.getConfig().testIdAttribute
+
+  // test for RTL's config
+  pure.getConfig().reactStrictMode
+}
+
 export function testDebug() {
   const {debug, getAllByTestId} = render(
     <>

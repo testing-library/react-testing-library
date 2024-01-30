@@ -5,11 +5,24 @@ import {
   Queries,
   BoundFunction,
   prettyFormat,
+  Config as ConfigDTL,
 } from '@testing-library/dom'
 import {Renderer} from 'react-dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
+
+export interface Config extends ConfigDTL {
+  reactStrictMode: boolean
+}
+
+export interface ConfigFn {
+  (existingConfig: Config): Partial<Config>
+}
+
+export function configure(configDelta: ConfigFn | Partial<Config>): void
+
+export function getConfig(): Config
 
 export type RenderResult<
   Q extends Queries = typeof queries,
