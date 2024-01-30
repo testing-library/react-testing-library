@@ -1,5 +1,4 @@
 import * as React from 'react'
-import ReactDOM from 'react-dom'
 import * as ReactDOMClient from 'react-dom/client'
 import {
   getQueriesForElement,
@@ -73,7 +72,7 @@ configureDTL({
  */
 const mountedContainers = new Set()
 /**
- * @type Array<{container: import('react-dom').Container, root: ReturnType<typeof createConcurrentRoot>}>
+ * @type Array<{container: import('react-dom').Container, root: ReturnType<typeof createTestRoot>}>
  */
 const mountedRootEntries = []
 
@@ -89,73 +88,10 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
     : innerElement
 }
 
-function createConcurrentRoot(
-  container,
-  {hydrate, ui, wrapper: WrapperComponent},
-) {
-  let root
-  if (hydrate) {
-    act(() => {
-      root = ReactDOMClient.hydrateRoot(
-        container,
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
-      )
-    })
-  } else {
-    root = ReactDOMClient.createRoot(container)
-  }
-
-  return {
-    hydrate() {
-      /* istanbul ignore if */
-      if (!hydrate) {
-        throw new Error(
-          'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
-        )
-      }
-      // Nothing to do since hydration happens when creating the root object.
-    },
-    render(element) {
-      root.render(element)
-    },
-    unmount() {
-      root.unmount()
-    },
-  }
-}
-
-function createLegacyRoot(container) {
-  return {
-    hydrate(element) {
-      ReactDOM.hydrate(element, container)
-    },
-    render(element) {
-      ReactDOM.render(element, container)
-    },
-    unmount() {
-      ReactDOM.unmountComponentAtNode(container)
-    },
-  }
-}
-
-function renderRoot(
+function createTestView(
   ui,
-  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
+  {baseElement, container, queries, root, WrapperComponent},
 ) {
-  act(() => {
-    if (hydrate) {
-      root.hydrate(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
-        container,
-      )
-    } else {
-      root.render(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
-        container,
-      )
-    }
-  })
-
   return {
     container,
     baseElement,
@@ -171,11 +107,10 @@ function renderRoot(
       })
     },
     rerender: rerenderUi => {
-      renderRoot(rerenderUi, {
-        container,
-        baseElement,
-        root,
-        wrapper: WrapperComponent,
+      act(() => {
+        root.render(
+          strictModeIfNeeded(wrapUiIfNeeded(rerenderUi, WrapperComponent)),
+        )
       })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
@@ -201,10 +136,9 @@ function render(
   {
     container,
     baseElement = container,
-    legacyRoot = false,
     queries,
     hydrate = false,
-    wrapper,
+    wrapper: WrapperComponent,
   } = {},
 ) {
   if (!baseElement) {
@@ -219,8 +153,16 @@ function render(
   let root
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
-    const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {hydrate, ui, wrapper})
+    if (hydrate) {
+      act(() => {
+        root = ReactDOMClient.hydrateRoot(
+          container,
+          strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        )
+      })
+    } else {
+      root = ReactDOMClient.createRoot(container)
+    }
 
     mountedRootEntries.push({container, root})
     // we'll add it to the mounted containers regardless of whether it's actually
@@ -238,12 +180,17 @@ function render(
     })
   }
 
-  return renderRoot(ui, {
+  if (!hydrate) {
+    act(() => {
+      root.render(strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)))
+    })
+  }
+
+  return createTestView(ui, {
     container,
     baseElement,
     queries,
-    hydrate,
-    wrapper,
+    WrapperComponent,
     root,
   })
 }

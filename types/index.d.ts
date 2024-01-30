@@ -67,17 +67,12 @@ export interface RenderOptions<
    */
   baseElement?: BaseElement
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will create a root with `ReactDOMClient.hydrateRoot`. This may be useful if you are using server-side
+   *  rendering and use ReactDOMClient.hydrateRoot to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
   hydrate?: boolean
-  /**
-   * Set to `true` if you want to force synchronous `ReactDOM.render`.
-   * Otherwise `render` will default to concurrent React if available.
-   */
-  legacyRoot?: boolean
   /**
    * Queries to bind. Overrides the default set from DOM Testing Library unless merged.
    *
