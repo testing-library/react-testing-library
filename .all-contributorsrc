@@ -1362,6 +1362,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "trappar",
+      "name": "Jeff Way",
+      "avatar_url": "https://avatars.githubusercontent.com/u/525726?v=4",
+      "profile": "https://github.com/trappar",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
