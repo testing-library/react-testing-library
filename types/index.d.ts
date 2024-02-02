@@ -39,7 +39,7 @@ export type RenderResult<
     maxLength?: number,
     options?: prettyFormat.OptionsReceived,
   ) => void
-  rerender: (ui: React.ReactNode) => void
+  rerender: (ui: React.ReactElement | React.ReactNode) => void
   unmount: () => void
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
@@ -90,7 +90,9 @@ export interface RenderOptions<
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
-  wrapper?: React.JSXElementConstructor<{children: React.ReactNode}>
+  wrapper?: React.JSXElementConstructor<{
+    children: React.ReactElement | React.ReactNode
+  }>
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -103,11 +105,11 @@ export function render<
   Container extends Element | DocumentFragment = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
-  ui: React.ReactNode,
+  ui: React.ReactElement | React.ReactNode,
   options: RenderOptions<Q, Container, BaseElement>,
 ): RenderResult<Q, Container, BaseElement>
 export function render(
-  ui: React.ReactNode,
+  ui: React.ReactElement | React.ReactNode,
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
 
