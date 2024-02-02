@@ -62,8 +62,8 @@
     "typescript": "^4.1.2"
   },
   "peerDependencies": {
-    "react": "^18.3.0-canary",
-    "react-dom": "^18.3.0-canary"
+    "react": "^18.0.0 || ^18.3.0-canary",
+    "react-dom": "^18.0.0 || ^18.3.0-canary"
   },
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",
