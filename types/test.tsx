@@ -123,14 +123,10 @@ export function testQueries() {
 }
 
 export function wrappedRender(
-  ui: React.ReactElement | React.ReactNode,
+  ui: React.ReactElement,
   options?: pure.RenderOptions,
 ) {
-  const Wrapper = ({
-    children,
-  }: {
-    children: React.ReactElement | React.ReactNode
-  }): JSX.Element => {
+  const Wrapper = ({children}: {children: React.ReactElement}): JSX.Element => {
     return <div>{children}</div>
   }
 
@@ -138,7 +134,7 @@ export function wrappedRender(
 }
 
 export function wrappedRenderB(
-  ui: React.ReactElement | React.ReactNode,
+  ui: React.ReactElement,
   options?: pure.RenderOptions,
 ) {
   const Wrapper: React.FunctionComponent<{children?: React.ReactNode}> = ({
@@ -151,7 +147,7 @@ export function wrappedRenderB(
 }
 
 export function wrappedRenderC(
-  ui: React.ReactElement | React.ReactNode,
+  ui: React.ReactElement,
   options?: pure.RenderOptions,
 ) {
   interface AppWrapperProps {
