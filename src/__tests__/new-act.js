@@ -1,10 +1,13 @@
 let asyncAct
 
-jest.mock('react-dom/test-utils', () => ({
-  act: cb => {
-    return cb()
-  },
-}))
+jest.mock('react', () => {
+  return {
+    ...jest.requireActual('react'),
+    act: cb => {
+      return cb()
+    },
+  }
+})
 
 beforeEach(() => {
   jest.resetModules()

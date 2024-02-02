@@ -36,6 +36,7 @@ module.exports = function shouldIgnoreConsoleError(format) {
         // Ignore it too.
         return true
       }
+      // TODO: Suppress deprecation warning from react-dom/test-utils
     }
   }
   // Looks legit
