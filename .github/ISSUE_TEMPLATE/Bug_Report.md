@@ -1,6 +1,10 @@
 ---
-name: 🐛 Bug Report
-about: Bugs, missing documentation, or unexpected behavior 🤔.
+name: "\U0001F41B Bug Report"
+about: "Bugs, missing documentation, or unexpected behavior \U0001F914."
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 <!--

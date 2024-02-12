@@ -1,6 +1,11 @@
 ---
-name: ❓ Support Question
-about: 🛑 If you have a question 💬, please check out our support channels!
+name: "❓ Support Question"
+about: "\U0001F6D1 If you have a question \U0001F4AC, please check out our support
+  channels!"
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 -------------- 👆 Click "Preview"!
