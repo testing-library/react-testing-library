@@ -1,6 +1,10 @@
 ---
-name: 💡 Feature Request
-about: I have a suggestion (and might want to implement myself 🙂)!
+name: "\U0001F4A1 Feature Request"
+about: "I have a suggestion (and might want to implement myself \U0001F642)!"
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
 <!--
