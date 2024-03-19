@@ -7,7 +7,6 @@ import {
   prettyFormat,
   Config as ConfigDTL,
 } from '@testing-library/dom'
-import {Renderer} from 'react-dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
