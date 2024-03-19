@@ -1,6 +1,13 @@
 import React from 'react'
 import {renderHook} from '../pure'
 
+// Needs to be changed to 19.0.0 once alpha started.
+const isReactExperimental = React.version.startsWith('18.3.0-experimental')
+const isReactCanary = React.version.startsWith('18.3.0')
+
+// Needs to be changed to isReactExperimental || isReactCanary once alpha started.
+const testGateReact18 = isReactExperimental ? test.skip : test
+
 test('gives committed result', () => {
   const {result} = renderHook(() => {
     const [state, setState] = React.useState(1)
@@ -61,7 +68,7 @@ test('allows wrapper components', async () => {
   expect(result.current).toEqual('provided')
 })
 
-test('legacyRoot uses legacy ReactDOM.render', () => {
+testGateReact18('legacyRoot uses legacy ReactDOM.render', () => {
   const Context = React.createContext('default')
   function Wrapper({children}) {
     return <Context.Provider value="provided">{children}</Context.Provider>
@@ -78,9 +85,13 @@ test('legacyRoot uses legacy ReactDOM.render', () => {
       },
     ).result
   }).toErrorDev(
-    [
-      "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
-    ],
+    isReactCanary
+      ? [
+          "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://react.dev/link/switch-to-createroot",
+        ]
+      : [
+          "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+        ],
     {withoutStack: true},
   )
   expect(result.current).toEqual('provided')
