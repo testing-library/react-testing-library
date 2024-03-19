@@ -32,9 +32,6 @@ const util = require('util')
 const jestDiff = require('jest-diff').diff
 const shouldIgnoreConsoleError = require('./shouldIgnoreConsoleError')
 
-console.log({jestDiff})
-console.log(require('jest-diff'))
-
 function normalizeCodeLocInfo(str) {
   if (typeof str !== 'string') {
     return str
