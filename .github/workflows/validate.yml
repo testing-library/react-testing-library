@@ -55,6 +55,8 @@ jobs:
       - name: ⚛️ Setup react
         run: npm install react@${{ matrix.react }} react-dom@${{ matrix.react }}
 
+      - run: npm ls jest-diff
+
       - name: ▶️ Run validate script
         run: npm run validate
 
