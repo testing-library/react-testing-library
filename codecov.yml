@@ -1,0 +1,20 @@
+coverage:
+  status:
+    project:
+      default:
+        # basic
+        target: 100%
+        threshold: 0%
+        flags:
+          - canary
+          - experimental
+          - latest
+        branches:
+          - main
+          - 12.x
+        if_ci_failed: success
+        if_not_found: failure
+        informational: false
+        only_pulls: false
+github_checks:
+  annotations: true

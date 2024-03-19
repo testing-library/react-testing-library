@@ -34,10 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
@@ -59,9 +59,11 @@ jobs:
         run: npm run validate
 
       - name: ⬆️ Upload coverage report
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v4
         with:
+          fail_ci_if_error: true
           flags: ${{ matrix.react }}
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     permissions:
@@ -76,10 +78,10 @@ jobs:
       github.event_name == 'push' }}
     steps:
       - name: ⬇️ Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: ⎔ Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 14
 
