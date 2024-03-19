@@ -11,6 +11,7 @@ import act, {
   setReactActEnvironment,
 } from './act-compat'
 import {fireEvent} from './fire-event'
+import {getConfig, configure} from './config'
 
 function jestFakeTimersAreEnabled() {
   /* istanbul ignore else */
@@ -76,6 +77,18 @@ const mountedContainers = new Set()
  */
 const mountedRootEntries = []
 
+function strictModeIfNeeded(innerElement) {
+  return getConfig().reactStrictMode
+    ? React.createElement(React.StrictMode, null, innerElement)
+    : innerElement
+}
+
+function wrapUiIfNeeded(innerElement, wrapperComponent) {
+  return wrapperComponent
+    ? React.createElement(wrapperComponent, null, innerElement)
+    : innerElement
+}
+
 function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
@@ -85,7 +98,7 @@ function createConcurrentRoot(
     act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
-        WrapperComponent ? React.createElement(WrapperComponent, null, ui) : ui,
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
       )
     })
   } else {
@@ -129,16 +142,17 @@ function renderRoot(
   ui,
   {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
 ) {
-  const wrapUiIfNeeded = innerElement =>
-    WrapperComponent
-      ? React.createElement(WrapperComponent, null, innerElement)
-      : innerElement
-
   act(() => {
     if (hydrate) {
-      root.hydrate(wrapUiIfNeeded(ui), container)
+      root.hydrate(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
     } else {
-      root.render(wrapUiIfNeeded(ui), container)
+      root.render(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
     }
   })
 
@@ -157,10 +171,11 @@ function renderRoot(
       })
     },
     rerender: rerenderUi => {
-      renderRoot(wrapUiIfNeeded(rerenderUi), {
+      renderRoot(rerenderUi, {
         container,
         baseElement,
         root,
+        wrapper: WrapperComponent,
       })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
@@ -276,6 +291,6 @@ function renderHook(renderCallback, options = {}) {
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent}
+export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
 
 /* eslint func-name-matching:0 */

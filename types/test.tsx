@@ -62,6 +62,28 @@ export function testFireEvent() {
   fireEvent.click(container)
 }
 
+export function testConfigure() {
+  // test for DTL's config
+  pure.configure({testIdAttribute: 'foobar'})
+  pure.configure(existingConfig => ({
+    testIdAttribute: `modified-${existingConfig.testIdAttribute}`,
+  }))
+
+  // test for RTL's config
+  pure.configure({reactStrictMode: true})
+  pure.configure(existingConfig => ({
+    reactStrictMode: !existingConfig.reactStrictMode,
+  }))
+}
+
+export function testGetConfig() {
+  // test for DTL's config
+  pure.getConfig().testIdAttribute
+
+  // test for RTL's config
+  pure.getConfig().reactStrictMode
+}
+
 export function testDebug() {
   const {debug, getAllByTestId} = render(
     <>
@@ -101,10 +123,10 @@ export function testQueries() {
 }
 
 export function wrappedRender(
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options?: pure.RenderOptions,
 ) {
-  const Wrapper = ({children}: {children: React.ReactElement}): JSX.Element => {
+  const Wrapper = ({children}: {children: React.ReactNode}): JSX.Element => {
     return <div>{children}</div>
   }
 
@@ -112,7 +134,7 @@ export function wrappedRender(
 }
 
 export function wrappedRenderB(
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options?: pure.RenderOptions,
 ) {
   const Wrapper: React.FunctionComponent<{children?: React.ReactNode}> = ({
@@ -125,7 +147,7 @@ export function wrappedRenderB(
 }
 
 export function wrappedRenderC(
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options?: pure.RenderOptions,
 ) {
   interface AppWrapperProps {

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`supports fragments 1`] = `
+exports[`render API supports fragments 1`] = `
 <DocumentFragment>
   <div>
     <code>

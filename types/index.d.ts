@@ -5,10 +5,23 @@ import {
   Queries,
   BoundFunction,
   prettyFormat,
+  Config as ConfigDTL,
 } from '@testing-library/dom'
 import {act as reactAct} from 'react-dom/test-utils'
 
 export * from '@testing-library/dom'
+
+export interface Config extends ConfigDTL {
+  reactStrictMode: boolean
+}
+
+export interface ConfigFn {
+  (existingConfig: Config): Partial<Config>
+}
+
+export function configure(configDelta: ConfigFn | Partial<Config>): void
+
+export function getConfig(): Config
 
 export type RenderResult<
   Q extends Queries = typeof queries,
@@ -25,7 +38,7 @@ export type RenderResult<
     maxLength?: number,
     options?: prettyFormat.OptionsReceived,
   ) => void
-  rerender: (ui: React.ReactElement) => void
+  rerender: (ui: React.ReactNode) => void
   unmount: () => void
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
@@ -76,7 +89,7 @@ export interface RenderOptions<
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
-  wrapper?: React.JSXElementConstructor<{children: React.ReactElement}>
+  wrapper?: React.JSXElementConstructor<{children: React.ReactNode}>
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -89,11 +102,11 @@ export function render<
   Container extends Element | DocumentFragment = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options: RenderOptions<Q, Container, BaseElement>,
 ): RenderResult<Q, Container, BaseElement>
 export function render(
-  ui: React.ReactElement,
+  ui: React.ReactNode,
   options?: Omit<RenderOptions, 'queries'>,
 ): RenderResult
 

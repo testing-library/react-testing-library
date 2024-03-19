@@ -29,7 +29,7 @@ SOFTWARE.
 /* eslint-disable func-names */
 /* eslint-disable complexity */
 const util = require('util')
-const jestDiff = require('jest-diff').default
+const jestDiff = require('jest-diff').diff
 const shouldIgnoreConsoleError = require('./shouldIgnoreConsoleError')
 
 function normalizeCodeLocInfo(str) {
