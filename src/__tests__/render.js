@@ -5,7 +5,7 @@ import {fireEvent, render, screen, configure} from '../'
 
 // Needs to be changed to 19.0.0 once alpha started.
 const isReactExperimental = React.version.startsWith('18.3.0-experimental')
-const isReactCanary = React.version.startsWith('18.3.0')
+const isReactCanary = React.version.startsWith('18.3.0-canary')
 
 // Needs to be changed to isReactExperimental || isReactCanary once alpha started.
 const testGateReact18 = isReactExperimental ? test.skip : test
