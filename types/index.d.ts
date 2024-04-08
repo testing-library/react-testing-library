@@ -73,6 +73,7 @@ export interface RenderOptions<
    */
   hydrate?: boolean
   /**
+   * Only works if used with React 18.
    * Set to `true` if you want to force synchronous `ReactDOM.render`.
    * Otherwise `render` will default to concurrent React if available.
    */

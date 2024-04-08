@@ -207,6 +207,14 @@ function render(
     wrapper,
   } = {},
 ) {
+  if (legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. Please use React 18 instead.',
+    )
+    Error.captureStackTrace(error, render)
+    throw error
+  }
+
   if (!baseElement) {
     // default to document.body instead of documentElement to avoid output of potentially-large
     // head elements (such as JSS style blocks) in debug output
@@ -263,6 +271,15 @@ function cleanup() {
 
 function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
+
+  if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. Please use React 18 instead.',
+    )
+    Error.captureStackTrace(error, renderHook)
+    throw error
+  }
+
   const result = React.createRef()
 
   function TestComponent({renderCallbackProps}) {
