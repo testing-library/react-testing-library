@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
 import {fireEvent, render, screen, configure} from '../'
 
-// Needs to be changed to 19.0.0 once alpha started.
-const isReactExperimental = React.version.startsWith('18.3.0-experimental')
-const isReactCanary = React.version.startsWith('18.3.0-canary')
+const isReact18 = React.version.startsWith('18.')
+const isReact19 = React.version.startsWith('19.')
 
-// Needs to be changed to isReactExperimental || isReactCanary once alpha started.
-const testGateReact18 = isReactExperimental ? test.skip : test
+const testGateReact18 = isReact18 ? test : test.skip
+const testGateReact19 = isReact19 ? test : test.skip
 
 describe('render API', () => {
   let originalConfig
@@ -224,14 +223,18 @@ describe('render API', () => {
     expect(() => {
       render(<div />, {legacyRoot: true})
     }).toErrorDev(
-      isReactCanary
-        ? [
-            "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://react.dev/link/switch-to-createroot",
-          ]
-        : [
-            "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
-          ],
+      [
+        "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+      ],
       {withoutStack: true},
+    )
+  })
+
+  testGateReact19('legacyRoot throws', () => {
+    expect(() => {
+      render(<div />, {legacyRoot: true})
+    }).toThrowErrorMatchingInlineSnapshot(
+      `\`legacyRoot: true\` is not supported in this version of React. Please use React 18 instead.`,
     )
   })
 
@@ -242,14 +245,21 @@ describe('render API', () => {
     expect(() => {
       render(ui, {container, hydrate: true, legacyRoot: true})
     }).toErrorDev(
-      isReactCanary
-        ? [
-            "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://react.dev/link/switch-to-createroot",
-          ]
-        : [
-            "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
-          ],
+      [
+        "Warning: ReactDOM.hydrate is no longer supported in React 18. Use hydrateRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
+      ],
       {withoutStack: true},
+    )
+  })
+
+  testGateReact19('legacyRoot throws even with hydrate', () => {
+    const ui = <div />
+    const container = document.createElement('div')
+    container.innerHTML = ReactDOMServer.renderToString(ui)
+    expect(() => {
+      render(ui, {container, hydrate: true, legacyRoot: true})
+    }).toThrowErrorMatchingInlineSnapshot(
+      `\`legacyRoot: true\` is not supported in this version of React. Please use React 18 instead.`,
     )
   })
 })
