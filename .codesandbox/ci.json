@@ -1,5 +1,5 @@
 {
   "installCommand": "install:csb",
   "sandboxes": ["new", "github/kentcdodds/react-testing-library-examples"],
-  "node": "14"
+  "node": "18"
 }
