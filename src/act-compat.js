@@ -1,7 +1,8 @@
 import * as React from 'react'
 import * as DeprecatedReactTestUtils from 'react-dom/test-utils'
 
-const reactAct = React.act ?? DeprecatedReactTestUtils.act
+const reactAct =
+  typeof React.act === 'function' ? React.act : DeprecatedReactTestUtils.act
 
 function getGlobalThis() {
   /* istanbul ignore else */
