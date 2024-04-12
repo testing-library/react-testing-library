@@ -211,7 +211,7 @@ function render(
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
         'If your app runs React 19 or later, you should remove this flag. ' +
-        'If your app runs React 18 or earlier, and you need help with upgrading your app, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide.',
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, render)
     throw error
@@ -278,7 +278,7 @@ function renderHook(renderCallback, options = {}) {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
         'If your app runs React 19 or later, you should remove this flag. ' +
-        'If your app runs React 18 or earlier, and you need help with upgrading your app, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide.',
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, renderHook)
     throw error
