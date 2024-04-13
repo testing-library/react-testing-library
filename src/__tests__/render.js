@@ -234,7 +234,7 @@ describe('render API', () => {
     expect(() => {
       render(<div />, {legacyRoot: true})
     }).toThrowErrorMatchingInlineSnapshot(
-      `\`legacyRoot: true\` is not supported in this version of React. Please use React 18 instead.`,
+      `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
     )
   })
 
@@ -259,7 +259,7 @@ describe('render API', () => {
     expect(() => {
       render(ui, {container, hydrate: true, legacyRoot: true})
     }).toThrowErrorMatchingInlineSnapshot(
-      `\`legacyRoot: true\` is not supported in this version of React. Please use React 18 instead.`,
+      `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
     )
   })
 })

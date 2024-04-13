@@ -209,7 +209,9 @@ function render(
 ) {
   if (legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
-      '`legacyRoot: true` is not supported in this version of React. Please use React 18 instead.',
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, render)
     throw error
@@ -274,7 +276,9 @@ function renderHook(renderCallback, options = {}) {
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
-      '`legacyRoot: true` is not supported in this version of React. Please use React 18 instead.',
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, renderHook)
     throw error
