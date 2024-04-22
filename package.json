@@ -46,10 +46,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@testing-library/dom": "^10.0.0",
-    "@types/react-dom": "^18.0.0"
+    "@testing-library/dom": "^10.0.0"
   },
   "devDependencies": {
+    "@types/react-dom": "^18.2.25",
     "@testing-library/jest-dom": "^5.11.6",
     "chalk": "^4.1.2",
     "dotenv-cli": "^4.0.0",
@@ -62,8 +62,14 @@
     "typescript": "^4.1.2"
   },
   "peerDependencies": {
+    "@types/react-dom": "^18.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react-dom": {
+      "optional": true
+    }
   },
   "eslintConfig": {
     "extends": "./node_modules/kcd-scripts/eslint.js",
