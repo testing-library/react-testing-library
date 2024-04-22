@@ -206,6 +206,17 @@ export function testRenderHookProps() {
   unmount()
 }
 
+export function testContainer() {
+  render('a', {container: document.createElement('div')})
+  render('a', {container: document.createDocumentFragment()})
+  // @ts-expect-error Only allowed in React 19
+  render('a', {container: document})
+  render('a', {container: document.createElement('div'), hydrate: true})
+  // @ts-expect-error Only allowed for createRoot
+  render('a', {container: document.createDocumentFragment(), hydrate: true})
+  render('a', {container: document, hydrate: true})
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",

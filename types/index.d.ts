@@ -1,5 +1,5 @@
 // TypeScript Version: 3.8
-
+import * as ReactDOMClient from 'react-dom/client'
 import {
   queries,
   Queries,
@@ -43,10 +43,10 @@ export type RenderResult<
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
-export interface RenderOptions<
-  Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+export interface BaseRenderOptions<
+  Q extends Queries,
+  Container extends RendererableContainer | HydrateableContainer,
+  BaseElement extends Element | DocumentFragment,
 > {
   /**
    * By default, React Testing Library will create a div and append that div to the document.body. Your React component will be rendered in the created div. If you provide your own HTMLElement container via this option,
@@ -93,6 +93,44 @@ export interface RenderOptions<
   wrapper?: React.JSXElementConstructor<{children: React.ReactNode}>
 }
 
+type RendererableContainer = ReactDOMClient.Container
+type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
+export interface ClientRenderOptions<
+  Q extends Queries,
+  Container extends Element | DocumentFragment,
+  BaseElement extends Element | DocumentFragment = Container,
+> extends BaseRenderOptions<Q, Container, BaseElement> {
+  /**
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
+   *  rendering and use ReactDOM.hydrate to mount your components.
+   *
+   *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
+   */
+  hydrate?: false | undefined
+}
+
+export interface HydrateOptions<
+  Q extends Queries,
+  Container extends Element | DocumentFragment,
+  BaseElement extends Element | DocumentFragment = Container,
+> extends BaseRenderOptions<Q, Container, BaseElement> {
+  /**
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
+   *  rendering and use ReactDOM.hydrate to mount your components.
+   *
+   *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
+   */
+  hydrate: true
+}
+
+export type RenderOptions<
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+> =
+  | ClientRenderOptions<Q, Container, BaseElement>
+  | HydrateOptions<Q, Container, BaseElement>
+
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
 /**
@@ -100,11 +138,19 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
  */
 export function render<
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
+  Container extends RendererableContainer = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
   ui: React.ReactNode,
-  options: RenderOptions<Q, Container, BaseElement>,
+  options: ClientRenderOptions<Q, Container, BaseElement>,
+): RenderResult<Q, Container, BaseElement>
+export function render<
+  Q extends Queries = typeof queries,
+  Container extends HydrateableContainer = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+>(
+  ui: React.ReactNode,
+  options: HydrateOptions<Q, Container, BaseElement>,
 ): RenderResult<Q, Container, BaseElement>
 export function render(
   ui: React.ReactNode,
