@@ -179,18 +179,57 @@ export interface RenderHookResult<Result, Props> {
   unmount: () => void
 }
 
-export interface RenderHookOptions<
+export interface BaseRenderHookOptions<
   Props,
-  Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
-> extends RenderOptions<Q, Container, BaseElement> {
+  Q extends Queries,
+  Container extends RendererableContainer | HydrateableContainer,
+  BaseElement extends Element | DocumentFragment,
+> extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
    * The argument passed to the renderHook callback. Can be useful if you plan
    * to use the rerender utility to change the values passed to your hook.
    */
   initialProps?: Props
 }
+
+export interface ClientRenderHookOptions<
+  Props,
+  Q extends Queries,
+  Container extends Element | DocumentFragment,
+  BaseElement extends Element | DocumentFragment = Container,
+> extends BaseRenderHookOptions<Props, Q, Container, BaseElement> {
+  /**
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
+   *  rendering and use ReactDOM.hydrate to mount your components.
+   *
+   *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
+   */
+  hydrate?: false | undefined
+}
+
+export interface HydrateHookOptions<
+  Props,
+  Q extends Queries,
+  Container extends Element | DocumentFragment,
+  BaseElement extends Element | DocumentFragment = Container,
+> extends BaseRenderHookOptions<Props, Q, Container, BaseElement> {
+  /**
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
+   *  rendering and use ReactDOM.hydrate to mount your components.
+   *
+   *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
+   */
+  hydrate: true
+}
+
+export type RenderHookOptions<
+  Props,
+  Q extends Queries = typeof queries,
+  Container extends Element | DocumentFragment = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+> =
+  | ClientRenderHookOptions<Props, Q, Container, BaseElement>
+  | HydrateHookOptions<Props, Q, Container, BaseElement>
 
 /**
  * Allows you to render a hook within a test React component without having to
@@ -200,11 +239,21 @@ export function renderHook<
   Result,
   Props,
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
+  Container extends RendererableContainer = HTMLElement,
   BaseElement extends Element | DocumentFragment = Container,
 >(
   render: (initialProps: Props) => Result,
-  options?: RenderHookOptions<Props, Q, Container, BaseElement>,
+  options?: ClientRenderHookOptions<Props, Q, Container, BaseElement>,
+): RenderHookResult<Result, Props>
+export function renderHook<
+  Result,
+  Props,
+  Q extends Queries = typeof queries,
+  Container extends HydrateableContainer = HTMLElement,
+  BaseElement extends Element | DocumentFragment = Container,
+>(
+  render: (initialProps: Props) => Result,
+  options?: HydrateHookOptions<Props, Q, Container, BaseElement>,
 ): RenderHookResult<Result, Props>
 
 /**
