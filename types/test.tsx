@@ -45,6 +45,8 @@ export function testRenderOptions() {
   const options = {container}
   const {container: returnedContainer} = render(<button />, options)
   expectType<HTMLDivElement, typeof returnedContainer>(returnedContainer)
+
+  render(<div />, {wrapper: () => null})
 }
 
 export function testSVGRenderOptions() {
@@ -191,6 +193,8 @@ export function testRenderHook() {
   rerender()
 
   unmount()
+
+  renderHook(() => null, {wrapper: () => null})
 }
 
 export function testRenderHookProps() {
@@ -215,6 +219,21 @@ export function testContainer() {
   // @ts-expect-error Only allowed for createRoot
   render('a', {container: document.createDocumentFragment(), hydrate: true})
   render('a', {container: document, hydrate: true})
+
+  renderHook(() => null, {container: document.createElement('div')})
+  renderHook(() => null, {container: document.createDocumentFragment()})
+  // @ts-expect-error Only allowed in React 19
+  renderHook(() => null, {container: document})
+  renderHook(() => null, {
+    container: document.createElement('div'),
+    hydrate: true,
+  })
+  // @ts-expect-error Only allowed for createRoot
+  renderHook(() => null, {
+    container: document.createDocumentFragment(),
+    hydrate: true,
+  })
+  renderHook(() => null, {container: document, hydrate: true})
 }
 
 /*
