@@ -1,4 +1,7 @@
 {
   "extends": "../node_modules/kcd-scripts/shared-tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": false
+  },
   "include": ["."]
 }

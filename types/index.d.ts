@@ -25,16 +25,16 @@ export function getConfig(): Config
 
 export type RenderResult<
   Q extends Queries = typeof queries,
-  Container extends Element | DocumentFragment = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
 > = {
   container: Container
   baseElement: BaseElement
   debug: (
     baseElement?:
-      | Element
-      | DocumentFragment
-      | Array<Element | DocumentFragment>,
+      | RendererableContainer
+      | HydrateableContainer
+      | Array<RendererableContainer | HydrateableContainer>,
     maxLength?: number,
     options?: prettyFormat.OptionsReceived,
   ) => void
@@ -47,7 +47,7 @@ export type RenderResult<
 export type BaseRenderOptions<
   Q extends Queries,
   Container extends RendererableContainer | HydrateableContainer,
-  BaseElement extends Element | DocumentFragment,
+  BaseElement extends RendererableContainer | HydrateableContainer,
 > = RenderOptions<Q, Container, BaseElement>
 
 type RendererableContainer = ReactDOMClient.Container
@@ -55,8 +55,8 @@ type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
 /** @deprecated */
 export interface ClientRenderOptions<
   Q extends Queries,
-  Container extends Element | DocumentFragment,
-  BaseElement extends Element | DocumentFragment = Container,
+  Container extends RendererableContainer,
+  BaseElement extends RendererableContainer = Container,
 > extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
    * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
@@ -69,8 +69,8 @@ export interface ClientRenderOptions<
 /** @deprecated */
 export interface HydrateOptions<
   Q extends Queries,
-  Container extends Element | DocumentFragment,
-  BaseElement extends Element | DocumentFragment = Container,
+  Container extends HydrateableContainer,
+  BaseElement extends HydrateableContainer = Container,
 > extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
    * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
@@ -84,7 +84,7 @@ export interface HydrateOptions<
 export interface RenderOptions<
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
 > {
   /**
    * By default, React Testing Library will create a div and append that div to the document.body. Your React component will be rendered in the created div. If you provide your own HTMLElement container via this option,
@@ -139,7 +139,7 @@ type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 export function render<
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
 >(
   ui: React.ReactNode,
   options: RenderOptions<Q, Container, BaseElement>,
@@ -215,7 +215,7 @@ export interface RenderHookOptions<
   Props,
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
 > extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
    * The argument passed to the renderHook callback. Can be useful if you plan
@@ -233,7 +233,7 @@ export function renderHook<
   Props,
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
-  BaseElement extends Element | DocumentFragment = Container,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
 >(
   render: (initialProps: Props) => Result,
   options?: RenderHookOptions<Props, Q, Container, BaseElement>,
