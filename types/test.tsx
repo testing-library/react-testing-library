@@ -166,6 +166,24 @@ export function wrappedRenderC(
   return pure.render(ui, {wrapper: AppWrapperProps, ...options})
 }
 
+export function wrappedRenderHook<Props>(
+  hook: () => unknown,
+  options?: pure.RenderHookOptions<Props>,
+) {
+  interface AppWrapperProps {
+    children?: React.ReactNode
+    userProviderProps?: {user: string}
+  }
+  const AppWrapperProps: React.FunctionComponent<AppWrapperProps> = ({
+    children,
+    userProviderProps = {user: 'TypeScript'},
+  }) => {
+    return <div data-testid={userProviderProps.user}>{children}</div>
+  }
+
+  return pure.renderHook(hook, {...options})
+}
+
 export function testBaseElement() {
   const {baseElement: baseDefaultElement} = render(<div />)
   expectType<HTMLElement, typeof baseDefaultElement>(baseDefaultElement)
@@ -213,22 +231,22 @@ export function testRenderHookProps() {
 export function testContainer() {
   render('a', {container: document.createElement('div')})
   render('a', {container: document.createDocumentFragment()})
-  // @ts-expect-error Only allowed in React 19
+  //  Only allowed in React 19
   render('a', {container: document})
   render('a', {container: document.createElement('div'), hydrate: true})
-  // @ts-expect-error Only allowed for createRoot
+  // Only allowed for createRoot but typing `render` appropriately makes it harder to compose.
   render('a', {container: document.createDocumentFragment(), hydrate: true})
   render('a', {container: document, hydrate: true})
 
   renderHook(() => null, {container: document.createElement('div')})
   renderHook(() => null, {container: document.createDocumentFragment()})
-  // @ts-expect-error Only allowed in React 19
+  //  Only allowed in React 19
   renderHook(() => null, {container: document})
   renderHook(() => null, {
     container: document.createElement('div'),
     hydrate: true,
   })
-  // @ts-expect-error Only allowed for createRoot
+  // Only allowed for createRoot but typing `render` appropriately makes it harder to compose.
   renderHook(() => null, {
     container: document.createDocumentFragment(),
     hydrate: true,
