@@ -36,6 +36,15 @@ module.exports = function shouldIgnoreConsoleError(format) {
         // Ignore it too.
         return true
       }
+      if (
+        format.startsWith(
+          'Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`.',
+        )
+      ) {
+        // This is a React bug in 18.3.0.
+        // Versions with `ReactDOMTestUtils.ac` being deprecated, should have `React.act`
+        return true
+      }
     }
   }
   // Looks legit
