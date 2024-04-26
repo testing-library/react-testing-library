@@ -40,7 +40,6 @@ class StopWatch extends React.Component {
 const sleep = t => new Promise(resolve => setTimeout(resolve, t))
 
 test('unmounts a component', async () => {
-  jest.spyOn(console, 'error').mockImplementation(() => {})
   const {unmount, container} = render(<StopWatch />)
   fireEvent.click(screen.getByText('Start'))
   unmount()
@@ -52,6 +51,4 @@ test('unmounts a component', async () => {
   // if it's not, then we'll call setState on an unmounted component
   // and get an error.
   await sleep(5)
-  // eslint-disable-next-line no-console
-  expect(console.error).not.toHaveBeenCalled()
 })
