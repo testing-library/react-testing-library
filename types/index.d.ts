@@ -8,6 +8,7 @@ import {
   Config as ConfigDTL,
 } from '@testing-library/dom'
 import {act as reactDeprecatedAct} from 'react-dom/test-utils'
+//@ts-ignore
 import {act as reactAct} from 'react'
 
 export * from '@testing-library/dom'
@@ -250,6 +251,6 @@ export function cleanup(): void
  * If that's not available (older version of react) then it
  * simply calls the deprecated version which is ReactTestUtils.act(cb)
  */
-export const act: typeof reactAct extends undefined
+export const act: typeof reactAct extends never
   ? typeof reactDeprecatedAct
   : typeof reactAct
