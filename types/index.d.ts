@@ -251,6 +251,7 @@ export function cleanup(): void
  * If that's not available (older version of react) then it
  * simply calls the deprecated version which is ReactTestUtils.act(cb)
  */
-export const act: typeof reactAct extends never
+// IfAny<typeof reactAct, reactDeprecatedAct, reactAct> from https://stackoverflow.com/a/61626123/3406963
+export const act: 0 extends 1 & typeof reactAct
   ? typeof reactDeprecatedAct
   : typeof reactAct
