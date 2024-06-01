@@ -7,7 +7,9 @@ import {
   prettyFormat,
   Config as ConfigDTL,
 } from '@testing-library/dom'
-import {act as reactAct} from 'react-dom/test-utils'
+import {act as reactDeprecatedAct} from 'react-dom/test-utils'
+//@ts-ignore
+import {act as reactAct} from 'react'
 
 export * from '@testing-library/dom'
 
@@ -245,10 +247,11 @@ export function renderHook<
 export function cleanup(): void
 
 /**
- * Simply calls ReactDOMTestUtils.act(cb)
+ * Simply calls React.act(cb)
  * If that's not available (older version of react) then it
- * simply calls the given callback immediately
+ * simply calls the deprecated version which is ReactTestUtils.act(cb)
  */
-export const act: typeof reactAct extends undefined
-  ? (callback: () => void) => void
+// IfAny<typeof reactAct, reactDeprecatedAct, reactAct> from https://stackoverflow.com/a/61626123/3406963
+export const act: 0 extends 1 & typeof reactAct
+  ? typeof reactDeprecatedAct
   : typeof reactAct
