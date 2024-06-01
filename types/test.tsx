@@ -254,6 +254,43 @@ export function testContainer() {
   renderHook(() => null, {container: document, hydrate: true})
 }
 
+export function testRootContainerWithOptions() {
+  render('a', {
+    container: document.createElement('div'),
+    legacyRoot: true,
+    // @ts-expect-error - legacyRoot does not allow additional options
+    renderOptions: {},
+  })
+
+  render('a', {
+    container: document.createElement('div'),
+    legacyRoot: false,
+    renderOptions: {
+      identifierPrefix: 'test',
+      onRecoverableError: (_error, _errorInfo) => {},
+      // @ts-expect-error - only RootOptions are allowed
+      nonExistentOption: 'test',
+    },
+  })
+  render('a', {
+    container: document.createElement('div'),
+    renderOptions: {
+      identifierPrefix: 'test',
+    },
+  })
+
+  render('a', {
+    container: document.createElement('div'),
+    hydrate: true,
+    renderOptions: {
+      identifierPrefix: 'test',
+      onRecoverableError: (_error, _errorInfo) => {},
+      // @ts-expect-error - only HydrationOptions are allowed
+      nonExistentOption: 'test',
+    },
+  })
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",

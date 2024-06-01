@@ -52,7 +52,7 @@ export type BaseRenderOptions<
   BaseElement extends RendererableContainer | HydrateableContainer,
 > = RenderOptions<Q, Container, BaseElement>
 
-type RendererableContainer = ReactDOMClient.Container
+type RendererableContainer = Parameters<typeof ReactDOMClient['createRoot']>[0]
 type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
 /** @deprecated */
 export interface ClientRenderOptions<
@@ -61,8 +61,8 @@ export interface ClientRenderOptions<
   BaseElement extends RendererableContainer = Container,
 > extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using
+   * server-side rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
@@ -75,8 +75,8 @@ export interface HydrateOptions<
   BaseElement extends HydrateableContainer = Container,
 > extends BaseRenderOptions<Q, Container, BaseElement> {
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using
+   * server-side rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
@@ -87,10 +87,13 @@ export interface RenderOptions<
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
   BaseElement extends RendererableContainer | HydrateableContainer = Container,
+  LegacyRoot extends boolean = boolean,
+  Hydrate extends boolean = boolean,
 > {
   /**
-   * By default, React Testing Library will create a div and append that div to the document.body. Your React component will be rendered in the created div. If you provide your own HTMLElement container via this option,
-   *  it will not be appended to the document.body automatically.
+   * By default, React Testing Library will create a div and append that div to the document.body. Your React component
+   * will be rendered in the created div. If you provide your own HTMLElement container via this option, it will not be
+   * appended to the document.body automatically.
    *
    *  For example: If you are unit testing a `<tbody>` element, it cannot be a child of a div. In this case, you can
    *  specify a table as the render container.
@@ -99,25 +102,25 @@ export interface RenderOptions<
    */
   container?: Container
   /**
-   * Defaults to the container if the container is specified. Otherwise `document.body` is used for the default. This is used as
-   *  the base element for the queries as well as what is printed when you use `debug()`.
+   * Defaults to the container if the container is specified. Otherwise `document.body` is used for the default. This
+   * is used as the base element for the queries as well as what is printed when you use `debug()`.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#baseelement
    */
   baseElement?: BaseElement
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using
+   * server-side rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
-  hydrate?: boolean
+  hydrate?: Hydrate
   /**
    * Only works if used with React 18.
    * Set to `true` if you want to force synchronous `ReactDOM.render`.
    * Otherwise `render` will default to concurrent React if available.
    */
-  legacyRoot?: boolean
+  legacyRoot?: LegacyRoot
   /**
    * Queries to bind. Overrides the default set from DOM Testing Library unless merged.
    *
@@ -125,12 +128,17 @@ export interface RenderOptions<
    */
   queries?: Q
   /**
-   * Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for creating
-   *  reusable custom render functions for common data providers. See setup for examples.
+   * Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for
+   * creating reusable custom render functions for common data providers. See setup for examples.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
   wrapper?: React.JSXElementConstructor<{children: React.ReactNode}>
+  renderOptions?: LegacyRoot extends true
+    ? never
+    : Hydrate extends true
+    ? ReactDOMClient.HydrationOptions
+    : ReactDOMClient.RootOptions
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -142,14 +150,12 @@ export function render<
   Q extends Queries = typeof queries,
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
   BaseElement extends RendererableContainer | HydrateableContainer = Container,
+  LegacyRoot extends boolean = boolean,
+  Hydrate extends boolean = boolean,
 >(
   ui: React.ReactNode,
-  options: RenderOptions<Q, Container, BaseElement>,
+  options?: RenderOptions<Q, Container, BaseElement, LegacyRoot, Hydrate>,
 ): RenderResult<Q, Container, BaseElement>
-export function render(
-  ui: React.ReactNode,
-  options?: Omit<RenderOptions, 'queries'>,
-): RenderResult
 
 export interface RenderHookResult<Result, Props> {
   /**
@@ -189,8 +195,8 @@ export interface ClientRenderHookOptions<
   BaseElement extends Element | DocumentFragment = Container,
 > extends BaseRenderHookOptions<Props, Q, Container, BaseElement> {
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using
+   * server-side rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
@@ -205,8 +211,8 @@ export interface HydrateHookOptions<
   BaseElement extends Element | DocumentFragment = Container,
 > extends BaseRenderHookOptions<Props, Q, Container, BaseElement> {
   /**
-   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
-   *  rendering and use ReactDOM.hydrate to mount your components.
+   * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using
+   * server-side rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
