@@ -219,6 +219,46 @@ describe('render API', () => {
     expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(1)
   })
 
+  test('renderOptions are passed to createRoot', () => {
+    function Component() {
+      const id = React.useId()
+      return <div id={id} />
+    }
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+
+    render(<Component />, {
+      container,
+      renderOptions: {
+        identifierPrefix: 'some-identifier-prefix',
+      },
+    })
+
+    expect(container.firstChild.id).toContain('some-identifier-prefix')
+  })
+
+  test('renderOptions are passed to hydrateRoot', () => {
+    function Component() {
+      const id = React.useId()
+      return <div id={id} />
+    }
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    container.innerHTML = ReactDOMServer.renderToString(<Component />)
+
+    render(<Component />, {
+      container,
+      hydrate: false,
+      renderOptions: {
+        identifierPrefix: 'some-identifier-prefix',
+      },
+    })
+
+    expect(container.firstChild.id).toContain('some-identifier-prefix')
+  })
+
   testGateReact18('legacyRoot uses legacy ReactDOM.render', () => {
     expect(() => {
       render(<div />, {legacyRoot: true})
@@ -262,4 +302,28 @@ describe('render API', () => {
       `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
     )
   })
+
+  testGateReact19('renderOptions supports onUncaughtError', () => {
+    const onUncaughtError = jest.fn()
+    const error = new Error('uncaught error')
+    function Component() {
+      throw error
+    }
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+
+    render(<Component />, {
+      container,
+      renderOptions: {
+        onUncaughtError,
+      },
+    })
+
+    expect(onUncaughtError).toHaveBeenCalledTimes(1)
+    expect(onUncaughtError).toHaveBeenCalledWith(error)
+  })
+
+  // TODO
+  // testGateReact19('renderOptions supports onCaughtError', () => {})
 })
