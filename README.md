@@ -97,10 +97,12 @@ primary guiding principle is:
 ## Installation
 
 This module is distributed via [npm][npm] which is bundled with [node][node] and
-should be installed as one of your project's `devDependencies`:
+should be installed as one of your project's `devDependencies`.  
+Starting from RTL version 16, you'll also need to install
+`@testing-library/dom`:
 
 ```
-npm install --save-dev @testing-library/react
+npm install --save-dev @testing-library/react @testing-library/dom
 ```
 
 or
@@ -108,10 +110,11 @@ or
 for installation via [yarn][yarn]
 
 ```
-yarn add --dev @testing-library/react
+yarn add --dev @testing-library/react @testing-library/dom
 ```
 
-This library has `peerDependencies` listings for `react` and `react-dom`.
+This library has `peerDependencies` listings for `react`, `react-dom` and
+starting from RTL version 16 also `@testing-library/dom`.
 
 _React Testing Library versions 13+ require React v18. If your project uses an
 older version of React, be sure to install version 12:_
