@@ -263,7 +263,7 @@ function cleanup() {
     act(() => {
       root.unmount()
     })
-    if (container.parentNode === document.body) {
+    if (document.body !== null && container.parentNode === document.body) {
       document.body.removeChild(container)
     }
   })
