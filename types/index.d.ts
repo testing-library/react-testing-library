@@ -1,5 +1,6 @@
 // TypeScript Version: 3.8
 import * as ReactDOMClient from 'react-dom/client'
+import { Container as RendererableContainer } from 'react-dom'
 import {
   queries,
   Queries,
@@ -52,7 +53,6 @@ export type BaseRenderOptions<
   BaseElement extends RendererableContainer | HydrateableContainer,
 > = RenderOptions<Q, Container, BaseElement>
 
-type RendererableContainer = ReactDOMClient.Container
 type HydrateableContainer = Parameters<typeof ReactDOMClient['hydrateRoot']>[0]
 /** @deprecated */
 export interface ClientRenderOptions<
