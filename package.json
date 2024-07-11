@@ -4,7 +4,7 @@
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "module": "dist/@testing-library/react.esm.js",
+  "module": "dist/@testing-library/react.esm.mjs",
   "engines": {
     "node": ">=18"
   },
