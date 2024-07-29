@@ -69,6 +69,18 @@
         "test"
       ]
     },
+     {
+      "login": "ginax",
+      "name": "Gina Serakalala",
+      "avatar_url": "https://avatars.githubusercontent.com/u/60620086?v=4",
+      "profile": "https://github.com/ginaserakalala",
+      "contributions": [
+        "bug",
+        "code",
+        "doc",
+        "test"
+      ]
+    },
     {
       "login": "wKovacs64",
       "name": "Justin Hall",
