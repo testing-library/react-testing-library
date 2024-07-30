@@ -262,11 +262,8 @@ eslint
 */
 
 // https://stackoverflow.com/questions/53807517/how-to-test-if-two-types-are-exactly-the-same
-type IfEquals<T, U, Yes = unknown, No = never> = (<G>() => G extends T
-  ? 1
-  : 2) extends <G>() => G extends U ? 1 : 2
-  ? Yes
-  : No
+type IfEquals<T, U, Yes = unknown, No = never> =
+  (<G>() => G extends T ? 1 : 2) extends <G>() => G extends U ? 1 : 2 ? Yes : No
 
 /**
  * Issues a type error if `Expected` is not identical to `Actual`.
