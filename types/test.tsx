@@ -263,6 +263,28 @@ export function testContainer() {
   renderHook(() => null, {container: document, hydrate: true})
 }
 
+export function testErrorHandlers() {
+  // React 19 types are not used in tests. Verify manually if this works with `"@types/react": "npm:types-react@rc"`
+  render(null, {
+    // Should work with React 19 types
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    onCaughtError: () => {},
+  })
+  render(null, {
+    // Should never work as it's not supported yet.
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    onUncaughtError: () => {},
+  })
+  render(null, {
+    onRecoverableError: (error, errorInfo) => {
+      console.error(error)
+      console.log(errorInfo.componentStack)
+    },
+  })
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
