@@ -1,3 +1,5 @@
+/* eslint-disable jest/no-if */
+/* eslint-disable jest/no-conditional-in-test */
 /* eslint-disable jest/no-conditional-expect */
 import * as React from 'react'
 import {render, renderHook} from '../'
@@ -5,6 +7,28 @@ import {render, renderHook} from '../'
 const isReact19 = React.version.startsWith('19.')
 
 const testGateReact19 = isReact19 ? test : test.skip
+
+test('render errors', () => {
+  function Thrower() {
+    throw new Error('Boom!')
+  }
+
+  if (isReact19) {
+    expect(() => {
+      render(<Thrower />)
+    }).toThrow('Boom!')
+  } else {
+    expect(() => {
+      expect(() => {
+        render(<Thrower />)
+      }).toThrow('Boom!')
+    }).toErrorDev([
+      'Error: Uncaught [Error: Boom!]',
+      // React retries on error
+      'Error: Uncaught [Error: Boom!]',
+    ])
+  }
+})
 
 test('onUncaughtError is not supported in render', () => {
   function Thrower() {
