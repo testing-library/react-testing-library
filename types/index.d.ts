@@ -36,9 +36,10 @@ export type RenderResult<
     baseElement?:
       | RendererableContainer
       | HydrateableContainer
-      | Array<RendererableContainer | HydrateableContainer>,
-    maxLength?: number,
-    options?: prettyFormat.OptionsReceived,
+      | Array<RendererableContainer | HydrateableContainer>
+      | undefined,
+    maxLength?: number | undefined,
+    options?: prettyFormat.OptionsReceived | undefined,
   ) => void
   rerender: (ui: React.ReactNode) => void
   unmount: () => void
@@ -97,40 +98,40 @@ export interface RenderOptions<
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#container
    */
-  container?: Container
+  container?: Container | undefined
   /**
    * Defaults to the container if the container is specified. Otherwise `document.body` is used for the default. This is used as
    *  the base element for the queries as well as what is printed when you use `debug()`.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#baseelement
    */
-  baseElement?: BaseElement
+  baseElement?: BaseElement | undefined
   /**
    * If `hydrate` is set to `true`, then it will render with `ReactDOM.hydrate`. This may be useful if you are using server-side
    *  rendering and use ReactDOM.hydrate to mount your components.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#hydrate)
    */
-  hydrate?: boolean
+  hydrate?: boolean | undefined
   /**
    * Only works if used with React 18.
    * Set to `true` if you want to force synchronous `ReactDOM.render`.
    * Otherwise `render` will default to concurrent React if available.
    */
-  legacyRoot?: boolean
+  legacyRoot?: boolean | undefined
   /**
    * Queries to bind. Overrides the default set from DOM Testing Library unless merged.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#queries
    */
-  queries?: Q
+  queries?: Q | undefined
   /**
    * Pass a React Component as the wrapper option to have it rendered around the inner element. This is most useful for creating
    *  reusable custom render functions for common data providers. See setup for examples.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
-  wrapper?: React.JSXElementConstructor<{children: React.ReactNode}>
+  wrapper?: React.JSXElementConstructor<{children: React.ReactNode}> | undefined
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -148,7 +149,7 @@ export function render<
 ): RenderResult<Q, Container, BaseElement>
 export function render(
   ui: React.ReactNode,
-  options?: Omit<RenderOptions, 'queries'>,
+  options?: Omit<RenderOptions, 'queries'> | undefined,
 ): RenderResult
 
 export interface RenderHookResult<Result, Props> {
@@ -223,7 +224,7 @@ export interface RenderHookOptions<
    * The argument passed to the renderHook callback. Can be useful if you plan
    * to use the rerender utility to change the values passed to your hook.
    */
-  initialProps?: Props
+  initialProps?: Props | undefined
 }
 
 /**
@@ -238,7 +239,7 @@ export function renderHook<
   BaseElement extends RendererableContainer | HydrateableContainer = Container,
 >(
   render: (initialProps: Props) => Result,
-  options?: RenderHookOptions<Props, Q, Container, BaseElement>,
+  options?: RenderHookOptions<Props, Q, Container, BaseElement> | undefined,
 ): RenderHookResult<Result, Props>
 
 /**

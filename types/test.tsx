@@ -132,7 +132,12 @@ export function wrappedRender(
     return <div>{children}</div>
   }
 
-  return pure.render(ui, {wrapper: Wrapper, ...options})
+  return pure.render(ui, {
+    wrapper: Wrapper,
+    // testing exactOptionalPropertyTypes comaptibility
+    hydrate: options?.hydrate,
+    ...options,
+  })
 }
 
 export function wrappedRenderB(
