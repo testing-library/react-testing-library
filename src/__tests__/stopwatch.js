@@ -40,9 +40,9 @@ class StopWatch extends React.Component {
 const sleep = t => new Promise(resolve => setTimeout(resolve, t))
 
 test('unmounts a component', async () => {
-  const {unmount, container} = render(<StopWatch />)
-  fireEvent.click(screen.getByText('Start'))
-  unmount()
+  const {unmount, container} = await render(<StopWatch />)
+  await fireEvent.click(screen.getByText('Start'))
+  await unmount()
   // hey there reader! You don't need to have an assertion like this one
   // this is just me making sure that the unmount function works.
   // You don't need to do this in your apps. Just rely on the fact that this works.
