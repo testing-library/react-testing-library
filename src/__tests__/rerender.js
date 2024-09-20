@@ -17,15 +17,15 @@ describe('rerender API', () => {
     configure(originalConfig)
   })
 
-  test('rerender will re-render the element', () => {
+  test('rerender will re-render the element', async () => {
     const Greeting = props => <div>{props.message}</div>
     const {container, rerender} = await render(<Greeting message="hi" />)
     expect(container.firstChild).toHaveTextContent('hi')
-    rerender(<Greeting message="hey" />)
+    await rerender(<Greeting message="hey" />)
     expect(container.firstChild).toHaveTextContent('hey')
   })
 
-  test('hydrate will not update props until next render', () => {
+  test('hydrate will not update props until next render', async () => {
     const initialInputElement = document.createElement('input')
     const container = document.createElement('div')
     container.appendChild(initialInputElement)
@@ -42,11 +42,11 @@ describe('rerender API', () => {
     expect(initialInputElement).toHaveValue(firstValue)
 
     const secondValue = 'goodbye'
-    rerender(<input value={secondValue} onChange={() => null} />)
+    await rerender(<input value={secondValue} onChange={() => null} />)
     expect(initialInputElement).toHaveValue(secondValue)
   })
 
-  test('re-renders options.wrapper around node when reactStrictMode is true', () => {
+  test('re-renders options.wrapper around node when reactStrictMode is true', async () => {
     configure({reactStrictMode: true})
 
     const WrapperComponent = ({children}) => (
@@ -67,7 +67,7 @@ describe('rerender API', () => {
     </div>
   `)
 
-    rerender(<Greeting message="hey" />)
+    await rerender(<Greeting message="hey" />)
     expect(container.firstChild).toMatchInlineSnapshot(`
     <div
       data-testid=wrapper
@@ -79,7 +79,7 @@ describe('rerender API', () => {
   `)
   })
 
-  test('re-renders twice when reactStrictMode is true', () => {
+  test('re-renders twice when reactStrictMode is true', async () => {
     configure({reactStrictMode: true})
 
     const spy = jest.fn()
@@ -92,7 +92,7 @@ describe('rerender API', () => {
     expect(spy).toHaveBeenCalledTimes(2)
 
     spy.mockClear()
-    rerender(<Component />)
+    await rerender(<Component />)
     expect(spy).toHaveBeenCalledTimes(2)
   })
 })

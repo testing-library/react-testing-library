@@ -31,7 +31,7 @@ describe('render API', () => {
     expect(container.firstChild).toBe(ref.current)
   })
 
-  test('works great with react portals', () => {
+  test('works great with react portals', async () => {
     class MyPortal extends React.Component {
       constructor(...args) {
         super(...args)
@@ -66,7 +66,7 @@ describe('render API', () => {
     expect(screen.getByText('Hello World')).toBeInTheDocument()
     const portalNode = screen.getByTestId('my-portal')
     expect(portalNode).toBeInTheDocument()
-    unmount()
+    await unmount()
     expect(portalNode).not.toBeInTheDocument()
   })
 
@@ -146,7 +146,7 @@ describe('render API', () => {
     expect(spy).toHaveBeenCalledTimes(2)
   })
 
-  test('flushes useEffect cleanup functions sync on unmount()', () => {
+  test('flushes useEffect cleanup functions sync on unmount()', async () => {
     const spy = jest.fn()
     function Component() {
       React.useEffect(() => spy, [])
@@ -155,12 +155,12 @@ describe('render API', () => {
     const {unmount} = await render(<Component />)
     expect(spy).toHaveBeenCalledTimes(0)
 
-    unmount()
+    await unmount()
 
     expect(spy).toHaveBeenCalledTimes(1)
   })
 
-  test('can be called multiple times on the same container', () => {
+  test('can be called multiple times on the same container', async () => {
     const container = document.createElement('div')
 
     const {unmount} = await render(<strong />, {container})
@@ -171,7 +171,7 @@ describe('render API', () => {
 
     expect(container).toContainHTML('<em></em>')
 
-    unmount()
+    await unmount()
 
     expect(container).toBeEmptyDOMElement()
   })

@@ -15,11 +15,11 @@ afterAll(() => {
   treeB.parentNode.removeChild(treeB)
 })
 
-test('baseElement isolates trees from one another', () => {
-  const {getByText: getByTextInA} = render(<div>Jekyll</div>, {
+test('baseElement isolates trees from one another', async () => {
+  const {getByText: getByTextInA} = await render(<div>Jekyll</div>, {
     baseElement: treeA,
   })
-  const {getByText: getByTextInB} = render(<div>Hyde</div>, {
+  const {getByText: getByTextInB} = await render(<div>Hyde</div>, {
     baseElement: treeB,
   })
 

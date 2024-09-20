@@ -53,21 +53,21 @@ describe.each([
     }
 
     test('waitForElementToBeRemoved', async () => {
-      render(<ComponentWithMacrotaskLoader />)
+      await render(<ComponentWithMacrotaskLoader />)
       const loading = () => screen.getByText('Loading...')
       await waitForElementToBeRemoved(loading)
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
     test('waitFor', async () => {
-      render(<ComponentWithMacrotaskLoader />)
+      await render(<ComponentWithMacrotaskLoader />)
       await waitFor(() => screen.getByText(/Loading../))
       await waitFor(() => screen.getByText(/Loaded this message:/))
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
     test('findBy', async () => {
-      render(<ComponentWithMacrotaskLoader />)
+      await render(<ComponentWithMacrotaskLoader />)
       await expect(screen.findByTestId('message')).resolves.toHaveTextContent(
         /Hello World/,
       )
@@ -137,14 +137,14 @@ describe.each([
     }
 
     test('waitForElementToBeRemoved', async () => {
-      render(<ComponentWithMicrotaskLoader />)
+      await render(<ComponentWithMicrotaskLoader />)
       const loading = () => screen.getByText('Loading..')
       await waitForElementToBeRemoved(loading)
       expect(screen.getByTestId('message')).toHaveTextContent(/Hello World/)
     })
 
     test('waitFor', async () => {
-      render(<ComponentWithMicrotaskLoader />)
+      await render(<ComponentWithMicrotaskLoader />)
       await waitFor(() => {
         screen.getByText('Loading..')
       })
@@ -155,7 +155,7 @@ describe.each([
     })
 
     test('findBy', async () => {
-      render(<ComponentWithMicrotaskLoader />)
+      await render(<ComponentWithMicrotaskLoader />)
       await expect(screen.findByTestId('message')).resolves.toHaveTextContent(
         /Hello World/,
       )
