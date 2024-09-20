@@ -10,15 +10,15 @@ if (typeof process === 'undefined' || !process.env?.RTL_SKIP_AUTO_CLEANUP) {
   // ignore teardown() in code coverage because Jest does not support it
   /* istanbul ignore else */
   if (typeof afterEach === 'function') {
-    afterEach(() => {
-      cleanup()
+    afterEach(async () => {
+      await cleanup()
     })
   } else if (typeof teardown === 'function') {
     // Block is guarded by `typeof` check.
     // eslint does not support `typeof` guards.
     // eslint-disable-next-line no-undef
-    teardown(() => {
-      cleanup()
+    teardown(async () => {
+      await cleanup()
     })
   }
 

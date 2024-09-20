@@ -58,11 +58,7 @@ configureDTL({
     }
   },
   eventWrapper: cb => {
-    let result
-    act(() => {
-      result = cb()
-    })
-    return result
+    return act(cb)
   },
 })
 
@@ -89,13 +85,13 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
     : innerElement
 }
 
-function createConcurrentRoot(
+async function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
 ) {
   let root
   if (hydrate) {
-    act(() => {
+    await act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
         strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
@@ -116,45 +112,53 @@ function createConcurrentRoot(
       // Nothing to do since hydration happens when creating the root object.
     },
     render(element) {
-      root.render(element)
+      return act(() => {
+        root.render(element)
+      })
     },
     unmount() {
-      root.unmount()
+      return act(() => {
+        root.unmount()
+      })
     },
   }
 }
 
-function createLegacyRoot(container) {
+async function createLegacyRoot(container) {
   return {
     hydrate(element) {
-      ReactDOM.hydrate(element, container)
+      return act(() => {
+        ReactDOM.hydrate(element, container)
+      })
     },
     render(element) {
-      ReactDOM.render(element, container)
+      return act(() => {
+        ReactDOM.render(element, container)
+      })
     },
     unmount() {
-      ReactDOM.unmountComponentAtNode(container)
+      return act(() => {
+        ReactDOM.unmountComponentAtNode(container)
+      })
     },
   }
 }
 
-function renderRoot(
+async function renderRoot(
   ui,
   {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
 ) {
-  act(() => {
-    if (hydrate) {
-      root.hydrate(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
-        container,
-      )
-    } else {
-      root.render(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
-        container,
-      )
-    }
-  })
+  if (hydrate) {
+    await root.hydrate(
+      strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+      container,
+    )
+  } else {
+    await root.render(
+      strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+      container,
+    )
+  }
 
   return {
     container,
@@ -166,12 +170,10 @@ function renderRoot(
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el, maxLength, options)),
     unmount: () => {
-      act(() => {
-        root.unmount()
-      })
+      return root.unmount()
     },
-    rerender: rerenderUi => {
-      renderRoot(rerenderUi, {
+    rerender: async rerenderUi => {
+      await renderRoot(rerenderUi, {
         container,
         baseElement,
         root,
@@ -196,7 +198,7 @@ function renderRoot(
   }
 }
 
-function render(
+async function render(
   ui,
   {
     container,
@@ -230,7 +232,7 @@ function render(
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {hydrate, ui, wrapper})
+    root = await createRootImpl(container, {hydrate, ui, wrapper})
 
     mountedRootEntries.push({container, root})
     // we'll add it to the mounted containers regardless of whether it's actually
@@ -258,20 +260,22 @@ function render(
   })
 }
 
-function cleanup() {
-  mountedRootEntries.forEach(({root, container}) => {
-    act(() => {
-      root.unmount()
-    })
-    if (container.parentNode === document.body) {
-      document.body.removeChild(container)
-    }
-  })
+async function cleanup() {
+  await Promise.all(
+    mountedRootEntries.map(async ({root, container}) => {
+      await act(() => {
+        root.unmount()
+      })
+      if (container.parentNode === document.body) {
+        document.body.removeChild(container)
+      }
+    }),
+  )
   mountedRootEntries.length = 0
   mountedContainers.clear()
 }
 
-function renderHook(renderCallback, options = {}) {
+async function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
@@ -296,7 +300,7 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  const {rerender: baseRerender, unmount} = render(
+  const {rerender: baseRerender, unmount} = await render(
     <TestComponent renderCallbackProps={initialProps} />,
     renderOptions,
   )
