@@ -5,23 +5,23 @@ beforeEach(() => {
   global.IS_REACT_ACT_ENVIRONMENT = true
 })
 
-test('render calls useEffect immediately', () => {
+test('render calls useEffect immediately', async () => {
   const effectCb = jest.fn()
   function MyUselessComponent() {
     React.useEffect(effectCb)
     return null
   }
-  render(<MyUselessComponent />)
+  await render(<MyUselessComponent />)
   expect(effectCb).toHaveBeenCalledTimes(1)
 })
 
 test('findByTestId returns the element', async () => {
   const ref = React.createRef()
-  render(<div ref={ref} data-testid="foo" />)
+  await render(<div ref={ref} data-testid="foo" />)
   expect(await screen.findByTestId('foo')).toBe(ref.current)
 })
 
-test('fireEvent triggers useEffect calls', () => {
+test('fireEvent triggers useEffect calls', async () => {
   const effectCb = jest.fn()
   function Counter() {
     React.useEffect(effectCb)
@@ -30,32 +30,33 @@ test('fireEvent triggers useEffect calls', () => {
   }
   const {
     container: {firstChild: buttonNode},
-  } = render(<Counter />)
+  } = await render(<Counter />)
 
   effectCb.mockClear()
-  fireEvent.click(buttonNode)
+  // eslint-disable-next-line testing-library/no-await-sync-events --  TODO: Remove lint rule.
+  await fireEvent.click(buttonNode)
   expect(buttonNode).toHaveTextContent('1')
   expect(effectCb).toHaveBeenCalledTimes(1)
 })
 
-test('calls to hydrate will run useEffects', () => {
+test('calls to hydrate will run useEffects', async () => {
   const effectCb = jest.fn()
   function MyUselessComponent() {
     React.useEffect(effectCb)
     return null
   }
-  render(<MyUselessComponent />, {hydrate: true})
+  await render(<MyUselessComponent />, {hydrate: true})
   expect(effectCb).toHaveBeenCalledTimes(1)
 })
 
-test('cleans up IS_REACT_ACT_ENVIRONMENT if its callback throws', () => {
+test('cleans up IS_REACT_ACT_ENVIRONMENT if its callback throws', async () => {
   global.IS_REACT_ACT_ENVIRONMENT = false
 
-  expect(() =>
+  await expect(() =>
     act(() => {
       throw new Error('threw')
     }),
-  ).toThrow('threw')
+  ).rejects.toThrow('threw')
 
   expect(global.IS_REACT_ACT_ENVIRONMENT).toEqual(false)
 })

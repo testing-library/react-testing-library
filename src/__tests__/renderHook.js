@@ -7,8 +7,8 @@ const isReact19 = React.version.startsWith('19.')
 const testGateReact18 = isReact18 ? test : test.skip
 const testGateReact19 = isReact19 ? test : test.skip
 
-test('gives committed result', () => {
-  const {result} = renderHook(() => {
+test('gives committed result', async () => {
+  const {result} = await renderHook(() => {
     const [state, setState] = React.useState(1)
 
     React.useEffect(() => {

@@ -19,7 +19,7 @@ describe('rerender API', () => {
 
   test('rerender will re-render the element', () => {
     const Greeting = props => <div>{props.message}</div>
-    const {container, rerender} = render(<Greeting message="hi" />)
+    const {container, rerender} = await render(<Greeting message="hi" />)
     expect(container.firstChild).toHaveTextContent('hi')
     rerender(<Greeting message="hey" />)
     expect(container.firstChild).toHaveTextContent('hey')
@@ -34,7 +34,7 @@ describe('rerender API', () => {
     const firstValue = 'hello'
     initialInputElement.value = firstValue
 
-    const {rerender} = render(<input value="" onChange={() => null} />, {
+    const {rerender} = await render(<input value="" onChange={() => null} />, {
       container,
       hydrate: true,
     })
@@ -53,7 +53,7 @@ describe('rerender API', () => {
       <div data-testid="wrapper">{children}</div>
     )
     const Greeting = props => <div>{props.message}</div>
-    const {container, rerender} = render(<Greeting message="hi" />, {
+    const {container, rerender} = await render(<Greeting message="hi" />, {
       wrapper: WrapperComponent,
     })
 
@@ -88,7 +88,7 @@ describe('rerender API', () => {
       return null
     }
 
-    const {rerender} = render(<Component />)
+    const {rerender} = await render(<Component />)
     expect(spy).toHaveBeenCalledTimes(2)
 
     spy.mockClear()
