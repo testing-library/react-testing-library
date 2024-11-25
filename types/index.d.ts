@@ -46,6 +46,27 @@ export type RenderResult<
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
+export type RenderAsyncResult<
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+> = {
+  container: Container
+  baseElement: BaseElement
+  debug: (
+    baseElement?:
+      | RendererableContainer
+      | HydrateableContainer
+      | Array<RendererableContainer | HydrateableContainer>
+      | undefined,
+    maxLength?: number | undefined,
+    options?: prettyFormat.OptionsReceived | undefined,
+  ) => void
+  rerender: (ui: React.ReactNode) => Promise<void>
+  unmount: () => Promise<void>
+  asFragment: () => DocumentFragment
+} & {[P in keyof Q]: BoundFunction<Q[P]>}
+
 /** @deprecated */
 export type BaseRenderOptions<
   Q extends Queries,
@@ -152,6 +173,22 @@ export function render(
   options?: Omit<RenderOptions, 'queries'> | undefined,
 ): RenderResult
 
+/**
+ * Render into a container which is appended to document.body. It should be used with cleanup.
+ */
+export function renderAsync<
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+>(
+  ui: React.ReactNode,
+  options: RenderOptions<Q, Container, BaseElement>,
+): Promise<RenderAsyncResult<Q, Container, BaseElement>>
+export function renderAsync(
+  ui: React.ReactNode,
+  options?: Omit<RenderOptions, 'queries'> | undefined,
+): Promise<RenderAsyncResult>
+
 export interface RenderHookResult<Result, Props> {
   /**
    * Triggers a re-render. The props will be passed to your renderHook callback.
@@ -172,6 +209,28 @@ export interface RenderHookResult<Result, Props> {
    * any cleanup your useEffects have.
    */
   unmount: () => void
+}
+
+export interface RenderHookAsyncResult<Result, Props> {
+  /**
+   * Triggers a re-render. The props will be passed to your renderHook callback.
+   */
+  rerender: (props?: Props) => Promise<void>
+  /**
+   * This is a stable reference to the latest value returned by your renderHook
+   * callback
+   */
+  result: {
+    /**
+     * The value returned by your renderHook callback
+     */
+    current: Result
+  }
+  /**
+   * Unmounts the test component. This is useful for when you need to test
+   * any cleanup your useEffects have.
+   */
+  unmount: () => Promise<void>
 }
 
 /** @deprecated */
@@ -243,9 +302,29 @@ export function renderHook<
 ): RenderHookResult<Result, Props>
 
 /**
+ * Allows you to render a hook within a test React component without having to
+ * create that component yourself.
+ */
+export function renderHookAsync<
+  Result,
+  Props,
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+>(
+  render: (initialProps: Props) => Result,
+  options?: RenderHookOptions<Props, Q, Container, BaseElement> | undefined,
+): Promise<RenderHookResult<Result, Props>>
+
+/**
  * Unmounts React trees that were mounted with render.
  */
 export function cleanup(): void
+
+/**
+ * Unmounts React trees that were mounted with render.
+ */
+export function cleanupAsync(): Promise<void>
 
 /**
  * Simply calls React.act(cb)
@@ -256,3 +335,5 @@ export function cleanup(): void
 export const act: 0 extends 1 & typeof reactAct
   ? typeof reactDeprecatedAct
   : typeof reactAct
+
+export function actAsync(scope: () => void | Promise<void>): Promise<void>

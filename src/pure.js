@@ -7,6 +7,7 @@ import {
   configure as configureDTL,
 } from '@testing-library/dom'
 import act, {
+  actAsync,
   getIsReactActEnvironment,
   setReactActEnvironment,
 } from './act-compat'
@@ -196,6 +197,64 @@ function renderRoot(
   }
 }
 
+async function renderRootAsync(
+  ui,
+  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
+) {
+  await actAsync(() => {
+    if (hydrate) {
+      root.hydrate(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
+    } else {
+      root.render(
+        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        container,
+      )
+    }
+  })
+
+  return {
+    container,
+    baseElement,
+    debug: (el = baseElement, maxLength, options) =>
+      Array.isArray(el)
+        ? // eslint-disable-next-line no-console
+          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
+        : // eslint-disable-next-line no-console,
+          console.log(prettyDOM(el, maxLength, options)),
+    unmount: async () => {
+      await actAsync(() => {
+        root.unmount()
+      })
+    },
+    rerender: async rerenderUi => {
+      await renderRootAsync(rerenderUi, {
+        container,
+        baseElement,
+        root,
+        wrapper: WrapperComponent,
+      })
+      // Intentionally do not return anything to avoid unnecessarily complicating the API.
+      // folks can use all the same utilities we return in the first place that are bound to the container
+    },
+    asFragment: () => {
+      /* istanbul ignore else (old jsdom limitation) */
+      if (typeof document.createRange === 'function') {
+        return document
+          .createRange()
+          .createContextualFragment(container.innerHTML)
+      } else {
+        const template = document.createElement('template')
+        template.innerHTML = container.innerHTML
+        return template.content
+      }
+    },
+    ...getQueriesForElement(baseElement, queries),
+  }
+}
+
 function render(
   ui,
   {
@@ -258,6 +317,68 @@ function render(
   })
 }
 
+function renderAsync(
+  ui,
+  {
+    container,
+    baseElement = container,
+    legacyRoot = false,
+    queries,
+    hydrate = false,
+    wrapper,
+  } = {},
+) {
+  if (legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+    )
+    Error.captureStackTrace(error, render)
+    throw error
+  }
+
+  if (!baseElement) {
+    // default to document.body instead of documentElement to avoid output of potentially-large
+    // head elements (such as JSS style blocks) in debug output
+    baseElement = document.body
+  }
+  if (!container) {
+    container = baseElement.appendChild(document.createElement('div'))
+  }
+
+  let root
+  // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
+  if (!mountedContainers.has(container)) {
+    const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
+    root = createRootImpl(container, {hydrate, ui, wrapper})
+
+    mountedRootEntries.push({container, root})
+    // we'll add it to the mounted containers regardless of whether it's actually
+    // added to document.body so the cleanup method works regardless of whether
+    // they're passing us a custom container or not.
+    mountedContainers.add(container)
+  } else {
+    mountedRootEntries.forEach(rootEntry => {
+      // Else is unreachable since `mountedContainers` has the `container`.
+      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+      /* istanbul ignore else */
+      if (rootEntry.container === container) {
+        root = rootEntry.root
+      }
+    })
+  }
+
+  return renderRootAsync(ui, {
+    container,
+    baseElement,
+    queries,
+    hydrate,
+    wrapper,
+    root,
+  })
+}
+
 function cleanup() {
   mountedRootEntries.forEach(({root, container}) => {
     act(() => {
@@ -267,6 +388,21 @@ function cleanup() {
       document.body.removeChild(container)
     }
   })
+  mountedRootEntries.length = 0
+  mountedContainers.clear()
+}
+
+async function cleanupAsync() {
+  for (const {root, container} of mountedRootEntries) {
+    // eslint-disable-next-line no-await-in-loop -- act calls can't overlap
+    await actAsync(() => {
+      root.unmount()
+    })
+    if (container.parentNode === document.body) {
+      document.body.removeChild(container)
+    }
+  }
+
   mountedRootEntries.length = 0
   mountedContainers.clear()
 }
@@ -310,8 +446,60 @@ function renderHook(renderCallback, options = {}) {
   return {result, rerender, unmount}
 }
 
+async function renderHookAsync(renderCallback, options = {}) {
+  const {initialProps, ...renderOptions} = options
+
+  if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+    )
+    Error.captureStackTrace(error, renderHookAsync)
+    throw error
+  }
+
+  const result = React.createRef()
+
+  function TestComponent({renderCallbackProps}) {
+    const pendingResult = renderCallback(renderCallbackProps)
+
+    React.useEffect(() => {
+      result.current = pendingResult
+    })
+
+    return null
+  }
+
+  const {rerender: baseRerender, unmount} = await renderAsync(
+    <TestComponent renderCallbackProps={initialProps} />,
+    renderOptions,
+  )
+
+  function rerender(rerenderCallbackProps) {
+    return baseRerender(
+      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+    )
+  }
+
+  return {result, rerender, unmount}
+}
+
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
+export {
+  render,
+  renderAsync,
+  renderHook,
+  renderHookAsync,
+  cleanup,
+  cleanupAsync,
+  act,
+  actAsync,
+  fireEvent,
+  // TODO: fireEventAsync
+  getConfig,
+  configure,
+}
 
 /* eslint func-name-matching:0 */

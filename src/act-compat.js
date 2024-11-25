@@ -82,8 +82,22 @@ function withGlobalActEnvironment(actImplementation) {
 
 const act = withGlobalActEnvironment(reactAct)
 
+async function actAsync(scope) {
+  const previousActEnvironment = getIsReactActEnvironment()
+  setIsReactActEnvironment(true)
+  try {
+    // React.act isn't async yet so we need to force it.
+    return await reactAct(async () => {
+      scope()
+    })
+  } finally {
+    setIsReactActEnvironment(previousActEnvironment)
+  }
+}
+
 export default act
 export {
+  actAsync,
   setIsReactActEnvironment as setReactActEnvironment,
   getIsReactActEnvironment,
 }
