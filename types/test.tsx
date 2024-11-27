@@ -1,4 +1,5 @@
 import * as React from 'react'
+import * as async from '../async'
 import {render, fireEvent, screen, waitFor, renderHook} from '.'
 import * as pure from './pure'
 
@@ -257,6 +258,18 @@ export function testContainer() {
     hydrate: true,
   })
   renderHook(() => null, {container: document, hydrate: true})
+}
+
+export async function testAsync() {
+  await async.render(<button />).then(() => {})
+  await async.renderHook(() => null).then(() => {})
+  await async.fireEvent.click(document.createElement('div')).then(() => {})
+  await async
+    .fireEvent(document.createElement('div'), new MouseEvent('click'))
+    .then(() => {})
+  await async.cleanup().then(() => {})
+  await async.act(() => {}).then(() => {})
+  await async.act(async () => {}).then(() => {})
 }
 
 /*

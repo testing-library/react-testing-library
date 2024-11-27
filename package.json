@@ -25,9 +25,13 @@
   },
   "files": [
     "dist",
+    "async.js",
+    "async.d.ts",
     "dont-cleanup-after-each.js",
     "pure.js",
     "pure.d.ts",
+    "pure-async.js",
+    "pure-async.d.ts",
     "types/*.d.ts"
   ],
   "keywords": [

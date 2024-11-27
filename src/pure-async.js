@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import * as ReactDOMClient from 'react-dom/client'
@@ -6,12 +7,22 @@ import {
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {
-  getIsReactActEnvironment,
-  setReactActEnvironment,
-} from './act-compat'
+import {getIsReactActEnvironment, setReactActEnvironment} from './act-compat'
 import {fireEvent} from './fire-event'
 import {getConfig, configure} from './config'
+
+async function act(scope) {
+  const previousActEnvironment = getIsReactActEnvironment()
+  setReactActEnvironment(true)
+  try {
+    // React.act isn't async yet so we need to force it.
+    return await React.act(async () => {
+      scope()
+    })
+  } finally {
+    setReactActEnvironment(previousActEnvironment)
+  }
+}
 
 function jestFakeTimersAreEnabled() {
   /* istanbul ignore else */
@@ -57,9 +68,9 @@ configureDTL({
       setReactActEnvironment(previousActEnvironment)
     }
   },
-  eventWrapper: cb => {
+  eventWrapper: async cb => {
     let result
-    act(() => {
+    await act(() => {
       result = cb()
     })
     return result
@@ -89,13 +100,13 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
     : innerElement
 }
 
-function createConcurrentRoot(
+async function createConcurrentRoot(
   container,
   {hydrate, ui, wrapper: WrapperComponent},
 ) {
   let root
   if (hydrate) {
-    act(() => {
+    await act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
         strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
@@ -138,11 +149,11 @@ function createLegacyRoot(container) {
   }
 }
 
-function renderRoot(
+async function renderRootAsync(
   ui,
   {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
 ) {
-  act(() => {
+  await act(() => {
     if (hydrate) {
       root.hydrate(
         strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
@@ -165,13 +176,13 @@ function renderRoot(
           el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el, maxLength, options)),
-    unmount: () => {
-      act(() => {
+    unmount: async () => {
+      await act(() => {
         root.unmount()
       })
     },
-    rerender: rerenderUi => {
-      renderRoot(rerenderUi, {
+    rerender: async rerenderUi => {
+      await renderRootAsync(rerenderUi, {
         container,
         baseElement,
         root,
@@ -196,7 +207,7 @@ function renderRoot(
   }
 }
 
-function render(
+async function render(
   ui,
   {
     container,
@@ -230,7 +241,7 @@ function render(
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {hydrate, ui, wrapper})
+    root = await createRootImpl(container, {hydrate, ui, wrapper})
 
     mountedRootEntries.push({container, root})
     // we'll add it to the mounted containers regardless of whether it's actually
@@ -248,7 +259,7 @@ function render(
     })
   }
 
-  return renderRoot(ui, {
+  return renderRootAsync(ui, {
     container,
     baseElement,
     queries,
@@ -258,20 +269,22 @@ function render(
   })
 }
 
-function cleanup() {
-  mountedRootEntries.forEach(({root, container}) => {
-    act(() => {
+async function cleanup() {
+  for (const {root, container} of mountedRootEntries) {
+    // eslint-disable-next-line no-await-in-loop -- act calls can't overlap
+    await act(() => {
       root.unmount()
     })
     if (container.parentNode === document.body) {
       document.body.removeChild(container)
     }
-  })
+  }
+
   mountedRootEntries.length = 0
   mountedContainers.clear()
 }
 
-function renderHook(renderCallback, options = {}) {
+async function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
@@ -296,7 +309,7 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  const {rerender: baseRerender, unmount} = render(
+  const {rerender: baseRerender, unmount} = await render(
     <TestComponent renderCallbackProps={initialProps} />,
     renderOptions,
   )
