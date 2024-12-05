@@ -128,7 +128,11 @@ export function wrappedRender(
   ui: React.ReactNode,
   options?: pure.RenderOptions,
 ) {
-  const Wrapper = ({children}: {children: React.ReactNode}): JSX.Element => {
+  const Wrapper = ({
+    children,
+  }: {
+    children: React.ReactNode
+  }): React.JSX.Element => {
     return <div>{children}</div>
   }
 
