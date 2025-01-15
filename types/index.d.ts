@@ -120,6 +120,30 @@ export interface RenderOptions<
    */
   legacyRoot?: boolean | undefined
   /**
+   * Only supported in React 19.
+   * Callback called when React catches an error in an Error Boundary.
+   * Called with the error caught by the Error Boundary, and an `errorInfo` object containing the `componentStack`.
+   *
+   * @see {@link https://react.dev/reference/react-dom/client/createRoot#parameters createRoot#options}
+   */
+  onCaughtError?: ReactDOMClient.RootOptions extends {
+    onCaughtError: infer OnCaughtError
+  }
+    ? OnCaughtError
+    : never
+  /**
+   * Callback called when React automatically recovers from errors.
+   * Called with an error React throws, and an `errorInfo` object containing the `componentStack`.
+   * Some recoverable errors may include the original error cause as `error.cause`.
+   *
+   * @see {@link https://react.dev/reference/react-dom/client/createRoot#parameters createRoot#options}
+   */
+  onRecoverableError?: ReactDOMClient.RootOptions['onRecoverableError']
+  /**
+   * Not supported at the moment
+   */
+  onUncaughtError?: never
+  /**
    * Queries to bind. Overrides the default set from DOM Testing Library unless merged.
    *
    *  @see https://testing-library.com/docs/react-testing-library/api/#queries

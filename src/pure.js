@@ -91,7 +91,7 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
 
 function createConcurrentRoot(
   container,
-  {hydrate, ui, wrapper: WrapperComponent},
+  {hydrate, onCaughtError, onRecoverableError, ui, wrapper: WrapperComponent},
 ) {
   let root
   if (hydrate) {
@@ -99,10 +99,14 @@ function createConcurrentRoot(
       root = ReactDOMClient.hydrateRoot(
         container,
         strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        {onCaughtError, onRecoverableError},
       )
     })
   } else {
-    root = ReactDOMClient.createRoot(container)
+    root = ReactDOMClient.createRoot(container, {
+      onCaughtError,
+      onRecoverableError,
+    })
   }
 
   return {
@@ -202,11 +206,19 @@ function render(
     container,
     baseElement = container,
     legacyRoot = false,
+    onCaughtError,
+    onUncaughtError,
+    onRecoverableError,
     queries,
     hydrate = false,
     wrapper,
   } = {},
 ) {
+  if (onUncaughtError !== undefined) {
+    throw new Error(
+      'onUncaughtError is not supported. The `render` call will already throw on uncaught errors.',
+    )
+  }
   if (legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
@@ -230,7 +242,13 @@ function render(
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {hydrate, ui, wrapper})
+    root = createRootImpl(container, {
+      hydrate,
+      onCaughtError,
+      onRecoverableError,
+      ui,
+      wrapper,
+    })
 
     mountedRootEntries.push({container, root})
     // we'll add it to the mounted containers regardless of whether it's actually
