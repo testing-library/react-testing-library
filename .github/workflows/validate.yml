@@ -59,11 +59,10 @@ jobs:
         run: npm run validate
 
       - name: ⬆️ Upload coverage report
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           fail_ci_if_error: true
           flags: ${{ matrix.react }}
-          token: ${{ secrets.CODECOV_TOKEN }}
 
   release:
     permissions:
