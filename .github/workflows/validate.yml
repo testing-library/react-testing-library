@@ -55,6 +55,12 @@ jobs:
       - name: ⚛️ Setup react
         run: npm install react@${{ matrix.react }} react-dom@${{ matrix.react }}
 
+      - name: ⚛️ Setup react types
+        if: ${{ matrix.react != 'canary' && matrix.react != 'experimental' }}
+        run:
+          npm install @types/react@${{ matrix.react }} @types/react-dom@${{
+          matrix.react }}
+
       - name: ▶️ Run validate script
         run: npm run validate
 
