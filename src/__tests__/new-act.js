@@ -1,4 +1,4 @@
-let asyncAct
+let actIfEnabled
 
 jest.mock('react', () => {
   return {
@@ -11,7 +11,7 @@ jest.mock('react', () => {
 
 beforeEach(() => {
   jest.resetModules()
-  asyncAct = require('../act-compat').default
+  actIfEnabled = require('../act-compat').actIfEnabled
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
@@ -21,7 +21,7 @@ afterEach(() => {
 
 test('async act works when it does not exist (older versions of react)', async () => {
   const callback = jest.fn()
-  await asyncAct(async () => {
+  await actIfEnabled(async () => {
     await Promise.resolve()
     await callback()
   })
@@ -31,7 +31,7 @@ test('async act works when it does not exist (older versions of react)', async (
   callback.mockClear()
   console.error.mockClear()
 
-  await asyncAct(async () => {
+  await actIfEnabled(async () => {
     await Promise.resolve()
     await callback()
   })
@@ -41,7 +41,7 @@ test('async act works when it does not exist (older versions of react)', async (
 
 test('async act recovers from errors', async () => {
   try {
-    await asyncAct(async () => {
+    await actIfEnabled(async () => {
       await null
       throw new Error('test error')
     })
@@ -60,7 +60,7 @@ test('async act recovers from errors', async () => {
 
 test('async act recovers from sync errors', async () => {
   try {
-    await asyncAct(() => {
+    await actIfEnabled(() => {
       throw new Error('test error')
     })
   } catch (err) {

@@ -151,18 +151,18 @@ eventTypes.forEach(({type, events, elementType, init}) => {
         1,
       )}`
 
-      it(`triggers ${propName}`, () => {
+      it(`triggers ${propName}`, async () => {
         const ref = React.createRef()
         const spy = jest.fn()
 
-        render(
+        await render(
           React.createElement(elementType, {
             [propName]: spy,
             ref,
           }),
         )
 
-        fireEvent[eventName](ref.current, init)
+        await fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
       })
     })
@@ -179,7 +179,7 @@ eventTypes.forEach(({type, events, elementType, init}) => {
         nativeEventName = 'dblclick'
       }
 
-      it(`triggers native ${nativeEventName}`, () => {
+      it(`triggers native ${nativeEventName}`, async () => {
         const ref = React.createRef()
         const spy = jest.fn()
         const Element = elementType
@@ -195,30 +195,30 @@ eventTypes.forEach(({type, events, elementType, init}) => {
           return <Element ref={ref} />
         }
 
-        render(<NativeEventElement />)
+        await render(<NativeEventElement />)
 
-        fireEvent[eventName](ref.current, init)
+        await fireEvent[eventName](ref.current, init)
         expect(spy).toHaveBeenCalledTimes(1)
       })
     })
   })
 })
 
-test('onChange works', () => {
+test('onChange works', async () => {
   const handleChange = jest.fn()
   const {
     container: {firstChild: input},
-  } = render(<input onChange={handleChange} />)
-  fireEvent.change(input, {target: {value: 'a'}})
+  } = await render(<input onChange={handleChange} />)
+  await fireEvent.change(input, {target: {value: 'a'}})
   expect(handleChange).toHaveBeenCalledTimes(1)
 })
 
-test('calling `fireEvent` directly works too', () => {
+test('calling `fireEvent` directly works too', async () => {
   const handleEvent = jest.fn()
   const {
     container: {firstChild: button},
-  } = render(<button onClick={handleEvent} />)
-  fireEvent(
+  } = await render(<button onClick={handleEvent} />)
+  await fireEvent(
     button,
     new Event('MouseEvent', {
       bubbles: true,
@@ -228,26 +228,26 @@ test('calling `fireEvent` directly works too', () => {
   )
 })
 
-test('blur/focus bubbles in react', () => {
+test('blur/focus bubbles in react', async () => {
   const handleBlur = jest.fn()
   const handleBubbledBlur = jest.fn()
   const handleFocus = jest.fn()
   const handleBubbledFocus = jest.fn()
-  const {container} = render(
+  const {container} = await render(
     <div onBlur={handleBubbledBlur} onFocus={handleBubbledFocus}>
       <button onBlur={handleBlur} onFocus={handleFocus} />
     </div>,
   )
   const button = container.firstChild.firstChild
 
-  fireEvent.focus(button)
+  await fireEvent.focus(button)
 
   expect(handleBlur).toHaveBeenCalledTimes(0)
   expect(handleBubbledBlur).toHaveBeenCalledTimes(0)
   expect(handleFocus).toHaveBeenCalledTimes(1)
   expect(handleBubbledFocus).toHaveBeenCalledTimes(1)
 
-  fireEvent.blur(button)
+  await fireEvent.blur(button)
 
   expect(handleBlur).toHaveBeenCalledTimes(1)
   expect(handleBubbledBlur).toHaveBeenCalledTimes(1)
