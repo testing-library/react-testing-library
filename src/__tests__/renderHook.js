@@ -1,4 +1,6 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
+
 import {renderHook} from '../pure'
 
 const isReact18 = React.version.startsWith('18.')
@@ -135,4 +137,25 @@ test('throws error when both initialProps and initialArgs are used', () => {
   expect(() =>
     renderHook(useTestHook, {initialProps: 1, initialArgs: [2, 3]}),
   ).toThrow('Cannot use both initialProps and initialArgs. Choose one.')
+})
+
+test('throws an error when legacyRoot is used in unsupported React versions', () => {
+  const useTestHook = () => 'test'
+
+  // Save the original ReactDOM.render
+  const {render: originalRender} = ReactDOM
+
+  // Mock by direct assignment
+  ReactDOM.render = undefined
+
+  expect(() => {
+    renderHook(useTestHook, {legacyRoot: true})
+  }).toThrowError(
+    '`legacyRoot: true` is not supported in this version of React. ' +
+      'If your app runs React 19 or later, you should remove this flag. ' +
+      'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+  )
+
+  // Restore the original
+  ReactDOM.render = originalRender
 })
