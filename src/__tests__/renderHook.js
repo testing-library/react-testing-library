@@ -142,10 +142,8 @@ test('throws error when both initialProps and initialArgs are used', () => {
 test('throws an error when legacyRoot is used in unsupported React versions', () => {
   const useTestHook = () => 'test'
 
-  // Save the original ReactDOM.render
   const {render: originalRender} = ReactDOM
 
-  // Mock by direct assignment
   ReactDOM.render = undefined
 
   expect(() => {
@@ -156,6 +154,5 @@ test('throws an error when legacyRoot is used in unsupported React versions', ()
       'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
   )
 
-  // Restore the original
   ReactDOM.render = originalRender
 })
