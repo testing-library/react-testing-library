@@ -290,7 +290,11 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, ...renderOptions} = options
+  const {initialProps, initialArgs, ...renderOptions} = options
+
+  if (initialProps !== undefined && initialArgs !== undefined) {
+    throw new Error('Cannot use both initialProps and initialArgs. Choose one.')
+  }
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
@@ -303,9 +307,18 @@ function renderHook(renderCallback, options = {}) {
   }
 
   const result = React.createRef()
+  const isUsingArgs = initialArgs !== undefined
 
   function TestComponent({renderCallbackProps}) {
-    const pendingResult = renderCallback(renderCallbackProps)
+    // Handle both cases: when renderCallbackProps is an array to spread,
+    // and when it's a single value not to spread
+    const pendingResult = isUsingArgs
+      ? renderCallback(
+          ...(Array.isArray(renderCallbackProps)
+            ? renderCallbackProps
+            : [renderCallbackProps]),
+        )
+      : renderCallback(renderCallbackProps)
 
     React.useEffect(() => {
       result.current = pendingResult
@@ -315,13 +328,17 @@ function renderHook(renderCallback, options = {}) {
   }
 
   const {rerender: baseRerender, unmount} = render(
-    <TestComponent renderCallbackProps={initialProps} />,
+    <TestComponent
+      renderCallbackProps={isUsingArgs ? initialArgs : initialProps}
+    />,
     renderOptions,
   )
 
-  function rerender(rerenderCallbackProps) {
+  function rerender(...newArgs) {
     return baseRerender(
-      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+      <TestComponent
+        renderCallbackProps={isUsingArgs ? newArgs : newArgs[0]}
+      />,
     )
   }
 

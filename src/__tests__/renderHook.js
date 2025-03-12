@@ -111,3 +111,28 @@ testGateReact19('legacyRoot throws', () => {
     `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
   )
 })
+
+test('supports initialArgs for multi-parameter hooks', () => {
+  const useTestHook = (a, b, c) => a + b + c
+  const {result} = renderHook(useTestHook, {initialArgs: [1, 2, 3]})
+
+  expect(result.current).toBe(6)
+})
+
+test('rerender supports multiple parameters', () => {
+  const useTestHook = (a, b) => a * b
+  const {result, rerender} = renderHook(useTestHook, {initialArgs: [2, 3]})
+
+  expect(result.current).toBe(6)
+
+  rerender(4, 5)
+  expect(result.current).toBe(20)
+})
+
+test('throws error when both initialProps and initialArgs are used', () => {
+  const useTestHook = (a, b) => a + b
+
+  expect(() =>
+    renderHook(useTestHook, {initialProps: 1, initialArgs: [2, 3]}),
+  ).toThrow('Cannot use both initialProps and initialArgs. Choose one.')
+})
