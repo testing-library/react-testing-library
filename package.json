@@ -4,7 +4,7 @@
   "description": "Simple and complete React DOM testing utilities that encourage good testing practices.",
   "main": "dist/index.js",
   "types": "types/index.d.ts",
-  "module": "dist/@testing-library/react.esm.js",
+  "module": "dist/@testing-library/react.esm.mjs",
   "engines": {
     "node": ">=18"
   },
@@ -55,7 +55,7 @@
     "chalk": "^4.1.2",
     "dotenv-cli": "^4.0.0",
     "jest-diff": "^29.7.0",
-    "kcd-scripts": "^13.0.0",
+    "kcd-scripts": "^16.0.0",
     "npm-run-all": "^4.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
