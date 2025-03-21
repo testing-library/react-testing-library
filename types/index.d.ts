@@ -249,6 +249,7 @@ export interface RenderHookOptions<
    * to use the rerender utility to change the values passed to your hook.
    */
   initialProps?: Props | undefined
+  initialArgs?: Props | undefined
 }
 
 /**
@@ -262,7 +263,7 @@ export function renderHook<
   Container extends RendererableContainer | HydrateableContainer = HTMLElement,
   BaseElement extends RendererableContainer | HydrateableContainer = Container,
 >(
-  render: (initialProps: Props) => Result,
+  render: (initialProps: Props, initialArgs: Props) => Result,
   options?: RenderHookOptions<Props, Q, Container, BaseElement> | undefined,
 ): RenderHookResult<Result, Props>
 
