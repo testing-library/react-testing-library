@@ -262,4 +262,38 @@ describe('render API', () => {
       `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
     )
   })
+
+  test('reactStrictMode in renderOptions has precedence over config when rendering', () => {
+    const wrapperComponentMountEffect = jest.fn()
+    function WrapperComponent({children}) {
+      React.useEffect(() => {
+        wrapperComponentMountEffect()
+      })
+
+      return children
+    }
+    const ui = <div />
+    configure({reactStrictMode: false})
+
+    render(ui, {wrapper: WrapperComponent, reactStrictMode: true})
+
+    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2);
+  })
+
+  test('reactStrictMode in config is used when renderOptions does not specify reactStrictMode', () => {
+    const wrapperComponentMountEffect = jest.fn()
+    function WrapperComponent({children}) {
+      React.useEffect(() => {
+        wrapperComponentMountEffect()
+      })
+
+      return children
+    }
+    const ui = <div />
+    configure({reactStrictMode: true})
+
+    render(ui, {wrapper: WrapperComponent})
+
+    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2);
+  })
 })

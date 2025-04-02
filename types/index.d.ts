@@ -156,6 +156,11 @@ export interface RenderOptions<
    *  @see https://testing-library.com/docs/react-testing-library/api/#wrapper
    */
   wrapper?: React.JSXElementConstructor<{children: React.ReactNode}> | undefined
+  /**
+   * When enabled, <StrictMode> is rendered around the inner element.
+   * If defined, overrides the value of `reactStrictMode` set in `configure`.
+   */
+  reactStrictMode?: boolean
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
