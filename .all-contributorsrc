@@ -1371,6 +1371,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "bernardobelchior",
+      "name": "Bernardo Belchior",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12778398?v=4",
+      "profile": "http://belchior.me",
+      "contributions": [
+        "code",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
