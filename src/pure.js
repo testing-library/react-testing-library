@@ -77,8 +77,8 @@ const mountedContainers = new Set()
  */
 const mountedRootEntries = []
 
-function strictModeIfNeeded(innerElement) {
-  return getConfig().reactStrictMode
+function strictModeIfNeeded(innerElement, reactStrictMode) {
+  return reactStrictMode ?? getConfig().reactStrictMode
     ? React.createElement(React.StrictMode, null, innerElement)
     : innerElement
 }
@@ -91,14 +91,24 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
 
 function createConcurrentRoot(
   container,
-  {hydrate, onCaughtError, onRecoverableError, ui, wrapper: WrapperComponent},
+  {
+    hydrate,
+    onCaughtError,
+    onRecoverableError,
+    ui,
+    wrapper: WrapperComponent,
+    reactStrictMode,
+  },
 ) {
   let root
   if (hydrate) {
     act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         {onCaughtError, onRecoverableError},
       )
     })
@@ -144,17 +154,31 @@ function createLegacyRoot(container) {
 
 function renderRoot(
   ui,
-  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent},
+  {
+    baseElement,
+    container,
+    hydrate,
+    queries,
+    root,
+    wrapper: WrapperComponent,
+    reactStrictMode,
+  },
 ) {
   act(() => {
     if (hydrate) {
       root.hydrate(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         container,
       )
     } else {
       root.render(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent)),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         container,
       )
     }
@@ -180,6 +204,7 @@ function renderRoot(
         baseElement,
         root,
         wrapper: WrapperComponent,
+        reactStrictMode,
       })
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
@@ -212,6 +237,7 @@ function render(
     queries,
     hydrate = false,
     wrapper,
+    reactStrictMode,
   } = {},
 ) {
   if (onUncaughtError !== undefined) {
@@ -248,6 +274,7 @@ function render(
       onRecoverableError,
       ui,
       wrapper,
+      reactStrictMode,
     })
 
     mountedRootEntries.push({container, root})
@@ -273,6 +300,7 @@ function render(
     hydrate,
     wrapper,
     root,
+    reactStrictMode,
   })
 }
 
