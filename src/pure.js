@@ -91,14 +91,24 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
 
 function createConcurrentRoot(
   container,
-  {hydrate, onCaughtError, onRecoverableError, ui, wrapper: WrapperComponent, reactStrictMode},
+  {
+    hydrate,
+    onCaughtError,
+    onRecoverableError,
+    ui,
+    wrapper: WrapperComponent,
+    reactStrictMode,
+  },
 ) {
   let root
   if (hydrate) {
     act(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent), reactStrictMode),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         {onCaughtError, onRecoverableError},
       )
     })
@@ -144,17 +154,31 @@ function createLegacyRoot(container) {
 
 function renderRoot(
   ui,
-  {baseElement, container, hydrate, queries, root, wrapper: WrapperComponent, reactStrictMode},
+  {
+    baseElement,
+    container,
+    hydrate,
+    queries,
+    root,
+    wrapper: WrapperComponent,
+    reactStrictMode,
+  },
 ) {
   act(() => {
     if (hydrate) {
       root.hydrate(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent), reactStrictMode),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         container,
       )
     } else {
       root.render(
-        strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent), reactStrictMode),
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
         container,
       )
     }

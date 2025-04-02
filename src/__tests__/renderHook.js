@@ -1,5 +1,5 @@
-import React from 'react'
-import {renderHook} from '../pure'
+import React, {useEffect} from 'react'
+import {configure, renderHook} from '../pure'
 
 const isReact18 = React.version.startsWith('18.')
 const isReact19 = React.version.startsWith('19.')
@@ -110,4 +110,32 @@ testGateReact19('legacyRoot throws', () => {
   }).toThrowErrorMatchingInlineSnapshot(
     `\`legacyRoot: true\` is not supported in this version of React. If your app runs React 19 or later, you should remove this flag. If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.`,
   )
+})
+
+describe('reactStrictMode', () => {
+  let originalConfig
+  beforeEach(() => {
+    // Grab the existing configuration so we can restore
+    // it at the end of the test
+    configure(existingConfig => {
+      originalConfig = existingConfig
+      // Don't change the existing config
+      return {}
+    })
+  })
+
+  afterEach(() => {
+    configure(originalConfig)
+  })
+
+  test('reactStrictMode in renderOptions has precedence over config when rendering', () => {
+    const hookMountEffect = jest.fn()
+    configure({reactStrictMode: false})
+
+    renderHook(() => useEffect(() => hookMountEffect()), {
+      reactStrictMode: true,
+    })
+
+    expect(hookMountEffect).toHaveBeenCalledTimes(2)
+  })
 })

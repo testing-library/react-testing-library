@@ -277,7 +277,7 @@ describe('render API', () => {
 
     render(ui, {wrapper: WrapperComponent, reactStrictMode: true})
 
-    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2);
+    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2)
   })
 
   test('reactStrictMode in config is used when renderOptions does not specify reactStrictMode', () => {
@@ -294,6 +294,6 @@ describe('render API', () => {
 
     render(ui, {wrapper: WrapperComponent})
 
-    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2);
+    expect(wrapperComponentMountEffect).toHaveBeenCalledTimes(2)
   })
 })
