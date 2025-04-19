@@ -253,7 +253,8 @@ export interface RenderHookOptions<
    * The argument passed to the renderHook callback. Can be useful if you plan
    * to use the rerender utility to change the values passed to your hook.
    */
-  initialProps?: Props | undefined
+  initialProps?: Props | undefined,
+  displayName?: React.FunctionComponent['displayName'],
 }
 
 /**

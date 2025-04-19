@@ -318,7 +318,7 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, ...renderOptions} = options
+  const {initialProps, displayName, ...renderOptions} = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
@@ -340,6 +340,10 @@ function renderHook(renderCallback, options = {}) {
     })
 
     return null
+  }
+
+  if (displayName !== undefined) {
+    TestComponent.displayName = displayName;
   }
 
   const {rerender: baseRerender, unmount} = render(
