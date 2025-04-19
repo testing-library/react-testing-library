@@ -53,10 +53,10 @@ test('allows rerendering', () => {
 test('allows setting a displayName', () => {
   let capturedElement = null
 
-  const spyWrapper = ({ children }) => {
+  const spyWrapper = ({children}) => {
     // Capture the hook element React creates
-    capturedElement = React.Children.only(children);
-    return <>{children}</>;
+    capturedElement = React.Children.only(children)
+    return <>{children}</>
   }
 
   const useMyLocalHook = jest.fn()
@@ -67,9 +67,9 @@ test('allows setting a displayName', () => {
   })
 
   expect(useMyLocalHook).toHaveBeenCalledTimes(1)
-  
+
   expect(capturedElement?.type?.displayName).toBe('CustomHookDisplayName')
-});
+})
 
 test('allows wrapper components', async () => {
   const Context = React.createContext('default')

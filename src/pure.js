@@ -343,7 +343,7 @@ function renderHook(renderCallback, options = {}) {
   }
 
   if (displayName !== undefined) {
-    TestComponent.displayName = displayName;
+    TestComponent.displayName = displayName
   }
 
   const {rerender: baseRerender, unmount} = render(
