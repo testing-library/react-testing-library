@@ -127,7 +127,7 @@ export interface RenderOptions<
    * @see {@link https://react.dev/reference/react-dom/client/createRoot#parameters createRoot#options}
    */
   onCaughtError?: ReactDOMClient.RootOptions extends {
-    onCaughtError: infer OnCaughtError
+    onCaughtError?: infer OnCaughtError
   }
     ? OnCaughtError
     : never
