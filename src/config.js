@@ -17,7 +17,7 @@ function jestFakeTimersAreEnabled() {
   return false
 }
 
-function maybeAdvanceJestTimers(delay = 0) {
+function maybeAdvanceJestTimers(delay) {
   if (jestFakeTimersAreEnabled()) {
     jest.advanceTimersByTime(delay)
   }
