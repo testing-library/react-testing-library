@@ -318,7 +318,7 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, ...renderOptions} = options
+  const {initialProps, initialArgs, ...renderOptions} = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
@@ -330,10 +330,23 @@ function renderHook(renderCallback, options = {}) {
     throw error
   }
 
+  if (initialProps && initialArgs) {
+    throw new Error(
+      'Options `initialProps` and `initialArgs` cannot be used together.',
+    )
+  }
+
+  if (initialArgs !== undefined && !Array.isArray(initialArgs)) {
+    throw new Error('Option `initialArgs` must be an array.')
+  }
+
+  // convert `initialProps` to an empty or single-element array
+  const initial = initialArgs || (initialProps ? [initialProps] : [])
+
   const result = React.createRef()
 
-  function TestComponent({renderCallbackProps}) {
-    const pendingResult = renderCallback(renderCallbackProps)
+  function TestComponent({renderCallbackArgs}) {
+    const pendingResult = renderCallback(...renderCallbackArgs)
 
     React.useEffect(() => {
       result.current = pendingResult
@@ -343,13 +356,13 @@ function renderHook(renderCallback, options = {}) {
   }
 
   const {rerender: baseRerender, unmount} = render(
-    <TestComponent renderCallbackProps={initialProps} />,
+    <TestComponent renderCallbackArgs={initial} />,
     renderOptions,
   )
 
-  function rerender(rerenderCallbackProps) {
+  function rerender(...rerenderCallbackArgs) {
     return baseRerender(
-      <TestComponent renderCallbackProps={rerenderCallbackProps} />,
+      <TestComponent renderCallbackArgs={rerenderCallbackArgs} />,
     )
   }
 

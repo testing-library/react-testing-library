@@ -50,6 +50,26 @@ test('allows rerendering', () => {
   expect(result.current).toEqual(['right', expect.any(Function)])
 })
 
+test('allows rerendering with multiple arguments', () => {
+  const useTest = (arg1, arg2, arg3) => arg1 + arg2 + arg3
+  const {result, rerender} = renderHook(useTest, {initialArgs: [2, 3, 4]})
+  expect(result.current).toBe(9)
+  rerender(3, 4, -1)
+  expect(result.current).toBe(6)
+})
+
+test('throws on invalid options', () => {
+  const useTest = (arg1, arg2) => arg1 + arg2
+  expect(() => {
+    renderHook(useTest, {initialProps: {}, initialArgs: []})
+  }).toThrow(
+    'Options `initialProps` and `initialArgs` cannot be used together.',
+  )
+  expect(() => {
+    renderHook(useTest, {initialArgs: {}})
+  }).toThrow('Option `initialArgs` must be an array.')
+})
+
 test('allows wrapper components', async () => {
   const Context = React.createContext('default')
   function Wrapper({children}) {

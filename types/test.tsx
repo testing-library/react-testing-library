@@ -237,6 +237,16 @@ export function testRenderHookProps() {
   unmount()
 }
 
+export function testRenderHookArgs() {
+  const useTest = (s: string, n: number): string => s.repeat(n)
+  const {result, rerender, unmount} = renderHook(useTest, {
+    initialArgs: ['a', 2],
+  })
+  expectType<string, typeof result.current>(result.current)
+  rerender('b', 3)
+  unmount()
+}
+
 export function testContainer() {
   render('a', {container: document.createElement('div')})
   render('a', {container: document.createDocumentFragment()})
