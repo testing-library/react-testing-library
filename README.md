@@ -165,7 +165,9 @@ afterAll(() => {
 ## Examples
 
 ### Basic Example
+
 > **Tip:** This example shows how to use `fireEvent` to interact with elements.
+
 ```jsx
 // hidden-message.js
 import * as React from 'react'
