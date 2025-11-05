@@ -32,12 +32,13 @@ describe('rerender API', () => {
     document.body.appendChild(container)
 
     const firstValue = 'hello'
-    initialInputElement.value = firstValue
-
-    const {rerender} = render(<input value="" onChange={() => null} />, {
-      container,
-      hydrate: true,
-    })
+    const {rerender} = render(
+      <input value={firstValue} onChange={() => null} />,
+      {
+        container,
+        hydrate: true,
+      },
+    )
 
     expect(initialInputElement).toHaveValue(firstValue)
 
