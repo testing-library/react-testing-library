@@ -52,7 +52,7 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "chalk": "^4.1.2",
+    "colorette": "^2.0.20",
     "dotenv-cli": "^4.0.0",
     "jest-diff": "^29.7.0",
     "kcd-scripts": "^13.0.0",
