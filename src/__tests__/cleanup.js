@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {render, cleanup} from '../'
 
-test('cleans up the document', () => {
+test('cleans up the document', async () => {
   const spy = jest.fn()
   const divId = 'my-div'
 
@@ -16,18 +16,18 @@ test('cleans up the document', () => {
     }
   }
 
-  render(<Test />)
-  cleanup()
+  await render(<Test />)
+  await cleanup()
   expect(document.body).toBeEmptyDOMElement()
   expect(spy).toHaveBeenCalledTimes(1)
 })
 
-test('cleanup does not error when an element is not a child', () => {
-  render(<div />, {container: document.createElement('div')})
-  cleanup()
+test('cleanup does not error when an element is not a child', async () => {
+  await render(<div />, {container: document.createElement('div')})
+  await cleanup()
 })
 
-test('cleanup runs effect cleanup functions', () => {
+test('cleanup runs effect cleanup functions', async () => {
   const spy = jest.fn()
 
   const Test = () => {
@@ -36,9 +36,21 @@ test('cleanup runs effect cleanup functions', () => {
     return null
   }
 
-  render(<Test />)
-  cleanup()
+  await render(<Test />)
+  await cleanup()
   expect(spy).toHaveBeenCalledTimes(1)
+})
+
+test('cleanup cleans up every root and disconnects containers', async () => {
+  const {container: container1} = await render(<div />)
+  const {container: container2} = await render(<span />)
+
+  await cleanup()
+
+  expect(container1).toBeEmptyDOMElement()
+  expect(container1.isConnected).toBe(false)
+  expect(container2).toBeEmptyDOMElement()
+  expect(container2.isConnected).toBe(false)
 })
 
 describe('fake timers and missing act warnings', () => {
@@ -55,7 +67,7 @@ describe('fake timers and missing act warnings', () => {
     jest.useRealTimers()
   })
 
-  test('cleanup does not flush microtasks', () => {
+  test('cleanup does not flush microtasks', async () => {
     const microTaskSpy = jest.fn()
     function Test() {
       const counter = 1
@@ -72,22 +84,27 @@ describe('fake timers and missing act warnings', () => {
 
         return () => {
           cancelled = true
+          Promise.resolve().then(() => {
+            microTaskSpy()
+          })
         }
       }, [counter])
 
       return null
     }
-    render(<Test />)
+    await render(<Test />)
+    expect(microTaskSpy).toHaveBeenCalledTimes(1)
 
-    cleanup()
-
-    expect(microTaskSpy).toHaveBeenCalledTimes(0)
+    const cleanedUp = cleanup()
+    expect(microTaskSpy).toHaveBeenCalledTimes(1)
+    await cleanedUp
+    expect(microTaskSpy).toHaveBeenCalledTimes(2)
     // console.error is mocked
     // eslint-disable-next-line no-console
     expect(console.error).toHaveBeenCalledTimes(0)
   })
 
-  test('cleanup does not swallow missing act warnings', () => {
+  test('cleanup does not swallow missing act warnings', async () => {
     const deferredStateUpdateSpy = jest.fn()
     function Test() {
       const counter = 1
@@ -109,10 +126,10 @@ describe('fake timers and missing act warnings', () => {
 
       return null
     }
-    render(<Test />)
+    await render(<Test />)
 
     jest.runAllTimers()
-    cleanup()
+    await cleanup()
 
     expect(deferredStateUpdateSpy).toHaveBeenCalledTimes(1)
     // console.error is mocked

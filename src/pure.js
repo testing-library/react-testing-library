@@ -1,68 +1,52 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import * as DeprecatedReactTestUtils from 'react-dom/test-utils'
 import * as ReactDOMClient from 'react-dom/client'
 import {
   getQueriesForElement,
   prettyDOM,
   configure as configureDTL,
 } from '@testing-library/dom'
-import act, {
+import {
+  actIfEnabled,
   getIsReactActEnvironment,
-  setReactActEnvironment,
+  setIsReactActEnvironment,
 } from './act-compat'
 import {fireEvent} from './fire-event'
 import {getConfig, configure} from './config'
 
-function jestFakeTimersAreEnabled() {
-  /* istanbul ignore else */
-  if (typeof jest !== 'undefined' && jest !== null) {
-    return (
-      // legacy timers
-      setTimeout._isMockFunction === true || // modern timers
-      // eslint-disable-next-line prefer-object-has-own -- No Object.hasOwn in all target environments we support.
-      Object.prototype.hasOwnProperty.call(setTimeout, 'clock')
-    )
-  } // istanbul ignore next
+function enqueueTask(task) {
+  const channel = new MessageChannel()
+  channel.port1.onmessage = () => {
+    channel.port1.close()
+    task()
+  }
+  channel.port2.postMessage(undefined)
+}
 
-  return false
+async function waitForMicrotasks() {
+  return new Promise(resolve => {
+    enqueueTask(() => resolve())
+  })
 }
 
 configureDTL({
-  unstable_advanceTimersWrapper: cb => {
-    return act(cb)
-  },
-  // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
-  // But that's not necessarily how `asyncWrapper` is used since it's a public method.
-  // Let's just hope nobody else is using it.
-  asyncWrapper: async cb => {
-    const previousActEnvironment = getIsReactActEnvironment()
-    setReactActEnvironment(false)
-    try {
-      const result = await cb()
-      // Drain microtask queue.
-      // Otherwise we'll restore the previous act() environment, before we resolve the `waitFor` call.
-      // The caller would have no chance to wrap the in-flight Promises in `act()`
-      await new Promise(resolve => {
-        setTimeout(() => {
-          resolve()
-        }, 0)
-
-        if (jestFakeTimersAreEnabled()) {
-          jest.advanceTimersByTime(0)
-        }
-      })
-
-      return result
-    } finally {
-      setReactActEnvironment(previousActEnvironment)
-    }
-  },
-  eventWrapper: cb => {
-    let result
-    act(() => {
-      result = cb()
-    })
+  unstable_advanceTimersWrapper: async scope => {
+    const result = await scope()
+    await waitForMicrotasks()
     return result
+  },
+  eventWrapper: actIfEnabled,
+  asyncWrapper: actIfEnabled,
+  // Run `waitFor` without IS_REACT_ACT_ENVIRONMENT
+  waitForWrapper: async cb => {
+    const previousActEnvironment = getIsReactActEnvironment()
+    setIsReactActEnvironment(false)
+    try {
+      return await cb()
+    } finally {
+      setIsReactActEnvironment(previousActEnvironment)
+    }
   },
 })
 
@@ -89,7 +73,7 @@ function wrapUiIfNeeded(innerElement, wrapperComponent) {
     : innerElement
 }
 
-function createConcurrentRoot(
+async function createConcurrentRoot(
   container,
   {
     hydrate,
@@ -102,7 +86,7 @@ function createConcurrentRoot(
 ) {
   let root
   if (hydrate) {
-    act(() => {
+    await actIfEnabled(() => {
       root = ReactDOMClient.hydrateRoot(
         container,
         strictModeIfNeeded(
@@ -130,29 +114,39 @@ function createConcurrentRoot(
       // Nothing to do since hydration happens when creating the root object.
     },
     render(element) {
-      root.render(element)
+      return actIfEnabled(() => {
+        root.render(element)
+      })
     },
     unmount() {
-      root.unmount()
+      return actIfEnabled(() => {
+        root.unmount()
+      })
     },
   }
 }
 
-function createLegacyRoot(container) {
+async function createLegacyRoot(container) {
   return {
     hydrate(element) {
-      ReactDOM.hydrate(element, container)
+      return actIfEnabled(() => {
+        ReactDOM.hydrate(element, container)
+      })
     },
     render(element) {
-      ReactDOM.render(element, container)
+      return actIfEnabled(() => {
+        ReactDOM.render(element, container)
+      })
     },
     unmount() {
-      ReactDOM.unmountComponentAtNode(container)
+      return actIfEnabled(() => {
+        ReactDOM.unmountComponentAtNode(container)
+      })
     },
   }
 }
 
-function renderRoot(
+async function renderRoot(
   ui,
   {
     baseElement,
@@ -164,25 +158,17 @@ function renderRoot(
     reactStrictMode,
   },
 ) {
-  act(() => {
-    if (hydrate) {
-      root.hydrate(
-        strictModeIfNeeded(
-          wrapUiIfNeeded(ui, WrapperComponent),
-          reactStrictMode,
-        ),
-        container,
-      )
-    } else {
-      root.render(
-        strictModeIfNeeded(
-          wrapUiIfNeeded(ui, WrapperComponent),
-          reactStrictMode,
-        ),
-        container,
-      )
-    }
-  })
+  if (hydrate) {
+    await root.hydrate(
+      strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent), reactStrictMode),
+      container,
+    )
+  } else {
+    await root.render(
+      strictModeIfNeeded(wrapUiIfNeeded(ui, WrapperComponent), reactStrictMode),
+      container,
+    )
+  }
 
   return {
     container,
@@ -194,12 +180,10 @@ function renderRoot(
         : // eslint-disable-next-line no-console,
           console.log(prettyDOM(el, maxLength, options)),
     unmount: () => {
-      act(() => {
-        root.unmount()
-      })
+      return root.unmount()
     },
-    rerender: rerenderUi => {
-      renderRoot(rerenderUi, {
+    rerender: async rerenderUi => {
+      await renderRoot(rerenderUi, {
         container,
         baseElement,
         root,
@@ -225,7 +209,7 @@ function renderRoot(
   }
 }
 
-function render(
+async function render(
   ui,
   {
     container,
@@ -268,7 +252,7 @@ function render(
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
-    root = createRootImpl(container, {
+    root = await createRootImpl(container, {
       hydrate,
       onCaughtError,
       onRecoverableError,
@@ -304,20 +288,20 @@ function render(
   })
 }
 
-function cleanup() {
-  mountedRootEntries.forEach(({root, container}) => {
-    act(() => {
-      root.unmount()
-    })
+async function cleanup() {
+  for (const {container, root} of mountedRootEntries) {
+    // eslint-disable-next-line no-await-in-loop -- Overlapping act calls are not allowed.
+    await root.unmount()
     if (container.parentNode === document.body) {
       document.body.removeChild(container)
     }
-  })
+  }
+
   mountedRootEntries.length = 0
   mountedContainers.clear()
 }
 
-function renderHook(renderCallback, options = {}) {
+async function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
@@ -342,7 +326,7 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  const {rerender: baseRerender, unmount} = render(
+  const {rerender: baseRerender, unmount} = await render(
     <TestComponent renderCallbackProps={initialProps} />,
     renderOptions,
   )
@@ -354,6 +338,18 @@ function renderHook(renderCallback, options = {}) {
   }
 
   return {result, rerender, unmount}
+}
+
+const reactAct =
+  typeof React.act === 'function' ? React.act : DeprecatedReactTestUtils.act
+
+function act(scope) {
+  // scope passed to reactAct needs to be `async` until React.act treats every scope as async.
+  // We already enforce `await act()` (regardless of scope) to flush microtasks
+  // inside the act scope.
+  return reactAct(async () => {
+    return scope()
+  })
 }
 
 // just re-export everything from dom-testing-library

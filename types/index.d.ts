@@ -6,12 +6,9 @@ import {
   BoundFunction,
   prettyFormat,
   Config as ConfigDTL,
+  FireFunction as DTLFireFunction,
+  FireObject as DTLFireObject,
 } from '@testing-library/dom'
-import {act as reactDeprecatedAct} from 'react-dom/test-utils'
-//@ts-ignore
-import {act as reactAct} from 'react'
-
-export * from '@testing-library/dom'
 
 export interface Config extends ConfigDTL {
   reactStrictMode: boolean
@@ -24,6 +21,20 @@ export interface ConfigFn {
 export function configure(configDelta: ConfigFn | Partial<Config>): void
 
 export function getConfig(): Config
+
+export * from '@testing-library/dom'
+
+export type FireFunction = (
+  ...parameters: Parameters<DTLFireFunction>
+) => Promise<ReturnType<DTLFireFunction>>
+
+export type FireObject = {
+  [K in keyof DTLFireObject]: (
+    ...parameters: Parameters<DTLFireObject[K]>
+  ) => Promise<ReturnType<DTLFireObject[K]>>
+}
+
+export const fireEvent: FireFunction & FireObject
 
 export type RenderResult<
   Q extends Queries = typeof queries,
@@ -41,8 +52,8 @@ export type RenderResult<
     maxLength?: number | undefined,
     options?: prettyFormat.OptionsReceived | undefined,
   ) => void
-  rerender: (ui: React.ReactNode) => void
-  unmount: () => void
+  rerender: (ui: React.ReactNode) => Promise<void>
+  unmount: () => Promise<void>
   asFragment: () => DocumentFragment
 } & {[P in keyof Q]: BoundFunction<Q[P]>}
 
@@ -175,17 +186,17 @@ export function render<
 >(
   ui: React.ReactNode,
   options: RenderOptions<Q, Container, BaseElement>,
-): RenderResult<Q, Container, BaseElement>
+): Promise<RenderResult<Q, Container, BaseElement>>
 export function render(
   ui: React.ReactNode,
   options?: Omit<RenderOptions, 'queries'> | undefined,
-): RenderResult
+): Promise<RenderResult>
 
 export interface RenderHookResult<Result, Props> {
   /**
    * Triggers a re-render. The props will be passed to your renderHook callback.
    */
-  rerender: (props?: Props) => void
+  rerender: (props?: Props) => Promise<void>
   /**
    * This is a stable reference to the latest value returned by your renderHook
    * callback
@@ -200,7 +211,7 @@ export interface RenderHookResult<Result, Props> {
    * Unmounts the test component. This is useful for when you need to test
    * any cleanup your useEffects have.
    */
-  unmount: () => void
+  unmount: () => Promise<void>
 }
 
 /** @deprecated */
@@ -269,19 +280,14 @@ export function renderHook<
 >(
   render: (initialProps: Props) => Result,
   options?: RenderHookOptions<Props, Q, Container, BaseElement> | undefined,
-): RenderHookResult<Result, Props>
+): Promise<RenderHookResult<Result, Props>>
 
 /**
  * Unmounts React trees that were mounted with render.
  */
-export function cleanup(): void
+export function cleanup(): Promise<void>
 
 /**
- * Simply calls React.act(cb)
- * If that's not available (older version of react) then it
- * simply calls the deprecated version which is ReactTestUtils.act(cb)
+ * `act` for the DOM renderer
  */
-// IfAny<typeof reactAct, reactDeprecatedAct, reactAct> from https://stackoverflow.com/a/61626123/3406963
-export const act: 0 extends 1 & typeof reactAct
-  ? typeof reactDeprecatedAct
-  : typeof reactAct
+export function act<T>(scope: () => T | Promise<T>): Promise<T>

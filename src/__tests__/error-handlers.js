@@ -8,20 +8,20 @@ const isReact19 = React.version.startsWith('19.')
 
 const testGateReact19 = isReact19 ? test : test.skip
 
-test('render errors', () => {
+test('render errors', async () => {
   function Thrower() {
     throw new Error('Boom!')
   }
 
   if (isReact19) {
-    expect(() => {
-      render(<Thrower />)
-    }).toThrow('Boom!')
+    await expect(async () => {
+      await render(<Thrower />)
+    }).rejects.toThrow('Boom!')
   } else {
-    expect(() => {
-      expect(() => {
-        render(<Thrower />)
-      }).toThrow('Boom!')
+    await expect(async () => {
+      await expect(async () => {
+        await render(<Thrower />)
+      }).rejects.toThrow('Boom!')
     }).toErrorDev([
       'Error: Uncaught [Error: Boom!]',
       // React retries on error
@@ -30,26 +30,26 @@ test('render errors', () => {
   }
 })
 
-test('onUncaughtError is not supported in render', () => {
+test('onUncaughtError is not supported in render', async () => {
   function Thrower() {
     throw new Error('Boom!')
   }
   const onUncaughtError = jest.fn(() => {})
 
-  expect(() => {
-    render(<Thrower />, {
+  await expect(async () => {
+    await render(<Thrower />, {
       onUncaughtError(error, errorInfo) {
         console.log({error, errorInfo})
       },
     })
-  }).toThrow(
+  }).rejects.toThrow(
     'onUncaughtError is not supported. The `render` call will already throw on uncaught errors.',
   )
 
   expect(onUncaughtError).toHaveBeenCalledTimes(0)
 })
 
-testGateReact19('onCaughtError is supported in render', () => {
+testGateReact19('onCaughtError is supported in render', async () => {
   const thrownError = new Error('Boom!')
   const handleComponentDidCatch = jest.fn()
   const onCaughtError = jest.fn()
@@ -72,7 +72,7 @@ testGateReact19('onCaughtError is supported in render', () => {
     throw thrownError
   }
 
-  render(
+  await render(
     <ErrorBoundary>
       <Thrower />
     </ErrorBoundary>,
@@ -87,7 +87,7 @@ testGateReact19('onCaughtError is supported in render', () => {
   })
 })
 
-test('onRecoverableError is supported in render', () => {
+test('onRecoverableError is supported in render', async () => {
   const onRecoverableError = jest.fn()
 
   const container = document.createElement('div')
@@ -96,15 +96,15 @@ test('onRecoverableError is supported in render', () => {
   // Frankly, I'm too lazy to assert on React 18 hydration errors since they're a mess.
   // eslint-disable-next-line jest/no-conditional-in-test
   if (isReact19) {
-    render(<div>client</div>, {
+    await render(<div>client</div>, {
       container,
       hydrate: true,
       onRecoverableError,
     })
     expect(onRecoverableError).toHaveBeenCalledTimes(1)
   } else {
-    expect(() => {
-      render(<div>client</div>, {
+    await expect(async () => {
+      await render(<div>client</div>, {
         container,
         hydrate: true,
         onRecoverableError,
@@ -114,26 +114,26 @@ test('onRecoverableError is supported in render', () => {
   }
 })
 
-test('onUncaughtError is not supported in renderHook', () => {
+test('onUncaughtError is not supported in renderHook', async () => {
   function useThrower() {
     throw new Error('Boom!')
   }
   const onUncaughtError = jest.fn(() => {})
 
-  expect(() => {
-    renderHook(useThrower, {
+  await expect(async () => {
+    await renderHook(useThrower, {
       onUncaughtError(error, errorInfo) {
         console.log({error, errorInfo})
       },
     })
-  }).toThrow(
+  }).rejects.toThrow(
     'onUncaughtError is not supported. The `render` call will already throw on uncaught errors.',
   )
 
   expect(onUncaughtError).toHaveBeenCalledTimes(0)
 })
 
-testGateReact19('onCaughtError is supported in renderHook', () => {
+testGateReact19('onCaughtError is supported in renderHook', async () => {
   const thrownError = new Error('Boom!')
   const handleComponentDidCatch = jest.fn()
   const onCaughtError = jest.fn()
@@ -156,7 +156,7 @@ testGateReact19('onCaughtError is supported in renderHook', () => {
     throw thrownError
   }
 
-  renderHook(useThrower, {
+  await renderHook(useThrower, {
     onCaughtError,
     wrapper: ErrorBoundary,
   })
@@ -169,10 +169,10 @@ testGateReact19('onCaughtError is supported in renderHook', () => {
 
 // Currently, there's no recoverable error without hydration.
 // The option is still supported though.
-test('onRecoverableError is supported in renderHook', () => {
+test('onRecoverableError is supported in renderHook', async () => {
   const onRecoverableError = jest.fn()
 
-  renderHook(
+  await renderHook(
     () => {
       // TODO: trigger recoverable error
     },
