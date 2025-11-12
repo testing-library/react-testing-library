@@ -32,18 +32,14 @@ async function waitForMicrotasks() {
 
 configureDTL({
   unstable_advanceTimersWrapper: async scope => {
-    if (getIsReactActEnvironment()) {
-      return actIfEnabled(scope)
-    } else {
-      const result = await scope()
-      await waitForMicrotasks()
-      return result
-    }
+    const result = await scope()
+    await waitForMicrotasks()
+    return result
   },
-  // We just want to run `waitFor` without IS_REACT_ACT_ENVIRONMENT
-  // But that's not necessarily how `asyncWrapper` is used since it's a public method.
-  // Let's just hope nobody else is using it.
-  asyncWrapper: async cb => {
+  eventWrapper: actIfEnabled,
+  asyncWrapper: actIfEnabled,
+  // Run `waitFor` without IS_REACT_ACT_ENVIRONMENT
+  waitForWrapper: async cb => {
     const previousActEnvironment = getIsReactActEnvironment()
     setIsReactActEnvironment(false)
     try {
@@ -52,7 +48,6 @@ configureDTL({
       setIsReactActEnvironment(previousActEnvironment)
     }
   },
-  eventWrapper: actIfEnabled,
 })
 
 // Ideally we'd just use a WeakMap where containers are keys and roots are values.

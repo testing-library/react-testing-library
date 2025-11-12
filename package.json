@@ -48,7 +48,7 @@
     "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {
-    "@testing-library/dom": "^10.0.0",
+    "@testing-library/dom": "https://pkg.csb.dev/testing-library/dom-testing-library/commit/8abda5aa/@testing-library/dom",
     "@testing-library/jest-dom": "^5.11.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -63,7 +63,7 @@
     "typescript": "^5.9.3"
   },
   "peerDependencies": {
-    "@testing-library/dom": "^10.0.0",
+    "@testing-library/dom": "^11.0.0",
     "@types/react": "^18.0.0 || ^19.0.0",
     "@types/react-dom": "^18.0.0 || ^19.0.0",
     "react": "^18.0.0 || ^19.0.0",
