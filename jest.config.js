@@ -4,7 +4,7 @@ module.exports = Object.assign(jestConfig, {
   coverageThreshold: {
     ...jestConfig.coverageThreshold,
     // Full coverage across the build matrix (React 18, 19) but not in a single job
-    // Ful coverage is checked via codecov
+    // Full coverage is checked via codecov
     './src/act-compat': {
       branches: 90,
     },
