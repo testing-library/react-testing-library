@@ -187,6 +187,40 @@ function HiddenMessage({children}) {
     </div>
   )
 }
+### Testing <details> / <summary>
+
+HTML `<details>` uses `<summary>` as its toggle button.  
+When testing with React Testing Library, the `<summary>` element is exposed as a
+`button` role, so user interactions can be tested normally.
+
+```js
+import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
+
+function DetailsExample() {
+  return (
+    <details>
+      <summary>More info</summary>
+      <p>Hidden content</p>
+    </details>
+  )
+}
+
+test("opens details when summary is clicked", async () => {
+  const user = userEvent.setup()
+  render(<DetailsExample />)
+
+  const summary = screen.getByRole("button", { name: /more info/i })
+
+  // initially closed
+  expect(screen.queryByText("Hidden content")).not.toBeInTheDocument()
+
+  await user.click(summary)
+
+  // after clicking, content appears
+  expect(screen.getByText("Hidden content")).toBeInTheDocument()
+})
+
 
 export default HiddenMessage
 ```
