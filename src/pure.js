@@ -283,14 +283,15 @@ function render(
     // they're passing us a custom container or not.
     mountedContainers.add(container)
   } else {
-    mountedRootEntries.forEach(rootEntry => {
+      const rootEntry = mountedRootEntries.find(
+      rootEntry => rootEntry.container === container
+    )
       // Else is unreachable since `mountedContainers` has the `container`.
       // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
       /* istanbul ignore else */
-      if (rootEntry.container === container) {
-        root = rootEntry.root
-      }
-    })
+    if (rootEntry) {
+      root = rootEntry.root
+    }
   }
 
   return renderRoot(ui, {
