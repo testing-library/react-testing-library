@@ -283,15 +283,16 @@ function render(
     // they're passing us a custom container or not.
     mountedContainers.add(container)
   } else {
-      const rootEntry = mountedRootEntries.find(
-      rootEntry => rootEntry.container === container
+    const entry = mountedRootEntries.find(
+      rootEntry => rootEntry.container === container,
     )
-      // Else is unreachable since `mountedContainers` has the `container`.
-      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
-      /* istanbul ignore else */
-    if (rootEntry) {
-      root = rootEntry.root
+
+    if (entry) {
+      root = entry.root
     }
+    // Else is unreachable since `mountedContainers` has the `container`.
+    // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+    /* istanbul ignore else */
   }
 
   return renderRoot(ui, {
