@@ -17,8 +17,11 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
+  id-token: write # to enable use of OIDC (npm trusted publishing and provenance)
   actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
   contents: read #  to fetch code (actions/checkout)
+  issues: write # to be able to comment on released issues
+  pull-requests: write # to be able to comment on released pull requests
 
 jobs:
   validate:
