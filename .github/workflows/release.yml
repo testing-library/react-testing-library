@@ -16,15 +16,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  id-token: write # to enable use of OIDC (npm trusted publishing and provenance)
-  actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
-  contents: read #  to fetch code (actions/checkout)
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
+permissions: {}
 
 jobs:
   validate:
+    permissions:
+      contents: read #  to fetch code (actions/checkout)
     continue-on-error: ${{ matrix.react != 'latest' }}
     # ignore all-contributors PRs
     if: ${{ !contains(github.head_ref, 'all-contributors') }}
@@ -75,9 +72,11 @@ jobs:
 
   release:
     permissions:
+      id-token: write # to enable use of OIDC (npm trusted publishing and provenance)
       actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
       contents: write #  to create release tags (cycjimmy/semantic-release-action)
       issues: write # to post release that resolves an issue (cycjimmy/semantic-release-action)
+      pull-requests: write # to be able to comment on released pull requests
 
     needs: validate
     runs-on: ubuntu-latest
