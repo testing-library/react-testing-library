@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: [18, 24]
         react: ['18.x', latest, canary, experimental]
     runs-on: ubuntu-latest
     steps:

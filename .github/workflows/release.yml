@@ -31,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 20]
+        node: [18, 24]
         react: ['18.x', latest, canary, experimental]
     runs-on: ubuntu-latest
     steps:
@@ -91,7 +91,7 @@ jobs:
       - name: ⎔ Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 24
 
       - name: 📥 Download deps
         uses: bahmutov/npm-install@v1
@@ -102,9 +102,9 @@ jobs:
         run: npm run build
 
       - name: 🚀 Release
-        uses: cycjimmy/semantic-release-action@v6
+        uses: cycjimmy/semantic-release-action@v5
         with:
-          semantic_version: 17
+          semantic_version: 25
           branches: |
             [
               '+([0-9])?(.{+([0-9]),x}).x',
