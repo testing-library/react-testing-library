@@ -15,6 +15,12 @@ export * from '@testing-library/dom'
 
 export interface Config extends ConfigDTL {
   reactStrictMode: boolean
+  /**
+   * A function to be called internally to advance your fake timers (if applicable)
+   *
+   * @example jest.advanceTimersByTime
+   */
+  advanceTimers?: ((delay: number) => Promise<void>) | ((delay: number) => void)
 }
 
 export interface ConfigFn {
