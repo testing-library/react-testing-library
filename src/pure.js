@@ -10,8 +10,8 @@ import act, {
   getIsReactActEnvironment,
   setReactActEnvironment,
 } from './act-compat'
-import {fireEvent} from './fire-event'
-import {getConfig, configure} from './config'
+import { fireEvent } from './fire-event'
+import { getConfig, configure } from './config'
 
 function jestFakeTimersAreEnabled() {
   /* istanbul ignore else */
@@ -109,7 +109,7 @@ function createConcurrentRoot(
           wrapUiIfNeeded(ui, WrapperComponent),
           reactStrictMode,
         ),
-        {onCaughtError, onRecoverableError},
+        { onCaughtError, onRecoverableError },
       )
     })
   } else {
@@ -190,9 +190,9 @@ function renderRoot(
     debug: (el = baseElement, maxLength, options) =>
       Array.isArray(el)
         ? // eslint-disable-next-line no-console
-          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
+        el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
         : // eslint-disable-next-line no-console,
-          console.log(prettyDOM(el, maxLength, options)),
+        console.log(prettyDOM(el, maxLength, options)),
     unmount: () => {
       act(() => {
         root.unmount()
@@ -248,8 +248,8 @@ function render(
   if (legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
-        'If your app runs React 19 or later, you should remove this flag. ' +
-        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+      'If your app runs React 19 or later, you should remove this flag. ' +
+      'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, render)
     throw error
@@ -277,20 +277,21 @@ function render(
       reactStrictMode,
     })
 
-    mountedRootEntries.push({container, root})
+    mountedRootEntries.push({ container, root })
     // we'll add it to the mounted containers regardless of whether it's actually
     // added to document.body so the cleanup method works regardless of whether
     // they're passing us a custom container or not.
     mountedContainers.add(container)
   } else {
-    mountedRootEntries.forEach(rootEntry => {
-      // Else is unreachable since `mountedContainers` has the `container`.
-      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
-      /* istanbul ignore else */
-      if (rootEntry.container === container) {
-        root = rootEntry.root
-      }
-    })
+    const rootEntry = mountedRootEntries.find(
+      entry => entry.container === container,
+    )
+    // Else is unreachable since `mountedContainers` has the `container`.
+    // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+    /* istanbul ignore else */
+    if (rootEntry) {
+      root = rootEntry.root
+    }
   }
 
   return renderRoot(ui, {
@@ -305,7 +306,7 @@ function render(
 }
 
 function cleanup() {
-  mountedRootEntries.forEach(({root, container}) => {
+  mountedRootEntries.forEach(({ root, container }) => {
     act(() => {
       root.unmount()
     })
@@ -318,13 +319,13 @@ function cleanup() {
 }
 
 function renderHook(renderCallback, options = {}) {
-  const {initialProps, ...renderOptions} = options
+  const { initialProps, ...renderOptions } = options
 
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
-        'If your app runs React 19 or later, you should remove this flag. ' +
-        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+      'If your app runs React 19 or later, you should remove this flag. ' +
+      'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
     )
     Error.captureStackTrace(error, renderHook)
     throw error
@@ -332,7 +333,7 @@ function renderHook(renderCallback, options = {}) {
 
   const result = React.createRef()
 
-  function TestComponent({renderCallbackProps}) {
+  function TestComponent({ renderCallbackProps }) {
     const pendingResult = renderCallback(renderCallbackProps)
 
     React.useEffect(() => {
@@ -342,7 +343,7 @@ function renderHook(renderCallback, options = {}) {
     return null
   }
 
-  const {rerender: baseRerender, unmount} = render(
+  const { rerender: baseRerender, unmount } = render(
     <TestComponent renderCallbackProps={initialProps} />,
     renderOptions,
   )
@@ -353,11 +354,11 @@ function renderHook(renderCallback, options = {}) {
     )
   }
 
-  return {result, rerender, unmount}
+  return { result, rerender, unmount }
 }
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
+export { render, renderHook, cleanup, act, fireEvent, getConfig, configure }
 
 /* eslint func-name-matching:0 */
