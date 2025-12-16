@@ -15,24 +15,24 @@ Object.keys(dtlFireEvent).forEach(key => {
 // @link https://github.com/facebook/react/blob/b87aabdfe1b7461e7331abb3601d9e6bb27544bc/packages/react-dom/src/events/EnterLeaveEventPlugin.js#L24-L31
 const mouseEnter = fireEvent.mouseEnter
 const mouseLeave = fireEvent.mouseLeave
-fireEvent.mouseEnter = (...args) => {
-  mouseEnter(...args)
-  return fireEvent.mouseOver(...args)
+fireEvent.mouseEnter = (node, init) => {
+  mouseEnter(node, init)
+  return fireEvent.mouseOver(node, init)
 }
-fireEvent.mouseLeave = (...args) => {
-  mouseLeave(...args)
-  return fireEvent.mouseOut(...args)
+fireEvent.mouseLeave = (node, init) => {
+  mouseLeave(node, init)
+  return fireEvent.mouseOut(node, init)
 }
 
 const pointerEnter = fireEvent.pointerEnter
 const pointerLeave = fireEvent.pointerLeave
-fireEvent.pointerEnter = (...args) => {
-  pointerEnter(...args)
-  return fireEvent.pointerOver(...args)
+fireEvent.pointerEnter = (node, init) => {
+  pointerEnter(node, init)
+  return fireEvent.pointerOver(node, init)
 }
-fireEvent.pointerLeave = (...args) => {
-  pointerLeave(...args)
-  return fireEvent.pointerOut(...args)
+fireEvent.pointerLeave = (node, init) => {
+  pointerLeave(node, init)
+  return fireEvent.pointerOut(node, init)
 }
 
 const select = fireEvent.select
@@ -57,13 +57,13 @@ fireEvent.select = (node, init) => {
 // @link https://github.com/facebook/react/pull/19186
 const blur = fireEvent.blur
 const focus = fireEvent.focus
-fireEvent.blur = (...args) => {
-  fireEvent.focusOut(...args)
-  return blur(...args)
+fireEvent.blur = (node, init) => {
+  fireEvent.focusOut(node, init)
+  return blur(node, init)
 }
-fireEvent.focus = (...args) => {
-  fireEvent.focusIn(...args)
-  return focus(...args)
+fireEvent.focus = (node, init) => {
+  fireEvent.focusIn(node, init)
+  return focus(node, init)
 }
 
 export {fireEvent}
