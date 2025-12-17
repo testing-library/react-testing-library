@@ -189,10 +189,40 @@ function HiddenMessage({children}) {
 }
 
 export default HiddenMessage
-```
 
-```jsx
-// __tests__/hidden-message.js
+
+# MORE EXAMPLES
+### Testing <details> / <summary>
+
+HTML `<details>` uses `<summary>` as its toggle button.  
+When testing with React Testing Library, the `<summary>` element is exposed as a `button` role.
+
+```js
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+function DetailsExample() {
+  return (
+    <details>
+      <summary>More info</summary>
+      <p>Hidden content</p>
+    </details>
+  );
+}
+
+test("opens details when summary is clicked", async () => {
+  const user = userEvent.setup();
+  render(<DetailsExample />);
+
+  const summary = screen.getByRole("button", { name: /more info/i });
+
+  expect(screen.queryByText("Hidden content")).not.toBeInTheDocument();
+
+  await user.click(summary);
+
+  expect(screen.getByText("Hidden content")).toBeInTheDocument();
+});
+
 // these imports are something you'd normally configure Jest to import for you
 // automatically. Learn more in the setup docs: https://testing-library.com/docs/react-testing-library/setup#cleanup
 import '@testing-library/jest-dom'
