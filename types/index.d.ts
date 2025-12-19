@@ -181,11 +181,12 @@ export function render(
   options?: Omit<RenderOptions, 'queries'> | undefined,
 ): RenderResult
 
-export interface RenderHookResult<Result, Props> {
+export interface RenderHookArgsResult<Result, Args extends any[]> {
   /**
-   * Triggers a re-render. The props will be passed to your renderHook callback.
+   * Triggers a re-render. The arguments will be passed to your renderHook
+   * callback.
    */
-  rerender: (props?: Props) => void
+  rerender: (...args: Args) => void
   /**
    * This is a stable reference to the latest value returned by your renderHook
    * callback
@@ -202,6 +203,11 @@ export interface RenderHookResult<Result, Props> {
    */
   unmount: () => void
 }
+
+export type RenderHookResult<Result, Props> = RenderHookArgsResult<
+  Result,
+  [Props?]
+>
 
 /** @deprecated */
 export type BaseRenderHookOptions<
@@ -256,6 +262,19 @@ export interface RenderHookOptions<
   initialProps?: Props | undefined
 }
 
+export interface RenderHookArgsOptions<
+  Args extends any[],
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+> extends RenderOptions<Q, Container, BaseElement> {
+  /**
+   * The argument passed to the renderHook callback. Can be useful if you plan
+   * to use the rerender utility to change the values passed to your hook.
+   */
+  initialArgs: Args
+}
+
 /**
  * Allows you to render a hook within a test React component without having to
  * create that component yourself.
@@ -270,6 +289,21 @@ export function renderHook<
   render: (initialProps: Props) => Result,
   options?: RenderHookOptions<Props, Q, Container, BaseElement> | undefined,
 ): RenderHookResult<Result, Props>
+
+/**
+ * Allows you to render a hook within a test React component without having to
+ * create that component yourself.
+ */
+export function renderHook<
+  Result,
+  Args extends any[],
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+>(
+  render: (...initialArgs: Args) => Result,
+  options: RenderHookArgsOptions<Args, Q, Container, BaseElement> | undefined,
+): RenderHookArgsResult<Result, Args>
 
 /**
  * Unmounts React trees that were mounted with render.
