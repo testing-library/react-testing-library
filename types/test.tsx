@@ -264,7 +264,7 @@ export function testContainer() {
 }
 
 export function testErrorHandlers() {
-  // React 19 types are not used in tests. Verify manually if this works with `"@types/react": "npm:types-react@rc"`
+  // This test runs under both React 18 and React 19 types. For React 19, verify that this works with `"@types/react": "npm:types-react@rc"`.
   render(null, {
     // This option is intended to type-check successfully with React 19 types
     // but to fail (produce a type error) with React 18 types.
