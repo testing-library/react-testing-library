@@ -266,14 +266,17 @@ export function testContainer() {
 export function testErrorHandlers() {
   // React 19 types are not used in tests. Verify manually if this works with `"@types/react": "npm:types-react@rc"`
   render(null, {
-    // Should work with React 19 types but intentionally fails with React 18 types.
+    // This option is intended to type-check successfully with React 19 types
+    // but to fail (produce a type error) with React 18 types.
     //
     // > Why use `@ts-ignore` instead of `@ts-expect-error`?
-    // > By default, React 19 types run without errors,
-    // > causing the TS compiler to report `@ts-expect-error` as unused,
-    // > so this TS directive must be removed.
-    // > However, to maintain compatibility with React 18 types during CI testing,
-    // > we had to instead use `@ts-ignore`.
+    // > Semantically, `@ts-expect-error` would be the right choice here:
+    // > it would fail under React 18 types and be unused under React 19 types.
+    // > However, when running with React 19 types, TypeScript reports that
+    // > `@ts-expect-error` is unused, which causes unwanted noise in CI.
+    // > To avoid those unused-directive diagnostics while still supporting
+    // > both React 18 and React 19 typings, we pragmatically use `@ts-ignore`,
+    // > acknowledging that it suppresses any real type errors at this site.
     //
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error
     // @ts-ignore
