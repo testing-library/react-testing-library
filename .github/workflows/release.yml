@@ -1,0 +1,117 @@
+name: release
+on:
+  push:
+    branches:
+      # Match SemVer major release branches
+      # e.g. "12.x" or "8.x"
+      - '[0-9]+.x'
+      - 'main'
+      - 'next'
+      - 'next-major'
+      - 'beta'
+      - 'alpha'
+      - '!all-contributors/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  validate:
+    permissions:
+      contents: read #  to fetch code (actions/checkout)
+    continue-on-error: ${{ matrix.react != 'latest' }}
+    # ignore all-contributors PRs
+    if: ${{ !contains(github.head_ref, 'all-contributors') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [18, 24]
+        react: ['18.x', latest, canary, experimental]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      # TODO: Can be removed if https://github.com/kentcdodds/kcd-scripts/pull/146 is released
+      - name: Verify format (`npm run format` committed?)
+        run: npm run format -- --check --no-write
+
+      # as requested by the React team :)
+      # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
+      - name: ⚛️ Setup react
+        run: npm install react@${{ matrix.react }} react-dom@${{ matrix.react }}
+
+      - name: ⚛️ Setup react types
+        if: ${{ matrix.react != 'canary' && matrix.react != 'experimental' }}
+        run:
+          npm install @types/react@${{ matrix.react }} @types/react-dom@${{
+          matrix.react }}
+
+      - name: ▶️ Run validate script
+        run: npm run validate
+
+      - name: ⬆️ Upload coverage report
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          flags: ${{ matrix.react }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  release:
+    permissions:
+      id-token: write # to enable use of OIDC (npm trusted publishing and provenance)
+      actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
+      contents: write #  to create release tags (cycjimmy/semantic-release-action)
+      issues: write # to post release that resolves an issue (cycjimmy/semantic-release-action)
+      pull-requests: write # to be able to comment on released pull requests
+
+    needs: validate
+    runs-on: ubuntu-latest
+    if:
+      ${{ github.repository == 'testing-library/react-testing-library' &&
+      github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 📥 Download deps
+        uses: bahmutov/npm-install@v1
+        with:
+          useLockFile: false
+
+      - name: 🏗 Run build script
+        run: npm run build
+
+      - name: 🚀 Release
+        uses: cycjimmy/semantic-release-action@v5
+        with:
+          semantic_version: 25
+          branches: |
+            [
+              '+([0-9])?(.{+([0-9]),x}).x',
+              'main',
+              'next',
+              'next-major',
+              {name: 'beta', prerelease: true},
+              {name: 'alpha', prerelease: true}
+            ]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
