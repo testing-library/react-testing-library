@@ -75,6 +75,8 @@ function withGlobalActEnvironment(actImplementation) {
       // https://github.com/testing-library/react-testing-library/issues/1392
       // https://github.com/testing-library/react-testing-library/issues/1399
       if (
+        // Error.isError is pretty new addition to Node.js - may not be available in LTS versions
+        Error.isError &&
         Error.isError(error) &&
         error.toString() === 'TypeError: React.act is not a function' &&
         process &&
