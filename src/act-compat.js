@@ -72,6 +72,19 @@ function withGlobalActEnvironment(actImplementation) {
         return actResult
       }
     } catch (error) {
+      // https://github.com/testing-library/react-testing-library/issues/1392
+      // https://github.com/testing-library/react-testing-library/issues/1399
+      if (
+        Error.isError(error) &&
+        error.toString() === 'TypeError: React.act is not a function' &&
+        process &&
+        process.env.NODE_ENV === 'production'
+      ) {
+        throw new Error(
+          'Following error may be caused by `NODE_ENV` environment variable being set to `production`. Try changing it to `test`.',
+          {cause: error},
+        )
+      }
       // Can't be a `finally {}` block since we don't know if we have to immediately restore IS_REACT_ACT_ENVIRONMENT
       // or if we have to await the callback first.
       setIsReactActEnvironment(previousActEnvironment)
