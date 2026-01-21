@@ -1,0 +1,22 @@
+# Auto Parts Inventory Management App
+
+## Features
+
+- Inventory: Add/update/delete parts; barcode; expiry alerts
+- Billing & Invoicing: GST, PDF, WhatsApp, quotations
+- Profit & Loss, Day Book
+- GST Management & Reports
+- Customers/Vendors & Loyalty
+- Expenses Tracking, Attachments
+- Analytics, Export, Charts
+- Security: Login, Multi-User, Backup
+- Payments: UPI, Bank, Reminders
+- Multi-Branch, Notifications
+
+## Setup
+
+1. `cd backend && npm install`
+2. Start MongoDB
+3. `node server.js`
+4. `cd frontend && npm install`
+5. `npm start`
