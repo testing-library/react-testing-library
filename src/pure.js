@@ -124,7 +124,7 @@ function createConcurrentRoot(
       /* istanbul ignore if */
       if (!hydrate) {
         throw new Error(
-          'Attempted to hydrate a non-hydrateable root. This is a bug in `@testing-library/react`.',
+          'Attempted to hydrate a non-hydratable root. This is a bug in `@testing-library/react`.',
         )
       }
       // Nothing to do since hydration happens when creating the root object.
