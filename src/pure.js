@@ -27,6 +27,32 @@ function jestFakeTimersAreEnabled() {
   return false
 }
 
+/* istanbul ignore next */
+function vitestFakeTimersAreEnabled() {
+  // Vitest uses @sinonjs/fake-timers which attaches a `clock` property to setTimeout.
+  // Unlike Jest, Vitest does not set `setTimeout._isMockFunction`.
+  return (
+    // eslint-disable-next-line no-undef -- `vi` is a global in Vitest, like `jest` in Jest.
+    typeof vi !== 'undefined' &&
+    // eslint-disable-next-line no-undef
+    vi !== null &&
+    // eslint-disable-next-line no-undef
+    typeof vi.advanceTimersByTime === 'function' &&
+    // eslint-disable-next-line prefer-object-has-own -- No Object.hasOwn in all target environments we support.
+    Object.prototype.hasOwnProperty.call(setTimeout, 'clock')
+  )
+}
+
+function advanceFakeTimers() {
+  if (jestFakeTimersAreEnabled()) {
+    jest.advanceTimersByTime(0)
+    // istanbul ignore next -- Vitest path cannot be covered in Jest tests
+  } else if (vitestFakeTimersAreEnabled()) {
+    // eslint-disable-next-line no-undef -- `vi` is a global in Vitest.
+    vi.advanceTimersByTime(0)
+  }
+}
+
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
     return act(cb)
@@ -47,9 +73,7 @@ configureDTL({
           resolve()
         }, 0)
 
-        if (jestFakeTimersAreEnabled()) {
-          jest.advanceTimersByTime(0)
-        }
+        advanceFakeTimers()
       })
 
       return result
