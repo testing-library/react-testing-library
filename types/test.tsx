@@ -138,7 +138,7 @@ export function wrappedRender(
 
   return pure.render(ui, {
     wrapper: Wrapper,
-    // testing exactOptionalPropertyTypes comaptibility
+    // testing exactOptionalPropertyTypes compatibility
     hydrate: options?.hydrate,
     ...options,
   })
