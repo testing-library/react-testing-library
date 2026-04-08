@@ -13,20 +13,6 @@ import act, {
 import {fireEvent} from './fire-event'
 import {getConfig, configure} from './config'
 
-function jestFakeTimersAreEnabled() {
-  /* istanbul ignore else */
-  if (typeof jest !== 'undefined' && jest !== null) {
-    return (
-      // legacy timers
-      setTimeout._isMockFunction === true || // modern timers
-      // eslint-disable-next-line prefer-object-has-own -- No Object.hasOwn in all target environments we support.
-      Object.prototype.hasOwnProperty.call(setTimeout, 'clock')
-    )
-  } // istanbul ignore next
-
-  return false
-}
-
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
     return act(cb)
@@ -42,14 +28,12 @@ configureDTL({
       // Drain microtask queue.
       // Otherwise we'll restore the previous act() environment, before we resolve the `waitFor` call.
       // The caller would have no chance to wrap the in-flight Promises in `act()`
-      await new Promise(resolve => {
+      await new Promise(async resolve => {
         setTimeout(() => {
           resolve()
         }, 0)
 
-        if (jestFakeTimersAreEnabled()) {
-          jest.advanceTimersByTime(0)
-        }
+        await getConfig().advanceTimers(0)
       })
 
       return result

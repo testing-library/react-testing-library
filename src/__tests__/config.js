@@ -42,9 +42,11 @@ describe('configuration API', () => {
 
   describe('RTL options', () => {
     test('configure can set by a plain JS object', () => {
-      configure({reactStrictMode: true})
+      const advanceTimers = jest.fn()
+      configure({reactStrictMode: true, advanceTimers})
 
       expect(getConfig().reactStrictMode).toBe(true)
+      expect(getConfig().advanceTimers).toBe(advanceTimers)
     })
 
     test('configure can set by a function', () => {
