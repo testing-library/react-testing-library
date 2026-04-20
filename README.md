@@ -157,7 +157,7 @@ beforeAll(() => {
   }
 })
 
-after all(() => {
+afterAll(() => {
   console.error = originalError
 })
 ```
@@ -308,7 +308,7 @@ afterEach(() => {
   server.resetHandlers()
   window.localStorage.removeItem('token')
 })
-after all(() => server.close())
+afterAll(() => server.close())
 
 test('allows the user to login successfully', async () => {
   render(<Login />)
