@@ -25,9 +25,11 @@ function configure(newConfig) {
 
   configureDTL(configForDTL)
 
-  configForRTL = {
-    ...configForRTL,
-    reactStrictMode,
+  if (reactStrictMode !== undefined) {
+    configForRTL = {
+      ...configForRTL,
+      reactStrictMode,
+    }
   }
 }
 
