@@ -27,6 +27,8 @@ function jestFakeTimersAreEnabled() {
   return false
 }
 
+let inEventWrapper = false
+
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
     return act(cb)
@@ -58,11 +60,19 @@ configureDTL({
     }
   },
   eventWrapper: cb => {
-    let result
-    act(() => {
-      result = cb()
-    })
-    return result
+    if (inEventWrapper) {
+      return cb()
+    }
+    inEventWrapper = true
+    try {
+      let result
+      act(() => {
+        result = cb()
+      })
+      return result
+    } finally {
+      inEventWrapper = false
+    }
   },
 })
 
