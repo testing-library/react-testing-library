@@ -1,47 +1,50 @@
 import * as React from 'react'
-import {render, screen, fireEvent} from '../'
+import {render, fireEvent, getConfig} from '../'
 
-let mockActDepth = 0
-let mockMaxActDepth = 0
-jest.mock('react', () => {
-  const actual = jest.requireActual('react')
-  return {
-    ...actual,
-    act: jest.fn(cb => {
-      mockActDepth++
-      mockMaxActDepth = Math.max(mockMaxActDepth, mockActDepth)
-      try {
-        return actual.act(cb)
-      } finally {
-        mockActDepth--
-      }
-    }),
-  }
-})
+const {useState, useEffect, useRef} = React
 
-function Nested() {
-  return (
-    <>
-      <input
-        aria-label="outer"
-        onFocus={() =>
-          fireEvent.change(screen.getByLabelText('inner'), {
-            target: {value: 'changed'},
-          })
-        }
-      />
-      <input aria-label="inner" />
-    </>
+const dispatchDOMEvent = (target, type) =>
+  getConfig().eventWrapper(() =>
+    target.dispatchEvent(new Event(type, {bubbles: true})),
   )
-}
 
-test('eventWrapper does not nest `act` for a re-entrant event dispatch', () => {
-  render(<Nested />)
-  expect(screen.getByLabelText('inner').value).toBe('')
+test('does not warn about act when there are nested acts', () => {
+  function Fixture() {
+    const [open, setOpen] = useState(false)
+    const [fromEffect, setFromEffect] = useState(0)
+    const [fromEvent, setFromEvent] = useState(0)
+    const targetRef = useRef(null)
 
-  mockMaxActDepth = 0
-  fireEvent.focus(screen.getByLabelText('outer'))
+    useEffect(() => {
+      // eslint-disable-next-line jest/no-conditional-in-test
+      if (!open) {
+        return
+      }
+      dispatchDOMEvent(targetRef.current, 'input')
+      setFromEffect(n => n + 1)
+    }, [open])
 
-  expect(screen.getByLabelText('inner').value).toBe('changed')
-  expect(mockMaxActDepth).toBe(1)
+    return (
+      <>
+        <button onClick={() => setOpen(true)}>
+          {`open:${open} effect:${fromEffect} event:${fromEvent}`}
+        </button>
+        <input ref={targetRef} readOnly onInput={() => setFromEvent(n => n + 1)} />
+      </>
+    )
+  }
+
+  const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  const {container} = render(<Fixture />)
+  const button = container.querySelector('button')
+
+  fireEvent.click(button)
+
+  expect(button).toHaveTextContent('open:true effect:1 event:1')
+  const actWarnings = errorSpy.mock.calls
+    .map(args => String(args[0]))
+    .filter(message => message.includes('not wrapped in act'))
+  expect(actWarnings).toEqual([])
+
+  errorSpy.mockRestore()
 })
