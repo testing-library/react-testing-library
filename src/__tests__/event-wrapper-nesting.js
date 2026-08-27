@@ -29,7 +29,11 @@ test('does not warn about act when there are nested acts', () => {
         <button onClick={() => setOpen(true)}>
           {`open:${open} effect:${fromEffect} event:${fromEvent}`}
         </button>
-        <input ref={targetRef} readOnly onInput={() => setFromEvent(n => n + 1)} />
+        <input
+          ref={targetRef}
+          readOnly
+          onInput={() => setFromEvent(n => n + 1)}
+        />
       </>
     )
   }
