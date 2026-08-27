@@ -105,12 +105,16 @@ Starting from RTL version 16, you'll also need to install
 npm install --save-dev @testing-library/react @testing-library/dom
 ```
 
-or
-
 for installation via [yarn][yarn]
 
 ```
 yarn add --dev @testing-library/react @testing-library/dom
+```
+
+or, for installation via [pnpm][pnpm]
+
+```
+pnpm add -D @testing-library/react @testing-library/dom
 ```
 
 This library has `peerDependencies` listings for `react`, `react-dom` and
@@ -121,9 +125,12 @@ older version of React, be sure to install version 12:_
 
 ```
 npm install --save-dev @testing-library/react@12
-
-
+```
+```
 yarn add --dev @testing-library/react@12
+```
+```
+pnpm add -D @testing-library/react@12
 ```
 
 You may also be interested in installing `@testing-library/jest-dom` so you can
@@ -657,6 +664,7 @@ Contributions of any kind welcome!
 [npm]: https://www.npmjs.com/
 [yarn]: https://classic.yarnpkg.com
 [node]: https://nodejs.org
+[pnpm]: https://pnpm.io
 [build-badge]: https://img.shields.io/github/actions/workflow/status/testing-library/react-testing-library/validate.yml?branch=main&logo=github
 [build]: https://github.com/testing-library/react-testing-library/actions?query=workflow%3Avalidate
 [coverage-badge]: https://img.shields.io/codecov/c/github/testing-library/react-testing-library.svg?style=flat-square
