@@ -56,6 +56,14 @@ describe('configuration API', () => {
     })
   })
 
+  test('configuring only DTL options preserves previously set RTL options', () => {
+    configure({reactStrictMode: true})
+    configure({testIdAttribute: 'not-data-testid'})
+
+    expect(getConfig().reactStrictMode).toBe(true)
+    expect(getConfig().testIdAttribute).toBe('not-data-testid')
+  })
+
   test('configure can set DTL and RTL options at once', () => {
     const testIdAttribute = 'not-data-testid'
     configure({testIdAttribute, reactStrictMode: true})
