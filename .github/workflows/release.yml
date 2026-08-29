@@ -16,8 +16,8 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-permissions: {}
-
+permissions:
+  contents: read
 jobs:
   validate:
     permissions:
@@ -70,16 +70,11 @@ jobs:
           flags: ${{ matrix.react }}
           token: ${{ secrets.CODECOV_TOKEN }}
 
-  release:
-    permissions:
-      id-token: write # to enable use of OIDC (npm trusted publishing and provenance)
-      actions: write #  to cancel/stop running workflows (styfle/cancel-workflow-action)
-      contents: write #  to create release tags (cycjimmy/semantic-release-action)
-      issues: write # to post release that resolves an issue (cycjimmy/semantic-release-action)
-      pull-requests: write # to be able to comment on released pull requests
-
+  build-release-artifact:
     needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if:
       ${{ github.repository == 'testing-library/react-testing-library' &&
       github.event_name == 'push' }}
@@ -93,12 +88,45 @@ jobs:
           node-version: 24
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-        with:
-          useLockFile: false
+        run: npm install --ignore-scripts
 
       - name: 🏗 Run build script
         run: npm run build
+
+      - name: 📦 Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+  release:
+    needs: build-release-artifact
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    if:
+      ${{ github.repository == 'testing-library/react-testing-library' &&
+      github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: 📦 Download package artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package-dist
+          path: dist
 
       - name: 🚀 Release
         uses: cycjimmy/semantic-release-action@v5
