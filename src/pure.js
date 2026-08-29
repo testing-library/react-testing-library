@@ -162,6 +162,37 @@ function createLegacyRoot(container) {
   }
 }
 
+function buildRenderResult({baseElement, container, queries, root}) {
+  return {
+    container,
+    baseElement,
+    debug: (el = baseElement, maxLength, options) =>
+      Array.isArray(el)
+        ? // eslint-disable-next-line no-console
+          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
+        : // eslint-disable-next-line no-console,
+          console.log(prettyDOM(el, maxLength, options)),
+    unmount: () => {
+      act(() => {
+        root.unmount()
+      })
+    },
+    asFragment: () => {
+      /* istanbul ignore else (old jsdom limitation) */
+      if (typeof document.createRange === 'function') {
+        return document
+          .createRange()
+          .createContextualFragment(container.innerHTML)
+      } else {
+        const template = document.createElement('template')
+        template.innerHTML = container.innerHTML
+        return template.content
+      }
+    },
+    ...getQueriesForElement(baseElement, queries),
+  }
+}
+
 function renderRoot(
   ui,
   {
@@ -194,20 +225,10 @@ function renderRoot(
     }
   })
 
+  const result = buildRenderResult({baseElement, container, queries, root})
+
   return {
-    container,
-    baseElement,
-    debug: (el = baseElement, maxLength, options) =>
-      Array.isArray(el)
-        ? // eslint-disable-next-line no-console
-          el.forEach(e => console.log(prettyDOM(e, maxLength, options)))
-        : // eslint-disable-next-line no-console,
-          console.log(prettyDOM(el, maxLength, options)),
-    unmount: () => {
-      act(() => {
-        root.unmount()
-      })
-    },
+    ...result,
     rerender: rerenderUi => {
       renderRoot(rerenderUi, {
         container,
@@ -219,61 +240,72 @@ function renderRoot(
       // Intentionally do not return anything to avoid unnecessarily complicating the API.
       // folks can use all the same utilities we return in the first place that are bound to the container
     },
-    asFragment: () => {
-      /* istanbul ignore else (old jsdom limitation) */
-      if (typeof document.createRange === 'function') {
-        return document
-          .createRange()
-          .createContextualFragment(container.innerHTML)
-      } else {
-        const template = document.createElement('template')
-        template.innerHTML = container.innerHTML
-        return template.content
-      }
-    },
-    ...getQueriesForElement(baseElement, queries),
   }
 }
 
-function render(
+async function renderRootAsync(
+  ui,
+  {
+    baseElement,
+    container,
+    hydrate,
+    queries,
+    root,
+    wrapper: WrapperComponent,
+    reactStrictMode,
+  },
+) {
+  await act(async () => {
+    if (hydrate) {
+      root.hydrate(
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
+        container,
+      )
+    } else {
+      root.render(
+        strictModeIfNeeded(
+          wrapUiIfNeeded(ui, WrapperComponent),
+          reactStrictMode,
+        ),
+        container,
+      )
+    }
+  })
+
+  const result = buildRenderResult({baseElement, container, queries, root})
+
+  return {
+    ...result,
+    rerender: async rerenderUi => {
+      await renderRootAsync(rerenderUi, {
+        container,
+        baseElement,
+        root,
+        wrapper: WrapperComponent,
+        reactStrictMode,
+      })
+      // Intentionally do not return anything to avoid unnecessarily complicating the API.
+      // folks can use all the same utilities we return in the first place that are bound to the container
+    },
+  }
+}
+
+function buildRoot(
   ui,
   {
     container,
-    baseElement = container,
-    legacyRoot = false,
+    baseElement,
+    legacyRoot,
     onCaughtError,
-    onUncaughtError,
     onRecoverableError,
-    queries,
-    hydrate = false,
+    hydrate,
     wrapper,
     reactStrictMode,
-  } = {},
+  },
 ) {
-  if (onUncaughtError !== undefined) {
-    throw new Error(
-      'onUncaughtError is not supported. The `render` call will already throw on uncaught errors.',
-    )
-  }
-  if (legacyRoot && typeof ReactDOM.render !== 'function') {
-    const error = new Error(
-      '`legacyRoot: true` is not supported in this version of React. ' +
-        'If your app runs React 19 or later, you should remove this flag. ' +
-        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
-    )
-    Error.captureStackTrace(error, render)
-    throw error
-  }
-
-  if (!baseElement) {
-    // default to document.body instead of documentElement to avoid output of potentially-large
-    // head elements (such as JSS style blocks) in debug output
-    baseElement = document.body
-  }
-  if (!container) {
-    container = baseElement.appendChild(document.createElement('div'))
-  }
-
   let root
   // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it reused so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
@@ -295,22 +327,110 @@ function render(
   } else {
     mountedRootEntries.forEach(rootEntry => {
       // Else is unreachable since `mountedContainers` has the `container`.
-      // Only reachable if one would accidentally add the container to `mountedContainers` but not the root to `mountedRootEntries`
+      // Only reachable if one would accidentally add the container to `mountedRootEntries`
       /* istanbul ignore else */
       if (rootEntry.container === container) {
         root = rootEntry.root
       }
     })
   }
+  return root
+}
 
-  return renderRoot(ui, {
+function resolveRenderOptions(options = {}) {
+  let {
+    container,
+    baseElement = container,
+    legacyRoot = false,
+    onCaughtError,
+    onUncaughtError,
+    onRecoverableError,
+    queries,
+    hydrate = false,
+    wrapper,
+    reactStrictMode,
+  } = options
+
+  if (onUncaughtError !== undefined) {
+    throw new Error(
+      'onUncaughtError is not supported. The `render` call will already throw on uncaught errors.',
+    )
+  }
+
+  if (!baseElement) {
+    // default to document.body instead of documentElement to avoid output of potentially-large
+    // head elements (such as JSS style blocks) in debug output
+    baseElement = document.body
+  }
+  if (!container) {
+    container = baseElement.appendChild(document.createElement('div'))
+  }
+
+  return {
     container,
     baseElement,
+    legacyRoot,
+    onCaughtError,
+    onRecoverableError,
     queries,
     hydrate,
     wrapper,
-    root,
     reactStrictMode,
+  }
+}
+
+function render(ui, options = {}) {
+  const {legacyRoot, ...resolvedOptions} = resolveRenderOptions(options)
+
+  /* istanbul ignore next */
+  if (legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+    )
+    Error.captureStackTrace(error, render)
+    throw error
+  }
+
+  const root = buildRoot(ui, {legacyRoot, ...resolvedOptions})
+
+  return renderRoot(ui, {
+    ...resolvedOptions,
+    root,
+  })
+}
+
+/**
+ * An async version of `render` that uses `await act(async () => {...})` to
+ * fully flush all pending effects - including `useLayoutEffect` chains that
+ * trigger state updates and re-renders (common in React-Aria and similar
+ * libraries). Use this when components don't appear fully initialised after a
+ * synchronous `render` call.
+ *
+ * @example
+ * const {getByRole} = await renderAsync(<MyComboBox />)
+ * await userEvent.type(getByRole('combobox'), 'hello')
+ */
+async function renderAsync(ui, options = {}) {
+  const {legacyRoot, ...resolvedOptions} = resolveRenderOptions(options)
+
+  /* istanbul ignore next */
+  if (legacyRoot && typeof ReactDOM.render !== 'function') {
+    const error = new Error(
+      '`legacyRoot: true` is not supported in this version of React. ' +
+        'If your app runs React 19 or later, you should remove this flag. ' +
+        'If your app runs React 18 or earlier, visit https://react.dev/blog/2022/03/08/react-18-upgrade-guide for upgrade instructions.',
+    )
+    Error.captureStackTrace(error, renderAsync)
+    throw error
+  }
+
+  const root = buildRoot(ui, {legacyRoot, ...resolvedOptions})
+
+  return renderRootAsync(ui, {
+    ...resolvedOptions,
+    root,
   })
 }
 
@@ -330,6 +450,7 @@ function cleanup() {
 function renderHook(renderCallback, options = {}) {
   const {initialProps, ...renderOptions} = options
 
+  /* istanbul ignore next */
   if (renderOptions.legacyRoot && typeof ReactDOM.render !== 'function') {
     const error = new Error(
       '`legacyRoot: true` is not supported in this version of React. ' +
@@ -368,6 +489,15 @@ function renderHook(renderCallback, options = {}) {
 
 // just re-export everything from dom-testing-library
 export * from '@testing-library/dom'
-export {render, renderHook, cleanup, act, fireEvent, getConfig, configure}
+export {
+  render,
+  renderAsync,
+  renderHook,
+  cleanup,
+  act,
+  fireEvent,
+  getConfig,
+  configure,
+}
 
 /* eslint func-name-matching:0 */

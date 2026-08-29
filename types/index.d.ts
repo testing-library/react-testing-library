@@ -181,6 +181,34 @@ export function render(
   options?: Omit<RenderOptions, 'queries'> | undefined,
 ): RenderResult
 
+/**
+ * An async version of `render` that uses `await act(async () => {...})` to
+ * fully flush all pending effects - including `useLayoutEffect` chains that
+ * trigger state updates and re-renders (common in React-Aria and similar
+ * libraries). Use this when components don't appear fully initialised after a
+ * synchronous `render` call.
+ *
+ * @example
+ * const {getByRole} = await renderAsync(<MyComboBox />)
+ * await userEvent.type(getByRole('combobox'), 'hello')
+ */
+export function renderAsync<
+  Q extends Queries = typeof queries,
+  Container extends RendererableContainer | HydrateableContainer = HTMLElement,
+  BaseElement extends RendererableContainer | HydrateableContainer = Container,
+>(
+  ui: React.ReactNode,
+  options: RenderOptions<Q, Container, BaseElement>,
+): Promise<
+  RenderResult<Q, Container, BaseElement> & {
+    rerender: (ui: React.ReactNode) => Promise<void>
+  }
+>
+export function renderAsync(
+  ui: React.ReactNode,
+  options?: Omit<RenderOptions, 'queries'> | undefined,
+): Promise<RenderResult & {rerender: (ui: React.ReactNode) => Promise<void>}>
+
 export interface RenderHookResult<Result, Props> {
   /**
    * Triggers a re-render. The props will be passed to your renderHook callback.
