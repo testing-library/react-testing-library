@@ -296,6 +296,44 @@ export function testErrorHandlers() {
   })
 }
 
+export async function testGenericQueryElementTypes() {
+  const view = pure.render(<button />)
+
+  const buttonElementGetByRole = view.getByRole<HTMLButtonElement>('button')
+
+  const buttonElementQueryByRole = view.queryByRole<HTMLButtonElement>('button')
+  const buttonElementFindByRole = await view.findByRole<HTMLButtonElement>(
+    'button',
+  )
+
+  expectType<HTMLButtonElement, typeof buttonElementGetByRole>(
+    buttonElementGetByRole,
+  )
+  expectType<HTMLButtonElement | null, typeof buttonElementQueryByRole>(
+    buttonElementQueryByRole,
+  )
+  expectType<HTMLButtonElement, typeof buttonElementFindByRole>(
+    buttonElementFindByRole,
+  )
+
+  const buttonElementsGetAllByRole =
+    view.getAllByRole<HTMLButtonElement>('button')
+  const buttonElementsQueryAllByText =
+    view.queryAllByText<HTMLButtonElement>('button')
+  const buttonElementsFindAllByText =
+    await view.findAllByText<HTMLButtonElement>('button')
+
+  expectType<HTMLButtonElement[], typeof buttonElementsGetAllByRole>(
+    buttonElementsGetAllByRole,
+  )
+  expectType<HTMLButtonElement[], typeof buttonElementsQueryAllByText>(
+    buttonElementsQueryAllByText,
+  )
+  expectType<HTMLButtonElement[], typeof buttonElementsFindAllByText>(
+    buttonElementsFindAllByText,
+  )
+}
+
 /*
 eslint
   testing-library/prefer-explicit-assert: "off",
