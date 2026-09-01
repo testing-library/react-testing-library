@@ -3,7 +3,7 @@ import * as ReactDOMClient from 'react-dom/client'
 import {
   queries,
   Queries,
-  BoundFunction,
+  BoundFunctions,
   prettyFormat,
   Config as ConfigDTL,
 } from '@testing-library/dom'
@@ -44,7 +44,11 @@ export type RenderResult<
   rerender: (ui: React.ReactNode) => void
   unmount: () => void
   asFragment: () => DocumentFragment
-} & {[P in keyof Q]: BoundFunction<Q[P]>}
+} & {
+  [P in keyof Q]: P extends keyof BoundFunctions<Q>
+    ? BoundFunctions<Q>[P]
+    : never
+}
 
 /** @deprecated */
 export type BaseRenderOptions<
