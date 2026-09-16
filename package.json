@@ -9,7 +9,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "prebuild": "rimraf dist",
+    "prebuild": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\"",
     "build": "npm-run-all --parallel build:main build:bundle:main build:bundle:pure",
     "build:bundle:main": "dotenv -e .bundle.main.env kcd-scripts build -- --bundle --no-clean --no-ts-defs",
     "build:bundle:pure": "dotenv -e .bundle.main.env -e .bundle.pure.env kcd-scripts build -- --bundle --no-clean --no-ts-defs",
@@ -52,14 +52,13 @@
     "@testing-library/jest-dom": "^5.11.6",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "chalk": "^4.1.2",
     "dotenv-cli": "^4.0.0",
     "jest-diff": "^29.7.0",
     "kcd-scripts": "^13.0.0",
     "npm-run-all2": "^6.2.6",
+    "picocolors": "^1.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "rimraf": "^3.0.2",
     "typescript": "^5.9.3"
   },
   "peerDependencies": {

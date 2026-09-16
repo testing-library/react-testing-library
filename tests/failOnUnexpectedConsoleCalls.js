@@ -25,7 +25,7 @@ SOFTWARE.
 /* eslint-disable prefer-template */
 /* eslint-disable func-names */
 const util = require('util')
-const chalk = require('chalk')
+const pc = require('picocolors')
 const shouldIgnoreConsoleError = require('./shouldIgnoreConsoleError')
 
 const patchConsoleMethod = (methodName, unexpectedConsoleCallStacks) => {
@@ -69,23 +69,21 @@ const flushUnexpectedConsoleCalls = (
   if (unexpectedConsoleCallStacks.length > 0) {
     const messages = unexpectedConsoleCallStacks.map(
       ([stack, message]) =>
-        `${chalk.red(message)}\n` +
+        `${pc.red(message)}\n` +
         `${stack
           .split('\n')
-          .map(line => chalk.gray(line))
+          .map(line => pc.gray(line))
           .join('\n')}`,
     )
 
     const message =
-      `Expected test not to call ${chalk.bold(
-        `console.${methodName}()`,
-      )}.\n\n` +
+      `Expected test not to call ${pc.bold(`console.${methodName}()`)}.\n\n` +
       'If the warning is expected, test for it explicitly by:\n' +
-      `1. Using the ${chalk.bold('.' + expectedMatcher + '()')} ` +
+      `1. Using the ${pc.bold('.' + expectedMatcher + '()')} ` +
       `matcher, or...\n` +
-      `2. Mock it out using ${chalk.bold(
+      `2. Mock it out using ${pc.bold(
         'spyOnDev',
-      )}(console, '${methodName}') or ${chalk.bold(
+      )}(console, '${methodName}') or ${pc.bold(
         'spyOnProd',
       )}(console, '${methodName}'), and test that the warning occurs.`
 
