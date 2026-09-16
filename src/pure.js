@@ -27,6 +27,8 @@ function jestFakeTimersAreEnabled() {
   return false
 }
 
+let inEventWrapper = false
+
 configureDTL({
   unstable_advanceTimersWrapper: cb => {
     return act(cb)
@@ -58,11 +60,19 @@ configureDTL({
     }
   },
   eventWrapper: cb => {
-    let result
-    act(() => {
-      result = cb()
-    })
-    return result
+    if (inEventWrapper) {
+      return cb()
+    }
+    inEventWrapper = true
+    try {
+      let result
+      act(() => {
+        result = cb()
+      })
+      return result
+    } finally {
+      inEventWrapper = false
+    }
   },
 })
 
@@ -265,7 +275,7 @@ function render(
   }
 
   let root
-  // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it re-used so we don't want to read the case that happens later first.
+  // eslint-disable-next-line no-negated-condition -- we want to map the evolution of this over time. The root is created first. Only later is it reused so we don't want to read the case that happens later first.
   if (!mountedContainers.has(container)) {
     const createRootImpl = legacyRoot ? createLegacyRoot : createConcurrentRoot
     root = createRootImpl(container, {
