@@ -1,4 +1,4 @@
-import {fireEvent as dtlFireEvent} from '@testing-library/dom'
+import {fireEvent as dtlFireEvent, getConfig} from '@testing-library/dom'
 
 // react-testing-library's version of fireEvent will call
 // dom-testing-library's version of fireEvent. The reason
@@ -39,7 +39,9 @@ const select = fireEvent.select
 fireEvent.select = (node, init) => {
   select(node, init)
   // React tracks this event only on focused inputs
-  node.focus()
+  getConfig().eventWrapper(() => {
+    node.focus()
+  })
 
   // React creates this event when one of the following native events happens
   // - contextMenu
