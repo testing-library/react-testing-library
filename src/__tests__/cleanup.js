@@ -27,6 +27,46 @@ test('cleanup does not error when an element is not a child', () => {
   cleanup()
 })
 
+describe('container is the document', () => {
+  let documentElement
+  beforeEach(() => {
+    documentElement = document.documentElement
+  })
+
+  afterEach(() => {
+    // React 18 removes the `<html>` element when unmounting a root rendered into `document`
+    if (document.documentElement === null) {
+      document.appendChild(documentElement)
+    }
+  })
+
+  test('cleanup does not error when the container is the document', () => {
+    render(
+      <html lang="en">
+        <body>
+          <div />
+        </body>
+      </html>,
+      {container: document},
+    )
+
+    cleanup()
+  })
+
+  test('cleanup does not error when hydrating the document', () => {
+    render(
+      // eslint-disable-next-line jsx-a11y/html-has-lang -- matches the existing document
+      <html>
+        <head />
+        <body />
+      </html>,
+      {container: document, hydrate: true},
+    )
+
+    cleanup()
+  })
+})
+
 test('cleanup runs effect cleanup functions', () => {
   const spy = jest.fn()
 

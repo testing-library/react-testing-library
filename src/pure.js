@@ -319,7 +319,8 @@ function cleanup() {
     act(() => {
       root.unmount()
     })
-    if (container.parentNode === document.body) {
+    // `document.body` is `null` if unmounting a root rendered into `document` removed `<html>` (React 18)
+    if (document.body !== null && container.parentNode === document.body) {
       document.body.removeChild(container)
     }
   })
