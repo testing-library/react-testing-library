@@ -54,6 +54,17 @@ describe('configuration API', () => {
 
       expect(getConfig().reactStrictMode).toBe(true)
     })
+
+    test('configure without reactStrictMode preserves the existing value', () => {
+      configure({reactStrictMode: true})
+      configure({testIdAttribute: 'not-data-testid'})
+
+      expect(getConfig().reactStrictMode).toBe(true)
+
+      configure({reactStrictMode: false})
+
+      expect(getConfig().reactStrictMode).toBe(false)
+    })
   })
 
   test('configure can set DTL and RTL options at once', () => {

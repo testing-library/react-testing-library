@@ -27,7 +27,9 @@ function configure(newConfig) {
 
   configForRTL = {
     ...configForRTL,
-    reactStrictMode,
+    // Only overwrite the existing value when a new one is provided,
+    // so calling configure() for other options keeps reactStrictMode.
+    reactStrictMode: reactStrictMode ?? configForRTL.reactStrictMode,
   }
 }
 
