@@ -126,11 +126,13 @@ export interface RenderOptions<
    *
    * @see {@link https://react.dev/reference/react-dom/client/createRoot#parameters createRoot#options}
    */
-  onCaughtError?: ReactDOMClient.RootOptions extends {
-    onCaughtError?: infer OnCaughtError
-  }
-    ? OnCaughtError
-    : never
+  onCaughtError?:
+    | (ReactDOMClient.RootOptions extends {
+        onCaughtError?: infer OnCaughtError
+      }
+        ? OnCaughtError
+        : never)
+    | undefined
   /**
    * Callback called when React automatically recovers from errors.
    * Called with an error React throws, and an `errorInfo` object containing the `componentStack`.
@@ -138,7 +140,9 @@ export interface RenderOptions<
    *
    * @see {@link https://react.dev/reference/react-dom/client/createRoot#parameters createRoot#options}
    */
-  onRecoverableError?: ReactDOMClient.RootOptions['onRecoverableError']
+  onRecoverableError?:
+    | ReactDOMClient.RootOptions['onRecoverableError']
+    | undefined
   /**
    * Not supported at the moment
    */
@@ -160,7 +164,7 @@ export interface RenderOptions<
    * When enabled, <StrictMode> is rendered around the inner element.
    * If defined, overrides the value of `reactStrictMode` set in `configure`.
    */
-  reactStrictMode?: boolean
+  reactStrictMode?: boolean | undefined
 }
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>

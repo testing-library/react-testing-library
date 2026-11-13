@@ -140,6 +140,8 @@ export function wrappedRender(
     wrapper: Wrapper,
     // testing exactOptionalPropertyTypes compatibility
     hydrate: options?.hydrate,
+    reactStrictMode: options?.reactStrictMode,
+    onRecoverableError: options?.onRecoverableError,
     ...options,
   })
 }
